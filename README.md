@@ -29,7 +29,7 @@ This addon's license is stated in the `license.md` file.
 Copy or clone this addon into your `openFrameworks/addons/` folder.
 Make sure you have all the dependencies installed as well.
 
-##Dependencies
+## Dependencies
 
 * ofxGui (already included with openFramework)
 * [ofxEasing](https://github.com/arturoc/ofxEasing)
