@@ -1,29 +1,34 @@
+////
+////  TrackRegionController.hpp
+////  tracksAndTimeTest
+////
+////  Created by Roy Macdonald on 3/6/20.
+////
 //
-//  TrackRegionController.hpp
-//  tracksAndTimeTest
+//#pragma once
+//#include "KeyframedParameter.h"
+//#include "TrackRegion.h"
+//namespace ofx {
+//namespace LineaDeTiempo {
 //
-//  Created by Roy Macdonald on 3/6/20.
+//template<typename RegionDataType>
+//class TrackRegionController_
+//{
+//public:
+//	
+//	virtual ~TrackRegionController_(){}
+//	
+//	
+//protected:
+//	RegionDataType _data;
 //
-
-#pragma once
-
-
-namespace ofx {
-namespace LineaDeTiempo {
-
-class TrackRegionController
-{
-public:
-	
-	virtual ~TrackRegionController(){}
-	
-	
-protected:
-	
-private:
-	
-	
-};
-
-
-} } // ofx::LineaDeTiempo
+//	TrackRegion * _regionView = nullptr;
+//	
+//	
+//private:
+//	
+//	
+//};
+//
+//
+//} } // ofx::LineaDeTiempo

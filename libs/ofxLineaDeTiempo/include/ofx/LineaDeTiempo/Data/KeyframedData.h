@@ -20,7 +20,7 @@ template<typename DataType>
 class KeyframedData_
 {
 public:
-	KeyframedData_(std::shared_ptr<TimeControl> timeControl);
+	KeyframedData_(const std::string & name, std::shared_ptr<TimeControl> timeControl);
 	virtual ~KeyframedData_(){}
 	
 	
@@ -31,6 +31,9 @@ public:
 	
 	bool remove(TimedData_<DataType>* d);
 	
+	///\brief remove all 
+	void clear();
+	
 	virtual bool update(const uint64_t& time);
 	
 	void sortData();
@@ -39,7 +42,11 @@ public:
 	
 	void setValue(const DataType& value, const uint64_t& time, bool bAddKeyIfNotFound);
 	
-	//TODO: serialize and unserialize
+
+	
+	friend std::ostream& operator<<(std::ostream& os, const KeyframedData_<DataType>& data);
+	friend std::istream& operator>>(std::istream& is, KeyframedData_<DataType>& data);
+
 	
 	
 	void enableKeyframing();
@@ -49,6 +56,14 @@ public:
 	bool isKeyFramingEnabled() const;
 	
 	ofEvent<bool> keyframingEnableEvent;
+	
+	const std::vector< std::unique_ptr< TimedData_<DataType> > > & getData() const;
+	
+	const std::string &  getName() const;
+	void setName(const std::string & name);
+	
+	
+	
 	
 	
 protected:
@@ -68,6 +83,12 @@ protected:
 	
 private:
 
+	
+	///\brief add value and time to collection
+	/// you should not use this. It will not check if it is possible to add an element and will not sort once done.
+	/// used internally only.
+	void _addToCollection(const DataType& value, const uint64_t& time);
+	
 	uint64_t _lastUpdateTime = 0;
 	
 	size_t _currentIndex =0;
@@ -81,6 +102,7 @@ private:
 	
 	void _enableKeyframing(bool e);
 	
+	std::string _name;
 };
 
 

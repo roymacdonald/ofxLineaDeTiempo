@@ -13,8 +13,9 @@ namespace LineaDeTiempo {
 
 //---------------------------------------------------------------------------------
 template<typename T>
-KeyframedData_<T>::KeyframedData_(std::shared_ptr<TimeControl> timeControl):
-_timeControl(timeControl)
+KeyframedData_<T>::KeyframedData_(const std::string & name, std::shared_ptr<TimeControl> timeControl):
+_timeControl(timeControl),
+_name(name)
 {
 	_lastUpdateTime = std::numeric_limits<uint64_t>::max();
 }
@@ -72,18 +73,34 @@ T KeyframedData_<T>::getValueAtTime(const uint64_t& time) const
 template<typename T>
 TimedData_<T>* KeyframedData_<T>::add(const T& value, const uint64_t& time)
 {
-	for(auto& d: _data){
-		if(d->time == time)
-		{
-			ofLogNotice("KeyframeTrackDataManager_<T>::add") << "there is already data at this point. Updating to new value";
-			d->value = value;
-			return d.get();
-		}
-	}
 	
+	if(_timedMap.count(time))
+	{
+		ofLogNotice("KeyframeTrackDataManager_<T>::add") << "there is already data at this point. Updating to new value";
+		_timedMap[time]->value = value;
+		return _timedMap[time];
+	}
+//	for(auto& d: _data){
+//		if(d->time == time)
+//		{
+//			ofLogNotice("KeyframeTrackDataManager_<T>::add") << "there is already data at this point. Updating to new value";
+//			d->value = value;
+//			return d.get();
+//		}
+//	}
+	
+	_addToCollection(value, time);
+	
+//	_data.emplace_back(std::make_unique<TimedData_<T>>(value, time));
+//	_timedMap[time] = _data.back().get();
+	sortData();
+}
+//---------------------------------------------------------------------------------
+template<typename T>
+void KeyframedData_<T>::_addToCollection(const T& value, const uint64_t& time)
+{
 	_data.emplace_back(std::make_unique<TimedData_<T>>(value, time));
 	_timedMap[time] = _data.back().get();
-	sortData();
 }
 //---------------------------------------------------------------------------------
 template<typename T>
@@ -102,6 +119,16 @@ bool KeyframedData_<T>::remove(TimedData_<T>* d)
 	
 	return s > _data.size();
 }
+//---------------------------------------------------------------------------------
+template<typename T>
+void KeyframedData_<T>::clear()
+{
+	_timedMap.clear();
+	_data.clear();
+	
+}
+
+
 //---------------------------------------------------------------------------------
 template<typename T>
 bool KeyframedData_<T>::update(const uint64_t& time)
@@ -282,6 +309,74 @@ bool KeyframedData_<T>::isKeyFramingEnabled() const
 {
 	return _bKeyframingEnabled;
 }
+//---------------------------------------------------------------------------------
+template<typename T>
+const std::vector< std::unique_ptr< TimedData_<T> > > & KeyframedData_<T>::getData() const
+{
+	return _data;
+}
+
+//---------------------------------------------------------------------------------
+template<typename T>
+const std::string &   KeyframedData_<T>::getName() const
+{
+	return _name;
+}
+//---------------------------------------------------------------------------------
+template<typename T>
+void KeyframedData_<T>::setName(const std::string & name)
+{
+	_name = name;
+}
+
+
+template<typename DataType>
+std::ostream& operator<<(std::ostream& os, const KeyframedData_<DataType>& data)
+{
+	os << data._name << ", "
+	<< data._currentValue << ", "
+	<< data._lastUpdateTime << ", "
+	<< data._currentIndex << ", "
+	<< data._bKeyframingEnabled << ", "
+	<< data._data.size();
+	for(auto& d: data._data){
+		os << ", " << d ;
+	}
+	return os;
+}
+template<typename DataType>
+std::istream& operator>>(std::istream& is, KeyframedData_<DataType>& data)
+{
+
+	is >> data._name;
+	is.ignore(2);
+	is >> data._currentValue;
+	is.ignore(2);
+	is >> data._lastUpdateTime;
+	is.ignore(2);
+	is >> data._currentIndex;
+	is.ignore(2);
+	is >> data._bKeyframingEnabled;
+	is.ignore(2);
+	size_t size;
+	is >> size;
+//	<< data._data.size();
+	DataType d;
+	
+	data.clear();
+	
+	for(size_t i =0; i < size; i++)
+	{
+		is.ignore(2);
+		is >> d;
+		data._addToCollection(d.value, d.time);
+	
+	}
+	data.sortData();
+	return is;
+	
+}
+
 
 
 } } // ofx::LineaDeTiempo

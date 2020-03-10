@@ -33,6 +33,25 @@ DataType TimedData_<DataType>::interpolateTo(const TimedData_<DataType>* to, con
 	return interpolateTimedValue(this, to, _time);
 }
 	
+
+////----------------------------------------------------------
+//ostream& operator<<(ostream& os, const ofRectangle& rect){
+//	os << rect.position << ", " << rect.width << ", " << rect.height;
+//	return os;
+//}
+//
+////----------------------------------------------------------
+//istream& operator>>(istream& is, ofRectangle& rect){
+//	is >> rect.position;
+//	is.ignore(2);
+//	is >> rect.width;
+//	is.ignore(2);
+//	is >> rect.height;
+//	return is;
+//}
+
+
+
 template class TimedData_<ofColor_<char>>;
 template class TimedData_<ofColor_<unsigned char>>;
 template class TimedData_<ofColor_<short>>;
@@ -61,5 +80,8 @@ template class TimedData_<long>;
 template class TimedData_<unsigned long>;
 template class TimedData_<float>;
 template class TimedData_<double>;
+template class TimedData_<long double>;
+
+template class TimedData_<ofRectangle>;
 
 } } // ofx::LineaDeTiempo
