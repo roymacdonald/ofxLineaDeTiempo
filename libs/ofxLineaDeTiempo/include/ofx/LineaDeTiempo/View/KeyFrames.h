@@ -15,7 +15,7 @@ namespace LineaDeTiempo {
 
 class KeyFrames: public TrackRegion{
 public:
-	KeyFrames(const std::string& id, BaseTrack* parentTrack, const ofRange64u & timeRange);
+	KeyFrames(const std::string& id, BaseTrack* parentTrack, const ofRange64u & timeRange, TrackRegionController *controller);
 	virtual ~KeyFrames(){}
 		
 	void selectKeyframe(KeyFrame* k);

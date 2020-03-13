@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "BaseClasses.h"
+//#include "BaseClasses.h"
 #include "ofx/MUI/Widget.h"
 
 namespace ofx {
@@ -21,6 +21,8 @@ public:
 	
 	virtual ~TrackHeader(){}
 	
+	BaseTrack* getTrack();
+	const BaseTrack* getTrack() const;
 	
 protected:
 	BaseTrack* _track = nullptr;

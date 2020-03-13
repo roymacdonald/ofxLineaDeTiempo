@@ -43,6 +43,16 @@ void TrackHeader::_updateFromTrack()
 		setShape({_track->getX(), _track->getY(), _panel->getTrackHeaderWidth(), _track->getHeight() });
 	}
 }
+//---------------------------------------------------------------------
+BaseTrack* TrackHeader::getTrack()
+{
+	return _track;
+}
+//---------------------------------------------------------------------
+const BaseTrack* TrackHeader::getTrack() const
+{
+	return _track;
+}
 
 
 } } // ofx::LineaDeTiempo

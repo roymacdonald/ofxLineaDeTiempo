@@ -8,7 +8,7 @@
 #pragma once
 #include "ConstrainedGrabHandle.h"
 #include "ofRectangleHelper.h"
-#include "TimeControl.h"
+//#include "TimeControl.h"
 //#include "TracksPanel.h"
 //#include "Constants.h"
 
@@ -26,7 +26,7 @@ class TracksPanel;
 class Playhead: public MUI::ConstrainedGrabHandle{
 public:
 	
-	Playhead(TracksPanel* tracksPanel, std::shared_ptr<LineaDeTiempo::TimeControl> timeControl);
+	Playhead(TracksPanel* tracksPanel);
 	virtual ~Playhead(){}
 	
 	virtual void onDraw() const override;
@@ -42,7 +42,7 @@ protected:
 	void _draggingStateChanged(bool & bDragging);
 	
 	TracksPanel* _tracksPanel = nullptr;
-	std::shared_ptr<LineaDeTiempo::TimeControl> _timeControl = nullptr;
+	
 	
 	virtual void _onDragging(const DOM::CapturedPointer& pointer)override;
 	

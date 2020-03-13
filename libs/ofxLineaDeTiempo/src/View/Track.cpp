@@ -8,7 +8,9 @@
 #include "Tracks.h"
 #include "MUI/Utils.h"
 #include "MUI/Styles.h"
-#include "KeyFrames.h"
+//#include "KeyFrames.h"
+#include "TrackHeader.h"
+
 namespace ofx {
 namespace LineaDeTiempo {
 
@@ -18,9 +20,12 @@ ofColor BaseTrack::edgeColor = ofColor(120);
 
 
 //---------------------------------------------------------------------------------------------------------------------
-BaseTrack::BaseTrack(const std::string& id, std::shared_ptr<LineaDeTiempo::TimeControl> timeControl ):
-DOM::Element(id, 0, 0, initialHeight, initialHeight),
-_timeControl(timeControl)
+BaseTrack::BaseTrack(const std::string& id, const std::string& viewTypeName, TrackController* controller)
+:_viewTypeName(viewTypeName)
+,DOM::Element(id, 0, 0, initialHeight, initialHeight)
+,BaseHasController<TrackController>(controller)
+,AbstractHasRegions<TrackRegion, false_type>()
+
 {
 	_regionsStyle = make_shared<MUI::Styles>();
 }
@@ -46,23 +51,23 @@ uint64_t BaseTrack::screenPositionToTime(float x) const
 //---------------------------------------------------------------------------------------------------------------------
 uint64_t BaseTrack::localPositionToTime(float x) const
 {
-	if(_timeControl)
-	{
-		return MUI::Math::lerp(x, 0, getWidth(), 0, _timeControl->getTotalTime());
-	}
-	ofLogError("BaseTrack::timeRangeToLocalPosition") << "_timeControl is null. returning 0";
-	return 0;
+//	if(_timeControl)
+//	{
+		return MUI::Math::lerp(x, 0, getWidth(), 0, getTimeControl().getTotalTime());
+//	}
+//	ofLogError("BaseTrack::timeRangeToLocalPosition") << "_timeControl is null. returning 0";
+//	return 0;
 }
 //---------------------------------------------------------------------------------------------------------------------
 float BaseTrack::timeToLocalPosition(const uint64_t& t)  const
 {
 	
-	if(_timeControl)
-	{
-		return MUI::Math::lerp(t, 0, _timeControl->getTotalTime(), 0, getWidth());
-	}
-	ofLogError("BaseTrack::timeRangeToLocalPosition") << "_timeControl is null. returning 0";
-	return 0;
+//	if(_timeControl)
+//	{
+		return MUI::Math::lerp(t, 0, getTimeControl().getTotalTime(), 0, getWidth());
+//	}
+//	ofLogError("BaseTrack::timeRangeToLocalPosition") << "_timeControl is null. returning 0";
+//	return 0;
 }
 //---------------------------------------------------------------------------------------------------------------------
 ofRectangle BaseTrack::timeRangeToRect(const ofRange64u& t) const
@@ -105,125 +110,143 @@ void BaseTrack::setHeader(TrackHeader* header){
 	_header = header;
 }
 
-
 //---------------------------------------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------------------------------
-template<typename R>
-Track_<R>::Track_(const std::string& id, std::shared_ptr<LineaDeTiempo::TimeControl> timeControl ):
-BaseTrack(id, timeControl)
+TrackHeader* BaseTrack::getHeader()
 {
-
-	_regions.clear();
+	return _header;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-template<typename R>
-R* Track_<R>::getRegionByIndex(size_t index)
+const TrackHeader*  BaseTrack::getHeader() const
 {
-	if(index < _regions.size()){
-		return _regions[index];
-	}
-	return nullptr;
+	return _header;
 }
+
 //---------------------------------------------------------------------------------------------------------------------
-template<typename R>
-R* Track_<R>::getRegionByName(const std::string& name)
+
+bool BaseTrack::removeRegion( TrackRegion* region)
 {
-	if(_regionsNameMap.count(name)){
-		return _regionsNameMap[name];
-	}
-	return nullptr;
-}
-//---------------------------------------------------------------------------------------------------------------------
-template<typename R>
-bool Track_<R>::removeRegion(R* region)
-{
+	
 	if(region == nullptr) return false;
-		
-	auto c = removeChild(region);
-	if(c){
-		ofRemove(_regions, [&](R*& t){return region == t;});
-		_regionsNameMap.erase(region->getId());
-		ofNotifyEvent(regionRemovedEvent, region, this);
-	}
-	return false;
-}
-//---------------------------------------------------------------------------------------------------------------------
-template<typename R>
-R* Track_<R>::addRegion( const ofRange64u & timeRange){
+	
+	
+	
+	auto tr = this->removeChild(region);
+	
+	
+	removeElement(region);
+	
+	
+	return true;
 
-	return addRegion("Region", timeRange);
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+template<typename R>
+R* BaseTrack::addRegion( const ofRange64u & timeRange, TrackRegionController * controller){
+
+	return addRegion<R>("Region", timeRange, controller);
 }
 //---------------------------------------------------------------------------------------------------------------------
 template<typename R>
-R* Track_<R>::addRegion(std::string name, const ofRange64u & timeRange)
+R* BaseTrack::addRegion(std::string name, const ofRange64u & timeRange, TrackRegionController * controller)
 {
-	size_t i = 0;
-	if(_regionsNameMap.count(name)){
-		while(_regionsNameMap.count(name + "_" +ofToString(i)))
-		{
-			i++;
-		}
-		name = name + "_" +ofToString(i);
-	}
 	
-	auto  r = addChild<R>(name, this, timeRange);
-	_regions.push_back(r);
-	_regionsNameMap[name] = r;
+	static_assert(std::is_base_of< TrackRegion, R>::value,
+					  "RegionType must inherit from ofx::LineaDeTiempo::TrackRegion");
 	
+	
+	
+	auto  r = addChild<R>(name, this, timeRange, controller);
+
+	addElement(r);
+
+
 	r->setStyles(_regionsStyle);
 	
 	
 	r->updateRectFromTimeRange();
 	
-	ofNotifyEvent(regionAddedEvent, r, this);
-	return r;
 
+	return r;
+	
 }
+
+
+//---------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------------------
 template<typename R>
-bool Track_<R>::removeRegionByIndex(size_t index)
+Track_<R>::Track_(const std::string& id, TrackController* controller):
+BaseTrack(id, typeid(R).name(), controller)
 {
-	return removeRegion(getRegionByIndex(index));
+
+	clear();
 }
-//---------------------------------------------------------------------------------------------------------------------
-template<typename R>
-bool Track_<R>::removeRegionByName(const std::string& name)
-{
-	return removeRegion(getRegionByName(name));
-}
-//---------------------------------------------------------------------------------------------------------------------
-template<typename R>
-size_t Track_<R>::getNumRegions()
-{
-	return _regions.size();
-}
-//---------------------------------------------------------------------------------------------------------------------
-template<typename R>
-const std::vector<R*>& Track_<R>::getRegions() const
-{
-	return _regions;
-}//---------------------------------------------------------------------------------------------------------------------
-template<typename R>
-std::vector<R*>& Track_<R>::getRegions()
-{
-	return _regions;
-}
+//
+////---------------------------------------------------------------------------------------------------------------------
+//template<typename R>
+//R* Track_<R>::getRegionByIndex(size_t index)
+//{
+//	if(index < _regions.size()){
+//		return _regions[index];
+//	}
+//	return nullptr;
+//}
+////---------------------------------------------------------------------------------------------------------------------
+//template<typename R>
+//R* Track_<R>::getRegionByName(const std::string& name)
+//{
+//	if(_regionsNameMap.count(name)){
+//		return _regionsNameMap[name];
+//	}
+//	return nullptr;
+//}
+
+////---------------------------------------------------------------------------------------------------------------------
+//template<typename R>
+//bool Track_<R>::removeRegionByIndex(size_t index)
+//{
+//	return removeRegion(getRegionByIndex(index));
+//}
+////---------------------------------------------------------------------------------------------------------------------
+//template<typename R>
+//bool Track_<R>::removeRegionByName(const std::string& name)
+//{
+//	return removeRegion(getRegionByName(name));
+//}
+////---------------------------------------------------------------------------------------------------------------------
+//template<typename R>
+//size_t Track_<R>::getNumRegions()
+//{
+//	return _regions.size();
+//}
+////---------------------------------------------------------------------------------------------------------------------
+//template<typename R>
+//const std::vector<R*>& Track_<R>::getRegions() const
+//{
+//	return _regions;
+//}//---------------------------------------------------------------------------------------------------------------------
+//template<typename R>
+//std::vector<R*>& Track_<R>::getRegions()
+//{
+//	return _regions;
+//}
 //---------------------------------------------------------------------------------------------------------------------
 template<typename R>
 void Track_<R>::updateLayout()
 {
 	
-	for(auto r: _regions)
+	for(auto r: children())
 	{
 		
 		if(r)
 		{
 			r->updateLayout();
+			
 		}
 	}
 }
-template class Track_<KeyFrames>;
+//template class Track_<KeyFrames>;
 
 } } // ofx::LineaDeTiempo

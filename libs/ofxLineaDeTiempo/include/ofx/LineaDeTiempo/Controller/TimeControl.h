@@ -8,9 +8,15 @@
 #pragma once
 #include "ofMain.h"
 #include "ofRange.h"
+#include <map>
+
 
 namespace ofx {
 namespace LineaDeTiempo {
+
+
+
+
 
 
 enum TimeControlState{
@@ -117,4 +123,23 @@ private:
 	
 	TimeControlState _state;
 };
+
+
+
+static TimeControl & getTimeControl(const std::string& id = "default"){
+	static std::unique_ptr<std::map<std::string, TimeControl>> m;
+	if(!m){
+		// esto ocurrira una sola vez
+		m = make_unique<std::map<std::string, TimeControl>>();
+		
+		//cualquier otro codigo que sea necesario para inicializar correctamente la variable
+	}
+	
+	return (*m)[id];
+}
+
+
+
+
+
 } } // ofx::LineaDeTiempo

@@ -5,30 +5,38 @@
 //  Created by Roy Macdonald on 2/20/20.
 //
 
-#include "TracksPanel.h"
+#include "LineaDeTiempo/View/TracksPanel.h"
 #include "MUI/Styles.h"
-#include "KeyFrames.h"
+
+
+#include "LineaDeTiempo/Controller/TimeControl.h"
+#include "LineaDeTiempo/Controller/TracksController.h"
+
+#include "LineaDeTiempo/View/TrackHeader.h"
+
 
 namespace ofx {
 namespace LineaDeTiempo {
-using namespace MUI;
-TracksPanel::TracksPanel(const std::string& id, const ofRectangle& rect,  std::shared_ptr<LineaDeTiempo::TimeControl> timeControl ):
-Widget(id, rect),
-_timeControl(timeControl)
+//using namespace MUI;
+TracksPanel::TracksPanel(const std::string& id, const ofRectangle& rect, TracksController* controller)//,  std::shared_ptr<LineaDeTiempo::TimeControl> timeControl ):
+:AbstractHasTracks<BaseTrack,false_type>()
+,BaseHasController<TracksController>(controller)
+,MUI::Widget(id, rect)
+,BaseHasLayout()
 {
 	
 //	tracksView = addChild<TracksScrollPanel>(id + "_tracksView", ofRectangle(rect.x +_trackHeaderWidth,rect.y, rect.width  - _trackHeaderWidth, rect.height ));
-	tracksView = addChild<TracksScrollPanel>(id + "_tracksView", _makeTracksViewRect());
+	tracksView = Widget::addChild<MUI::TracksScrollPanel>(id + "_tracksView", _makeTracksViewRect());
 	
 	tracksView->setForceShowScrollbars(true);
 	tracksView->setMoveToFrontOnCapture(false);
 //	headersView = addChild<ClippedView_<Widget>>(id + "headersView", ofRectangle(rect.x, rect.y, _trackHeaderWidth, rect.height));
-	headersView = addChild<ClippedView>(id + "headersView", _makeHeadersViewRect());
+	headersView = addChild<MUI::ClippedView>(id + "headersView", _makeHeadersViewRect());
 	
 	_tracksContainerListeners.push(tracksView->getContainer()->move.newListener(this, &TracksPanel::_tracksMoved));
 	_tracksContainerListeners.push(tracksView->getContainer()->resize.newListener(this, &TracksPanel::_tracksResized));
 
-	_playhead = addChild<Playhead>(this, _timeControl);
+	_playhead = addChild<Playhead>(this);//, _timeControl);
 	setMoveToFrontOnCapture(false);
 //	tracksView->setScrollV({0,1});
 //	tracksView->setScrollH({0,1});
@@ -54,119 +62,97 @@ void TracksPanel::_updateHeadersFromTracks()
 	
 }
 //---------------------------------------------------------------------
-TrackAndHeader* TracksPanel::addKeyframesTrack(const std::string& name)
-{
-	return addTrack<KeyFrames>(name, true);
-	
-}
+//Track_<KeyFrames>* TracksPanel::addKeyframesTrack(const std::string& name)
+//{
+//	return addTrack<Track_<KeyFrames>, KeyFrames>(name, true);
+//	
+//}
 //---------------------------------------------------------------------
-//TrackAndHeader* TracksPanel::addTrack()
+//BaseTrack* TracksPanel::addTrack()
 //{
 //	return addTrack("Track " + ofToString(getNumTracks() + 1));
 //}
 //---------------------------------------------------------------------
-template<typename RegionType>
-TrackAndHeader* TracksPanel::addTrack(const std::string& name, bool bCreateFullTrackRegion)
+template< template<typename> class TrackViewType, typename RegionViewType >
+TrackViewType<RegionViewType>* TracksPanel::addTrack(const std::string& name, bool bCreateFullTrackRegion)
 {
+	static_assert(std::is_base_of<Track_<RegionViewType>, TrackViewType<RegionViewType>>::value,
+				  "TrackViewType<RegionViewType> must inherit from ofx::LineaDeTiempo::Track_<RegionViewType>");
+	
+	
 	auto c = tracksView->getContainer();
 	auto hc = headersView->container;
 	if(c && hc){
-		auto style = make_shared<Styles>();
+		
+		auto t = c->addChild<TrackViewType<RegionViewType>>(name);
+		auto h = hc->addChild<TrackHeader>(t, _trackHeaderWidth, this);
+		
+		auto style = make_shared<MUI::Styles>();
 		ofColor color;
 		color.setHsb(ofRandom(255), ofRandom(150, 255), ofRandom(255));
 		
-		style->setColor(color, Styles::ROLE_BACKGROUND);
-		auto t = c->addChild<Track_<RegionType>>(name, _timeControl);
-		auto h = hc->addChild<TrackHeader>(t, _trackHeaderWidth, this);
+		style->setColor(color, MUI::Styles::ROLE_BACKGROUND);
 		
 		t->setColor(color);
 //		t->setStyles(style);
 		h->setStyles(style);
-		if(bCreateFullTrackRegion) t->addRegion({0, _timeControl->getTotalTime()});
 		
-		_trackCollection.push_back( std::move(std::make_unique<TrackAndHeader>(h, t)));
+		if(bCreateFullTrackRegion) t->addRegion({0, getTimeControl().getTotalTime()});
 		
+//		_trackCollection.push_back(t);
+		addElement(t);
 		
 		tracksView->updateLayout();
 		tracksView->updateContainerLayout();
 		
-		return _trackCollection.back().get();
+		return t;
 	}
 	ofLogError("TracksPanel::addTrack") << "can not add track because container is nullptr";
 	return nullptr;
 }
-//---------------------------------------------------------------------
-TrackAndHeader* TracksPanel::getTrackByIndex(size_t index)
-{
-	if(index < _trackCollection.size()){
-		return _trackCollection[index].get();
-	}
-	return nullptr;
-}
+
 void TracksPanel::onDraw() const
 {
 	Widget::onDraw();
-	
-	
-	
 }
 //---------------------------------------------------------------------
-//TrackAndHeader* TracksPanel::getTrackByName(const std::string& name)
-//{
-//	if(container){
-//	return dynamic_cast<TrackAndHeader*>(container->findFirstChildById(name));
-//	}
-//	ofLogError("TracksPanel::getTrackByName") << "can not add track because container is nullptr";
-//	return nullptr;
-//}
-//---------------------------------------------------------------------
-bool TracksPanel::removeTrack(TrackAndHeader* track)
+bool TracksPanel::removeTrack(BaseTrack* track)
 {
 	if(track == nullptr) return false;
-	
+
 	auto c = tracksView->getContainer();
 	auto hc = headersView->container;
 	if(c && hc){
-		
-		auto tr = c->removeChild(track->track);
-		auto h = hc->removeChild(track->header);
-		
 
-		ofRemove(_trackCollection, [&](std::unique_ptr<TrackAndHeader>& t){
-			return (track->header == t->header && track->track == t->track);
-		});
+		auto tr = c->removeChild(track);
+		auto h = hc->removeChild(track->getHeader());
+
+		BaseHasCollection<BaseTrack, false_type>::removeElement(track);
+		
+//		ofRemove(_trackCollection, [&](BaseTrack* t){
+//			return (track->getHeader() == t->getHeader() && track == t);
+//		});
 		return true;
 	}
 	return false;
 }
+
 //---------------------------------------------------------------------
-bool TracksPanel::removeTrackByIndex(size_t index)
-{
-	if(index < _trackCollection.size()){
-		return removeTrack(_trackCollection[index].get());
-	}
-}
-////---------------------------------------------------------------------
-//bool TracksPanel::removeTrackByName(const std::string& name)
+//size_t TracksPanel::getNumTracks() const
 //{
-//	auto t = getTrackByName(name);
-//	return removeTrack(t);
-//}
-//---------------------------------------------------------------------
-size_t TracksPanel::getNumTracks()
-{
-	return _trackCollection.size();
-}
-//---------------------------------------------------------------------
-//const std::vector<TrackAndHeader*>& TracksPanel::getTracks() const
-//{
-//	return _trackCollection;
+//	return _trackCollection.size();
 //}
 ////---------------------------------------------------------------------
-//std::vector<Track*>& TracksPanel::getTracks()
+//const std::vector<const BaseTrack*>& TracksPanel::getTracks() const
 //{
-//	return _trackCollection;
+//
 //}
+////---------------------------------------------------------------------
+//std::vector<BaseTrack*>& TracksPanel::getTracks()
+//{
+//
+//}
+
 
 //---------------------------------------------------------------------
 float TracksPanel::getTrackHeaderWidth(){
@@ -184,9 +170,9 @@ void TracksPanel::updateLayout()
 {
 	if(headersView) headersView->setShape(_makeHeadersViewRect());
 	
-	for(auto& t:_trackCollection){
+	for(auto& t: getCollection()){
 		if(t){
-			t->header->setSize(_trackHeaderWidth, t->header->getHeight());
+			t->getHeader()->setSize(_trackHeaderWidth, t->getHeader()->getHeight());
 		}
 	}
 	
@@ -212,12 +198,12 @@ ofRectangle TracksPanel::_makeTracksViewRect()
 //---------------------------------------------------------------------
 float TracksPanel::timeToScreenPosition(uint64_t time) const
 {
-	if(_timeControl && tracksView){
+	if(tracksView){
 		auto container = tracksView->getContainer();
 		auto clippingView = tracksView->getClippingView();
 		if(container && clippingView)
 		{
-			return container->localToScreen( {Math::lerp(time, 0, _timeControl->getTotalTime(), 0, clippingView->getTracksWidth()), 0}).x ;
+			return container->localToScreen( {MUI::Math::lerp(time, 0, getTimeControl().getTotalTime(), 0, clippingView->getTracksWidth()), 0}).x ;
 		}
 	}
 	
@@ -231,14 +217,14 @@ float TracksPanel::timeToScreenPosition(uint64_t time) const
 uint64_t  TracksPanel::screenPositionToTime(float x) const
 {
 
-	if(_timeControl && tracksView)
+	if(tracksView)
 	{
 		auto container = tracksView->getContainer();
 		auto clippingView = tracksView->getClippingView();
 		if(container && clippingView)
 		{
 			
-			return  Math::lerp(container->screenToLocal({x, 0}).x, 0, clippingView->getTracksWidth(), 0, _timeControl->getTotalTime()) ;
+			return  MUI::Math::lerp(container->screenToLocal({x, 0}).x, 0, clippingView->getTracksWidth(), 0, getTimeControl().getTotalTime()) ;
 		}
 	}
 	

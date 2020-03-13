@@ -10,16 +10,22 @@
 #include "ofRange.h"
 #include "ResizableHandle.h"
 #include "BaseClasses.h"
+#include "LineaDeTiempo/BaseTypes/BaseHasController.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
 
 class BaseTrack;
+class TrackRegionController;
 
-class TrackRegion: public MUI::Widget, public BaseHasLayout{
+class TrackRegion
+: public MUI::Widget
+, public BaseHasLayout
+, public BaseHasController<TrackRegionController>
+{
 public:
 	
-	TrackRegion(const std::string& id, BaseTrack* parentTrack, const ofRange64u & timeRange);
+	TrackRegion(const std::string& id, BaseTrack* parentTrack, const ofRange64u & timeRange, TrackRegionController *controller);
 	
 	virtual ~TrackRegion(){}
 	

@@ -11,15 +11,16 @@
 #include <map>
 #include "LineaDeTiempo/Data/TimedData.h"
 #include "LineaDeTiempo/Controller/TimeControl.h"
-
+#include "LineaDeTiempo/BaseTypes/BaseHasName.h"
 namespace ofx {
 namespace LineaDeTiempo {
 
 
 template<typename DataType>
-class KeyframedData_
+class KeyframedData_: public BaseHasName
 {
 public:
+	KeyframedData_();
 	KeyframedData_(const std::string & name, std::shared_ptr<TimeControl> timeControl);
 	virtual ~KeyframedData_(){}
 	
@@ -59,11 +60,12 @@ public:
 	
 	const std::vector< std::unique_ptr< TimedData_<DataType> > > & getData() const;
 	
-	const std::string &  getName() const;
-	void setName(const std::string & name);
 	
+	void moveAllByTime(const uint64_t& _timeOffset);
 	
+	void fromJson(const ofJson& j);
 	
+	void toJson(ofJson& j);
 	
 	
 protected:
@@ -102,7 +104,7 @@ private:
 	
 	void _enableKeyframing(bool e);
 	
-	std::string _name;
+//	std::string _name;
 };
 
 
@@ -110,6 +112,20 @@ private:
 
 
 
+namespace nlohmann{
+template <typename T>
+struct adl_serializer<ofx::LineaDeTiempo::KeyframedData_<T>> {
+	static void from_json(const json& j, ofx::LineaDeTiempo::KeyframedData_<T> & k)
+	{
+		k.fromJson(j);
+		
+	}
 
+	static void to_json(json& j, ofx::LineaDeTiempo::KeyframedData_<T> k)
+	{
+		k.toJson(j);
+	}
+};
 
+}
 

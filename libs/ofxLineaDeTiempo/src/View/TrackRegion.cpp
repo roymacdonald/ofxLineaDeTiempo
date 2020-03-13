@@ -7,6 +7,7 @@
 
 #include "TrackRegion.h"
 #include "Track.h"
+#include "LineaDeTiempo/Controller/TrackRegionController.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -15,11 +16,11 @@ namespace LineaDeTiempo {
 float TrackRegion::headerHeight = 30.f;
 
 //---------------------------------------------------------------------------------------------------------------------
-TrackRegion::TrackRegion(const std::string& id, BaseTrack* parentTrack, const ofRange64u & timeRange):
-//ConstrainedGrabHandle(id, DOM::HORIZONTAL, ofRectangle( 0,0, Track::initialHeight, Track::initialHeight)),
-Widget(id, 0,0, BaseTrack::initialHeight, BaseTrack::initialHeight),
-_timeRange(timeRange),
-_parentTrack(parentTrack)
+TrackRegion::TrackRegion(const std::string& id, BaseTrack* parentTrack, const ofRange64u & timeRange, TrackRegionController *controller)
+: Widget(id, 0,0, BaseTrack::initialHeight, BaseTrack::initialHeight)
+, _timeRange(timeRange)
+, _parentTrack(parentTrack)
+, BaseHasController<TrackRegionController>(controller)
 {
 	setFocusable(true);
 	updateRectFromTimeRange();

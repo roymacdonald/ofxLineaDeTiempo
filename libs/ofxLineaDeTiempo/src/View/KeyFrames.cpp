@@ -9,12 +9,14 @@
 #include "ofRectangleHelper.h"
 #include "Track.h"
 #include "ofEvent.h"
+#include "LineaDeTiempo/Controller/TrackRegionController.h"
+
 namespace ofx {
 namespace LineaDeTiempo {
 
 //---------------------------------------------------------------------------------------------------------------------
-KeyFrames::KeyFrames(const std::string& id,  BaseTrack* parentTrack, const ofRange64u & timeRange):
-TrackRegion(id, parentTrack, timeRange)
+KeyFrames::KeyFrames(const std::string& id, BaseTrack* parentTrack, const ofRange64u & timeRange, TrackRegionController *controller):
+TrackRegion(id, parentTrack, timeRange, controller)
 {
 	setDraggable(true);
 //	setMoveToFrontOnCapture(false);

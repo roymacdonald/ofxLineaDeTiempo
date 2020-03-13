@@ -6,10 +6,10 @@
 
 #pragma once
 //#include "ofxMUI.h"
-#include "Track.h"
-#include "Layout.h"
-#include "BaseClasses.h"
-#include "ClippedView.h"
+
+#include "DOM/Layout.h"
+#include "MUI/BaseClasses.h"
+#include "MUI/ClippedView.h"
 
 namespace ofx {
 namespace LineaDeTiempo {

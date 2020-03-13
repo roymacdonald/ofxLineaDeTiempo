@@ -6,58 +6,45 @@
 //
 
 #pragma once
-//#include "ofxMUI.h"
-#include "Tracks.h"
-#include "TrackHeader.h"
-#include "ClippedView.h"
-#include "ScrollablePanel.h"
-#include "TimeControl.h"
-#include "BaseClasses.h"
-#include "Playhead.h"
+#include "MUI/ScrollablePanel.h"
+#include "MUI/BaseClasses.h"
+//#include "LineaDeTiempo/BaseTypes/AbstractHasTracks.h"
+#include "LineaDeTiempo/BaseTypes/AbstractHasTracks.h"
+
+#include "LineaDeTiempo/View/Playhead.h"
+#include "LineaDeTiempo/View/Tracks.h"
+#include "LineaDeTiempo/View/Track.h"
+#include "LineaDeTiempo/View/KeyFrames.h"
+#include "LineaDeTiempo/BaseTypes/BaseHasController.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
 
+typedef Track_<KeyFrames> KeyFramesTrack;
 
-struct TrackAndHeader{
+class TracksController;
 
-	TrackAndHeader(TrackHeader* _header, BaseTrack* _track):
-	header(_header),
-	track(_track)
-	{
-		
-	}
-				   
-	TrackHeader* header = nullptr;
-	BaseTrack* track = nullptr;
-	
-};
 
-class TracksPanel: public MUI::Widget, public BaseHasLayout
+class TracksPanel
+: public AbstractHasTracks<BaseTrack,false_type>
+, public BaseHasController<TracksController>
+, public MUI::Widget
+, public BaseHasLayout
+
+
 {
 public:
-	TracksPanel(const std::string& id, const ofRectangle& rect,  std::shared_ptr<LineaDeTiempo::TimeControl> timeControl );
-	~TracksPanel(){}
+	TracksPanel(const std::string& id, const ofRectangle& rect, TracksController* controller);//,  std::shared_ptr<LineaDeTiempo::TimeControl> timeControl );
+	virtual ~TracksPanel() = default;
 
-//	TrackAndHeader* addTrack();
-	TrackAndHeader* addKeyframesTrack(const std::string& name);
+//	BaseTrack* addTrack();
+//	KeyFramesTrack* addKeyframesTrack(const std::string& name);
 
-	template<typename RegionType>
-	TrackAndHeader* addTrack(const std::string& name, bool bCreateFullTrackRegion);
+	template< template<typename> class TrackViewType, typename RegionViewType >
+	TrackViewType<RegionViewType>* addTrack(const std::string& name, bool bCreateFullTrackRegion);
 	
 	
-	TrackAndHeader* getTrackByIndex(size_t index);
-//	TrackAndHeader* getTrackByName(const std::string& name);
-
-	bool removeTrack(TrackAndHeader* track);
-	bool removeTrackByIndex(size_t index);
-//	bool removeTrackByName(const std::string& name);
-
-	size_t getNumTracks();
-
-
-//	const std::vector<TrackAndHeader*>& getTracks() const;
-//	std::vector<TrackAndHeader*> & getTracks();
+	virtual bool removeTrack(BaseTrack* track) override ;
 
 
 	float getTrackHeaderWidth();
@@ -74,11 +61,6 @@ public:
 	virtual void onDraw() const override;
 	
 	
-//	ofRectangle timeRangeToRect(const ofRange64u& t) const;
-//	float timeToLocalPosition(const uint64_t& t) const;
-	
-//	uint64_t localPositionToTime(float x) const;
-	
 	float timeToScreenPosition(uint64_t time) const;
 	uint64_t  screenPositionToTime(float x) const;
 	
@@ -89,10 +71,7 @@ protected:
 	
 	
 	                                                                   
-	std::vector<std::unique_ptr<TrackAndHeader>> _trackCollection;
-
-
-
+	
 
 	float _trackHeaderWidth = 200;
 
@@ -105,11 +84,15 @@ protected:
 	void _updateHeadersFromTracks();
 
 	
-	std::shared_ptr<LineaDeTiempo::TimeControl> _timeControl ;
+//	std::shared_ptr<LineaDeTiempo::TimeControl> _timeControl ;
 	
 	
 	ofRectangle _makeHeadersViewRect();
 	ofRectangle _makeTracksViewRect();
+	
+private:
+	
+	
 	
 	
 };

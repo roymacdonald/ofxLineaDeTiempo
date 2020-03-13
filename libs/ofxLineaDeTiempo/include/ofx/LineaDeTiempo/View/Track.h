@@ -10,18 +10,28 @@
 #include "TrackRegion.h"
 #include "BaseClasses.h"
 
-#include "TrackHeader.h"
+
 #include "TimeControl.h"
 #include <map>
+#include "LineaDeTiempo/BaseTypes/AbstractHasRegions.h"
+#include "LineaDeTiempo/BaseTypes/BaseHasController.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
 
-//class Tracks;
+class TrackController;
+class TrackHeader;
 
-class BaseTrack: public DOM::Element, public BaseHasLayout{
+
+
+class BaseTrack
+:public DOM::Element
+,public BaseHasLayout
+,public AbstractHasRegions<TrackRegion, false_type>
+,public BaseHasController<TrackController>
+{
 public:
-	BaseTrack(const std::string& id, std::shared_ptr<LineaDeTiempo::TimeControl> timeControl );
+	BaseTrack(const std::string& id , const std::string& viewTypeName, TrackController* controller );
 	virtual ~BaseTrack(){}
 	
 	static const float initialHeight;
@@ -41,6 +51,10 @@ public:
 	
 	void setHeader(TrackHeader* header);
 	
+	TrackHeader* getHeader();
+	const TrackHeader* getHeader() const;
+	
+	
 	void setColor(const ofColor& color);
 	const ofColor& getColor();
 	
@@ -51,13 +65,30 @@ public:
 	
 	std::string getName(){return _trackName;}
 	
+	const std::string&  getViewTypeName() { return _viewTypeName;}
+	
+	
+	
+	template<typename RegionType>
+	RegionType* addRegion( const ofRange64u & timeRange, TrackRegionController * controller);
+	
+	template<typename RegionType>
+	RegionType* addRegion(std::string name, const ofRange64u & timeRange, TrackRegionController * controller);
+		
+	bool removeRegion(TrackRegion* track) override;
+
+	
+	
+	
+	
 protected:
+	
+	std::string _viewTypeName = "";
 	
 	TrackHeader* _header;
 	
 	float _heightFactor = 1;
 		
-	std::shared_ptr<LineaDeTiempo::TimeControl> _timeControl;
 	
 	ofColor _color;
 	
@@ -71,37 +102,43 @@ private:
 };
 
 template<typename RegionType>
-class Track_: public BaseTrack{
+class Track_
+: public BaseTrack
+
+{
 public:
 	static_assert(std::is_base_of<TrackRegion, RegionType>(), "RegionType must be a TrackRegion or derived from TrackRegion.");
-	Track_(const std::string& id, std::shared_ptr<LineaDeTiempo::TimeControl> timeControl );
+	Track_(const std::string& id , TrackController* controller);
 	virtual ~Track_(){}
 	
-	RegionType* addRegion( const ofRange64u & timeRange);
-	RegionType* addRegion(std::string name, const ofRange64u & timeRange);
-	
-	RegionType* getRegionByIndex(size_t index);
-	RegionType* getRegionByName(const std::string& name);
-	
-	bool removeRegion(RegionType* track);
-	bool removeRegionByIndex(size_t index);
-	bool removeRegionByName(const std::string& name);
-	
-	size_t getNumRegions();
-	
-	const std::vector<RegionType*>& getRegions() const;
-	std::vector<RegionType*>& getRegions();
 	
 	virtual void updateLayout() override;
 	
-	ofEvent<RegionType*> regionAddedEvent;
-	ofEvent<RegionType*> regionRemovedEvent;
+
+	
+	
+	
 	
 protected:
-	std::vector<RegionType* > _regions;
-	std::map<std::string, RegionType* > _regionsNameMap;
+//	std::vector<RegionType* > _regions;
+//	std::map<std::string, RegionType* > _regionsNameMap;
 	
 };
+
+
+//struct TrackAndHeader{
+//
+//	TrackAndHeader(TrackHeader* _header, BaseTrack* _track):
+//	header(_header),
+//	track(_track)
+//	{
+//		
+//	}
+//				   
+//	TrackHeader* header = nullptr;
+//	BaseTrack* track = nullptr;
+//	
+//};
 
 
 

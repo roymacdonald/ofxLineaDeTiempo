@@ -6,6 +6,7 @@
 //
 
 #include "Tracks.h"
+#include "LineaDeTiempo/View/Track.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
