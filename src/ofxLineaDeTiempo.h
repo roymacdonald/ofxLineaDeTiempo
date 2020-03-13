@@ -21,9 +21,9 @@ public:
 
 	ofx::LineaDeTiempo::TracksPanel * tr = nullptr;
 	
-	ofx::LineaDeTiempo::TrackAndHeader* t1 = nullptr;
+	ofx::LineaDeTiempo::KeyFramesTrack* t1 = nullptr;
 	
-	std::shared_ptr<ofx::LineaDeTiempo::TimeControl> timeControl = nullptr;
+	
 	
 	
 	ofEventListener keyListener;

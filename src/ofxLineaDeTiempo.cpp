@@ -5,12 +5,12 @@
 //-------------------------------------------------------------
 ofxLineaDeTiempo::ofxLineaDeTiempo()
 {
-	timeControl = std::make_shared<ofx::LineaDeTiempo::TimeControl>();
+	
 //	keyListener = ofEvents().keyReleased.newListener(this, &ofxLineaDeTiempo::keyReleased);
 	
-	tr = this->addChild<ofx::LineaDeTiempo::TracksPanel>("Tracks", ofRectangle( 0, 0, ofGetWidth(), ofGetHeight()), timeControl);
+//	tr = this->addChild<ofx::LineaDeTiempo::TracksPanel>("Tracks", ofRectangle( 0, 0, ofGetWidth(), ofGetHeight()));
 
-	t1 = tr->addKeyframesTrack("k");
+//	t1 = tr->addKeyframesTrack("k");
 //	auto t2 = tr->addTrack();
 	
 //	t1->track->addRegion(ofRange_<uint64_t>(1000, 4000));
@@ -23,46 +23,46 @@ ofxLineaDeTiempo::ofxLineaDeTiempo()
 //-------------------------------------------------------------
 void ofxLineaDeTiempo::setup()
 {
-	tr->tracksView->setScrollV({0,1});
-	tr->tracksView->setScrollH({0,1});
+//	tr->tracksView->setScrollV({0,1});
+//	tr->tracksView->setScrollH({0,1});
 }
 //-------------------------------------------------------------
 void ofxLineaDeTiempo::onDraw() const
 //void ofxLineaDeTiempo::draw()
 {
 	
-	auto x = t1->track->timeToScreenPosition(timeControl->getCurrentTime());
+//	auto x = t1->timeToScreenPosition(ofx::LineaDeTiempo::getTimeControl().getCurrentTime());
 	
 	
-	
-	ofPushStyle();
-	ofSetColor(ofColor::yellow);
-	ofSetLineWidth(3);
-	ofDrawLine(x, 0, x, ofGetHeight());
-	ofPopStyle();
-	
-	
-	timeControl->drawDebug(20,  ofGetHeight()-280);
-	
-	
-	auto x2 = tr->timeToScreenPosition(timeControl->getCurrentTime());
-	
-	
-	auto  t0 = t1->track->screenPositionToTime(ofGetMouseX());
-	auto  t1 = tr->screenPositionToTime(ofGetMouseX());
-	
-	{
-		std::stringstream ss;
-	
-		ss << "timeToScreen:\n    track: " << x << "\n    panel: " << x2;
-		ofDrawBitmapStringHighlight(ss.str(), 300, ofGetHeight()-280, ofIsFloatEqual(x, x2)?ofColor::black:ofColor::red);
-	}
-	{
-		std::stringstream ss;
-		ss << "screenToTime:\n    track: " << t0 << "\n    panel: " << t1;
-		ofDrawBitmapStringHighlight(ss.str(), 300, ofGetHeight()-200, (t0 == t1)?ofColor::black:ofColor::red);
-	}
-	
+//	
+//	ofPushStyle();
+//	ofSetColor(ofColor::yellow);
+//	ofSetLineWidth(3);
+//	ofDrawLine(x, 0, x, ofGetHeight());
+//	ofPopStyle();
+//	
+//	
+//	ofx::LineaDeTiempo::getTimeControl().drawDebug(20,  ofGetHeight()-280);
+//	
+//	
+//	auto x2 = tr->timeToScreenPosition(ofx::LineaDeTiempo::getTimeControl().getCurrentTime());
+//	
+//	
+//	auto  t0 = t1->screenPositionToTime(ofGetMouseX());
+//	auto  t1 = tr->screenPositionToTime(ofGetMouseX());
+//	
+//	{
+//		std::stringstream ss;
+//	
+//		ss << "timeToScreen:\n    track: " << x << "\n    panel: " << x2;
+//		ofDrawBitmapStringHighlight(ss.str(), 300, ofGetHeight()-280, ofIsFloatEqual(x, x2)?ofColor::black:ofColor::red);
+//	}
+//	{
+//		std::stringstream ss;
+//		ss << "screenToTime:\n    track: " << t0 << "\n    panel: " << t1;
+//		ofDrawBitmapStringHighlight(ss.str(), 300, ofGetHeight()-200, (t0 == t1)?ofColor::black:ofColor::red);
+//	}
+//	
 }
 //-------------------------------------------------------------
 void ofxLineaDeTiempo::update()
@@ -75,12 +75,12 @@ void ofxLineaDeTiempo::keyReleased(ofKeyEventArgs& args)
 
 //	if(args.key == ' ')
 //	{
-//		if(timeControl->isPaused() || timeControl->isStopped()){
-//			timeControl->play();
+//		if(ofx::LineaDeTiempo::getTimeControl().isPaused() || ofx::LineaDeTiempo::getTimeControl().isStopped()){
+//			ofx::LineaDeTiempo::getTimeControl().play();
 //		}
 //		else
 //		{
-//			timeControl->pause();
+//			ofx::LineaDeTiempo::getTimeControl().pause();
 //		}
 //	}
 //	else if(args.key == 'q')
@@ -93,7 +93,7 @@ void ofxLineaDeTiempo::keyReleased(ofKeyEventArgs& args)
 //	}
 //	else if(args.key == 's')
 //	{
-//		timeControl->stop();
+//		ofx::LineaDeTiempo::getTimeControl().stop();
 //	}
 //	else if(args.key == 'p')
 //	{
