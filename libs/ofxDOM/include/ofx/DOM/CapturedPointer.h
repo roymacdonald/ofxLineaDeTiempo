@@ -8,8 +8,8 @@
 #pragma once
 
 
-#include "ofx/DOM/Events.h"
-
+#include "ofx/DOM/Events/DOMEvents.h"
+#include "ofx/DOM/Element.h"
 
 namespace ofx {
 namespace DOM {

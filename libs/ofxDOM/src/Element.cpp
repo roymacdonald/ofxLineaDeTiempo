@@ -35,7 +35,7 @@ Element::Element(const std::string& id,
                  float y,
                  float width,
                  float height):
-    _id(id),
+    Node<Element>(id),
     _shape(x, y, width, height)
 {
 }
@@ -43,466 +43,6 @@ Element::Element(const std::string& id,
 
 Element::~Element()
 {
-}
-
-
-std::unique_ptr<Element> Element::removeChild(Element* element)
-{
-    auto iter = findChild(element);
-
-    if (iter != _children.end())
-    {
-        // Move the child out of the children array.
-        std::unique_ptr<Element> detachedChild = std::move(*iter);
-
-        // Disown the detached child
-        _children.erase(iter);
-
-        // Set the parent to nullptr.
-        detachedChild->_parent = nullptr;
-
-        // Invalidate all cached child geometry.
-        invalidateChildShape();
-
-        // Alert the node that its parent was set.
-        ElementEventArgs removedFromEvent(this);
-        ofNotifyEvent(detachedChild->removedFrom, removedFromEvent, this);
-
-        ElementEventArgs childRemovedEvent(detachedChild.get());
-        ofNotifyEvent(childRemoved, childRemovedEvent, this);
-
-        /// Alert the node's siblings that it no longer has a sibling.
-        for (auto& child : _children)
-        {
-            if (detachedChild.get() != child.get())
-            {
-                ElementEventArgs e(detachedChild.get());
-                ofNotifyEvent(child->siblingRemoved, e, this);
-            }
-        }
-
-        // Detatch child listeners.
-        ofRemoveListener(detachedChild.get()->move, this, &Element::_onChildMoved);
-        ofRemoveListener(detachedChild.get()->resize, this, &Element::_onChildResized);
-
-        // Return the detached child.
-        // If the return value is ignored, it will be deleted.
-
-        return detachedChild;
-    }
-
-    // Return nullptr because we couldn't find anything.
-    return nullptr;
-}
-
-
-void Element::moveToFront()
-{
-    if (_parent)
-    {
-        _parent->moveChildToFront(this);
-    }
-}
-
-
-void Element::moveForward()
-{
-    if (_parent)
-    {
-        _parent->moveChildForward(this);
-    }
-}
-
-
-void Element::moveToBack()
-{
-    if (_parent)
-    {
-        _parent->moveChildToBack(this);
-    }
-}
-
-
-void Element::moveBackward()
-{
-    if (_parent)
-    {
-        _parent->moveChildBackward(this);
-    }
-}
-
-
-void Element::moveChildToIndex(Element* element, std::size_t index)
-{
-    auto iter = findChild(element);
-
-    if (iter != _children.end())
-    {
-        std::size_t oldIndex = iter - _children.begin();
-        std::size_t newIndex = std::min(index, _children.size() - 1);
-
-        auto detachedChild = std::move(*iter);
-
-        _children.erase(iter);
-
-        _children.insert(_children.begin() + newIndex, std::move(detachedChild));
-
-        ElementOrderEventArgs e(element, oldIndex, newIndex);
-        ofNotifyEvent(reordered, e, element);
-        ofNotifyEvent(childReordered, e, this);
-    }
-    else
-    {
-        throw DOMException(DOMException::INVALID_STATE_ERROR + ": " + "Element::moveChildToFront: Element does not exist.");
-    }
-}
-
-
-void Element::moveChildToFront(Element* element)
-{
-    auto iter = findChild(element);
-
-    if (iter != _children.end())
-    {
-        std::size_t oldIndex = iter - _children.begin();
-        std::size_t newIndex = 0;
-
-        auto detachedChild = std::move(*iter);
-        _children.erase(iter);
-        _children.insert(_children.begin(), std::move(detachedChild));
-
-        ElementOrderEventArgs e(element, oldIndex, newIndex);
-        ofNotifyEvent(reordered, e, element);
-        ofNotifyEvent(childReordered, e, this);
-    }
-    else
-    {
-        throw DOMException(DOMException::INVALID_STATE_ERROR + ": " + "Element::moveChildToFront: Element does not exist.");
-    }
-}
-
-
-void Element::moveChildForward(Element* element)
-{
-    auto iter = findChild(element);
-
-    if (iter != _children.end())
-    {
-        // Make sure it's not already in the front.
-        if (iter != _children.begin())
-        {
-            std::size_t oldIndex = iter - _children.begin();
-            std::size_t newIndex = oldIndex - 1;
-
-            std::iter_swap(iter, iter - 1);
-
-            ElementOrderEventArgs e(element, oldIndex, newIndex);
-            ofNotifyEvent(reordered, e, element);
-            ofNotifyEvent(childReordered, e, this);
-        }
-    }
-    else
-    {
-        throw DOMException(DOMException::INVALID_STATE_ERROR + ": " + "Element::moveChildForward: Element does not exist.");
-    }
-}
-
-
-void Element::moveChildToBack(Element* element)
-{
-    auto iter = findChild(element);
-
-    if (iter != _children.end())
-    {
-        // Make sure it's not already in the back.
-        if (iter != _children.end() - 1)
-        {
-            std::size_t oldIndex = iter - _children.begin();
-            std::size_t newIndex = _children.size() - 1;
-
-            auto detachedChild = std::move(*iter);
-            _children.erase(iter);
-            _children.push_back(std::move(detachedChild));
-
-            ElementOrderEventArgs e(element, oldIndex, newIndex);
-            ofNotifyEvent(reordered, e, element);
-            ofNotifyEvent(childReordered, e, this);
-        }
-    }
-    else
-    {
-        throw DOMException(DOMException::INVALID_STATE_ERROR + ": " + "Element::moveChildToBack: Element does not exist.");
-    }
-}
-
-
-void Element::moveChildBackward(Element* element)
-{
-    auto iter = findChild(element);
-
-    if (iter != _children.end())
-    {
-        if (iter != _children.end() - 1)
-        {
-            std::size_t oldIndex = iter - _children.begin();
-            std::size_t newIndex = _children.size() + 1;
-
-            std::iter_swap(iter, iter + 1);
-
-            ElementOrderEventArgs e(element, oldIndex, newIndex);
-            ofNotifyEvent(reordered, e, element);
-            ofNotifyEvent(childReordered, e, this);
-        }
-    }
-}
-
-
-bool Element::isChild(Element* element) const
-{
-    return element
-        && element->_parent == this;
-}
-
-
-bool Element::isSibling(Element* element) const
-{
-    return element
-        && element->_parent
-        && element->_parent == _parent;
-}
-
-
-std::size_t Element::numSiblings() const
-{
-    // Don't count self.
-    return _parent ? (_parent->numChildren() - 1) : 0;
-}
-
-
-std::vector<Element*> Element::siblings()
-{
-    std::vector<Element*> results;
-
-    if (_parent)
-    {
-        results.reserve(_parent->_children.size());
-
-        for (auto& child : _parent->_children)
-        {
-            Element* sibling = child.get();
-
-            if (sibling)
-            {
-                if (this != sibling)
-                {
-                    results.push_back(sibling);
-                }
-            }
-            else
-            {
-                throw DOMException(DOMException::INVALID_STATE_ERROR + ": " + "Element::siblings(): Sibling element is nullptr.");
-            }
-        }
-    }
-
-    return results;
-}
-
-
-std::vector<const Element*> Element::siblings() const
-{
-    std::vector<const Element*> results;
-
-    if (_parent)
-    {
-        results.reserve(_parent->_children.size());
-
-        for (auto& child : _parent->_children)
-        {
-            const Element* sibling = child.get();
-
-            if (sibling)
-            {
-                if (this != sibling)
-                {
-                    results.push_back(sibling);
-                }
-            }
-            else
-            {
-                throw DOMException(DOMException::INVALID_STATE_ERROR + ": " + "Element::siblings(): Sibling element is nullptr.");
-            }
-        }
-    }
-
-    return results;
-}
-
-
-bool Element::isParent(const Element* element) const
-{
-    return element
-        && element == this->_parent;
-}
-
-
-std::size_t Element::numChildren() const
-{
-    return _children.size();
-}
-
-
-std::vector<Element*> Element::children()
-{
-    std::vector<Element*> results;
-
-    results.reserve(_children.size());
-
-    for (auto& child : _children)
-    {
-        Element* pChild = child.get();
-
-        if (pChild)
-        {
-            results.push_back(pChild);
-        }
-        else
-        {
-            throw DOMException(DOMException::INVALID_STATE_ERROR + ": " + "Element::children(): Child element is nullptr.");
-        }
-    }
-
-    return results;
-}
-
-
-std::vector<const Element*> Element::children() const
-{
-    std::vector<const Element*> results;
-
-    results.reserve(_children.size());
-
-    for (auto& child : _children)
-    {
-        const Element* pChild = child.get();
-
-        if (pChild)
-        {
-            results.push_back(pChild);
-        }
-        else
-        {
-            throw DOMException(DOMException::INVALID_STATE_ERROR + ": " + "Element::children(): Child element is nullptr.");
-        }
-    }
-
-    return results;
-}
-
-
-bool Element::hasParent() const
-{
-    return _parent;
-}
-
-
-const Element* Element::findFirstChildById(const std::string& id) const
-{
-    auto iter = std::find_if(_children.begin(),
-                             _children.end(),
-                             [&](const std::unique_ptr<Element>& child) {
-                                 return child->getId() == id;
-                             });
-
-    return (iter != _children.end()) ? iter->get() : nullptr;
-}
-
-
-Element* Element::findFirstChildById(const std::string& id)
-{
-    auto iter = std::find_if(_children.begin(),
-                             _children.end(),
-                             [&](const std::unique_ptr<Element>& child) {
-                                 return child->getId() == id;
-                             });
-
-    return (iter != _children.end()) ? iter->get() : nullptr;
-}
-
-
-std::vector<Element*> Element::findChildrenById(const std::string& id)
-{
-    std::vector<Element*> matches;
-
-    matches.reserve(_children.size());
-
-    for (auto& child : _children)
-    {
-        Element* pChild = child.get();
-
-        if (pChild)
-        {
-            if (child->getId() == id)
-            {
-                matches.push_back(child.get());
-            }
-        }
-        else
-        {
-            throw DOMException(DOMException::INVALID_STATE_ERROR + ": " + "Element::findChildrenById(): Child element is nullptr.");
-        }
-    }
-
-    return matches;
-}
-
-
-std::vector<const Element*> Element::findChildrenById(const std::string& id) const
-{
-    std::vector<const Element*> matches;
-
-    matches.reserve(_children.size());
-
-    for (auto& child : _children)
-    {
-        const Element* pChild = child.get();
-
-        if (pChild)
-        {
-            if (child->getId() == id)
-            {
-                matches.push_back(child.get());
-            }
-        }
-        else
-        {
-            throw DOMException(DOMException::INVALID_STATE_ERROR + ": " + "Element::findChildrenById(): Child element is nullptr.");
-        }
-    }
-
-    return matches;
-}
-
-
-std::vector<std::unique_ptr<Element>>::iterator Element::findChild(Element* element)
-{
-    return std::find_if(_children.begin(),
-                        _children.end(),
-                        [&](const std::unique_ptr<Element>& child) {
-                            return element == child.get();
-                        });
-}
-
-
-Element* Element::parent()
-{
-    return _parent;
-}
-
-
-const Element* Element::parent() const
-{
-    return _parent;
 }
 
 
@@ -711,7 +251,7 @@ void Element::setShape(const Shape& shape)
 
 Shape Element::getChildShape() const
 {
-    if (_childShapeInvalid)
+    if (_childInvalid)
     {
         _childShape = Shape(); // Clear.
 
@@ -740,12 +280,19 @@ Shape Element::getChildShape() const
             ++iter;
         }
 
-        _childShapeInvalid = false;
+        _childInvalid = false;
     }
 
     return _childShape;
 }
-
+void Element::invalidateChild() const{
+	Node<Element>::invalidateChild();
+	
+	if (_layout)
+	{
+		_layout->doLayout();
+	}
+}
 
 Shape Element::getTotalShape() const
 {
@@ -759,17 +306,17 @@ Shape Element::getTotalShape() const
     return totalShape;
 }
 
-
-std::string Element::getId() const
-{
-    return _id;
-}
-
-
-void Element::setId(const std::string& id)
-{
-    _id = id;
-}
+//
+//std::string Element::getId() const
+//{
+//    return _id;
+//}
+//
+//
+//void Element::setId(const std::string& id)
+//{
+//    _id = id;
+//}
 
 
 bool Element::hasAttribute(const std::string& key) const
@@ -1005,22 +552,6 @@ bool Element::isFocused() const
 }
 
 
-void Element::invalidateChildShape() const
-{
-    _childShapeInvalid = true;
-
-    if (_parent)
-    {
-        _parent->invalidateChildShape();
-    }
-
-    if (_layout)
-    {
-        _layout->doLayout();
-    }
-}
-
-
 bool Element::isPointerCaptured(std::size_t pointerId) const
 {
     return findCapturedPointerById(pointerId) != _capturedPointers.end();
@@ -1076,13 +607,13 @@ bool Element::getImplicitPointerCapture() const
 
 void Element::_onChildMoved(MoveEventArgs&)
 {
-    invalidateChildShape();
+    invalidateChild();
 }
 
 
 void Element::_onChildResized(ResizeEventArgs&)
 {
-    invalidateChildShape();
+    invalidateChild();
 }
 
 void Element::setDrawAsViewport(bool bViewport)
