@@ -15,7 +15,7 @@
 
 #include "LineaDeTiempo/Controller/TrackRegionController.h"
 //#include "LineaDeTiempo/BaseTypes/BaseTrackController.h"
-#include "LineaDeTiempo/View/TrackRegion.h"
+#include "LineaDeTiempo/View/TrackRegionView.h"
 #include "LineaDeTiempo/View/Track.h"
 #include "ofRange.h"
 
@@ -29,20 +29,11 @@ namespace LineaDeTiempo {
 class TracksController;
 
 
-class BaseTrackController
-:public BaseHasParent<TracksController>
-,public BaseViewController<BaseTrack>
-,public BaseHasName
-{
-public:
-	BaseTrackController(const std::string& name, const std::string& trackViewTypeName, TracksController* parent);
-	~BaseTrackController() = default;
-	
-};
-
+template< template<typename> class RegionControllerType, typename RegionViewType>
 class TrackController
 :public BaseTrackController
-,public AbstractHasRegions<TrackRegionController, std::true_type>
+,public AbstractHasRegions<RegionControllerType<RegionViewType>, std::true_type>
+,public BaseViewController<BaseTrack>
 {
 public:
 
@@ -54,7 +45,7 @@ public:
 
 	
 	
-	template< template<typename> class RegionControllerType, typename RegionViewType>
+
 	RegionControllerType<RegionViewType>* addRegion(std::string name, const ofRange64u & timeRange)
 	{
 		static_assert(std::is_base_of<TrackRegionController, RegionControllerType<RegionViewType>>::value or

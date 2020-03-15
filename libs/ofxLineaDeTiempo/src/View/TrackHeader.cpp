@@ -5,7 +5,7 @@
 //  Created by Roy Macdonald on 2/20/20.
 //
 
-#include "TrackHeader.h"
+#include "TrackHeaderView.h"
 #include "Track.h"
 #include "TracksPanel.h"
 

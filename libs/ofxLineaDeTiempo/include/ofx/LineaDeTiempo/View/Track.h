@@ -7,7 +7,7 @@
 #pragma once
 //#include "ofxMUI.h"
 
-#include "TrackRegion.h"
+#include "TrackRegionView.h"
 #include "BaseClasses.h"
 
 
@@ -15,20 +15,24 @@
 #include <map>
 #include "LineaDeTiempo/BaseTypes/AbstractHasRegions.h"
 #include "LineaDeTiempo/BaseTypes/BaseHasController.h"
+#include "LineaDeTiempo/BaseTypes/BaseHasHeader.h"
+
 
 namespace ofx {
 namespace LineaDeTiempo {
 
+
+class TrackHeaderView;
+
+
+template< template<typename> class RegionControllerType, typename RegionViewType>
 class TrackController;
-class TrackHeader;
-
-
 
 class BaseTrack
 :public DOM::Element
 ,public BaseHasLayout
 ,public AbstractHasRegions<TrackRegion, false_type>
-,public BaseHasController<TrackController>
+,public BaseHasHeader<TrackHeaderView>
 {
 public:
 	BaseTrack(const std::string& id , const std::string& viewTypeName, TrackController* controller );
@@ -49,10 +53,6 @@ public:
 	uint64_t  screenPositionToTime(float x) const;
 	
 	
-	void setHeader(TrackHeader* header);
-	
-	TrackHeader* getHeader();
-	const TrackHeader* getHeader() const;
 	
 	
 	void setColor(const ofColor& color);
@@ -85,7 +85,7 @@ protected:
 	
 	std::string _viewTypeName = "";
 	
-	TrackHeader* _header;
+
 	
 	float _heightFactor = 1;
 		
@@ -104,6 +104,7 @@ private:
 template<typename RegionType>
 class Track_
 : public BaseTrack
+, public BaseHasController<TrackController>
 
 {
 public:

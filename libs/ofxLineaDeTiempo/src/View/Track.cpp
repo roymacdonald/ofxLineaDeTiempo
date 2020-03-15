@@ -9,7 +9,7 @@
 #include "MUI/Utils.h"
 #include "MUI/Styles.h"
 //#include "KeyFrames.h"
-#include "TrackHeader.h"
+#include "TrackHeaderView.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -104,22 +104,6 @@ void BaseTrack::setColor(const ofColor& color)
 const ofColor& BaseTrack::getColor()
 {
 	return _color;
-}
-//---------------------------------------------------------------------------------------------------------------------
-void BaseTrack::setHeader(TrackHeader* header){
-	_header = header;
-}
-
-//---------------------------------------------------------------------------------------------------------------------
-TrackHeader* BaseTrack::getHeader()
-{
-	return _header;
-}
-
-//---------------------------------------------------------------------------------------------------------------------
-const TrackHeader*  BaseTrack::getHeader() const
-{
-	return _header;
 }
 
 //---------------------------------------------------------------------------------------------------------------------

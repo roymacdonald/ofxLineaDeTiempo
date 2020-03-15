@@ -1,5 +1,5 @@
 //
-//  TrackHeader.hpp
+//  TrackHeaderView.hpp
 //  tracksTest
 //
 //  Created by Roy Macdonald on 2/20/20.

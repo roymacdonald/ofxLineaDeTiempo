@@ -21,7 +21,7 @@ namespace LineaDeTiempo {
 
 
 class TracksController
-:public AbstractHasTracks<TrackController,true_type>
+:public AbstractHasTracks<BaseTrackController,true_type>
 ,public BaseViewController<TracksPanel>
 ,public BaseHasName
 {

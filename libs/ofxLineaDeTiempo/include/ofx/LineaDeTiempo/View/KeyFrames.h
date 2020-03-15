@@ -8,7 +8,7 @@
 #pragma once
 //#include "ofxMUI.h"
 #include "KeyFrame.h"
-#include "TrackRegion.h"
+#include "TrackRegionView.h"
 
 namespace ofx {
 namespace LineaDeTiempo {

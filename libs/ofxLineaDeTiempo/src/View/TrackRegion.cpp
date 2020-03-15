@@ -5,7 +5,7 @@
 //  Created by Roy Macdonald on 2/18/20.
 //
 
-#include "TrackRegion.h"
+#include "TrackRegionView.h"
 #include "Track.h"
 #include "LineaDeTiempo/Controller/TrackRegionController.h"
 

@@ -18,11 +18,7 @@ _parent(parent)
 {
 	
 }
-//template<typename ParentType>
-//BaseHasParent<ParentType>::~BaseHasParent()
-//{
-//	
-//}
+
 template<typename ParentType>
 void BaseHasParent<ParentType>::setParent(ParentType* parent)
 {

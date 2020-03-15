@@ -1,5 +1,5 @@
 //
-//  TrackRegion.h
+//  TrackRegionView.h
 //  keyframesTest
 //
 //  Created by Roy Macdonald on 2/18/20.
@@ -16,16 +16,23 @@ namespace ofx {
 namespace LineaDeTiempo {
 
 class BaseTrack;
+
+
+template<typename RegionViewType>
 class TrackRegionController;
 
+
+
+
+template<typename ViewType>
 class TrackRegion
 : public MUI::Widget
 , public BaseHasLayout
-, public BaseHasController<TrackRegionController>
+, public BaseHasController<TrackRegionController<ViewType>>
 {
 public:
 	
-	TrackRegion(const std::string& id, BaseTrack* parentTrack, const ofRange64u & timeRange, TrackRegionController *controller);
+	TrackRegion(const std::string& id, BaseTrack* parentTrack, const ofRange64u & timeRange, TrackRegionController<ViewType> *controller);
 	
 	virtual ~TrackRegion(){}
 	
