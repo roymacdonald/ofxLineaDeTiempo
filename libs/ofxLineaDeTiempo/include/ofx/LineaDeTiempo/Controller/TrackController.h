@@ -8,85 +8,67 @@
 #pragma once
 
 #include "LineaDeTiempo/BaseTypes/BaseViewController.h"
-#include "LineaDeTiempo/BaseTypes/BaseHasCollection.h"
-#include "LineaDeTiempo/BaseTypes/BaseHasParent.h"
-#include "LineaDeTiempo/BaseTypes/BaseHasName.h"
-#include "LineaDeTiempo/BaseTypes/AbstractHasRegions.h"
+#include "LineaDeTiempo/BaseTypes/BaseController.h"
 
-#include "LineaDeTiempo/Controller/TrackRegionController.h"
-//#include "LineaDeTiempo/BaseTypes/BaseTrackController.h"
-#include "LineaDeTiempo/View/TrackRegionView.h"
-#include "LineaDeTiempo/View/Track.h"
+#include "LineaDeTiempo/BaseTypes/BaseHasRegions.h"
+#include "LineaDeTiempo/Controller/RegionController.h"
+
+#include "LineaDeTiempo/View/TrackView.h"
 #include "ofRange.h"
 
-#include <utility>
-#include <type_traits>
+//#include <utility>
+//#include <type_traits>
 
 namespace ofx {
 namespace LineaDeTiempo {
 
 //parent type forward declaration
-class TracksController;
+class TrackGroupController;
 
 
-template< template<typename> class RegionControllerType, typename RegionViewType>
+//template< template<typename> class RegionControllerType, typename RegionViewType>
 class TrackController
-:public BaseTrackController
-,public AbstractHasRegions<RegionControllerType<RegionViewType>, std::true_type>
-,public BaseViewController<BaseTrack>
+: public BaseController
+, public BaseHasRegions<RegionController>
+//, public BaseViewController<TrackView>
+
 {
 public:
-
-//	typedef RegionViewType regionViewType;
 	
-	TrackController(const std::string& name, const std::string& trackViewTypeName, TracksController* parent);
+	//	typedef RegionViewType regionViewType;
+	
+	TrackController(const std::string& name, TrackGroupController* parent);
 	
 	virtual ~TrackController() = default;
-
 	
 	
-
-	RegionControllerType<RegionViewType>* addRegion(std::string name, const ofRange64u & timeRange)
-	{
-		static_assert(std::is_base_of<TrackRegionController, RegionControllerType<RegionViewType>>::value or
-					  std::is_base_of<TrackRegion, RegionViewType>::value,
-					  "TracksController::addTrack failed. TrackControllerType and TrackViewType must inherit from ofx::LineaDeTiempo::TrackController and ofx::LineaDeTiempo::BaseTrack, respectively");
-		auto uniqueName = getUniqueName(name, "Region");
-	//	auto t = _addTrack<TrackControllerType>(uniqueName, this);
-		auto t = addElement<RegionControllerType<RegionViewType>>(uniqueName, this);
-
-		if(getView()!=nullptr)
-		{
-			t->setView(getView()->addRegion<RegionViewType>(uniqueName, timeRange, this));
-		}
-
-		return t;
-	}
-
-	template< template<typename> class RegionControllerType, typename RegionViewType>
-	RegionControllerType<RegionViewType>* addRegion( const ofRange64u & timeRange)
-	{
-		return this->addRegion<RegionControllerType<RegionViewType>, RegionViewType>("", timeRange);
-	}
+	template<typename NewRegionControllerType>//, typename NewRegionViewType>
+	NewRegionControllerType * addRegion( const std::string& regionName, const ofRange64u& timeRange);
+	
+	virtual bool removeRegion(RegionController* track) override;
+	
+//	using BaseViewController<TrackView>::getView;
+//
+//	using BaseViewController<TrackView>::setView;
+//
+	
+	using BaseHasRegions<RegionController>::removeRegion;
+	
+	using BaseHasRegions<RegionController>::getRegion;
+	
+	using BaseHasRegions<RegionController>::getRegions;
+	
+	using BaseHasRegions<RegionController>::getNumRegions;
 	
 	
-	virtual bool removeRegion(TrackRegionController* region) override
-	{
-		if(region == nullptr) return false;
-
-
-		if(getView()!=nullptr)
-		{
-			getView()->removeRegion(region->getView());
-
-		}
-
-		removeElement(region);
-
-	}
+	TrackGroupController * parentGroup();
 	
+	const TrackGroupController * parentGroup() const;
 	
 protected:
+	
+	TrackGroupController * _parentGroup = nullptr;
+	
 	
 	
 	

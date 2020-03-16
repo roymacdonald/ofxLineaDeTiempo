@@ -11,7 +11,7 @@
 //#include <type_traits>
 //#include <utility>
 //#include <ctime>
-#include "ofEvents.h"
+#include "ofEvents.h" 
 //#include "ofx/PointerEvents.h"
 //#include "ofx/DOM/Exceptions.h"
 //#include "ofx/DOM/Types.h"
@@ -42,6 +42,7 @@ public:
 protected:
     /// \brief A pointer to the node or nullptr if not available.
     NodeType* _node = nullptr;
+	
 
 };
 
@@ -49,6 +50,8 @@ template<typename NodeType>
 class NodeOrderEventArgs_: public NodeEventArgs_<NodeType>
 {
 public:
+	
+	
     /// \brief Create an NodeOrderEventArgs.
     /// \param node The node associated with this Node order event.
     /// \param oldIndex old index before the Node order event.
@@ -86,6 +89,18 @@ protected:
     std::size_t _newIndex = 0;
 
 };
+
+template<typename NodeType>
+NodeType* NodeEventArgs_<NodeType>::node()
+{
+    return _node;
+}
+
+template<typename NodeType>
+const NodeType* NodeEventArgs_<NodeType>::node() const
+{
+    return _node;
+}
 
 
 } } // namespace ofx::DOM

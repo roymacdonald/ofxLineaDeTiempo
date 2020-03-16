@@ -5,18 +5,18 @@
 //  Created by Roy Macdonald on 3/14/20.
 //
 //
-//#include "LineaDeTiempo/Controller/TrackGroupController.h"
+#include "LineaDeTiempo/Controller/TrackGroupController.h"
 //#include "LineaDeTiempo/Controller/TrackController.h"
 //
-//namespace ofx {
-//namespace LineaDeTiempo {
+namespace ofx {
+namespace LineaDeTiempo {
 
 
 //template<typename TrackControllerType, typename TrackGroupViewType>
 //
 //TrackGroupController<TrackControllerType, TrackGroupViewType>::TrackGroupController(const std::string& name)
 //
-//:AbstractHasTracks<TrackControllerType,true_type>()
+//:BaseHasTracks<TrackControllerType,true_type>()
 //,BaseViewController<TrackGroupViewType>()
 //,BaseHasName(name)
 //{
@@ -61,7 +61,6 @@
 //	removeElement(track);
 //
 //}
-
 
 
 

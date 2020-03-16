@@ -22,21 +22,33 @@ namespace ofx {
 namespace DOM {
 
 
-//class Document;
-//class AbstractLayout;
+class Element;
 
 
 /// \brief A class representing a node object,
 /// which can have children that inherit from Node
+
+
 
 template<typename NodeType>
 class Node
 {
 public:
 	
-    Node(const std::string& id);
+	Node(const std::string& id, NodeType* parent)
+	:_id(id)
+	,_parent(parent)
+	{
+		
+	}
+	
+    Node(const std::string& id)
+	:_id(id)
+	{
+		
+	}
     /// \brief Destroy the Node.
-    virtual ~Node();
+	virtual ~Node() = default;
 
     /// \brief Take ownership of the passed std::unique_ptr<Node>.
     ///
@@ -236,8 +248,19 @@ public:
     /// \returns a pointer to the parent or a nullptr.
     const NodeType* parent() const;
 
+    /// \brief Get this Node's child by its index position.
+    /// \param index The index of the child Node to get.
+    /// \returns a pointer to the child at index or nullptr if no such child exists.
+	NodeType* getChildByIndex( std::size_t index);
+
+    /// \brief Get this Node's child by its index position.
+    /// \param index The index of the child Node to get.
+    /// \returns a pointer to the child at index or nullptr if no such child exists.
+    const NodeType* getChildByIndex( std::size_t index) const;
+	
     
 	const std::string&  getId() ;
+	
     const std::string&  getId() const;
 
     /// \brief Set the id of the Node.
@@ -263,7 +286,23 @@ public:
 
 
     /// \brief Called internally to invalidate the child geometry tree.
-    virtual void invalidateChild() const;
+    virtual void invalidateChild() const
+	{
+		_childInvalid = true;
+
+		 if (_parent)
+		 {
+			 _parent->invalidateChild();
+		 }
+
+	}
+	
+	///\brief return this object downcasted to its inheritor class
+	const NodeType* cast() const;
+	
+	///\brief return this object downcasted to its inheritor class
+	NodeType* cast();
+	
 
 	
 protected:
@@ -296,6 +335,8 @@ private:
     /// This variable usually set by callbacks from the child elements.
     mutable bool _childInvalid = true;
 	
+	/// \brief The Element class has access to all private variables.
+    friend class Element;
 };
 
 template<typename NodeType>
@@ -317,7 +358,7 @@ ChildType* Node<NodeType>::addChild(std::unique_ptr<ChildType> node)
         ChildType* pNode = node.get();
 
         // Assign the parent to the node via the raw pointer.
-        pNode->_parent = this;
+        pNode->_parent = cast();
 
         // Take ownership of the node.
         _children.push_back(std::move(node));
@@ -326,14 +367,14 @@ ChildType* Node<NodeType>::addChild(std::unique_ptr<ChildType> node)
         invalidateChild();
 
         // Alert the node that its parent was set.
-        NodeEventArgs addedEvent(this);
+        NodeEventArgs addedEvent(cast());
         ofNotifyEvent(pNode->addedTo, addedEvent, this);
 
         NodeEventArgs childAddedEvent(pNode);
         ofNotifyEvent(childAdded, childAddedEvent, this);
 
 //        // Attach child listeners.
-       ofAddListener(pNode->move, this, &Node<NodeType>::_onChildMoved);
+//       ofAddListener(pNode->move, this, &Node<NodeType>::_onChildMoved);
 //        ofAddListener(pNode->resize, this, &Node<NodeType>::_onChildResized);
 
         /// Alert the node's siblings that they have a new sibling.
@@ -444,5 +485,38 @@ std::vector<const ChildType*> Node<NodeType>::children() const
     return results;
 }
 
+
+template<typename NodeType>
+NodeType* Node<NodeType>::parent()
+{
+    return _parent;
+}
+
+
+template<typename NodeType>
+const NodeType* Node<NodeType>::parent() const
+{
+    return _parent;
+}
+
+template<typename NodeType>
+const std::string& Node<NodeType>::getId()
+{
+    return _id;
+}
+
+
+template<typename NodeType>
+const std::string& Node<NodeType>::getId() const
+{
+    return _id;
+}
+
+
+template<typename NodeType>
+void Node<NodeType>::setId(const std::string& id)
+{
+    _id = id;
+}
 
 } } // namespace ofx::DOM

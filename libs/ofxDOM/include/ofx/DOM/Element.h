@@ -11,7 +11,7 @@
 #include <unordered_set>
 #include "ofx/PointerEvents.h"
 #include "ofx/DOM/CapturedPointer.h"
-#include "ofx/DOM/ElementEvents.h"
+#include "ofx/DOM/Events/ElementEvents.h"
 
 #include "ofx/DOM/Exceptions.h"
 #include "ofx/DOM/Layout.h"
@@ -429,7 +429,7 @@ public:
 	/// Called internally once the Element has been drawn on each new frame.
 	/// override it on a derived class if you want customize how the element gets drawn
 	/// The Element automatically listens to draw. No need to call it manually.
-	virtual void onDraw()
+	virtual void onDraw() const
 	{
 		
 	}
@@ -442,6 +442,8 @@ public:
 		
 	}
 	
+	virtual void invalidateChild() const override;
+
 	
 protected:
     /// \brief Setup method called by parent Element.
@@ -519,6 +521,7 @@ protected:
 	virtual void _restoreTransform();
 	
 	
+	
 private:
     /// \brief Not construction-copyable.
     Element(const Element& other) = delete;
@@ -532,7 +535,9 @@ private:
     /// \brief A callback for child Elements to notify their parent size changes.
     void _onChildResized(ResizeEventArgs&);
 
-
+	void _onChildAdded(NodeEventArgs& child);
+	void _onChildRemoved(NodeEventArgs& child);
+	
     /// \brief The basic shape of this element.
     Shape _shape;
 
@@ -582,10 +587,7 @@ private:
 	/// \brief A vector to Elements.
     std::vector<std::unique_ptr<Element>> _children;
 
-	
-	virtual void invalidateChild() const override;
-
-	
+		
 	
     /// \brief The Layout class has access to all private variables.
     friend class Layout;
@@ -593,6 +595,9 @@ private:
     /// \brief The Document class has access to all private variables.
     friend class Document;
 	
+	friend class Node;
+	
+	ofEventListeners addRemoveChildListners;
 	
 };
 

@@ -7,7 +7,7 @@
 
 #include "ofx/DOM/Events/NodeEvents.h"
 #include "ofx/DOM/Node.h"
-
+#include <type_traits>
 
 namespace ofx {
 namespace DOM {
@@ -16,7 +16,7 @@ template<typename NodeType>
 NodeEventArgs_<NodeType>::NodeEventArgs_(NodeType* node):
     _node(node)
 {
-//	static_assert(std::is_base_of<Node, >, <#message#>)
+	static_assert(std::is_base_of<Node<NodeType>, NodeType>::value, "NodeEventArgs_ NodeType must be a Node or inherit from it.");
 	
 }
 
@@ -25,17 +25,17 @@ NodeEventArgs_<NodeType>::~NodeEventArgs_()
 {
 }
 
-template<typename NodeType>
-NodeType* NodeEventArgs_<NodeType>::node()
-{
-    return _node;
-}
-
-template<typename NodeType>
-const NodeType* NodeEventArgs_<NodeType>::node() const
-{
-    return _node;
-}
+//template<typename NodeType>
+//NodeType* NodeEventArgs_<NodeType>::node()
+//{
+//    return _node;
+//}
+//
+//template<typename NodeType>
+//const NodeType* NodeEventArgs_<NodeType>::node() const
+//{
+//    return _node;
+//}
 
 template<typename NodeType>
 NodeOrderEventArgs_<NodeType>::NodeOrderEventArgs_(NodeType* node,
@@ -45,11 +45,13 @@ NodeOrderEventArgs_<NodeType>::NodeOrderEventArgs_(NodeType* node,
     _oldIndex(oldIndex),
     _newIndex(newIndex)
 {
+	static_assert(std::is_base_of<Node<NodeType>, NodeType>::value, "NodeOrderEventArgs_ NodeType must be a Node or inherit from it.");
 }
 
 template<typename NodeType>
 NodeOrderEventArgs_<NodeType>::~NodeOrderEventArgs_()
 {
+	
 }
 
 template<typename NodeType>
@@ -85,7 +87,7 @@ bool NodeOrderEventArgs_<NodeType>::isAtFront() const
 template<typename NodeType>
 bool NodeOrderEventArgs_<NodeType>::isAtBack() const
 {
-    return _node->numSiblings() == _newIndex;
+    return NodeEventArgs_<NodeType>::node()->numSiblings() == _newIndex;
 }
 
 

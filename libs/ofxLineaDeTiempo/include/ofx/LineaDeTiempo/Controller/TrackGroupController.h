@@ -6,82 +6,131 @@
 //
 
 #pragma once
-#include "LineaDeTiempo/BaseTypes/BaseViewController.h"
-#include "LineaDeTiempo/BaseTypes/AbstractHasTracks.h"
-#include "LineaDeTiempo/BaseTypes/BaseHasName.h"
-#include "LineaDeTiempo/"
-
-
-#include "LineaDeTiempo/View/TrackGroupView.h"
+#include "LineaDeTiempo/BaseTypes/BaseController.h"
+//#include "LineaDeTiempo/BaseTypes/BaseViewController.h"
+#include "LineaDeTiempo/BaseTypes/BaseHasTracks.h"
+#include "LineaDeTiempo/BaseTypes/BaseHasGroups.h"
+//#include "LineaDeTiempo/BaseTypes/BaseHasName.h"
+//#include "LineaDeTiempo/"
+//#include "LineaDeTiempo/View/TrackGroupView.h"
+#include "LineaDeTiempo/View/TrackView.h"
+#include "LineaDeTiempo/Controller/TrackController.h"
 
 
 namespace ofx {
 namespace LineaDeTiempo {
 
 
-template<TrackControllerType, typename TrackGroupViewType>
-
+//template <typename TrackGroupViewType>
 class TrackGroupController
-
-:public AbstractHasTracks<TrackControllerType,true_type>
-,public BaseViewController<TrackGroupViewType>
-,public BaseHasName
+:public BaseController
+,public BaseHasTracks<TrackController>
+,public BaseHasGroups<TrackGroupController>//<TrackGroupViewType>>
+//,public BaseViewController<TrackGroupView>
+//,public BaseHasName
 {
 public:
 
-	typedef TrackGroupViewType trackGroupViewType;
-	typedef TrackControllerType trackControllerType;
 	
-	
-	
-	TrackGroupController(const std::string& name)
-	:AbstractHasTracks<TrackControllerType,true_type>()
-	,BaseViewController<TrackGroupViewType>()
-	,BaseHasName(name)
+	TrackGroupController(const std::string& name, TrackGroupController * parent)
+	:BaseController(name, parent)
+	,_parentGroup(parent)
+	,BaseHasTracks<TrackController>()
+	,BaseHasGroups<TrackGroupController>()
+//	,BaseViewController<TrackGroupView>()
 	{
 	}
 	
 	virtual ~TrackGroupController() = default;
 	
-	template<template <typename> class NewTrackControllerType, typename NewTrackViewType>
-	NewTrackControllerType<NewTrackGroupViewType> * addTrack( const std::string& trackName = "", bool bCreateFullLengthTrack = true)
+	template<typename NewTrackControllerType>//, typename NewTrackViewType>
+	NewTrackControllerType * addTrack( const std::string& trackName = "")
 	{
-		static_assert(std::is_base_of<TrackControllerType, NewTrackControllerType<NewTrackViewType> >::value,
-						  "TrackGroupController::addTrack failed. NewTrackControllerType must be equal or derived from ofx::LineaDeTiempo::TrackController");
-//		static_assert(std::is_base_of<TrackGroupViewType, NewTrackGroupViewType>::value,
-//					  "TrackGroupController::addTrack failed. TrackControllerType and TrackViewType must inherit from ofx::LineaDeTiempo::TrackController and ofx::LineaDeTiempo::BaseTrack, respectively");
+		
+		auto uniqueName = _tracksCollection.makeUniqueName(trackName, "Track");
+		
+		return BaseController::_add
+			<
+				 NewTrackControllerType
+				
+				,TrackController
+			>
+			( _tracksCollection, uniqueName, this);
+		
+		
+	}
+	
+	virtual bool removeTrack(TrackController* track) override
+	{
+		
+		
+		return BaseController::_remove<TrackController>( track,   _tracksCollection);
+		
+	}
+	
+	
+	template<typename NewGroupControllerType>//, typename NewGroupViewType>
+	NewGroupControllerType * addGroup( const std::string& groupName = "")
+	{
+		auto uniqueName = _groupsCollection.makeUniqueName(groupName, "Group");
+		
+		
+		return BaseController::_add
+			<
+				 NewGroupControllerType
+//				,NewGroupViewType
+				,TrackGroupController
+			>
+		
+		( _groupsCollection,  uniqueName, this);
+		
+	}
+	
+	virtual bool removeGroup(TrackGroupController* group) override
+	{
+		
+//		return _remove <TrackGroupController<TrackGroupViewType>>( group,   _groupsCollection);
+		return BaseController::_remove( group,   _groupsCollection);
+	}
+	
+	
+//	using BaseViewController<TrackGroupView>::getView;
 //
-		auto uniqueName = getUniqueName(trackName, "Track");
-	//	auto t = _addTrack<TrackControllerType>(uniqueName, this);
-		auto t = addElement<NewTrackControllerType<NewTrackGroupViewType> >(uniqueName, this);
-
-		if(BaseViewController<TrackGroupViewType>::getView()!=nullptr)
-		{
-			t->generateView(getView(), uniqueName, bCreateFullLengthTrack);
-	//		t->setView(getView()->addTrack<TrackViewType>(uniqueName, bCreateFullLengthTrack, this));
-		}
+//	using BaseViewController<TrackGroupView>::setView;
+//
 		
-		return t;
-	}
+	using BaseHasTracks<TrackController>::removeTrack;
 
-	// this is overriding a pure virtual function
-	virtual bool removeTrack(TrackControllerType* track) override
+	using BaseHasTracks<TrackController>::getTrack;
+
+	using BaseHasTracks<TrackController>::getTracks;
+
+	using BaseHasTracks<TrackController>::getNumTracks;
+	
+	
+	using BaseHasGroups<TrackGroupController>::removeGroup;
+
+	using BaseHasGroups<TrackGroupController>::getGroup;
+	 
+	using BaseHasGroups<TrackGroupController>::getGroups;
+
+	using BaseHasGroups<TrackGroupController>::getNumGroups;
+
+
+	
+	TrackGroupController * parentGroup()
 	{
-		if(track == nullptr) return false;
-		
-		if(BaseViewController<TrackGroupViewType>::getView()!=nullptr)
-		{
-			track->removeView();
-		}
-		
-		removeElement(track);
-		
+		return _parentGroup;
 	}
-
+	
+	const TrackGroupController * parentGroup() const
+	{
+		return _parentGroup;
+	}
 	
 protected:
 	
-	
+	TrackGroupController * _parentGroup = nullptr;
 	
 	
 private:

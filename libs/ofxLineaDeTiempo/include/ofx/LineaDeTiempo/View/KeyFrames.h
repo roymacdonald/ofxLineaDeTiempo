@@ -7,16 +7,18 @@
 
 #pragma once
 //#include "ofxMUI.h"
-#include "KeyFrame.h"
-#include "TrackRegionView.h"
+#include "LineaDeTiempo/View/KeyFrame.h"
+#include "LineaDeTiempo/View/RegionView.h"
+
+class TrackView;
 
 namespace ofx {
 namespace LineaDeTiempo {
 
-class KeyFrames: public TrackRegion{
+class KeyFrames: public RegionView{
 public:
-	KeyFrames(const std::string& id, BaseTrack* parentTrack, const ofRange64u & timeRange, TrackRegionController *controller);
-	virtual ~KeyFrames(){}
+	KeyFrames (TrackView* parentTrack, RegionController *controller);
+	virtual ~KeyFrames() = default;
 		
 	void selectKeyframe(KeyFrame* k);
 	void unselectKeyframe(KeyFrame* k);
@@ -42,7 +44,7 @@ public:
 protected:
 	virtual void _onDragging(const DOM::CapturedPointer& pointer) override;
 	virtual void _onPointerEvent(DOM::PointerUIEventArgs& e) override;
-//
+
 	void _setSelectedKeyframesFromRect(const ofRectangle& r, bool bAddToCurrentSelection);
 	
 	void _onPointerDown(DOM::PointerUIEventArgs& e);

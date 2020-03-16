@@ -5,18 +5,19 @@
 //  Created by Roy Macdonald on 2/14/20.
 //
 
-#include "KeyFrames.h"
+#include "LineaDeTiempo/View/KeyFrames.h"
 #include "ofRectangleHelper.h"
-#include "Track.h"
 #include "ofEvent.h"
-#include "LineaDeTiempo/Controller/TrackRegionController.h"
+
+#include "LineaDeTiempo/View/TrackView.h"
+#include "LineaDeTiempo/Controller/RegionController.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
 
 //---------------------------------------------------------------------------------------------------------------------
-KeyFrames::KeyFrames(const std::string& id, BaseTrack* parentTrack, const ofRange64u & timeRange, TrackRegionController *controller):
-TrackRegion(id, parentTrack, timeRange, controller)
+KeyFrames::KeyFrames(TrackView* parentTrack, RegionController *controller)
+:RegionView(parentTrack, controller)
 {
 	setDraggable(true);
 //	setMoveToFrontOnCapture(false);
@@ -79,7 +80,7 @@ void KeyFrames::_onDragging(const DOM::CapturedPointer& pointer)
 //---------------------------------------------------------------------------------------------------------------------
 void KeyFrames::_onPointerEvent(DOM::PointerUIEventArgs& e)
 {
-	TrackRegion::_onPointerEvent(e);
+	RegionView::_onPointerEvent(e);
 	if (e.type() == PointerEventArgs::POINTER_DOWN)
 	{
 		_onPointerDown(e);
@@ -225,7 +226,7 @@ bool KeyFrames::removeKeyframe(KeyFrame* k){
 //---------------------------------------------------------------------------------------------------------------------
 void KeyFrames::updateLayout()
 {
-	TrackRegion::updateLayout();
+	RegionView::updateLayout();
 	
 	for(auto k: keyFrames){
 		if(k)k->_updatePosition();

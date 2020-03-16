@@ -10,7 +10,8 @@
 
 
 #include "LineaDeTiempo/Controller/TimeControl.h"
-#include "LineaDeTiempo/Controller/TracksController.h"
+//#include "LineaDeTiempo/Controller/TracksController.h"
+#include "LineaDeTiempo/Controller/TracksPanelController.h"
 
 #include "LineaDeTiempo/View/TrackHeaderView.h"
 
@@ -18,9 +19,9 @@
 namespace ofx {
 namespace LineaDeTiempo {
 //using namespace MUI;
-TracksPanel::TracksPanel(const std::string& id, const ofRectangle& rect, TracksController* controller)//,  std::shared_ptr<LineaDeTiempo::TimeControl> timeControl ):
-:AbstractHasTracks<BaseTrack,false_type>()
-,BaseHasController<TracksController>(controller)
+TracksPanel::TracksPanel(const std::string& id, const ofRectangle& rect, TracksPanelController* controller)//,  std::shared_ptr<LineaDeTiempo::TimeControl> timeControl ):
+:BaseHasTracks<BaseTrack>()
+,BaseHasController<TracksPanelController>(controller)
 ,MUI::Widget(id, rect)
 ,BaseHasLayout()
 {

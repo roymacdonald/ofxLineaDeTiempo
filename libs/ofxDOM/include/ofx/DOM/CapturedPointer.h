@@ -9,11 +9,13 @@
 
 
 #include "ofx/DOM/Events/DOMEvents.h"
-#include "ofx/DOM/Element.h"
+
 
 namespace ofx {
 namespace DOM {
 
+
+class Element;
 
 /// \brief A class for keeping track of captured pointers.
 class CapturedPointer

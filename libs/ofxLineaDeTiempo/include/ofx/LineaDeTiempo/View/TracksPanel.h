@@ -8,26 +8,29 @@
 #pragma once
 #include "MUI/ScrollablePanel.h"
 #include "MUI/BaseClasses.h"
-//#include "LineaDeTiempo/BaseTypes/AbstractHasTracks.h"
-#include "LineaDeTiempo/BaseTypes/AbstractHasTracks.h"
+//#include "LineaDeTiempo/BaseTypes/BaseHasTracks.h"
+#include "LineaDeTiempo/BaseTypes/BaseHasTracks.h"
 
 #include "LineaDeTiempo/View/Playhead.h"
 #include "LineaDeTiempo/View/Tracks.h"
-#include "LineaDeTiempo/View/Track.h"
+#include "LineaDeTiempo/View/TrackView.h"
 #include "LineaDeTiempo/View/KeyFrames.h"
+
 #include "LineaDeTiempo/BaseTypes/BaseHasController.h"
+
+#include "LineaDeTiempo/Controller/TracksPanelController.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
 
-typedef Track_<KeyFrames> KeyFramesTrack;
+
 
 class TracksController;
 
 
 class TracksPanel
-: public AbstractHasTracks<BaseTrack,false_type>
-, public BaseHasController<TracksController>
+: public BaseHasTracks<BaseTrack>
+, public BaseHasController<TracksPanelController>
 , public MUI::Widget
 , public BaseHasLayout
 

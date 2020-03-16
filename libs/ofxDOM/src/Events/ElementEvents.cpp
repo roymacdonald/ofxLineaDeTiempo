@@ -5,7 +5,7 @@
 //
 
 
-#include "ofx/DOM/ElementEvents.h"
+#include "ofx/DOM/Events/ElementEvents.h"
 #include "ofx/DOM/Element.h"
 
 

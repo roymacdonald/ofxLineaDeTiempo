@@ -6,35 +6,61 @@
 //
 
 #include "LineaDeTiempo/Controller/TrackController.h"
-#include "LineaDeTiempo/Controller/TracksController.h"
+#include "LineaDeTiempo/Controller/TrackGroupController.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
 
 
-BaseTrackController::BaseTrackController(const std::string& name, const std::string& trackViewTypeName, TracksController* parent)
-:BaseHasParent<TracksController>(parent)
-,BaseViewController<BaseTrack>()
-,BaseHasName(name)
+
+TrackController::TrackController(const std::string& name, TrackGroupController* parent)
+	: BaseController(name, parent)
+	, _parentGroup(parent)
+	, BaseHasRegions<RegionController>()
+	, BaseViewController<TrackView>()
 {
 	
 }
-
-
-//template<typename RegionViewType, typename RegionControllerType>
-TrackController::TrackController(const std::string& name, const std::string& trackViewTypeName, TracksController* parent)
-:BaseTrackController(name, trackViewTypeName, parent)
-,AbstractHasRegions<TrackRegionController, std::true_type>()
-{
 	
-}
-
-//template<typename RegionViewType, typename RegionControllerType>
-//TrackController_<RegionViewType, RegionControllerType>::~TrackController_()
-//{
-//	
-//}
-
+	
+	
+	template<typename NewRegionControllerType>
+	NewRegionControllerType * TrackController::addRegion( const std::string& regionName, const ofRange64u& timeRange)
+	{
+		
+		auto uniqueName = _regionsCollection.makeUniqueName(regionName, "Region");
+		
+		return BaseController::_add
+		<
+		NewRegionControllerType
+//		,NewRegionViewType
+		,RegionController
+		>
+		( _regionsCollection, uniqueName, timeRange, this);
+		
+		
+	}
+	
+	bool TrackController::removeRegion(RegionController* region)
+	{
+		
+		
+		return BaseController::_remove<RegionController>( region,   _regionsCollection);
+		
+	}
+	
+	
+	
+	TrackGroupController * TrackController::parentGroup()
+	{
+		return _parentGroup;
+	}
+	
+	const TrackGroupController * TrackController::parentGroup() const
+	{
+		return _parentGroup;
+	}
+	
 
 
 } } // ofx::LineaDeTiempo

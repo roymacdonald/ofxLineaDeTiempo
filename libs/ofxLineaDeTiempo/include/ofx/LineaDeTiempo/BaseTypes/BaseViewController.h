@@ -49,7 +49,7 @@ protected:
 	DOM::Element * _parentView = nullptr;
 	ViewType* _view = nullptr;
 	
-	std::string _trackViewTypeName;
+//	std::string _trackViewTypeName;
 
 private:
 

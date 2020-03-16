@@ -38,13 +38,18 @@ Element::Element(const std::string& id,
     Node<Element>(id),
     _shape(x, y, width, height)
 {
+	
+	addRemoveChildListners.push(childAdded.newListener(this, &Element::_onChildAdded));
+	addRemoveChildListners.push(childRemoved.newListener(this, &Element::_onChildRemoved));
+
+
+	
 }
 
 
 Element::~Element()
 {
 }
-
 
 Document* Element::document()
 {
@@ -604,6 +609,21 @@ bool Element::getImplicitPointerCapture() const
     return _implicitPointerCapture;
 }
 
+void Element::_onChildAdded(NodeEventArgs& child)
+{
+
+	ofAddListener(child.node()->move, this, &Element::_onChildMoved);
+	ofAddListener(child.node()->resize, this, &Element::_onChildResized);
+	
+	
+}
+
+void Element::_onChildRemoved(NodeEventArgs& child)
+{
+	ofRemoveListener(child.node()->move, this, &Element::_onChildMoved);
+	ofRemoveListener(child.node()->resize, this, &Element::_onChildResized);
+
+}
 
 void Element::_onChildMoved(MoveEventArgs&)
 {

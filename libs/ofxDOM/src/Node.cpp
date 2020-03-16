@@ -7,35 +7,29 @@
 
 
 #include "ofx/DOM/Node.h"
-//#include "ofGraphics.h"
+#include "ofx/DOM/Element.h"
 #include <algorithm>
 
 
 namespace ofx {
 namespace DOM {
 
-template<typename NodeType>
-Node<NodeType>::Node(const std::string& id)
-:_id(id)
-{}
+//template<typename NodeType>
+//Node<NodeType>::Node(const std::string& id)
+//
+//{}
 
-template<typename NodeType>
-Node<NodeType>::~Node()
-{
-}
+//template<typename NodeType>
+//Node<NodeType>::~Node()
+//{
+//}
 
-template<typename NodeType>
-void Node<NodeType>::invalidateChild() const
-{
-    _childInvalid = true;
-
-    if (_parent)
-    {
-        _parent->invalidateChild();
-    }
-
-
-}
+//template<typename NodeType>
+//void Node<NodeType>::invalidateChild() const
+//{
+// 
+//
+//}
 
 
 template<typename NodeType>
@@ -77,8 +71,8 @@ std::unique_ptr<NodeType> Node<NodeType>::removeChild(NodeType* element)
         
         // Detatch child listeners.
         
-        ofRemoveListener(detachedChild.get()->move, this, &Node<NodeType>::_onChildMoved);
-        ofRemoveListener(detachedChild.get()->resize, this, &Node<NodeType>::_onChildResized);
+//        ofRemoveListener(detachedChild.get()->move, this, &Node<NodeType>::_onChildMoved);
+//        ofRemoveListener(detachedChild.get()->resize, this, &Node<NodeType>::_onChildResized);
 
         // Return the detached child.
         // If the return value is ignored, it will be deleted.
@@ -285,6 +279,30 @@ std::size_t Node<NodeType>::numSiblings() const
     return _parent ? (_parent->numChildren() - 1) : 0;
 }
 
+template<typename NodeType>
+const NodeType* Node<NodeType>::cast() const
+{
+	return static_cast<NodeType*>(this);
+}
+
+template<typename NodeType>
+NodeType* Node<NodeType>::cast()
+{
+	return static_cast<NodeType*>(this);
+}
+template<typename NodeType>
+NodeType* Node<NodeType>::getChildByIndex( std::size_t index)
+{
+	if(_children.size() <= index)return nullptr;
+	return _children[index].get();
+	
+}
+template<typename NodeType>
+const NodeType* Node<NodeType>::getChildByIndex( std::size_t index) const
+{
+	if(_children.size() <= index)return nullptr;
+	return _children[index].get();
+}
 
 template<typename NodeType>
 std::vector<NodeType*> Node<NodeType>::siblings()
@@ -517,38 +535,7 @@ typename std::vector<std::unique_ptr<NodeType>>::iterator Node<NodeType>::findCh
 }
 
 
-template<typename NodeType>
-NodeType* Node<NodeType>::parent()
-{
-    return _parent;
-}
 
-
-template<typename NodeType>
-const NodeType* Node<NodeType>::parent() const
-{
-    return _parent;
-}
-
-template<typename NodeType>
-const std::string& Node<NodeType>::getId()
-{
-    return _id;
-}
-
-
-template<typename NodeType>
-const std::string& Node<NodeType>::getId() const
-{
-    return _id;
-}
-
-
-template<typename NodeType>
-void Node<NodeType>::setId(const std::string& id)
-{
-    _id = id;
-}
 
 
 } } // namespace ofx::DOM
