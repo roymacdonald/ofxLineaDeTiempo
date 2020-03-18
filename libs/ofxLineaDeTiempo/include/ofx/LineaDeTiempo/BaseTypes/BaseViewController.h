@@ -18,18 +18,28 @@ public:
 	static_assert(std::is_base_of<DOM::Element, ViewType>::value,
 				  "BaseViewController: Templated ViewType must be equal or derived from DOM::Element");
 	
-	virtual ~BaseViewController();
+	virtual ~BaseViewController() = default;
 
-	const ViewType * getView() const;
+	const ViewType * getView() const
+	{
+		return _view;
+	}
 
-	ViewType * getView();
+	ViewType * getView()
+	{
+		return _view;
+	}
 
-	void setView(ViewType * view);
+	void setView(ViewType * view)
+	{
+		_view = view;
+	}
 	
 	template <typename... Args>
-	ViewType* createView(DOM::Element * _parentView, Args&&... args)
+	ViewType* createView(DOM::Element * parentView, Args&&... args)
 	{
-		if(!_parentView)return nullptr;
+		if(!parentView)return nullptr;
+		_parentView = parentView;
 		_view = _parentView->addChild<ViewType>(std::forward<Args>(args)...);
 		return _view;
 	}
@@ -49,12 +59,6 @@ protected:
 	DOM::Element * _parentView = nullptr;
 	ViewType* _view = nullptr;
 	
-//	std::string _trackViewTypeName;
-
-private:
-
-
-
 };
 
 } } // ofx::LineaDeTiempo

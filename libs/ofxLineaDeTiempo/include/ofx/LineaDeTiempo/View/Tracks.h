@@ -8,7 +8,6 @@
 //#include "ofxMUI.h"
 
 #include "DOM/Layout.h"
-#include "MUI/BaseClasses.h"
 #include "MUI/ClippedView.h"
 
 namespace ofx {

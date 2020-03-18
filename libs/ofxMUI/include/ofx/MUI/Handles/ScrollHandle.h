@@ -10,13 +10,15 @@
 
 #include "Constants.h"
 #include "BaseScrollHandle.h"
-#include "BaseClasses.h"
 
 namespace ofx {
 namespace MUI {
 
 
-class ScrollHandle: public BaseHasLayout, public BaseScrollHandle<float>, public ConstrainedGrabHandle{
+class ScrollHandle
+: public BaseScrollHandle<float>
+, public ConstrainedGrabHandle
+{
 public:
 	ScrollHandle(const std::string& id, DOM::Orientation orientation, const ofRectangle& rect);
 	virtual ~ScrollHandle(){}

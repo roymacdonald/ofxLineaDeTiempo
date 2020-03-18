@@ -21,11 +21,11 @@ class KeyframedData_: public BaseHasName
 {
 public:
 	KeyframedData_();
-	KeyframedData_(const std::string & name, std::shared_ptr<TimeControl> timeControl);
+	KeyframedData_(const std::string & name);//, std::shared_ptr<TimeControl> timeControl);
 	virtual ~KeyframedData_(){}
 	
 	
-	DataType getValueAtTime(const uint64_t& time) const;
+	DataType getValueAtTime(const uint64_t& time) ;
 	
 
 	TimedData_<DataType>* add(const DataType& value, const uint64_t& time);
@@ -81,7 +81,7 @@ protected:
 	
 	DataType _currentValue;
 	
-	std::shared_ptr<TimeControl> _timeControl;
+//	std::shared_ptr<TimeControl> _timeControl;
 	
 private:
 

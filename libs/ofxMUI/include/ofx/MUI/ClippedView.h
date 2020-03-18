@@ -11,27 +11,15 @@
 #include "ofx/MUI/Widget.h"
 #include "ofx/DOM/Layout.h"
 #include "Utils.h"
-#include "BaseClasses.h"
+
 namespace ofx {
 namespace MUI {
 
-//class ClippedViewLayout: public DOM::Layout
-//{
-//public:
-//    ClippedViewLayout(DOM::Element* parent);
-//
-//	virtual ~ClippedViewLayout(){}
-//
-//    virtual void doLayout() override;
-//    
-//};
-
-
-
 
 template<typename ContainerType>
-//class ClippedView_:public Widget, public BaseHasLayout
-class ClippedView_:public DOM::Element, public BaseHasLayout
+
+class ClippedView_
+: public DOM::Element
 {
 public:
 	static_assert(std::is_base_of<DOM::Element, ContainerType>(), "ContainerType must be an DOM::Element or derived from DOM::Element.");

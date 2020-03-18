@@ -7,61 +7,43 @@
 
 #pragma once
 #include "MUI/ScrollablePanel.h"
-#include "MUI/BaseClasses.h"
+
 //#include "LineaDeTiempo/BaseTypes/BaseHasTracks.h"
-#include "LineaDeTiempo/BaseTypes/BaseHasTracks.h"
 
 #include "LineaDeTiempo/View/Playhead.h"
-#include "LineaDeTiempo/View/Tracks.h"
-#include "LineaDeTiempo/View/TrackView.h"
-#include "LineaDeTiempo/View/KeyFrames.h"
+//#include "LineaDeTiempo/View/Tracks.h"
+//#include "LineaDeTiempo/View/TrackView.h"
+//#include "LineaDeTiempo/View/KeyFrames.h"
 
-#include "LineaDeTiempo/BaseTypes/BaseHasController.h"
+//#include "LineaDeTiempo/BaseTypes/BaseHasController.h"
 
-#include "LineaDeTiempo/Controller/TracksPanelController.h"
+#include "LineaDeTiempo/View/TrackGroupView.h"
+//#include "LineaDeTiempo/Controller/TracksPanelController.h"
+//#include "LineaDeTiempo/BaseTypes/BaseHasHeader.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
 
 
 
-class TracksController;
-
+class TracksPanelController;
+class TrackController;
 
 class TracksPanel
-: public BaseHasTracks<BaseTrack>
-, public BaseHasController<TracksPanelController>
-, public MUI::Widget
-, public BaseHasLayout
+: public TrackGroupView
+
 
 
 {
 public:
-	TracksPanel(const std::string& id, const ofRectangle& rect, TracksController* controller);//,  std::shared_ptr<LineaDeTiempo::TimeControl> timeControl );
+	TracksPanel(const std::string& id, const ofRectangle& rect, TracksPanelController* controller);
+	
 	virtual ~TracksPanel() = default;
 
-//	BaseTrack* addTrack();
-//	KeyFramesTrack* addKeyframesTrack(const std::string& name);
 
-	template< template<typename> class TrackViewType, typename RegionViewType >
-	TrackViewType<RegionViewType>* addTrack(const std::string& name, bool bCreateFullTrackRegion);
-	
-	
-	virtual bool removeTrack(BaseTrack* track) override ;
-
-
-	float getTrackHeaderWidth();
-	void setTrackHeaderWidth(float w);
-
-
-	MUI::ClippedView * headersView;
-	
-	MUI::TracksScrollPanel* tracksView;
-	
-	
 	virtual void updateLayout() override;
 	
-	virtual void onDraw() const override;
+//	virtual void onDraw() const override;
 	
 	
 	float timeToScreenPosition(uint64_t time) const;
@@ -70,13 +52,18 @@ public:
 
 	Playhead * _playhead = nullptr;
 	
+	TracksClippedView* getClippingView();
+	const TracksClippedView* getClippingView()const;
 protected:
 	
+	MUI::TracksScrollPanel* tracksView;
+	MUI::ClippedView * headersView;
 	
-	                                                                   
-	
+	virtual DOM::Element* _getTracksContainer() override;
+	virtual DOM::Element* _getHeadersContainer() override;
 
-	float _trackHeaderWidth = 200;
+
+	virtual void _updateContainers() override;
 
 
 	ofEventListeners _tracksContainerListeners;

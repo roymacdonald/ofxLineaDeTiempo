@@ -7,26 +7,31 @@
 
 #pragma once
 
-//#include "BaseClasses.h"
+
 #include "ofx/MUI/Widget.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
 
-class BaseTrack;
-class TracksPanel;
-class TrackHeader: public MUI::Widget{//}, public BaseHasLayout{
+class BaseTrackView;
+class TrackGroupView;
+
+
+class TrackHeader
+: public MUI::Widget
+
+{
 public:
-	TrackHeader(BaseTrack* track, float width, TracksPanel* panel);
+	TrackHeader(BaseTrackView* track, float width, TrackGroupView* group);
 	
 	virtual ~TrackHeader(){}
 	
-	BaseTrack* getTrack();
-	const BaseTrack* getTrack() const;
+	BaseTrackView* getTrack();
+	const BaseTrackView* getTrack() const;
 	
 protected:
-	BaseTrack* _track = nullptr;
-	TracksPanel* _panel = nullptr;
+	BaseTrackView* _track = nullptr;
+	TrackGroupView* _group = nullptr;
 	
 	
 	ofEventListeners _trackListeners;

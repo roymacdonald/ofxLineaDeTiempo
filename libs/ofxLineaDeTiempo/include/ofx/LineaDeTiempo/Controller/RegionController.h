@@ -22,7 +22,7 @@ class TrackController;
 
 class RegionController
 : public BaseController
-
+, public BaseViewController<RegionView>
 {
 public:
 
@@ -30,20 +30,18 @@ public:
 	
 	virtual ~RegionController() = default;
 	
-	
 	const ofRange64u& getTimeRange();
 	
 	void setTimeRange(const ofRange64u& t);
-	
 	
 	TrackController * getParentTrack();
 	
 	const TrackController * getParentTrack() const;
 	
-	
 	ofEvent<ofRange64u> timeRangeChangedEvent;
 	
 protected:
+	
 	ofRange64u _timeRange;
 
 	TrackController * _parentTrack;

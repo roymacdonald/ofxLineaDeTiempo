@@ -290,14 +290,6 @@ Shape Element::getChildShape() const
 
     return _childShape;
 }
-void Element::invalidateChild() const{
-	Node<Element>::invalidateChild();
-	
-	if (_layout)
-	{
-		_layout->doLayout();
-	}
-}
 
 Shape Element::getTotalShape() const
 {
@@ -556,6 +548,14 @@ bool Element::isFocused() const
     return _focused;
 }
 
+void Element::invalidateChild() const{
+	Node<Element>::invalidateChild();
+	
+	if (_layout)
+	{
+		_layout->doLayout();
+	}
+}
 
 bool Element::isPointerCaptured(std::size_t pointerId) const
 {

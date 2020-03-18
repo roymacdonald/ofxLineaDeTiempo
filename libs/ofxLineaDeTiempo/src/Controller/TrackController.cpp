@@ -14,53 +14,65 @@ namespace LineaDeTiempo {
 
 
 TrackController::TrackController(const std::string& name, TrackGroupController* parent)
-	: BaseController(name, parent)
-	, _parentGroup(parent)
-	, BaseHasRegions<RegionController>()
-	, BaseViewController<TrackView>()
+: BaseController(name, parent)
+, _parentGroup(parent)
+//, BaseHasRegions<RegionController>()
+, BaseViewController<TrackView>()
 {
 	
 }
-	
-	
-	
-	template<typename NewRegionControllerType>
-	NewRegionControllerType * TrackController::addRegion( const std::string& regionName, const ofRange64u& timeRange)
+
+//
+//
+//template<typename NewRegionControllerType>
+//NewRegionControllerType * TrackController::_addRegion( const std::string& regionName, const ofRange64u& timeRange)
+//{
+//
+//	auto uniqueName = _regionsCollection.makeUniqueName(regionName, "Region");
+//
+//	return BaseController::
+//
+//	_add < NewRegionControllerType, RegionController >
+//
+//	( _regionsCollection, uniqueName, timeRange, this);
+//
+//}
+
+bool TrackController::_removeRegion(RegionController* region)
+{
+	return BaseController::_remove<RegionController>( region,   _regionsCollection);
+}
+
+
+
+void TrackController::generateView()
+{
+	if(_parentGroup && _parentGroup->getView())
 	{
-		
-		auto uniqueName = _regionsCollection.makeUniqueName(regionName, "Region");
-		
-		return BaseController::_add
-		<
-		NewRegionControllerType
-//		,NewRegionViewType
-		,RegionController
-		>
-		( _regionsCollection, uniqueName, timeRange, this);
-		
-		
+		setView(_parentGroup->getView()->addChild<TrackView>(_parentGroup->getView(), this));
 	}
-	
-	bool TrackController::removeRegion(RegionController* region)
+}
+void TrackController::destroyView()
+{
+	if(_parentGroup && _parentGroup->getView())
 	{
-		
-		
-		return BaseController::_remove<RegionController>( region,   _regionsCollection);
-		
+		_parentGroup->getView()->removeChild(_parentGroup->getView());
+		setView(nullptr);
 	}
-	
-	
-	
-	TrackGroupController * TrackController::parentGroup()
-	{
-		return _parentGroup;
-	}
-	
-	const TrackGroupController * TrackController::parentGroup() const
-	{
-		return _parentGroup;
-	}
-	
+}
+
+
+
+TrackGroupController * TrackController::parentGroup()
+{
+	return _parentGroup;
+}
+
+const TrackGroupController * TrackController::parentGroup() const
+{
+	return _parentGroup;
+}
+
 
 
 } } // ofx::LineaDeTiempo

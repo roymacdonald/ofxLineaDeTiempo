@@ -16,26 +16,40 @@ class BaseHasController
 {
 public:
 	
-	BaseHasController();
-	BaseHasController(ControllerType* controller);
+	BaseHasController()
+	{
+		
+	}
+	BaseHasController(ControllerType* controller)
+	:
+	_controller(controller)
+	{
+		
+	}
 	
 	virtual ~BaseHasController() = default;
 
-	const ControllerType * getController() const;
+	const ControllerType * getController() const
+	{
+		return _controller;
+	}
 
-	ControllerType * getController();
+	ControllerType * getController()
+	{
+		return _controller;
+	}
 
-	void setController(ControllerType * controller);
+	void setController(ControllerType * controller)
+	{
+		_controller = controller;
+	}
 	
 
 	typedef ControllerType viewType;
-protected:
+	
 	
 private:
 ControllerType* _controller = nullptr;
-	
-
-
 
 
 };

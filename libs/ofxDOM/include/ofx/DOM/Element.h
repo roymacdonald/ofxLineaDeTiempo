@@ -129,6 +129,9 @@ public:
     /// \returns a pointer to the associated Layout or nullptr if there is none.
     Layout* layout();
 
+	
+	virtual void updateLayout(){}
+	
     /// \brief Perform a hit test on the Element.
     ///
     /// For a normal Element, the hit test will test the rectangular shape
@@ -649,6 +652,7 @@ AnyType Element::getAttribute(const std::string& key, bool inherit) const
 
     throw DOMException(DOMException::INVALID_ATTRIBUTE_KEY);
 }
+
 
 
 } } // namespace ofx::DOM

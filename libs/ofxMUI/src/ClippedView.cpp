@@ -35,28 +35,6 @@ void ClippedView_<ContainerType>::updateLayout()
 		container->setSize(s.width, s.height);
 	}
 }
-//---------------------------------------------------------------------------------------
-////---------------------------------------------------------------------------------------
-//ClippedViewLayout::ClippedViewLayout(DOM::Element* parent):
-//	DOM::Layout(parent)
-//{
-//}
-////---------------------------------------------------------------------------------------
-//void ClippedViewLayout::doLayout()
-//{
-//    if (_parent && !_isDoingLayout)
-//    {
-//        // Prevent recursive calls to doLayout.
-//		auto p = dynamic_cast<BaseHasLayout*>(_parent);
-//		if(p){
-//			_isDoingLayout = true;
-//
-//			p->updateLayout();
-//
-//			_isDoingLayout = false;
-//		}
-//    }
-//}
 template class ClippedView_<DOM::Element>;
 
 } } // namespace ofx::MUI

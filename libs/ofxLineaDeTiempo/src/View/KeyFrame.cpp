@@ -8,7 +8,7 @@
 #include "KeyFrame.h"
 #include "ofRectangleHelper.h"
 #include "KeyFrames.h"
-#include "Track.h"
+#include "TrackView.h"
 namespace ofx {
 namespace LineaDeTiempo {
 //---------------------------------------------------------------------------------------------------------------------

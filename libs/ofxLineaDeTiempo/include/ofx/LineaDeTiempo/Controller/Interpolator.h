@@ -16,7 +16,8 @@
 #include "ofColor.h"
 #include "ofRectangle.h"
 #include <glm/gtx/matrix_interpolation.hpp>
-
+#include <glm/ext/quaternion_common.hpp>
+#include "LineaDeTiempo/Utils/ofxTypeTraits.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -54,11 +55,11 @@ public:
 	
 protected:
 	
-	template<typename DataType>
-	static DataType _interpolateTimedData(const TimedData_<DataType>* from, const TimedData_<DataType>* to, const uint64_t& _time)
-	{
-		ofLogError("ofxLineaDeTiempo::Interpolator::interpolateTimedData") << "Unsupported data type. can not interpolate";
-	}
+//	template<typename DataType>
+//	static DataType _interpolateTimedData(const TimedData_<DataType>* from, const TimedData_<DataType>* to, const uint64_t& _time)
+//	{
+//		ofLogError("ofxLineaDeTiempo::Interpolator::interpolateTimedData") << "Unsupported data type. can not interpolate";
+//	}
 	
 	
 	template<typename DataType>
@@ -108,9 +109,23 @@ protected:
 	///--------------------- GLM
 	///
 	//------------- interpolate any GLM vector
-	template<int C, typename T, glm::qualifier Q >
-	static glm::vec<C,T,Q> 
-	_interpolateTimedData(const TimedData_<glm::vec<C, T, Q> >* from, const TimedData_<glm::vec<C, T, Q> >* to, const uint64_t& _time)
+	template<typename DataType>
+	static typename std::enable_if<std::is_base_of<glm::vec4, DataType>::value, DataType>::type
+	_interpolateTimedData(const TimedData_<DataType>* from, const TimedData_<DataType>* to, const uint64_t& _time)
+	{
+		return glm::mix(from->value, to->value, MUI::Math::lerp(_time, from->time, to->time, 0, 1) );
+	}
+
+	template<typename DataType>
+	static typename std::enable_if<std::is_base_of<glm::vec3, DataType>::value, DataType>::type
+	_interpolateTimedData(const TimedData_<DataType>* from, const TimedData_<DataType>* to, const uint64_t& _time)
+	{
+		return glm::mix(from->value, to->value, MUI::Math::lerp(_time, from->time, to->time, 0, 1) );
+	}
+
+	template<typename DataType>
+	static typename std::enable_if<std::is_base_of<glm::vec2, DataType>::value, DataType>::type
+	_interpolateTimedData(const TimedData_<DataType>* from, const TimedData_<DataType>* to, const uint64_t& _time)
 	{
 		return glm::mix(from->value, to->value, MUI::Math::lerp(_time, from->time, to->time, 0, 1) );
 	}
@@ -119,28 +134,33 @@ protected:
 	//------------- interpolate any GLM mat4
 	// =====  this is a GLM experimental feature.
 	// =====  It should work well with translation and rotation, but not with scaling
-	template <typename T, glm::qualifier Q = glm::defaultp>
-	static glm::mat<4, 4, T, Q> 
-	_interpolateTimedData(const TimedData_<glm::mat<4, 4, T, Q>>* from, const TimedData_<glm::mat<4, 4, T, Q>>* to, const uint64_t& _time)
-	{
-		return glm::interpolate(from->value, to->value, (T) (MUI::Math::lerp(_time, from->time, to->time, 0, 1)));
-	}
+//
+//	template <typename DataType>
+//	static typename std::enable_if<std::is_base_of<glm::mat4, DataType>::value, DataType>::type
+//	_interpolateTimedData(const TimedData_<DataType>* from, const TimedData_<DataType>* to, const uint64_t& _time)
+//	{
+//		return glm::interpolate(from->value, to->value, (MUI::Math::lerp(_time, from->time, to->time, 0, 1)));
+//	}
+//
+//	//-------------- interpolate any GLM quaternion, using spherical linear interpolation (slerp)
+//	template<typename DataType>
+////	static typename std::enable_if<std::is_base_of<glm::qua<T, Q>, DataType>::value, DataType>::type
+////	glm::qua<T, Q>
+//	static typename std::enable_if<std::is_same<glm::quat, typename std::remove_cv<DataType>::type >::value, DataType>::type
+//	_interpolateTimedData(const TimedData_<DataType>* from, const TimedData_<DataType>* to, const uint64_t& _time)
+//	{
+//		return glm::mix(from->value, to->value, (MUI::Math::lerp(_time, from->time, to->time, 0, 1)));
+////		return glm::slerp(from->value, to->value, (MUI::Math::lerp(_time, from->time, to->time, 0, 1)));
+//	}
 
-	//-------------- interpolate any GLM quaternion, using spherical linear interpolation (slerp)
-	template<typename T, glm::qualifier Q = glm::defaultp>
-//	static typename std::enable_if<std::is_base_of<glm::qua<T, Q>, DataType>::value, DataType>::type
-	glm::qua<T, Q> 
-	_interpolateTimedData(const TimedData_<glm::qua<T, Q>>* from, const TimedData_<glm::qua<T, Q>>* to, const uint64_t& _time)
-	{
-		return glm::slerp(from->value, to->value, (T) (MUI::Math::lerp(_time, from->time, to->time, 0, 1)));
-	}
-
+	// TODO: fix GLM quat and mat4 interpolation
+	
 	///--------------------- ofColor
 	///
 
-	template<typename PixelType>
-	static ofColor_<PixelType>
-	_interpolateTimedData(const TimedData_<ofColor_<PixelType>>* from, const TimedData_<ofColor_<PixelType>> * to, const uint64_t& _time)
+	template<typename DataType>
+	static typename std::enable_if<is_ofColor<DataType>::value, DataType>::type
+	_interpolateTimedData(const TimedData_<DataType>* from, const TimedData_<DataType> * to, const uint64_t& _time)
 	{
 		return from->value.getLerped(to->value , MUI::Math::lerp(_time, from->time, to->time, 0, 1));
 	}

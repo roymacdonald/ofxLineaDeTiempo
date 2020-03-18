@@ -24,7 +24,7 @@ _tracksPanel(tracksPanel)
 	
 	if(_tracksPanel)
 	{
-		this->constrainTo(_tracksPanel->tracksView->getClippingView());
+		this->constrainTo(_tracksPanel->getClippingView());
 	}
 	moveToFront();
 }

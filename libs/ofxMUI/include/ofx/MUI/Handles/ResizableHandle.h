@@ -9,15 +9,16 @@
 #include "ConstrainedGrabHandle.h"
 #include "BaseScrollHandle.h"
 #include "ofRange.h"
-#include "BaseClasses.h"
+
 
 namespace ofx {
 namespace MUI {
 
 
-//class ResizableHandle: public BaseScrollHandle<ofRange>, public Widget{
-//public BaseScrollHandle<ofRange>,
-class ResizableHandle: public DOM::OrientedElement, public BaseHasLayout, public Widget{
+class ResizableHandle
+: public DOM::OrientedElement
+, public Widget
+{
 public:
 	ResizableHandle(const std::string& id, DOM::Orientation orientation, const ofRectangle& rect);
 	virtual ~ResizableHandle(){}

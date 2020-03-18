@@ -79,49 +79,27 @@ protected:
 	
 		bool _remove( BaseController* toRemove,  NamedConstPointerCollection<CollectionType>& collection )
 		{
-						
-			auto g = removeChild(toRemove);
+		
+			auto e = dynamic_cast<CollectionType*>(toRemove);
+			if(e){
+			auto g = removeChild(e);
 			if(g)
 			{
 			
-				collection.remove(g.get());
+				collection.remove(e);
 			
-				g->destroyView();
+				e->destroyView();
 				
 				return true;
 			
 			}
+			}
+			ofLogError("BaseController::_remove : failed.");
 			return false;
 			
 		}
 
-//
-//	template<typename ViewType, typename CollectionType>
-//
-//		bool _remove( BaseViewController<ViewType>* toRemove,  NamedConstPointerCollection<CollectionType>& collection )
-//		{
-//
-//			auto g = removeChild(toRemove);
-//			if(g)
-//			{
-//
-//				collection.remove(g.get());
-//
-//				toRemove->removeView();
-//
-//				return true;
-//
-//			}
-//			return false;
-//
-//		}
-//
-//
 
-	
-	
-	
-	
 	
 };
 

@@ -46,37 +46,7 @@ const uint64_t& TimedData_<DataType>::getTime() const
 	return time;
 }
 
-//template class TimedData_<ofRectangle>;
 
-template class TimedData_<ofColor_<char>>;
-template class TimedData_<ofColor_<unsigned char>>;
-template class TimedData_<ofColor_<short>>;
-template class TimedData_<ofColor_<unsigned short>>;
-template class TimedData_<ofColor_<int>>;
-template class TimedData_<ofColor_<unsigned int>>;
-template class TimedData_<ofColor_<long>>;
-template class TimedData_<ofColor_<unsigned long>>;
-template class TimedData_<ofColor_<float>>;
-//template class TimedData_<ofColor_<double>>;
-
-template class TimedData_<glm::vec2>;
-template class TimedData_<glm::vec3>;
-template class TimedData_<glm::vec4>;
-template class TimedData_<glm::quat>;
-template class TimedData_<glm::mat4>;
-
-
-template class TimedData_<char>;
-template class TimedData_<unsigned char>;
-template class TimedData_<short>;
-template class TimedData_<unsigned short>;
-template class TimedData_<int>;
-template class TimedData_<unsigned int>;
-template class TimedData_<long>;
-template class TimedData_<unsigned long>;
-template class TimedData_<float>;
-template class TimedData_<double>;
-//template class TimedData_<long double>;
 
 
 

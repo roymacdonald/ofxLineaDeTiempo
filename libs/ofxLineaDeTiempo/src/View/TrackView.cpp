@@ -8,24 +8,33 @@
 #include "LineaDeTiempo/View/TrackView.h"
 #include "MUI/Utils.h"
 #include "LineaDeTiempo/Controller/TrackController.h"
+
 namespace ofx {
 namespace LineaDeTiempo {
 
 
-const float TrackView::initialHeight = 150;
-ofColor TrackView::backgroundColor = ofColor(80);
-ofColor TrackView::edgeColor = ofColor(120);
 
 TrackView::TrackView(TrackGroupView* parentGroupView, TrackController* controller)
-:DOM::Element(controller->getId(), 0, 0, initialHeight, initialHeight)
-,BaseHasLayout()
-,BaseHasHeader<TrackHeader>()
-,BaseHasRegions<RegionView>()
-,BaseHasController<TrackController>(controller)
-,_parentGroupView(parentGroupView)
+: BaseTrackView(controller->getId(), parentGroupView)
+, _unscaledHeight(BaseTrackView::initialHeight)
+, BaseHasController<TrackController>(controller)
 {
 	_regionsStyle = make_shared<MUI::Styles>();
 }
+
+shared_ptr<MUI::Styles> TrackView::getRegionsStyle()
+{
+	return _regionsStyle;
+}
+
+void TrackView::setColor(const ofColor& color)
+{
+	BaseTrackView::setColor(color);
+	
+	_regionsStyle->setColor(_color, MUI::Styles::ROLE_BACKGROUND);
+	
+}
+
 
 ofRectangle TrackView::timeRangeToRect(const ofRange64u& t) const
 {
@@ -54,37 +63,7 @@ uint64_t  TrackView::screenPositionToTime(float x) const
 	return localPositionToTime(DOM::Element::screenToLocal({x,0}).x);
 }
 
-void TrackView::setColor(const ofColor& color)
-{
-	_color = color;
-	
-	_regionsStyle->setColor(_color, MUI::Styles::ROLE_BACKGROUND);
-	
-}
-
-const ofColor& TrackView::getColor()
-{
-	return _color;
-}
-
-shared_ptr<MUI::Styles> TrackView::getRegionsStyle()
-{
-	return _regionsStyle;
-}
-
-void TrackView::onDraw() const
-{
-	ofFill();
-	ofSetColor(backgroundColor);
-	ofDrawRectangle(0, 0, getWidth(), getHeight());
-	
-	ofNoFill();
-	ofSetColor(edgeColor);
-	ofDrawRectangle(0, 0, getWidth(), getHeight());
-}
-
-//---------------------------------------------------------------------------------------------------------------------
-float TrackView::getHeightFactor()
+float TrackView::getHeightFactor() const
 {
 	return _heightFactor;
 }
@@ -92,32 +71,41 @@ float TrackView::getHeightFactor()
 void TrackView::setHeightFactor(float factor)
 {
 	_heightFactor = factor;
+	_unscaledHeight = BaseTrackView::initialHeight * _heightFactor;
 }
 
+
+
+bool TrackView::removeRegion(RegionController * controller)
+{
+	if(controller == nullptr) return false;
+
+	auto region = controller->getView();
+	if(region){
+
+		return (removeChild(region) != nullptr);
+		
+	}
+	return false;
+}
+
+float TrackView::getUnscaledHeight()
+{
+	return _unscaledHeight;
+}
+float TrackView::updateScaledShape(float y, float yScale, float width)
+{
+	auto h = BaseTrackView::initialHeight * _heightFactor * yScale;
+	setShape({0, y, width, h});
+	updateLayout();
+	return h;
+}
 void TrackView::updateLayout()
 {
-	
-	for(auto r: children())
+	for(auto c: children())
 	{
-		
-		if(r)
-		{
-			r->updateLayout();
-			
-		}
+		if(c) c->updateLayout();
 	}
 }
-TrackGroupView* TrackView::parentGroup()
-{
-	return _parentGroupView;
-}
-
-const TrackGroupView* TrackView::parentGroup() const
-{
-	return _parentGroupView;
-}
-
-
-
 
 }} //ofx::LineaDeTiempo

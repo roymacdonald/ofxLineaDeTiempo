@@ -5,16 +5,17 @@
 //  Created by Roy Macdonald on 3/6/20.
 //
 
-#include "KeyframedParameter.h"
-#include "KeyframedData.h"
+#include "LineaDeTiempo/Data/KeyframedParameter.h"
+#include "LineaDeTiempo/Controller/TimeControl.h"
+
 
 namespace ofx {
 namespace LineaDeTiempo {
 
 //---------------------------------------------------------------------
 template<typename T>
-KeyframedParameter_<T>::KeyframedParameter_(const ofParameter<T>& param, std::shared_ptr<TimeControl> timeControl):
-KeyframedData_<T>(timeControl)
+KeyframedParameter_<T>::KeyframedParameter_(ofParameter<T>& param)//, std::shared_ptr<TimeControl> timeControl):
+: KeyframedData_<T>(param.getName())
 {
 	_param.makeReferenceTo(param);
 	_paramListener = _param.newListener(this, &KeyframedParameter_<T>::_paramChanged);
@@ -33,12 +34,16 @@ bool KeyframedParameter_<T>::update(const uint64_t& time)
 }
 //---------------------------------------------------------------------
 template<typename T>
-void KeyframedParameter_<T>::_paramChanged(T& )
+void KeyframedParameter_<T>::_paramChanged(T& param)
 {
-	if(!_bModifyingParam && KeyframedData_<T>::_timeControl)
+	
+	if(!_bModifyingParam)
 	{
-		setValue(_param.get(), KeyframedData_<T>::_timeControl->getCurrentTime(), KeyframedData_<T>::isKeyFramingEnabled() );
+		KeyframedData_<T>::setValue(param, getTimeControl().getCurrentTime(), KeyframedData_<T>::isKeyFramingEnabled() );
 	}
 }
+
+
+
 	
 } } // ofx::LineaDeTiempo

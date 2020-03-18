@@ -9,7 +9,6 @@
 //#include "ofxMUI.h"
 #include "ofRange.h"
 #include "ResizableHandle.h"
-#include "BaseClasses.h"
 #include "LineaDeTiempo/BaseTypes/BaseHasController.h"
 #include "MUI/Widget.h"
 
@@ -23,7 +22,6 @@ class RegionController;
 
 class RegionView
 : public MUI::Widget
-, public BaseHasLayout
 , public BaseHasController<RegionController>
 
 {

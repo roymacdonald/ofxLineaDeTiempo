@@ -18,7 +18,7 @@ float RegionView::headerHeight = 30.f;
 
 
 RegionView::RegionView (TrackView* parentTrack, RegionController *controller)
-: Widget(controller->getId(), 0,0, TrackView::initialHeight, TrackView::initialHeight)
+: Widget(controller->getId(), 0,0, BaseTrackView::initialHeight, BaseTrackView::initialHeight)
 , _parentTrack(parentTrack)
 , BaseHasController<RegionController>(controller)
 {
@@ -47,5 +47,6 @@ TrackView* RegionView::parentTrack()
 {
 	return _parentTrack;
 }
+
 
 } } // ofx::LineaDeTiempo

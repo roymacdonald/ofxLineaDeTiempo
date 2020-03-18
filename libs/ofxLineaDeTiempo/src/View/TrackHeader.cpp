@@ -5,17 +5,17 @@
 //  Created by Roy Macdonald on 2/20/20.
 //
 
-#include "TrackHeaderView.h"
-#include "Track.h"
-#include "TracksPanel.h"
+#include "LineaDeTiempo/View/TrackHeader.h"
+#include "LineaDeTiempo/View/BaseTrackView.h"
+#include "LineaDeTiempo/View/TrackGroupView.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
 //---------------------------------------------------------------------
-TrackHeader::TrackHeader(BaseTrack* track, float width, TracksPanel* panel):
-	Widget("_header", 0, 0, width, BaseTrack::initialHeight),
+TrackHeader::TrackHeader(BaseTrackView* track, float width, TrackGroupView* group):
+	Widget("_header", 0, 0, width, BaseTrackView::initialHeight),
 	_track(track),
-	_panel(panel)
+	_group(group)
 {
 	if(_track)
 	{
@@ -39,17 +39,17 @@ void TrackHeader::_trackResized(DOM::ResizeEventArgs& e)
 //---------------------------------------------------------------------
 void TrackHeader::_updateFromTrack()
 {
-	if(_track && _panel){
-		setShape({_track->getX(), _track->getY(), _panel->getTrackHeaderWidth(), _track->getHeight() });
+	if(_track && _group){
+		setShape({_track->getX(), _track->getY(), _group->getTrackHeaderWidth(), _track->getHeight() });
 	}
 }
 //---------------------------------------------------------------------
-BaseTrack* TrackHeader::getTrack()
+BaseTrackView* TrackHeader::getTrack()
 {
 	return _track;
 }
 //---------------------------------------------------------------------
-const BaseTrack* TrackHeader::getTrack() const
+const BaseTrackView* TrackHeader::getTrack() const
 {
 	return _track;
 }

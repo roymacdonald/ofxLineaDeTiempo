@@ -7,7 +7,7 @@
 
 #include "Tracks.h"
 #include "LineaDeTiempo/View/TrackView.h"
-
+#include "LineaDeTiempo/View/TrackGroupView.h"
 namespace ofx {
 namespace LineaDeTiempo {
 
@@ -71,8 +71,8 @@ void TracksClippedView::updateLayout()
 	
 	float unscaledHeight = 0;
 	for (auto c : container->children()){
-		auto t = dynamic_cast<BaseTrack*>(c);
-		if (t)	unscaledHeight += BaseTrack::initialHeight * t->getHeightFactor();
+		auto t = dynamic_cast<BaseTrackView*>(c);
+		if (t)	unscaledHeight += t->getUnscaledHeight();
 	}
 	
 	unscaledHeight = std::max(getHeight(), unscaledHeight);
@@ -94,15 +94,9 @@ void TracksClippedView::updateLayout()
 	
 	float currentY = 0;
 	for (auto c : container->children()){
-		auto t = dynamic_cast<BaseTrack*>(c);
+		auto t = dynamic_cast<BaseTrackView*>(c);
 		if (t){
-			auto h = BaseTrack::initialHeight * t->getHeightFactor()* yScale;
-			t->setShape({0, currentY, _tracksWidth, h});
-			
-//			std::cout << "    " << t->getShape() << "\n";
-			t->updateLayout();
-			
-			currentY += h;
+			currentY += t->updateScaledShape(currentY, yScale, _tracksWidth);
 		}
 	}
 	

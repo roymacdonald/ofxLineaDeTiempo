@@ -10,10 +10,9 @@
 namespace ofx {
 namespace MUI {
 //---------------------------------------------------------------------------------------------------------------------
-ScrollHandle::ScrollHandle(const std::string& id, DOM::Orientation orientation, const ofRectangle& rect):
-ConstrainedGrabHandle(id, orientation, rect),
-BaseScrollHandle<float>(),
-BaseHasLayout()
+ScrollHandle::ScrollHandle(const std::string& id, DOM::Orientation orientation, const ofRectangle& rect)
+:ConstrainedGrabHandle(id, orientation, rect)
+,BaseScrollHandle<float>()
 {
 }
 //---------------------------------------------------------------------------------------------------------------------

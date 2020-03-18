@@ -7,21 +7,23 @@
 
 #include "KeyframedData.h"
 #include "ofLog.h"
+#include "LineaDeTiempo/Controller/Interpolator.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
 
 //---------------------------------------------------------------------------------
 template<typename T>
-KeyframedData_<T>::KeyframedData_():KeyframedData_("", nullptr)
+KeyframedData_<T>::KeyframedData_()
+: KeyframedData_("")
 {
 	
 }
 
 template<typename T>
-KeyframedData_<T>::KeyframedData_(const std::string & name, std::shared_ptr<TimeControl> timeControl):
-_timeControl(timeControl),
-BaseHasName(name)
+KeyframedData_<T>::KeyframedData_(const std::string & name)//, std::shared_ptr<TimeControl> timeControl):
+//_timeControl(timeControl),
+: BaseHasName(name)
 {
 	_lastUpdateTime = std::numeric_limits<uint64_t>::max();
 }
@@ -29,7 +31,7 @@ BaseHasName(name)
 
 //---------------------------------------------------------------------------------
 template<typename T>
-T KeyframedData_<T>::getValueAtTime(const uint64_t& time) const
+T KeyframedData_<T>::getValueAtTime(const uint64_t& time) 
 {
 	//	if(_data.size() == 0)
 	//	{
@@ -66,7 +68,10 @@ T KeyframedData_<T>::getValueAtTime(const uint64_t& time) const
 	
 	auto i = _findNextIndex(time);
 	if(i <  _data.size()){
-		return _data[i-1]->interpolateTo( _data[i].get(), time);
+//		return _data[i-1]->interpolateTo( _data[i].get(), time);
+		
+		return _currentValue = Interpolator::interpolateTimedData(_data[i-1].get() , _data[i].get(), time);
+		
 	}
 	
 	ofLogError("KeyframedData_<T>::getValueAtTime") << "it should never get to this point";
@@ -115,7 +120,7 @@ bool KeyframedData_<T>::remove(TimedData_<T>* d)
 	auto s = _data.size();
 	ofRemove(_data,
 			 [&](std::unique_ptr<TimedData_<T>>& i){
-		if(i->get() == d){
+		if(i.get() == d){
 			_timedMap.erase(i->time);
 			return true;
 		}else{
@@ -197,7 +202,9 @@ bool KeyframedData_<T>::update(const uint64_t& time)
 		return false;
 	}
 	
-	_currentValue = _data[_currentIndex-1]->interpolateTo( _data[_currentIndex].get(), time);
+	_currentValue = Interpolator::interpolateTimedData(_data[_currentIndex-1].get() , _data[_currentIndex].get(), time);
+	
+//	_currentValue = _data[_currentIndex-1]->interpolateTo(
 	
 	
 	return true;
@@ -377,7 +384,7 @@ void KeyframedData_<T>::toJson(ofJson& j)
 	j["keyframe_type"] = std::string(typeid(T).name());
 	j["keyframes"] = nlohmann::json::array();
 	for(auto& d: _data){
-		if(d) j["keyframes"].emplace_back(&d.get()) ;
+		if(d) j["keyframes"].emplace_back(*(d.get())) ;
 	}
 	j["num_keyframes"] = j["keyframes"].size();
 }
@@ -438,6 +445,7 @@ std::istream& operator>>(std::istream& is, KeyframedData_<DataType>& data)
 	return is;
 	
 }
+
 
 
 
