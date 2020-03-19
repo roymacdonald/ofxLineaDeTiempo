@@ -44,6 +44,9 @@ public:
 	void stop();
 	void pause();
 	
+	void tooglePlay();
+	
+	
 	void setLooping(bool looping);
 	
 	bool isPlaying() const;

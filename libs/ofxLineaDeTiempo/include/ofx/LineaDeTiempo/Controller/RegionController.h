@@ -40,7 +40,8 @@ public:
 	const TrackController * getParentTrack() const;
 	
 	ofEvent<ofRange64u> timeRangeChangedEvent;
-	
+
+
 protected:
 	
 	ofRange64u _timeRange;

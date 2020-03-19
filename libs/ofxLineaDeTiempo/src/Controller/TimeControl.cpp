@@ -25,6 +25,17 @@ void TimeControl::stop()
 {
 	_setState(STOPPED);
 }
+void TimeControl::tooglePlay()
+{
+	if(!isPlaying())
+	{
+		play();
+	}
+	else
+	{
+		pause();
+	}
+}
 //---------------------------------------------------------------------
 void TimeControl::pause()
 {

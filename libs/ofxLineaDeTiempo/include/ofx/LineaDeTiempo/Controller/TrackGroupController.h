@@ -33,7 +33,6 @@ public:
 	virtual void generateView() override;
 	virtual void destroyView() override;
 	
-	
 	virtual ~TrackGroupController() = default;
 	
 	template<typename NewTrackControllerType>

@@ -46,6 +46,8 @@ public:
 	virtual void generateView() override;
 	virtual void destroyView() override;
 	
+	
+	
 	void setWindow(ofAppBaseWindow* window);
 	
 

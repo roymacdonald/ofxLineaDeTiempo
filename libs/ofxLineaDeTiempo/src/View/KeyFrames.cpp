@@ -226,7 +226,6 @@ bool KeyFrames::removeKeyframe(KeyFrame* k){
 //---------------------------------------------------------------------------------------------------------------------
 void KeyFrames::updateLayout()
 {
-	std::cout << __PRETTY_FUNCTION__ << "\n";
 	RegionView::updateLayout();
 	
 	for(auto k: keyFrames){

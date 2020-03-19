@@ -42,7 +42,7 @@ TracksPanel::TracksPanel(const std::string& id, DOM::Element* parentView, const 
 	_tracksContainerListeners.push(tracksView->getContainer()->move.newListener(this, &TracksPanel::_tracksMoved));
 	_tracksContainerListeners.push(tracksView->getContainer()->resize.newListener(this, &TracksPanel::_tracksResized));
 
-	_playhead = addChild<Playhead>(this);//, _timeControl);
+	_playhead = tracksView->getContainer()->addChild<Playhead>(this);//, _timeControl);
 //	MUI::Widget::setMoveToFrontOnCapture(false);
 //	tracksView->setScrollV({0,1});
 //	tracksView->setScrollH({0,1});
@@ -89,7 +89,6 @@ void TracksPanel::_updateContainers(){
 //---------------------------------------------------------------------
 void TracksPanel::updateLayout()
 {
-	std::cout << __PRETTY_FUNCTION__ << "\n";
 	if(headersView) headersView->setShape(_makeHeadersViewRect());
 	
 	for(auto& t: children()){

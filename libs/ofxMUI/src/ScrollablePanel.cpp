@@ -148,7 +148,6 @@ void ScrollablePanel_<H, D, B, C, CT>::updateLayout(){
 	//TODO: There seems to be an excesive and unnecesary amount of calls to this function
 	_updateScrollbar(_scrollbarH);
 	_updateScrollbar(_scrollbarV);
-	std::cout << __PRETTY_FUNCTION__ << "\n";
 
 	
 	float topMargin = 0;

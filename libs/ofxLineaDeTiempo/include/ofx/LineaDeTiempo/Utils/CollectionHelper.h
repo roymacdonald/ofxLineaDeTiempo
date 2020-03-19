@@ -46,7 +46,7 @@ NewControllerType * _add( NamedConstPointerCollection<CollectionType>& collectio
 	
 	collection.add(t);
 	
-	t->generateView();
+//	t->generateView();
 	
 	return t;
 }

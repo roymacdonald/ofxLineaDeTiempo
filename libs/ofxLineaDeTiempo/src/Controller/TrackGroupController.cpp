@@ -24,33 +24,74 @@ TrackGroupController::TrackGroupController(const std::string& name, TrackGroupCo
 
 void TrackGroupController::generateView()
 {
+	if(getView()) return;
+	
 	auto p = dynamic_cast<TrackGroupController*>(parent());
 	if(p && p->getView())
 	{
-		setView(p->getView()->template addChild<TrackGroupView>(p->getView(), this));
+		
+		setView(p->getView()->addGroup<TrackGroupView>(this));
+			
 	}
-	for(auto child : children())
-	{
-		auto c = dynamic_cast<BaseHasViews*>(child);
-		if(c) c->generateView();
-	}
+	generateChildrenViews(this);
+	
 }
 void TrackGroupController::destroyView()
 {
-	for(auto child : children())
-	{
-		auto c = dynamic_cast<BaseHasViews*>(child);
-		if(c) c->destroyView();
-	}
 	
+	if(getView() == nullptr) return;
+	
+	destroyChildrenViews(this);
 	
 	auto p = dynamic_cast<TrackGroupController*>(parent());
 	if(p && p->getView())
 	{
-		p->getView()->removeChild(getView());
+		
+		if(p->getView()->removeGroup(this))
+		{
+			ofLogError("TrackGroupController::destroyView") << "Could not remove group correctly";
+		}
+		
 		setView(nullptr);
+			
 	}
+	
+//	auto p = dynamic_cast<TrackGroupController*>(parent());
+//	if(p && p->getChildrenViewContainer())
+////	{
+//		p->getChildrenViewContainer()->removeChild(getView());
+//		setView(nullptr);
+//	}
 }
+//void TrackGroupController::generateView()
+//{
+//	auto p = dynamic_cast<TrackGroupController*>(parent());
+//	if(p && p->getView())
+//	{
+//		setView(p->getView()->template addChild<TrackGroupView>(p->getView(), this));
+//	}
+//	for(auto child : children())
+//	{
+//		auto c = dynamic_cast<BaseHasViews*>(child);
+//		if(c) c->generateView();
+//	}
+//}
+//void TrackGroupController::destroyView()
+//{
+//	for(auto child : children())
+//	{
+//		auto c = dynamic_cast<BaseHasViews*>(child);
+//		if(c) c->destroyView();
+//	}
+//
+//
+//	auto p = dynamic_cast<TrackGroupController*>(parent());
+//	if(p && p->getView())
+//	{
+//		p->getView()->removeChild(getView());
+//		setView(nullptr);
+//	}
+//}
 
 
 //void TrackGroupController::generateView()

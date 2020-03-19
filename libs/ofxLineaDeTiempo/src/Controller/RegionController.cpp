@@ -49,5 +49,4 @@ const TrackController * RegionController::getParentTrack() const
 	return _parentTrack;
 }
 
-
 } } // ofx::LineaDeTiempo

@@ -25,8 +25,40 @@ _tracksPanel(tracksPanel)
 	if(_tracksPanel)
 	{
 		this->constrainTo(_tracksPanel->getClippingView());
+		
+		
+		auto v = tracksPanel->getClippingView();
+		_tracksListeners.push( v->resize.newListener(this, &Playhead::_tracksViewShapeChanged));
+		_tracksListeners.push( v->childAdded.newListener(this, &Playhead::_trackNumChanged));
+		_tracksListeners.push( v->childRemoved.newListener(this, &Playhead::_trackNumChanged));
+		_tracksListeners.push( v->childReordered.newListener(this, &Playhead::_tracksOrderChanged));
 	}
 	moveToFront();
+}
+
+void Playhead::_trackNumChanged(DOM::ElementEventArgs& e)
+{
+	if(e.element() != this)
+	{
+		moveToFront();
+	}
+}
+void Playhead::_tracksOrderChanged(DOM::ElementOrderEventArgs& e)
+{
+	if(e.element() != this)
+	{
+		moveToFront();
+	}
+}
+
+
+//---------------------------------------------------------------------
+void Playhead::_tracksViewShapeChanged(DOM::ResizeEventArgs &)
+{
+	if(_tracksPanel)
+	{
+		setSize(getSize().x, _tracksPanel->getClippingView()->getHeight());
+	}
 }
 //---------------------------------------------------------------------
 void Playhead::onDraw() const

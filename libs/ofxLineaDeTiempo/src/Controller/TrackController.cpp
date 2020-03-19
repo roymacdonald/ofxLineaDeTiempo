@@ -45,44 +45,35 @@ bool TrackController::_removeRegion(RegionController* region)
 
 void TrackController::generateView()
 {
+	if(getView()) return;
 	auto p = dynamic_cast<TrackGroupController*>(parent());
 	if(p && p->getView())
 	{
-		setView(p->getView()->template addChild<TrackView>(p->getView(), this));
+		
+		setView(p->getView()->addTrack<TrackView>(this));
+			
 	}
-	for(auto child : children())
-	{
-		auto c = dynamic_cast<BaseHasViews*>(child);
-		if(c) c->generateView();
-	}
+
+	generateChildrenViews(this);
 }
 void TrackController::destroyView()
 {
-	for(auto child : children())
-	{
-		auto c = dynamic_cast<BaseHasViews*>(child);
-		if(c) c->destroyView();
-	}
+	if(getView() == nullptr) return;
+	destroyChildrenViews(this);
 	
 	auto p = dynamic_cast<TrackGroupController*>(parent());
 	if(p && p->getView())
 	{
-		p->getView()->removeChild(getView());
+		
+		if(p->getView()->removeTrack(this) == false)
+		{
+			ofLogError("TrackController::destroyView") << "Could not remove track correctly. " << getId();
+		}
+		
 		setView(nullptr);
 	}
+	
 }
-
-
-
-//TrackGroupController * TrackController::parentGroup()
-//{
-//	return _parentGroup;
-//}
-//
-//const TrackGroupController * TrackController::parentGroup() const
-//{
-//	return _parentGroup;
-//}
 
 
 

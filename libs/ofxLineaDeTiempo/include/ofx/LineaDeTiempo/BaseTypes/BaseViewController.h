@@ -7,6 +7,8 @@
 
 #pragma once
 #include "ofx/DOM/Element.h"
+#include "ofx/DOM/Node.h"
+
 namespace ofx {
 namespace LineaDeTiempo {
 
@@ -39,6 +41,30 @@ public:
 	{
 		_view = view;
 	}
+	
+	bool hasView() const
+	{
+		return (_view != nullptr);
+	}
+	
+	void destroyChildrenViews(DOM::Node * parent){
+		if(!parent) return;
+		for(auto child : parent->children())
+		{
+			auto c = dynamic_cast<BaseHasViews*>(child);
+			if(c) c->destroyView();
+		}
+	}
+	
+	void generateChildrenViews(DOM::Node * parent){
+		if(!parent) return;
+		for(auto child : parent->children())
+		{
+			auto c = dynamic_cast<BaseHasViews*>(child);
+			if(c) c->generateView();
+		}
+	}
+	
 	
 //	template< typename... Args>
 //	ViewType* createView(DOM::Element * parentView, Args&&... args)

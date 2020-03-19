@@ -30,7 +30,6 @@ ClippedView_<ContainerType>::ClippedView_(const std::string& id, const ofRectang
 template<typename ContainerType>
 void ClippedView_<ContainerType>::updateLayout()
 {
-	std::cout << __PRETTY_FUNCTION__ << "\n";
 	if(container){
 		auto s = container->getChildShape();
 		container->setSize(s.width, s.height);

@@ -53,7 +53,6 @@ void BaseTrackView::onDraw() const
 
 void BaseTrackView::updateLayout()
 {
-	std::cout << __PRETTY_FUNCTION__ << "\n";
 	for(auto r: children())
 	{
 		

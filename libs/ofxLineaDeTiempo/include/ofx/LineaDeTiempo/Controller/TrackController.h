@@ -48,10 +48,6 @@ public:
 	using BaseViewController<TrackView>::getView;
 	
 	
-//	TrackGroupController * parentGroup();
-	
-//	const TrackGroupController * parentGroup() const;
-	
 	
 	 bool removeRegion(const std::string& name)
 	 {

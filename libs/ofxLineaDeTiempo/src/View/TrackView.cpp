@@ -102,7 +102,6 @@ float TrackView::updateScaledShape(float y, float yScale, float width)
 }
 void TrackView::updateLayout()
 {
-	std::cout << __PRETTY_FUNCTION__ << "\n";
 	for(auto c: children())
 	{
 		if(c) c->updateLayout();

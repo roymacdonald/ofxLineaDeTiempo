@@ -36,6 +36,14 @@ public:
 	bool removeTrack(TrackController * controller);
 
 
+	template< typename GroupViewType>
+	GroupViewType* addGroup(TrackGroupController * controller );
+	
+	
+	bool removeGroup(TrackGroupController * controller);
+
+	
+	
 	float getTrackHeaderWidth();
 	void setTrackHeaderWidth(float w);
 
@@ -77,33 +85,46 @@ TrackViewType* TrackGroupView::addTrack(TrackController * controller)
 	auto hc = _getHeadersContainer();
 	if(c && hc){
 		
-		auto t = c->addChild<TrackViewType>();
+		auto t = c->addChild<TrackViewType>(this, controller);
 		auto h = hc->addChild<TrackHeader>(t, _trackHeaderWidth, this);
-		
-		auto style = make_shared<MUI::Styles>();
+				
 		ofColor color;
-		color.setHsb(ofRandom(255), ofRandom(150, 255), ofRandom(255));
-		
-		style->setColor(color, MUI::Styles::ROLE_BACKGROUND);
+		color.setHsb(ofRandom(255), ofRandom(200, 255), ofRandom(150,255));
 		
 		t->setColor(color);
-//		t->setStyles(style);
-		h->setStyles(style);
 		
-//		if(bCreateFullTrackRegion) t->addRegion({0, getTimeControl().getTotalTime()});
-		
-//		_trackCollection.push_back(t);
-//		addElement(t);
 		
 		_updateContainers();
 		
-////		tracksView->updateLayout();
-//		tracksView->updateContainerLayout();
-//
 		return t;
 	}
 	ofLogError("TrackGroupView::addTrack") << "can not add track because container is nullptr";
 	return nullptr;
 }
+
+
+template< typename GroupViewType>
+GroupViewType* TrackGroupView::addGroup(TrackGroupController * controller )
+{
+	static_assert(std::is_base_of<TrackGroupView, GroupViewType>::value,
+				  "TrackViewType must inherit from ofx::LineaDeTiempo::TrackView");
+	
+	auto c = _getTracksContainer();
+	auto hc = _getHeadersContainer();
+	if(c && hc){
+		
+		auto t = c->addChild<GroupViewType>(this, controller);
+		auto h = hc->addChild<TrackHeader>(t, _trackHeaderWidth, this);
+				
+		_updateContainers();
+		
+		return t;
+	}
+	ofLogError("TrackGroupView::addTrack") << "can not add track because container is nullptr";
+	return nullptr;
+}
+
+
+
 
 } } // ofx::LineaDeTiempo

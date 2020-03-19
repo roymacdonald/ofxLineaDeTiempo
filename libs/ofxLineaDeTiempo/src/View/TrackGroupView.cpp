@@ -51,8 +51,11 @@ void TrackGroupView::_updateContainers()
 
 bool TrackGroupView::removeTrack(TrackController* controller)
 {
-	if(controller == nullptr) return false;
-
+	if(controller == nullptr)
+	{
+		ofLogError("TrackGroupView::removeTrack") << "controller is nulptr";
+		return false;
+	}
 	auto track = controller->getView();
 	auto c = _getTracksContainer();
 	auto hc = _getHeadersContainer();
@@ -61,19 +64,33 @@ bool TrackGroupView::removeTrack(TrackController* controller)
 		auto tr = c->removeChild(track);
 		auto h = hc->removeChild(track->getHeader());
 
-		
-//		removeChild(track);
-		
-//		BaseHasCollection<BaseTrack, false_type>::removeElement(track);
-		
-//		ofRemove(_trackCollection, [&](BaseTrack* t){
-//			return (track->getHeader() == t->getHeader() && track == t);
-//		});
+		_updateContainers();
+		return true;
+	}
+	if(!c) 	ofLogError("TrackGroupView::removeTrack") << "tracks container is invalid. " << getId();
+	if(!hc) 	ofLogError("TrackGroupView::removeTrack") << "headers container is invalid. " << getId();
+	return false;
+}
+
+bool TrackGroupView::removeGroup(TrackGroupController * controller)
+{
+	if(controller == nullptr) return false;
+
+	auto group = controller->getView();
+	auto c = _getTracksContainer();
+	auto hc = _getHeadersContainer();
+	if(c && hc){
+
+		auto tr = c->removeChild(group);
+		auto h = hc->removeChild(group->getHeader());
+
 		_updateContainers();
 		return true;
 	}
 	return false;
 }
+
+
 
 DOM::Element* TrackGroupView::_getTracksContainer()
 {

@@ -64,7 +64,6 @@ void TracksClippedView::_updateTracksWidth()
 //---------------------------------------------------------------------
 void TracksClippedView::updateLayout()
 {
-	std::cout << __PRETTY_FUNCTION__ << "\n";
 
 	_updateTracksWidth();
 	

@@ -18,25 +18,43 @@ KeyFrameRegionController::KeyFrameRegionController(const std::string& name, cons
 {
 	
 }
-	
+
+
+
 void KeyFrameRegionController::generateView()
 {
-	if(_parentTrack && _parentTrack->getView())
+	if(getView() == nullptr){
+	auto p = dynamic_cast<TrackController*>(parent());
+	if(p && p->getView())
 	{
-		setView(_parentTrack->getView()->addChild<KeyFrames>(_parentTrack->getView(), this));
+		
+		setView(p->getView()->addRegion<KeyFrames>(this));
+			
+	}
+
+	generateChildrenViews(this);
+	}
+}
+void KeyFrameRegionController::destroyView()
+{
+	if(getView()){
+	destroyChildrenViews(this);
+	
+	auto p = dynamic_cast<TrackController*>(parent());
+	if(p && p->getView())
+	{
+		
+		if(p->getView()->removeRegion(this) == false)
+		{
+			ofLogError("KeyFrameRegionController::destroyView") << "Could not remove track correctly. " << getId();
+		}
+		
+		setView(nullptr);
+	}
 	}
 }
 
-void KeyFrameRegionController::destroyView()
-{
-	if(_parentTrack && _parentTrack->getView())
-		{
-			_parentTrack->getView()->removeChild(_parentTrack->getView());
-			setView(nullptr);
-		}
-}
 
-	
 
 
 } } // ofx::LineaDeTiempo

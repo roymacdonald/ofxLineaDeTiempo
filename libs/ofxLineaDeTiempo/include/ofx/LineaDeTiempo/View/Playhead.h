@@ -43,6 +43,14 @@ protected:
 	
 	TracksPanel* _tracksPanel = nullptr;
 	
+	void _tracksViewShapeChanged(DOM::ResizeEventArgs &);
+	
+	ofEventListeners _tracksListeners;
+	
+	void _trackNumChanged(DOM::ElementEventArgs& );// childAdded; childRemoved;
+	void _tracksOrderChanged(DOM::ElementOrderEventArgs& );// childReordered;
+
+	
 	
 	virtual void _onDragging(const DOM::CapturedPointer& pointer)override;
 	

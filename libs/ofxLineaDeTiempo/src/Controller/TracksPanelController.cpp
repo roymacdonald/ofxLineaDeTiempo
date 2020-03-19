@@ -50,13 +50,14 @@ void TracksPanelController::generateView()
 		_panel = _mainView->addChild<TracksPanel>( this->getId(), _mainView.get(), ofRectangle(0, 0, ofGetWidth(), ofGetHeight()), this);
 //		_panel->printStructure();
 
-		setView(_panel->getContainer());
+		setView(_panel);//->getContainer());
 		
-		for(auto child : children())
-		{
-			auto c = dynamic_cast<BaseHasViews*>(child);
-			if(c) c->generateView();
-		}
+		generateChildrenViews(this);
+//		for(auto child : children())
+//		{
+//			auto c = dynamic_cast<BaseHasViews*>(child);
+//			if(c) c->generateView();
+//		}
 		
 		
 		_panel->setup();
@@ -77,23 +78,19 @@ void TracksPanelController::generateView()
 //
 	
 	
-//	_mainViewListeners.push(_mainView->move.newListener(this , &TracksPanelController::_mainViewMoved));
-//	_mainViewListeners.push(_mainView->resize.newListener(this , &TracksPanelController::_mainViewResized));
+	_mainViewListeners.push(_mainView->move.newListener(this , &TracksPanelController::_mainViewMoved));
+	_mainViewListeners.push(_mainView->resize.newListener(this , &TracksPanelController::_mainViewResized));
 
 	
 	
 }
+
 void TracksPanelController::destroyView()
 {
 	if(_mainView && _panel)
 	{
 
-		for(auto child : children())
-		{
-			auto c = dynamic_cast<BaseHasViews*>(child);
-			if(c) c->destroyView();
-		}
-		
+		destroyChildrenViews(this);
 		
 		_mainView->removeChild(_panel);
 
@@ -105,6 +102,7 @@ void TracksPanelController::destroyView()
 
 	}
 }
+
 //
 //MUI::MUI * TracksPanelController::getMainView()
 //{

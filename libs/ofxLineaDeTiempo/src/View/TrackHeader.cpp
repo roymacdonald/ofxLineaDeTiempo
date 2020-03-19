@@ -8,6 +8,8 @@
 #include "LineaDeTiempo/View/TrackHeader.h"
 #include "LineaDeTiempo/View/BaseTrackView.h"
 #include "LineaDeTiempo/View/TrackGroupView.h"
+#include "LineaDeTiempo/View/TrackView.h"
+
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -21,6 +23,11 @@ TrackHeader::TrackHeader(BaseTrackView* track, float width, TrackGroupView* grou
 	{
 		_track->setHeader(this);
 	
+		auto t = dynamic_cast<TrackView*>(track);
+		if(t)
+		{
+			setStyles(t->getRegionsStyle());
+		}
 		_trackListeners.push(_track->move.newListener(this, &TrackHeader::_trackMoved));
 		_trackListeners.push(_track->resize.newListener(this, &TrackHeader::_trackResized));
 	}
