@@ -1,7 +1,7 @@
 //
 // Copyright (c) 2009 Christopher Baker <https://christopherbaker.net>
 //
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier:	MIT
 //
 
 
@@ -178,8 +178,8 @@ private:
     {
         if (ptr)
             return ptr->clone();
-
-        return nullptr;
+        else
+            return nullptr;
     }
 
     Base* ptr;

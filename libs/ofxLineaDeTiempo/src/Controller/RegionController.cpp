@@ -13,7 +13,8 @@ namespace LineaDeTiempo {
 
 
 RegionController::RegionController(const std::string& name, const ofRange64u& timeRange, TrackController* parentTrack)
-: BaseController(name, parentTrack)
+:DOM::Node(name, parentTrack)
+//BaseController(name, parentTrack)
 , _parentTrack(parentTrack)
 , _timeRange(timeRange)
 {

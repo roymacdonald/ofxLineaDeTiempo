@@ -59,7 +59,7 @@ template<typename HandleType, typename ScrollData>
 void Scrollbar_<HandleType, ScrollData>::onUpdate(){
 //	FUNC_NAME_TO_DEBUG_STRING
 		if(bUpdateLayout){
-			invalidateChild();
+			invalidateChildShape();
 			bUpdateLayout = false;
 		}
 }

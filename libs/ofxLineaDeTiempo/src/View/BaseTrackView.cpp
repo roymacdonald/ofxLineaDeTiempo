@@ -19,11 +19,12 @@ ofColor BaseTrackView::backgroundColor = ofColor(80);
 ofColor BaseTrackView::edgeColor = ofColor(120);
 const float BaseTrackView::initialHeight = 150;
 
-BaseTrackView::BaseTrackView(const std::string& id, TrackGroupView* parentGroupView)
+BaseTrackView::BaseTrackView(const std::string& id, DOM::Element* parentView)
 :DOM::Element(id, 0, 0, 150, 150)
 ,BaseHasHeader<TrackHeader>()
-,_parentGroupView(parentGroupView)
+//,_parentGroupView(parentGroupView)
 {
+	setParent(parentView);
 }
 
 
@@ -52,7 +53,7 @@ void BaseTrackView::onDraw() const
 
 void BaseTrackView::updateLayout()
 {
-	
+	std::cout << __PRETTY_FUNCTION__ << "\n";
 	for(auto r: children())
 	{
 		
@@ -63,16 +64,16 @@ void BaseTrackView::updateLayout()
 		}
 	}
 }
-TrackGroupView* BaseTrackView::parentGroup()
-{
-	return _parentGroupView;
-}
-
-const TrackGroupView* BaseTrackView::parentGroup() const
-{
-	return _parentGroupView;
-}
-
+//TrackGroupView* BaseTrackView::parentGroup()
+//{
+//	return _parentGroupView;
+//}
+//
+//const TrackGroupView* BaseTrackView::parentGroup() const
+//{
+//	return _parentGroupView;
+//}
+//
 
 
 

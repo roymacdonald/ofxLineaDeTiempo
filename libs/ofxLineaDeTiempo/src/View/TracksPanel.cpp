@@ -21,13 +21,17 @@
 namespace ofx {
 namespace LineaDeTiempo {
 //using namespace MUI;
-TracksPanel::TracksPanel(const std::string& id, const ofRectangle& rect, TracksPanelController* controller)
+TracksPanel::TracksPanel(const std::string& id, DOM::Element* parentView, const ofRectangle& rect, TracksPanelController* controller)
 //const std::string& name, TrackGroupView* parentGroupView, TrackGroupController * controller
-: TrackGroupView(controller->getView(), controller)
+: TrackGroupView(parentView, controller)
 
 {
+	std::cout << "TrackGroupView " << id << "  " << rect << string((controller != nullptr)?controller->getId():"null controller") << "\n";
 	
+	
+//	setParent(controller->getMainView());
 //	tracksView = addChild<TracksScrollPanel>(id + "_tracksView", ofRectangle(rect.x +_trackHeaderWidth,rect.y, rect.width  - _trackHeaderWidth, rect.height ));
+	setShape(rect);
 	tracksView = DOM::Element::addChild<MUI::TracksScrollPanel>(id + "_tracksView", _makeTracksViewRect());
 	
 	tracksView->setForceShowScrollbars(true);
@@ -50,6 +54,14 @@ TracksClippedView* TracksPanel::getClippingView()
 const TracksClippedView* TracksPanel::getClippingView()const
 {
 	return tracksView->getClippingView();
+}
+DOM::Element* TracksPanel::getContainer()
+{
+	return tracksView->getContainer();
+}
+const DOM::Element* TracksPanel::getContainer() const
+{
+	return tracksView->getContainer();
 }
 //---------------------------------------------------------------------
 void TracksPanel::_tracksMoved(DOM::MoveEventArgs& e)
@@ -77,6 +89,7 @@ void TracksPanel::_updateContainers(){
 //---------------------------------------------------------------------
 void TracksPanel::updateLayout()
 {
+	std::cout << __PRETTY_FUNCTION__ << "\n";
 	if(headersView) headersView->setShape(_makeHeadersViewRect());
 	
 	for(auto& t: children()){

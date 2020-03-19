@@ -16,7 +16,9 @@
 #include "LineaDeTiempo/View/TrackView.h"
 #include "ofRange.h"
 #include "LineaDeTiempo/BaseTypes/NamedConstPointerCollection.h"
+#include "DOM/Node.h"
 
+#include "LineaDeTiempo/Utils/CollectionHelper.h"
 namespace ofx {
 namespace LineaDeTiempo {
 
@@ -25,7 +27,7 @@ class TrackGroupController;
 
 
 class TrackController
-: public BaseController
+: public DOM::Node
 //, public BaseHasRegions<RegionController>
 , public BaseViewController<TrackView>
 
@@ -46,9 +48,9 @@ public:
 	using BaseViewController<TrackView>::getView;
 	
 	
-	TrackGroupController * parentGroup();
+//	TrackGroupController * parentGroup();
 	
-	const TrackGroupController * parentGroup() const;
+//	const TrackGroupController * parentGroup() const;
 	
 	
 	 bool removeRegion(const std::string& name)
@@ -102,7 +104,7 @@ public:
 		
 	protected:
 		
-		NamedConstPointerCollection<RegionController> _regionsCollection;
+	NamedConstPointerCollection<RegionController> _regionsCollection;
 
 	
 
@@ -112,18 +114,18 @@ public:
 		
 		auto uniqueName = _regionsCollection.makeUniqueName(regionName, "Region");
 		
-		return BaseController::
+		return CollectionHelper::
 		
-		_add < NewRegionControllerType, RegionController >
+		_add < NewRegionControllerType, TrackController, RegionController >
 		
-		( _regionsCollection, uniqueName, timeRange, this);
+		( _regionsCollection, this, uniqueName, timeRange, this);
 		
 	}
 
 	
 	bool _removeRegion(RegionController* track);
 
-	TrackGroupController * _parentGroup = nullptr;
+//	TrackGroupController * _parentGroup = nullptr;
 	
 private:
 	

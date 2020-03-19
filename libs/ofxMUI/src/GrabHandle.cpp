@@ -115,25 +115,25 @@ void GrabHandle::onDraw() const
     Widget::onDraw();
 	
 	
-    for (auto& child: children<GrabHandle>())
-    {
-        glm::vec3 a = getShape().getCenter() - getShape().getPosition();
-        glm::vec3 b = child->getShape().getCenter();
-        glm::vec3 d = (a - b);
-        glm::vec3 m = (a + b) / 2.0;
-        glm::vec3 n = glm::normalize(d);
-        glm::vec3::value_type l = glm::distance(a, b);
-        glm::vec3::value_type h1 = l * 0.5f - getShape().getWidth() / 2 * 1.5;
-        glm::vec3::value_type h2 = l * 0.5f - child->getShape().getWidth() / 2 * 1.5;
-
-        glm::vec3 aa = m + n * h1;
-        glm::vec3 bb = m - n * h2;
-
-        if (h1 + h2 > 0 )
-        {
-            ofDrawLine(aa, bb);
-        }
-    }
+//    for (const auto& child: children<GrabHandle>())
+//    {
+//        glm::vec3 a = getShape().getCenter() - getShape().getPosition();
+//        glm::vec3 b = child->getShape().getCenter();
+//        glm::vec3 d = (a - b);
+//        glm::vec3 m = (a + b) / 2.0;
+//        glm::vec3 n = glm::normalize(d);
+//        glm::vec3::value_type l = glm::distance(a, b);
+//        glm::vec3::value_type h1 = l * 0.5f - getShape().getWidth() / 2 * 1.5;
+//        glm::vec3::value_type h2 = l * 0.5f - child->getShape().getWidth() / 2 * 1.5;
+//
+//        glm::vec3 aa = m + n * h1;
+//        glm::vec3 bb = m - n * h2;
+//
+//        if (h1 + h2 > 0 )
+//        {
+//            ofDrawLine(aa, bb);
+//        }
+//    }
 }
 
 

@@ -7,10 +7,11 @@
 //
 #pragma once
 #include "LineaDeTiempo/BaseTypes/BaseViewController.h"
-#include "LineaDeTiempo/BaseTypes/BaseController.h"
+//#include "LineaDeTiempo/BaseTypes/BaseController.h"
 
 #include "LineaDeTiempo/View/RegionView.h"
 #include "ofRange.h"
+#include "DOM/Node.h"
 #include <type_traits>
 
 namespace ofx {
@@ -21,7 +22,7 @@ class TrackController;
 
 
 class RegionController
-: public BaseController
+: public DOM::Node
 , public BaseViewController<RegionView>
 {
 public:

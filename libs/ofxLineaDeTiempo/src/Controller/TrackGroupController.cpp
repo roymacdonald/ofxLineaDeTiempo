@@ -7,88 +7,88 @@
 //
 #include "LineaDeTiempo/Controller/TrackGroupController.h"
 #include "LineaDeTiempo/View/TrackGroupView.h"
-
+#include "LineaDeTiempo/Utils/CollectionHelper.h"
 //
 namespace ofx {
 namespace LineaDeTiempo {
 
 
 TrackGroupController::TrackGroupController(const std::string& name, TrackGroupController * parent)
-:BaseController(name, parent)
-,_parentGroup(parent)
+: DOM::Node(name, parent)
+//,_parentGroup(parent)
 //,BaseHasTracks<TrackController>()
 //,BaseHasGroups<TrackGroupController>()
 ,BaseViewController<TrackGroupView>()
 {
 }
 
-
 void TrackGroupController::generateView()
 {
-	if(_parentGroup && _parentGroup->getView())
+	auto p = dynamic_cast<TrackGroupController*>(parent());
+	if(p && p->getView())
 	{
-		setView(_parentGroup->getView()->addChild<TrackGroupView>(_parentGroup->getView(), this));
+		setView(p->getView()->template addChild<TrackGroupView>(p->getView(), this));
+	}
+	for(auto child : children())
+	{
+		auto c = dynamic_cast<BaseHasViews*>(child);
+		if(c) c->generateView();
 	}
 }
 void TrackGroupController::destroyView()
 {
-	if(_parentGroup && _parentGroup->getView())
+	for(auto child : children())
 	{
-		_parentGroup->getView()->removeChild(_parentGroup->getView());
+		auto c = dynamic_cast<BaseHasViews*>(child);
+		if(c) c->destroyView();
+	}
+	
+	
+	auto p = dynamic_cast<TrackGroupController*>(parent());
+	if(p && p->getView())
+	{
+		p->getView()->removeChild(getView());
 		setView(nullptr);
 	}
 }
 
-//template<typename NewTrackControllerType>
-//NewTrackControllerType * TrackGroupController::addTrack( const std::string& trackName)
+
+//void TrackGroupController::generateView()
 //{
-//
-//	auto uniqueName = _tracksCollection.makeUniqueName(trackName, "Track");
-//
-//	return BaseController::
-//	_add< NewTrackControllerType ,TrackController>
-//
-//	( _tracksCollection, uniqueName, this);
-//
+//	if(_parentGroup && _parentGroup->getView())
+//	{
+//		setView(_parentGroup->getView()->addChild<TrackGroupView>(_parentGroup->getView(), this));
+//	}
+//}
+//void TrackGroupController::destroyView()
+//{
+//	if(_parentGroup && _parentGroup->getView())
+//	{
+//		_parentGroup->getView()->removeChild(_parentGroup->getView());
+//		setView(nullptr);
+//	}
 //}
 
 bool TrackGroupController::removeTrack(TrackController* track)
 {
-	
-	return BaseController::_remove<TrackController>( track,   _tracksCollection);
-	
+	return CollectionHelper::_remove<TrackController, TrackGroupController>( track, this,   _tracksCollection);
 }
-
-
-//template<typename NewGroupControllerType>
-//NewGroupControllerType * TrackGroupController::addGroup( const std::string& groupName)
-//{
-//	auto uniqueName = _groupsCollection.makeUniqueName(groupName, "Group");
-//	
-//	return BaseController::
-//	_add< NewGroupControllerType, TrackGroupController >
-//	
-//	( _groupsCollection,  uniqueName, this);
-//	
-//}
 
 bool TrackGroupController::removeGroup(TrackGroupController* group)
 {
-	
-	//		return _remove <TrackGroupController<TrackGroupViewType>>( group,   _groupsCollection);
-	return BaseController::_remove( group,   _groupsCollection);
+	return CollectionHelper::_remove<TrackGroupController, TrackGroupController>( group,this,   _groupsCollection);
 }
 
 
-TrackGroupController * TrackGroupController::parentGroup()
-{
-	return _parentGroup;
-}
-
-const TrackGroupController * TrackGroupController::parentGroup() const
-{
-	return _parentGroup;
-}
+//TrackGroupController * TrackGroupController::parentGroup()
+//{
+//	return _parentGroup;
+//}
+//
+//const TrackGroupController * TrackGroupController::parentGroup() const
+//{
+//	return _parentGroup;
+//}
 
 
 } } // ofx::LineaDeTiempo

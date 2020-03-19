@@ -14,8 +14,8 @@ namespace LineaDeTiempo {
 
 
 TrackController::TrackController(const std::string& name, TrackGroupController* parent)
-: BaseController(name, parent)
-, _parentGroup(parent)
+: DOM::Node(name, parent)
+//, _parentGroup(parent)
 //, BaseHasRegions<RegionController>()
 , BaseViewController<TrackView>()
 {
@@ -40,38 +40,49 @@ TrackController::TrackController(const std::string& name, TrackGroupController* 
 
 bool TrackController::_removeRegion(RegionController* region)
 {
-	return BaseController::_remove<RegionController>( region,   _regionsCollection);
+	return CollectionHelper::_remove<RegionController, TrackController>( region, this,  _regionsCollection);
 }
-
-
 
 void TrackController::generateView()
 {
-	if(_parentGroup && _parentGroup->getView())
+	auto p = dynamic_cast<TrackGroupController*>(parent());
+	if(p && p->getView())
 	{
-		setView(_parentGroup->getView()->addChild<TrackView>(_parentGroup->getView(), this));
+		setView(p->getView()->template addChild<TrackView>(p->getView(), this));
+	}
+	for(auto child : children())
+	{
+		auto c = dynamic_cast<BaseHasViews*>(child);
+		if(c) c->generateView();
 	}
 }
 void TrackController::destroyView()
 {
-	if(_parentGroup && _parentGroup->getView())
+	for(auto child : children())
 	{
-		_parentGroup->getView()->removeChild(_parentGroup->getView());
+		auto c = dynamic_cast<BaseHasViews*>(child);
+		if(c) c->destroyView();
+	}
+	
+	auto p = dynamic_cast<TrackGroupController*>(parent());
+	if(p && p->getView())
+	{
+		p->getView()->removeChild(getView());
 		setView(nullptr);
 	}
 }
 
 
 
-TrackGroupController * TrackController::parentGroup()
-{
-	return _parentGroup;
-}
-
-const TrackGroupController * TrackController::parentGroup() const
-{
-	return _parentGroup;
-}
+//TrackGroupController * TrackController::parentGroup()
+//{
+//	return _parentGroup;
+//}
+//
+//const TrackGroupController * TrackController::parentGroup() const
+//{
+//	return _parentGroup;
+//}
 
 
 

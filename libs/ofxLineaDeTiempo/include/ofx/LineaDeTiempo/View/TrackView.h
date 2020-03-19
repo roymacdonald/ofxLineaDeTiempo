@@ -12,7 +12,6 @@
 #include "LineaDeTiempo/View/BaseTrackView.h"
 #include "LineaDeTiempo/View/RegionView.h"
 #include "LineaDeTiempo/BaseTypes/BaseHasController.h"
-#include "LineaDeTiempo/BaseTypes/BaseHasRegions.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -28,7 +27,7 @@ class TrackView
 {
 public:
 
-	TrackView(TrackGroupView* parentGroupView, TrackController* controller);
+	TrackView(DOM::Element* parentView, TrackController* controller);
 	virtual ~TrackView() = default;
 	
 	float getHeightFactor() const;

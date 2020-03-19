@@ -1,7 +1,7 @@
 //
 // Copyright (c) 2009 Christopher Baker <https://christopherbaker.net>
 //
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier:	MIT
 //
 
 
@@ -11,14 +11,12 @@
 #include <unordered_set>
 #include "ofx/PointerEvents.h"
 #include "ofx/DOM/CapturedPointer.h"
-#include "ofx/DOM/Events/ElementEvents.h"
-
+#include "ofx/DOM/Events.h"
+#include "ofx/DOM/EventTarget.h"
 #include "ofx/DOM/Exceptions.h"
 #include "ofx/DOM/Layout.h"
 #include "ofx/DOM/Types.h"
 
-#include "ofx/DOM/Events/DOMEventTarget.h"
-#include "ofx/DOM/Node.h"
 
 namespace ofx {
 namespace DOM {
@@ -45,9 +43,7 @@ class AbstractLayout;
 /// in terms of the global screen coordiantes where (0, 0) is the upper left
 /// corner of the screen / window, and (ofGetWidth(), ofGetHeight()) are the
 /// coordiantes of the lower right corner.
-class Element
-: public Node<Element>
-, public DOMEventTarget<Element>
+class Element: public EventTarget<Element>
 {
 public:
     /// \brief Construct a new Element with the given parameters.
@@ -60,7 +56,7 @@ public:
     /// \param height the height of the Element.
     Element(float x, float y, float width, float height);
 
-	/// \brief Construct a new Element with the given parameters.
+    /// \brief Construct a new Element with the given parameters.
     ///
     /// The Element will take the default id, an empty string.
     ///
@@ -83,7 +79,155 @@ public:
     /// \brief Destroy the Element.
     virtual ~Element();
 
+    /// \brief Take ownership of the passed std::unique_ptr<Element>.
+    ///
+    /// This this is "sink" meaning that any child passed to this will be
+    /// owned by this Node.
+    ///
+    /// \param element the rvalue reference to the child node.
+    /// \returns A pointer to the added Element. The parent Element retains
+    /// ownership of the pointer via a std::unique_ptr.
+    /// \tparam ElementType The Element Type.
+    template <typename ElementType>
+    ElementType* addChild(std::unique_ptr<ElementType> element);
 
+    /// \brief Create a child using a templated Element type.
+    ///
+    /// To create a child Element you can use this method like:
+    ///
+    /// ElementType* element = parentElement->addChild<ElementType>(arguments ...);
+    ///
+    /// \param args The variable constructor arguments for the ElementType.
+    /// \returns A pointer to the added Element. The parent Element retains
+    /// ownership of the pointer via a std::unique_ptr.
+    /// \tparam ElementType The subclass of Element that will be added.
+    /// \tparam Args The variable constructor arguments for the ElementType.
+    template <typename ElementType, typename... Args>
+    ElementType* addChild(Args&&... args);
+
+    /// \brief Release ownership of a child Element.
+    /// \param element The Element to release.
+    /// \returns a std::unique_ptr<Element> to the child.
+    std::unique_ptr<Element> removeChild(Element* element);
+
+    /// \brief Move this Element in front of all of its siblings.
+    void moveToFront();
+
+    /// \brief Move this Element in front of its next sibling.
+    void moveForward();
+
+    /// \brief Move this Element in back of all of its siblings.
+    void moveToBack();
+
+    /// \brief Move this Element in back of its next sibling.
+    void moveBackward();
+
+    /// \brief Move the given Element to the the given index.
+    ///
+    /// If the index value is greater than the number of children, the element
+    /// will be moved into the last position.
+    ///
+    /// \param element The child element to move.
+    /// \param index The child index to move to.
+    /// \throws DOMException(DOMException::INVALID_STATE_ERROR) if no matching
+    /// child element exists.
+    void moveChildToIndex(Element* element, std::size_t index);
+
+    /// \brief Move the given Element in front of all of its siblings.
+    /// \throws DOMException(DOMException::INVALID_STATE_ERROR) if no matching
+    /// child element exists.
+    void moveChildToFront(Element* element);
+
+    /// \brief Move the given Element in front of its next sibling.
+    /// \param element The child element to move.
+    /// \throws DOMException(DOMException::INVALID_STATE_ERROR) if no matching
+    /// child element exists.
+    void moveChildForward(Element* element);
+
+    /// \brief Move the given Element in back of all of its siblings.
+    /// \param element The child element to move.
+    /// \throws DOMException(DOMException::INVALID_STATE_ERROR) if no matching
+    /// child element exists.
+    void moveChildToBack(Element* element);
+
+    /// \brief Move the given Element in back of its next sibling.
+    /// \param element The child element to move.
+    /// \throws DOMException(DOMException::INVALID_STATE_ERROR) if no matching
+    /// child element exists.
+    void moveChildBackward(Element* element);
+
+    /// \brief Determine if the given Element is a child of this Element.
+    /// \param element A pointer the the Element to test.
+    /// \returns true iff the given element is a child of this Element.
+    bool isChild(Element* element) const;
+
+    /// \brief Determine if the given Element is a sibling of this Element.
+    /// \param element A pointer the the Element to test.
+    /// \returns true iff the given element is a sibling of this Element.
+    bool isSibling(Element* element) const;
+
+    /// \returns the number of siblings.
+    std::size_t numSiblings() const;
+
+    /// \returns a list of pointers to sibling elements.
+    std::vector<Element*> siblings();
+
+    /// \brief Get a list of siblings of a given Element or Element subclass.
+    ///
+    /// If the there are no siblings of the given type,
+    ///
+    /// \returns a list of pointers to sibling elements of a given type.
+    template <typename ElementType>
+    std::vector<ElementType*> siblings();
+
+    /// \brief Determine if the given Element is the parent of this Element.
+    /// \param element A pointer the the Element to test.
+    /// \returns true iff the given element is the parent of this Element.
+    bool isParent(Element* element) const;
+
+    /// \returns the number of children.
+    std::size_t numChildren() const;
+
+    /// \brief Get a list of pointers to the child elements.
+    ///
+    /// The parent Element retains ownership.
+    ///
+    /// \returns a list of pointers to child elements.
+    std::vector<Element*> children();
+
+    /// \brief Get a list of pointers to the child elements.
+    ///
+    /// The parent Element retains ownership.
+    ///
+    /// \returns a list of pointers to child elements.
+    template <typename ElementType>
+    std::vector<ElementType*> children();
+
+    /// \brief Determine if this Element has a parent Element.
+    /// \returns true if this Element has a parent Element.
+    bool hasParent() const;
+
+    /// \brief Find this Element's first child by its id.
+    /// \param id The id of the child Element to find.
+    /// \returns a pointer to the first child or nullptr if no such child exists.
+    Element* findFirstChildById(const std::string& id);
+
+    /// \brief Find all of this Element's matching the given id.
+    /// \param id The id of the child Elements to find.
+    /// \returns a vector of pointers to child elements or an empty vector if none exist.
+    std::vector<Element*> findChildrenById(const std::string& id);
+
+    /// \brief Get a pointer to the parent.
+    /// \returns a pointer to the parent or a nullptr.
+    Element* parent();
+
+    /// \brief Get a pointer to the parent.
+    /// \returns a pointer to the parent or a nullptr.
+    const Element* parent() const;
+
+	void setParent(Element* parent);
+	
+	
     /// \brief Get a pointer to the parent Document.
     /// \returns a pointer to the parent Document, self if a Document or a nullptr.
     Document* document();
@@ -131,7 +275,7 @@ public:
 
 	
 	virtual void updateLayout(){}
-	
+
     /// \brief Perform a hit test on the Element.
     ///
     /// For a normal Element, the hit test will test the rectangular shape
@@ -279,6 +423,17 @@ public:
     /// \returns the bounding box representing the union of the child shape and the element shape.
     Shape getTotalShape() const;
 
+    /// \brief Get the id of this Element.
+    ///
+    /// The id is optional and an empty std::string by default.
+    ///
+    /// \returns the id of the Element.
+    std::string getId() const;
+
+    /// \brief Set the id of the Element.
+    /// \param id The new id of the Element.
+    void setId(const std::string& id);
+
     /// \brief Determine of the Element has an attribute with the given name.
     /// \param name The name of the Attribute to query.
     /// \returns true iff the Element has an attribute with the given name.
@@ -380,73 +535,7 @@ public:
 	///\brief get if is drawing children by translating  or applying a viewport.
 	bool isDrawingAsViewport() const;
 	
-	
-	///EVENTS
-	
-	///\brief Move event
-	/// Event dispatched when the element has changed it's position.
-	ofEvent<MoveEventArgs> move;
-	
-	///\brief Resize event
-	/// Event dispatched when the element has changed it's size (width or height).
-	ofEvent<ResizeEventArgs> resize;
-
-	///\brief Set Attribute
-	/// Event dispatched when an attribute has been set for this Element instance.
-	ofEvent<AttributeEventArgs> attributeSet;
-	
-	///\brief Cleared Attribute
-	/// Event dispatched when an attribute has been removed from this Element instance.
-	ofEvent<AttributeEventArgs> attributeCleared;
-
-	///\brief Enable event
-	/// Event dispatched when this Element instance has been enabled or disabled
-	ofEvent<EnablerEventArgs> enabled;
-	
-	///\brief Locked event
-	/// Event dispatched when this Element instance has been locked or unlocked
-	ofEvent<EnablerEventArgs> locked;
-	
-	///\brief Locked event
-	/// Event dispatched when this Element instance has been hideen or unhidden.
-	ofEvent<EnablerEventArgs> hidden;
-	
-	
-	///\brief onSetup
-	/// Called internally once the Element has been setup.
-	/// override it on a derived class if you want something specific to happen during setup.
-	/// The Element automatically listens to setup. No need to call it manually.
-	virtual void onSetup()
-	{
-		
-	}
-	///\brief onUpdate
-	/// Called internally once the Element has been updated within the update loop.
-	/// override it on a derived class if you want something specific to happen during setup.
-	/// The Element automatically listens to update. No need to call it manually.
-	virtual void onUpdate()
-	{
-		
-	}
-	///\brief onDraw
-	/// Called internally once the Element has been drawn on each new frame.
-	/// override it on a derived class if you want customize how the element gets drawn
-	/// The Element automatically listens to draw. No need to call it manually.
-	virtual void onDraw() const
-	{
-		
-	}
-	///\brief onExit
-	/// Called internally when the application ends
-	/// override it on a derived class if you want customize how the element manages its resources.
-	/// The Element automatically listens to ofExit. No need to call it manually.
-	virtual void onExit()
-	{
-		
-	}
-	
-	virtual void invalidateChild() const override;
-
+void printStructure(std::string prefix = "");
 	
 protected:
     /// \brief Setup method called by parent Element.
@@ -459,7 +548,7 @@ protected:
 
     /// \brief Draw method called by parent Element.
     /// \param e The event data.
-	void _draw(ofEventArgs& e);
+    void _draw(ofEventArgs& e);
 
     /// \brief Exit method called by parent Element.
     /// \param e The event data.
@@ -499,6 +588,9 @@ protected:
     /// \returns a reference to all pointers captured by this Element.
     const std::vector<CapturedPointer>& capturedPointers() const;
 
+    /// \brief Called internally to invalidate the child geometry tree.
+    virtual void invalidateChildShape() const;
+
     /// \brief Set if the pointer is implicitly captured on pointer down.
     ///
     /// This does not enable the pointer listener, only if the pointer should
@@ -524,7 +616,7 @@ protected:
 	virtual void _restoreTransform();
 	
 	
-	
+
 private:
     /// \brief Not construction-copyable.
     Element(const Element& other) = delete;
@@ -538,15 +630,19 @@ private:
     /// \brief A callback for child Elements to notify their parent size changes.
     void _onChildResized(ResizeEventArgs&);
 
-	void _onChildAdded(NodeEventArgs& child);
-	void _onChildRemoved(NodeEventArgs& child);
-	
+    /// \brief The id for this element.
+    std::string _id;
+
     /// \brief The basic shape of this element.
     Shape _shape;
 
     /// \brief The union of all child bounding boxes.
     mutable Shape _childShape;
 
+    /// \brief True if the child shape is invalid.
+    ///
+    /// This variable usually set by callbacks from the child elements.
+    mutable bool _childShapeInvalid = true;
 
     /// \brief The enabled state of this Element.
     bool _enabled = true;
@@ -568,7 +664,7 @@ private:
 	
 	/// \brief If true this element will not get drawn but its children will.
 	bool _drawChildrenOnly = false;
-	
+
     /// \brief Specifies the tabbing order in the current Element.
     // int _tabIndex = 0;
 
@@ -578,31 +674,128 @@ private:
 
     /// \brief Automatically capture the pointer on pointer down.
     bool _implicitPointerCapture = false;
-	
+
     /// \brief A list of the pointer ids currently captured by this Element.
     /// Captured pointers are pushed back, so the pointer at the front was the
     /// first pointer captured, and thus the primary pointer.
     std::vector<CapturedPointer> _capturedPointers;
-	
+
     /// \brief The Layout associated with this
     std::unique_ptr<Layout> _layout = nullptr;
 
-	/// \brief A vector to Elements.
+    /// \brief An optional pointer to a parent Node.
+    Element* _parent = nullptr;
+
+    /// \brief A vector to Elements.
     std::vector<std::unique_ptr<Element>> _children;
 
-		
-	
     /// \brief The Layout class has access to all private variables.
     friend class Layout;
 
     /// \brief The Document class has access to all private variables.
     friend class Document;
-	
-	friend class Node;
-	
-	ofEventListeners addRemoveChildListners;
-	
+
 };
+
+
+template <typename ElementType, typename... Args>
+ElementType* Element::addChild(Args&&... args)
+{
+    return addChild(std::make_unique<ElementType>(std::forward<Args>(args)...));
+}
+
+
+template <typename ElementType>
+ElementType* Element::addChild(std::unique_ptr<ElementType> element)
+{
+    static_assert(std::is_base_of<Element, ElementType>(), "ElementType must be an Element or derived from Element.");
+
+    if (element)
+    {
+        // Get a raw pointer to the node for later.
+        ElementType* pNode = element.get();
+
+        // Assign the parent to the node via the raw pointer.
+        pNode->setParent(this);
+		
+        // Take ownership of the node.
+        _children.push_back(std::move(element));
+
+        // Invalidate all cached child shape.
+        invalidateChildShape();
+
+        // Alert the node that its parent was set.
+        ElementEventArgs addedEvent(this);
+        ofNotifyEvent(pNode->addedTo, addedEvent, this);
+
+        ElementEventArgs childAddedEvent(pNode);
+        ofNotifyEvent(childAdded, childAddedEvent, this);
+
+        // Attach child listeners.
+        ofAddListener(pNode->move, this, &Element::_onChildMoved);
+        ofAddListener(pNode->resize, this, &Element::_onChildResized);
+
+        /// Alert the node's siblings that they have a new sibling.
+        for (auto& child : _children)
+        {
+            // Don't alert itself.
+            if (child.get() != pNode)
+            {
+                ElementEventArgs event(pNode);
+                ofNotifyEvent(child->siblingAdded, event, this);
+            }
+        }
+
+        return pNode;
+    }
+
+    return nullptr;
+}
+
+
+template <typename ElementType>
+std::vector<ElementType*> Element::siblings()
+{
+    static_assert(std::is_base_of<Element, ElementType>(), "ElementType must be an Element or derived from Element.");
+
+    std::vector<ElementType*> results;
+
+    if (_parent)
+    {
+        for (auto& child : _parent->_children)
+        {
+            ElementType* pChild = dynamic_cast<ElementType*>(child.get());
+
+            if (pChild != this)
+            {
+                results.push_back(pChild);
+            }
+        }
+    }
+    
+    return results;
+}
+
+
+template <typename ElementType>
+std::vector<ElementType*> Element::children()
+{
+    static_assert(std::is_base_of<Element, ElementType>(), "ElementType must be an Element or derived from Element.");
+
+    std::vector<ElementType*> results;
+
+    for (auto& child : _children)
+    {
+        ElementType* pChild = dynamic_cast<ElementType*>(child.get());
+
+        if (pChild)
+        {
+            results.push_back(pChild);
+        }
+    }
+
+    return results;
+}
 
 
 template <typename LayoutType, typename... Args>
@@ -627,7 +820,7 @@ LayoutType* Element::setLayout(std::unique_ptr<LayoutType> layout)
         _layout = std::move(layout);
 
         // Invalidate all cached child shape.
-        invalidateChild();
+        invalidateChildShape();
 
         return pLayout;
     }
@@ -652,7 +845,6 @@ AnyType Element::getAttribute(const std::string& key, bool inherit) const
 
     throw DOMException(DOMException::INVALID_ATTRIBUTE_KEY);
 }
-
 
 
 } } // namespace ofx::DOM

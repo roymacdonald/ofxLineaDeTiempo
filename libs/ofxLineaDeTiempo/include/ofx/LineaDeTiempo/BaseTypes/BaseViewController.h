@@ -10,9 +10,14 @@
 namespace ofx {
 namespace LineaDeTiempo {
 
-
+class BaseHasViews{
+public:
+	virtual void generateView() = 0;
+	virtual void destroyView() = 0;
+};
 template<typename ViewType>
 class BaseViewController
+: public BaseHasViews
 {
 public:
 	static_assert(std::is_base_of<DOM::Element, ViewType>::value,
@@ -35,28 +40,30 @@ public:
 		_view = view;
 	}
 	
-	template <typename... Args>
-	ViewType* createView(DOM::Element * parentView, Args&&... args)
-	{
-		if(!parentView)return nullptr;
-		_parentView = parentView;
-		_view = _parentView->addChild<ViewType>(std::forward<Args>(args)...);
-		return _view;
-	}
-	
-	bool removeView()
-	{
-		if(!_view || !_parentView) return false;
-		
-		bool ret = (_parentView->removeChild(_view) != nullptr);
-		
-		return ret;
-	}
+//	template< typename... Args>
+//	ViewType* createView(DOM::Element * parentView, Args&&... args)
+//	{
+//		if(!parentView)return nullptr;
+//		
+//		_view = _parentView->addChild<ViewType>(std::forward<Args>(args)...);
+//		return _view;
+//	}
+//	
+//	bool removeView()
+//	{
+//		if(!_view || !_parentView) return false;
+//		
+//		bool ret = (_parentView->removeChild(_view) != nullptr);
+//		
+//		return ret;
+//	}
 	
 
+	
+	
 	typedef ViewType viewType;
 protected:
-	DOM::Element * _parentView = nullptr;
+//	DOM::Element * _parentView = nullptr;
 	ViewType* _view = nullptr;
 	
 };

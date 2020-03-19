@@ -36,7 +36,7 @@ class TracksPanel
 
 {
 public:
-	TracksPanel(const std::string& id, const ofRectangle& rect, TracksPanelController* controller);
+	TracksPanel(const std::string& id, DOM::Element* parentView, const ofRectangle& rect, TracksPanelController* controller);
 	
 	virtual ~TracksPanel() = default;
 
@@ -54,6 +54,18 @@ public:
 	
 	TracksClippedView* getClippingView();
 	const TracksClippedView* getClippingView()const;
+	
+	DOM::Element* getContainer();
+	const DOM::Element* getContainer() const;
+	
+	void setup()
+	{
+		if(tracksView)
+		{
+			tracksView->setScrollH({0,1});
+			tracksView->setScrollV({0,1});
+		}
+	}
 protected:
 	
 	MUI::TracksScrollPanel* tracksView;
@@ -68,11 +80,15 @@ protected:
 
 	ofEventListeners _tracksContainerListeners;
 	
-	void _tracksMoved(DOM::MoveEventArgs& e);
-	void _tracksResized(DOM::ResizeEventArgs& e);
 	
 	void _updateHeadersFromTracks();
 
+	
+	
+	void _tracksMoved(DOM::MoveEventArgs& e);
+	void _tracksResized(DOM::ResizeEventArgs& e);
+	
+	
 	
 //	std::shared_ptr<LineaDeTiempo::TimeControl> _timeControl ;
 	

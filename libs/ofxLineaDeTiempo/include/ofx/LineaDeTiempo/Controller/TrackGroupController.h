@@ -6,14 +6,9 @@
 //
 
 #pragma once
-#include "LineaDeTiempo/BaseTypes/BaseController.h"
-//#include "LineaDeTiempo/BaseTypes/BaseViewController.h"
-// #include "LineaDeTiempo/BaseTypes/BaseHasTracks.h"
-//#include "LineaDeTiempo/BaseTypes/BaseHasGroups.h"
-//#include "LineaDeTiempo/BaseTypes/BaseHasName.h"
-//#include "LineaDeTiempo/"
+//#include "LineaDeTiempo/BaseTypes/BaseController.h"
 #include "LineaDeTiempo/View/TrackGroupView.h"
-//#include "LineaDeTiempo/View/TrackView.h"
+#include "LineaDeTiempo/Utils/CollectionHelper.h"
 #include "LineaDeTiempo/Controller/TrackController.h"
 #include "LineaDeTiempo/BaseTypes/NamedConstPointerCollection.h"
 
@@ -24,10 +19,10 @@ namespace LineaDeTiempo {
 
 
 class TrackGroupController
-:public BaseController
+:public DOM::Node
 //,public BaseHasTracks<TrackController>
 //,public BaseHasGroups<TrackGroupController>//<TrackGroupViewType>>
-,public BaseViewController<TrackGroupView>
+, public BaseViewController<TrackGroupView>
 //,public BaseHasName
 {
 public:
@@ -47,10 +42,10 @@ public:
 		
 		auto uniqueName = _tracksCollection.makeUniqueName(trackName, "Track");
 		
-		return BaseController::
-		_add< NewTrackControllerType ,TrackController>
+		return CollectionHelper::
+		_add< NewTrackControllerType, TrackGroupController, TrackController>
 		
-		( _tracksCollection, uniqueName, this);
+		( _tracksCollection, this, uniqueName, this);
 		
 	}
 	
@@ -62,10 +57,10 @@ public:
 	{
 		auto uniqueName = _groupsCollection.makeUniqueName(groupName, "Group");
 		
-		return BaseController::
-		_add< NewGroupControllerType, TrackGroupController >
+		return CollectionHelper::
+		_add< NewGroupControllerType, TrackGroupController, TrackGroupController >
 		
-		( _groupsCollection,  uniqueName, this);
+		( _groupsCollection,  this, uniqueName, this);
 		
 	}
 	
@@ -172,12 +167,12 @@ public:
 	
 	
 	
-	TrackGroupController * parentGroup();
-	const TrackGroupController * parentGroup() const;
+//	TrackGroupController * parentGroup();
+//	const TrackGroupController * parentGroup() const;
 	
 protected:
 	
-	TrackGroupController * _parentGroup = nullptr;
+//	TrackGroupController * _parentGroup = nullptr;
 	NamedConstPointerCollection<TrackGroupController> _groupsCollection;
 	NamedConstPointerCollection<TrackController> _tracksCollection;
 	

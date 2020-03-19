@@ -31,7 +31,7 @@ class BaseTrackView
 public:
 
 	
-	BaseTrackView(const std::string& id, TrackGroupView* parentGroupView);
+	BaseTrackView(const std::string& id, DOM::Element* parentView);
 	
 	virtual ~BaseTrackView() = default;
 	
@@ -48,10 +48,10 @@ public:
 	
 	virtual void updateLayout() override;
 	
-	TrackGroupView* parentGroup();
-	const TrackGroupView* parentGroup() const;
-	
-	
+//	TrackGroupView* parentGroup();
+//	const TrackGroupView* parentGroup() const;
+//
+//
 	
 	
     using DOM::Element::isEnabled;
@@ -99,7 +99,7 @@ protected:
 	ofColor _color;
 	
 
-	TrackGroupView* _parentGroupView;
+//	TrackGroupView* _parentGroupView;
 	
 protected:
 	

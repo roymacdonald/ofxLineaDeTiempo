@@ -27,15 +27,19 @@ class TracksPanelController
 
 {
 public:
+//
+//
+//	No esta heredando correctamente. si uno llama addTrack sobre este objecto se agrega aca pero no al panelView.
+//	Como hacer y donde poner el MUI::MUI? Parece que externamente? y que esta clase no herede de TrackGroupController y agregar a esta las funciones para agregar pistas o grupos?
+//
 
 	TracksPanelController(const std::string& name);
 	
 	virtual ~TracksPanelController() = default;
 	
-//	void createMainView(const ofRectangle& viewport = ofRectangle(0,0,ofGetWidth(), ofGetHeight()), ofAppBaseWindow* window = ofGetWindowPtr());
 	
-	MUI::MUI * getMainView();
-	const MUI::MUI * getMainView() const;
+//	MUI::MUI * getMainView();
+//	const MUI::MUI * getMainView() const;
 
 	KeyFrameTrackController* addKeyFrameTrack(const std::string& name);
 	
@@ -45,9 +49,11 @@ public:
 	void setWindow(ofAppBaseWindow* window);
 	
 
+	
 protected:
 	
-	TracksPanel* _panel;
+	TracksPanel* _panel = nullptr;
+	
 	
 	ofAppBaseWindow* _currentWindow = nullptr;
 	

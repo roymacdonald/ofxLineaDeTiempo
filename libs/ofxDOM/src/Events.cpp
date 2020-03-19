@@ -1,11 +1,11 @@
 //
-//  DOMEvents.cpp
-//  tracksAndTimeTest
+// Copyright (c) 2009 Christopher Baker <https://christopherbaker.net>
 //
-//  Created by Roy Macdonald on 3/14/20.
+// SPDX-License-Identifier:	MIT
 //
 
-#include "ofx/DOM/Events/DOMEvents.h"
+
+#include "ofx/DOM/Events.h"
 #include "ofx/DOM/Element.h"
 
 
@@ -383,4 +383,155 @@ FocusEventArgs::~FocusEventArgs()
 {
 }
 
-}}
+
+MoveEventArgs::MoveEventArgs(const Position& position):
+    _position(position)
+{
+}
+
+
+MoveEventArgs::~MoveEventArgs()
+{
+}
+
+
+const Position& MoveEventArgs::position() const
+{
+    return _position;
+}
+
+
+ResizeEventArgs::ResizeEventArgs(const Shape& shape):
+    _shape(shape)
+{
+}
+
+
+ResizeEventArgs::~ResizeEventArgs()
+{
+}
+
+
+const Shape& ResizeEventArgs::shape() const
+{
+    return _shape;
+}
+
+
+AttributeEventArgs::AttributeEventArgs(const std::string& key,
+                                       const Any& value):
+    _key(key),
+    _value(value)
+{
+}
+
+
+AttributeEventArgs::~AttributeEventArgs()
+{
+}
+
+
+const std::string& AttributeEventArgs::key() const
+{
+    return _key;
+}
+
+
+const Any& AttributeEventArgs::value() const
+{
+    return _value;
+}
+
+
+EnablerEventArgs::EnablerEventArgs(bool value):
+    _value(value)
+{
+}
+
+
+EnablerEventArgs::~EnablerEventArgs()
+{
+}
+
+
+bool EnablerEventArgs::value() const
+{
+    return _value;
+}
+
+
+ElementEventArgs::ElementEventArgs(Element* element):
+    _element(element)
+{
+}
+
+
+ElementEventArgs::~ElementEventArgs()
+{
+}
+
+
+Element* ElementEventArgs::element()
+{
+    return _element;
+}
+
+
+const Element* ElementEventArgs::element() const
+{
+    return _element;
+}
+
+
+ElementOrderEventArgs::ElementOrderEventArgs(Element* element,
+                                             std::size_t oldIndex,
+                                             std::size_t newIndex):
+    ElementEventArgs(element),
+    _oldIndex(oldIndex),
+    _newIndex(newIndex)
+{
+}
+
+
+ElementOrderEventArgs::~ElementOrderEventArgs()
+{
+}
+
+
+std::size_t ElementOrderEventArgs::oldIndex() const
+{
+    return _oldIndex;
+}
+    
+    
+std::size_t ElementOrderEventArgs::newIndex() const
+{
+    return _newIndex;
+}
+
+
+bool ElementOrderEventArgs::wasMovedForward() const
+{
+    return _oldIndex > _newIndex;
+}
+
+
+bool ElementOrderEventArgs::wasMovedBackward() const
+{
+    return _newIndex > _oldIndex;
+}
+
+
+bool ElementOrderEventArgs::isAtFront() const
+{
+    return _newIndex == 0;
+}
+
+
+bool ElementOrderEventArgs::isAtBack() const
+{
+    return _element->numSiblings() == _newIndex;
+}
+
+
+} } // namespace ofx::DOM

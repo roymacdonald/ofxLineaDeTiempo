@@ -14,8 +14,8 @@ namespace LineaDeTiempo {
 
 
 
-TrackView::TrackView(TrackGroupView* parentGroupView, TrackController* controller)
-: BaseTrackView(controller->getId(), parentGroupView)
+TrackView::TrackView(DOM::Element* parentView, TrackController* controller)
+: BaseTrackView(controller->getId(), parentView)
 , _unscaledHeight(BaseTrackView::initialHeight)
 , BaseHasController<TrackController>(controller)
 {
@@ -102,6 +102,7 @@ float TrackView::updateScaledShape(float y, float yScale, float width)
 }
 void TrackView::updateLayout()
 {
+	std::cout << __PRETTY_FUNCTION__ << "\n";
 	for(auto c: children())
 	{
 		if(c) c->updateLayout();

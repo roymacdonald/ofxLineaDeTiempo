@@ -23,7 +23,7 @@ class TrackGroupView
 public:
 
 	
-	TrackGroupView(TrackGroupView* parentGroupView, TrackGroupController * controller);
+	TrackGroupView(DOM::Element* parentView, TrackGroupController * controller);
 	
 	
 	virtual ~TrackGroupView() = default;
@@ -46,6 +46,15 @@ protected:
 	
 	virtual DOM::Element* _getTracksContainer();
 	virtual DOM::Element* _getHeadersContainer();
+	
+	
+	void _enableParentShapeListener();
+	void _disableParentShapeListener();
+	void _parentMoved(DOM::MoveEventArgs& e);
+	void _parentResized(DOM::ResizeEventArgs& e);
+	
+	ofEventListeners _parentListeners;
+	
 	
 	float _groupTopMargin = 10;
 	

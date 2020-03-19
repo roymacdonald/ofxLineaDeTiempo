@@ -27,6 +27,7 @@ RegionView::RegionView (TrackView* parentTrack, RegionController *controller)
 }
 
 void RegionView::updateLayout() {
+	std::cout << __PRETTY_FUNCTION__ << "\n";
 	if(getController())
 	updateRectFromTimeRange(getController()->getTimeRange());
 }

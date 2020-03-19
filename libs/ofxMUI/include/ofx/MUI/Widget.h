@@ -11,7 +11,7 @@
 #include "ofParameter.h"
 #include "ofGraphics.h"
 #include "ofx/DOM/Element.h"
-#include "ofx/DOM/Events/DOMEvents.h"
+#include "ofx/DOM/Events.h"
 #include "ofx/MUI/Types.h"
 
 #define OFX_MUI_WIDGET_DEBUG

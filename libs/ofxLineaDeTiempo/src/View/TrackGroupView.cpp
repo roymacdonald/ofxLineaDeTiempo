@@ -11,57 +11,41 @@
 namespace ofx {
 namespace LineaDeTiempo {
 
-TrackGroupView::TrackGroupView(TrackGroupView* parentGroupView, TrackGroupController * controller)
-: BaseTrackView(controller->getId(), parentGroupView)
+TrackGroupView::TrackGroupView(DOM::Element* parentView, TrackGroupController * controller)
+: BaseTrackView(controller->getId(), parentView)
 , BaseHasController<TrackGroupController>(controller)
 {
+	_enableParentShapeListener();
 }
 
-//
-//template< typename TrackViewType>
-//TrackViewType* TrackGroupView::addTrack(TrackController * controller)
-//{
-//	static_assert(std::is_base_of<TrackView, TrackViewType>::value,
-//				  "TrackViewType must inherit from ofx::LineaDeTiempo::TrackView");
-//	
-//	auto c = _getTracksContainer();
-//	auto hc = _getHeadersContainer();
-//	if(c && hc){
-//		
-//		auto t = c->addChild<TrackViewType>();
-//		auto h = hc->addChild<TrackHeader>(t, _trackHeaderWidth, this);
-//		
-//		auto style = make_shared<MUI::Styles>();
-//		ofColor color;
-//		color.setHsb(ofRandom(255), ofRandom(150, 255), ofRandom(255));
-//		
-//		style->setColor(color, MUI::Styles::ROLE_BACKGROUND);
-//		
-//		t->setColor(color);
-////		t->setStyles(style);
-//		h->setStyles(style);
-//		
-////		if(bCreateFullTrackRegion) t->addRegion({0, getTimeControl().getTotalTime()});
-//		
-////		_trackCollection.push_back(t);
-////		addElement(t);
-//		
-//		_updateContainers();
-//		
-//////		tracksView->updateLayout();
-////		tracksView->updateContainerLayout();
-////		
-//		return t;
-//	}
-//	ofLogError("TrackGroupView::addTrack") << "can not add track because container is nullptr";
-//	return nullptr;
-//}
+void TrackGroupView::_parentMoved(DOM::MoveEventArgs& e)
+{
+	_updateContainers();
+}
+
+void TrackGroupView::_parentResized(DOM::ResizeEventArgs& e)
+{
+	_updateContainers();
+}
+
+void TrackGroupView::_enableParentShapeListener()
+{
+	_parentListeners.push(parent()->move.newListener(this, &TrackGroupView::_parentMoved ));
+	_parentListeners.push(parent()->resize.newListener(this, &TrackGroupView::_parentResized));
+	
+}
+
+void TrackGroupView::_disableParentShapeListener()
+{
+	_parentListeners.unsubscribeAll();
+}
 
 void TrackGroupView::_updateContainers()
 {
 	auto c = _getTracksContainer();
 	if(c) c->updateLayout();
-	updateLayout();
+	if(c != this)updateLayout();
+	
 }
 
 
