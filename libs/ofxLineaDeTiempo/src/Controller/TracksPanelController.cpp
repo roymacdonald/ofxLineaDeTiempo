@@ -43,39 +43,17 @@ void TracksPanelController::generateView()
 
 		if(!_mainView){
 			_mainView = std::make_unique<MUI::MUI>(_currentWindow);
-//			setView(_mainView);
 		}
-
-//		_mainView->setShape(viewport);
+		
 		_panel = _mainView->addChild<TracksPanel>( this->getId(), _mainView.get(), ofRectangle(0, 0, ofGetWidth(), ofGetHeight()), this);
-//		_panel->printStructure();
 
-		setView(_panel);//->getContainer());
+		setView(_panel);
 		
 		generateChildrenViews(this);
-//		for(auto child : children())
-//		{
-//			auto c = dynamic_cast<BaseHasViews*>(child);
-//			if(c) c->generateView();
-//		}
-		
-		
+
 		_panel->setup();
 		
 	}
-	
-	
-	
-	
-//	auto groupView = _panel->addChild<TrackGroupView>(_panel, this);
-//
-//	groupView->setShape(_panel->getShape());
-//	
-	
-//
-//	_mainViewListeners.push(_mainView.move.newListener(this , &TracksPanelController::_mainViewMoved));
-//	_mainViewListeners.push(_mainView.resize.newListener(this , &TracksPanelController::_mainViewResized));
-//
 	
 	
 	_mainViewListeners.push(_mainView->move.newListener(this , &TracksPanelController::_mainViewMoved));
@@ -102,17 +80,6 @@ void TracksPanelController::destroyView()
 
 	}
 }
-
-//
-//MUI::MUI * TracksPanelController::getMainView()
-//{
-//	return _mainView.get();
-//}
-//
-//const MUI::MUI * TracksPanelController::getMainView() const
-//{
-//	return _mainView.get();
-//}
 
 KeyFrameTrackController* TracksPanelController::addKeyFrameTrack(const std::string& name)
 {

@@ -1,11 +1,11 @@
 //
-//  KeyFrames.cpp
+//  KeyframesRegionView.cpp
 //  keyframesTest
 //
 //  Created by Roy Macdonald on 2/14/20.
 //
 
-#include "LineaDeTiempo/View/KeyFrames.h"
+#include "LineaDeTiempo/View/KeyframesRegionView.h"
 #include "ofRectangleHelper.h"
 #include "ofEvent.h"
 
@@ -16,17 +16,17 @@ namespace ofx {
 namespace LineaDeTiempo {
 
 //---------------------------------------------------------------------------------------------------------------------
-KeyFrames::KeyFrames(TrackView* parentTrack, RegionController *controller)
+KeyframesRegionView::KeyframesRegionView(TrackView* parentTrack, RegionController *controller)
 :RegionView(parentTrack, controller)
 {
 	setDraggable(true);
 //	setMoveToFrontOnCapture(false);
 }
 //---------------------------------------------------------------------------------------------------------------------
-void KeyFrames::onKeyFrameDrag(KeyFrame* k, const glm::vec2& delta)
+void KeyframesRegionView::onKeyFrameDrag(KeyFrame* k, const glm::vec2& delta)
 {
 	
-	for(auto s : selectedKeyFrames){
+	for(auto s : selectedKeyframes){
 		if(s != k ){
 			
 			auto r = s->getShape();
@@ -47,38 +47,38 @@ bool keyframesort(KeyFrame* a, KeyFrame* b)
 	return a->getX() < b->getX();
 }
 //---------------------------------------------------------------------------------------------------------------------
-bool KeyFrames::_isSelectingRect() const
+bool KeyframesRegionView::_isSelectingRect() const
 {
 	return selectionRect.getArea() > 0.5;
 }
 //---------------------------------------------------------------------------------------------------------------------
-void KeyFrames::_onPointerDown(DOM::PointerUIEventArgs& e)
+void KeyframesRegionView::_onPointerDown(DOM::PointerUIEventArgs& e)
 {
 	selectionRectStart = screenToLocal( e.screenPosition());
 	selectionRect.set(selectionRectStart, 0, 0);
 
 }
 //---------------------------------------------------------------------------------------------------------------------
-void KeyFrames::_onPointerUp(DOM::PointerUIEventArgs& e)
+void KeyframesRegionView::_onPointerUp(DOM::PointerUIEventArgs& e)
 {
 	if(_isSelectingRect()){
 		updateSelectionRect(screenToLocal( e.screenPosition()));
 		selectionRect.set(0, 0, 0, 0);
-	}else if(selectedKeyFrames.size()){
+	}else if(selectedKeyframes.size()){
 		unselectAllKeyframes();
 	}else {
 		addKeyframe(screenToLocal( e.screenPosition()));
 	}
 }
 //---------------------------------------------------------------------------------------------------------------------
-void KeyFrames::_onDragging(const DOM::CapturedPointer& pointer)
+void KeyframesRegionView::_onDragging(const DOM::CapturedPointer& pointer)
 {
 	auto local = screenToLocal(pointer.position());
 	updateSelectionRect(local);
 
 }
 //---------------------------------------------------------------------------------------------------------------------
-void KeyFrames::_onPointerEvent(DOM::PointerUIEventArgs& e)
+void KeyframesRegionView::_onPointerEvent(DOM::PointerUIEventArgs& e)
 {
 	RegionView::_onPointerEvent(e);
 	if (e.type() == PointerEventArgs::POINTER_DOWN)
@@ -95,7 +95,7 @@ void KeyFrames::_onPointerEvent(DOM::PointerUIEventArgs& e)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void KeyFrames::updateSelectionRect(const glm::vec2& args)
+void KeyframesRegionView::updateSelectionRect(const glm::vec2& args)
 {
 	
 	selectionRect.set(selectionRectStart, 0, 0);
@@ -109,48 +109,48 @@ void KeyFrames::updateSelectionRect(const glm::vec2& args)
 	_setSelectedKeyframesFromRect(selectionRect, ofGetKeyPressed(' '));
 }
 //---------------------------------------------------------------------------------------------------------------------
-void KeyFrames::selectKeyframe(KeyFrame* keyframe)
+void KeyframesRegionView::selectKeyframe(KeyFrame* keyframe)
 {
 	if(!keyframe) return;
 	keyframe->bSelected = true;
 	if(isKeyframeSelected(keyframe)) return;
-	selectedKeyFrames.push_back(keyframe);
+	selectedKeyframes.push_back(keyframe);
 
 }
 //---------------------------------------------------------------------------------------------------------------------
-void KeyFrames::unselectKeyframe(KeyFrame* k)
+void KeyframesRegionView::unselectKeyframe(KeyFrame* k)
 {
 	if(k == nullptr) return;
 	
 	k->bSelected = false;
-	ofRemove(selectedKeyFrames, [&](KeyFrame*& key){return key == k;});
+	ofRemove(selectedKeyframes, [&](KeyFrame*& key){return key == k;});
 
 }
 //---------------------------------------------------------------------------------------------------------------------
-void KeyFrames::unselectAllKeyframes()
+void KeyframesRegionView::unselectAllKeyframes()
 {
-	for(auto& k: selectedKeyFrames){
+	for(auto& k: selectedKeyframes){
 		k->bSelected = false;
 	}
-	selectedKeyFrames.clear();
+	selectedKeyframes.clear();
 }
 //---------------------------------------------------------------------------------------------------------------------
-void KeyFrames::selectAllKeyframes()
+void KeyframesRegionView::selectAllKeyframes()
 {
-	selectedKeyFrames = keyFrames;
+	selectedKeyframes = keyFrames;
 	for(auto& k: keyFrames){
 		k->bSelected = true;
 	}
 }
 //---------------------------------------------------------------------------------------------------------------------
-bool KeyFrames::isKeyframeSelected(KeyFrame* k)
+bool KeyframesRegionView::isKeyframeSelected(KeyFrame* k)
 {
 	if(k == nullptr) return false;
-	if(selectedKeyFrames.size()==0) return false;
-	return binary_search(selectedKeyFrames.begin(), selectedKeyFrames.end(), k, keyframesort);
+	if(selectedKeyframes.size()==0) return false;
+	return binary_search(selectedKeyframes.begin(), selectedKeyframes.end(), k, keyframesort);
 }
 //---------------------------------------------------------------------------------------------------------------------
-void KeyFrames::_setSelectedKeyframesFromRect(const ofRectangle& r, bool bAddToCurrentSelection)
+void KeyframesRegionView::_setSelectedKeyframesFromRect(const ofRectangle& r, bool bAddToCurrentSelection)
 {
 	if(!bAddToCurrentSelection){
 		unselectAllKeyframes();
@@ -162,7 +162,7 @@ void KeyFrames::_setSelectedKeyframesFromRect(const ofRectangle& r, bool bAddToC
 	}
 }
 //---------------------------------------------------------------------------------------------------------------------
-void KeyFrames::onDraw() const{
+void KeyframesRegionView::onDraw() const{
 	Widget::onDraw();
 	ofPolyline preview;
 	glm::vec2 cp;
@@ -187,7 +187,7 @@ void KeyFrames::onDraw() const{
 	
 }
 //---------------------------------------------------------------------------------------------------------------------
-KeyFrame* KeyFrames::addKeyframe(const glm::vec2& k){
+KeyFrame* KeyframesRegionView::addKeyframe(const glm::vec2& k){
 	_count++;
 	auto c = this->addChild<KeyFrame>(getId()+"_k"+ofToString(_count), k);
 	keyFrames.push_back(c);
@@ -198,23 +198,23 @@ KeyFrame* KeyFrames::addKeyframe(const glm::vec2& k){
 	
 }
 //---------------------------------------------------------------------------------------------------------------------
-void KeyFrames::updateKeyframeSort(){
+void KeyframesRegionView::updateKeyframeSort(){
 	if(numChildren() > 1){
 		std::sort(keyFrames.begin(), keyFrames.end(), keyframesort);
 	}
-	if(selectedKeyFrames.size() > 1){
-		std::sort(selectedKeyFrames.begin(), selectedKeyFrames.end(), keyframesort);
+	if(selectedKeyframes.size() > 1){
+		std::sort(selectedKeyframes.begin(), selectedKeyframes.end(), keyframesort);
 	}
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool KeyFrames::removeKeyframe(KeyFrame* k){
+bool KeyframesRegionView::removeKeyframe(KeyFrame* k){
 	if(k == nullptr) return false;
 	
 	auto c = removeChild(k);
 	if(c){
 		ofRemove(keyFrames, [&](KeyFrame*& key){return key == k;});
-		ofRemove(selectedKeyFrames, [&](KeyFrame*& key){return key == k;});
+		ofRemove(selectedKeyframes, [&](KeyFrame*& key){return key == k;});
 		updateKeyframeSort();
 		
 		ofNotifyEvent(keyframeRemovedEvent, k, this);
@@ -224,7 +224,7 @@ bool KeyFrames::removeKeyframe(KeyFrame* k){
 	return false;
 }
 //---------------------------------------------------------------------------------------------------------------------
-void KeyFrames::updateLayout()
+void KeyframesRegionView::updateLayout()
 {
 	RegionView::updateLayout();
 	

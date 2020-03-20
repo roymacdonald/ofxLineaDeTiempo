@@ -13,7 +13,7 @@
 #include "LineaDeTiempo/View/Playhead.h"
 //#include "LineaDeTiempo/View/Tracks.h"
 //#include "LineaDeTiempo/View/TrackView.h"
-//#include "LineaDeTiempo/View/KeyFrames.h"
+//#include "LineaDeTiempo/View/KeyframesRegionView.h"
 
 //#include "LineaDeTiempo/BaseTypes/BaseHasController.h"
 

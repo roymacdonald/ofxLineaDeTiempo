@@ -13,7 +13,7 @@
 //
 //template<typename K>
 //KeyframesTrack_<K>::KeyframesTrack_(const ofParameter<K>& param, std::shared_ptr<LineaDeTiempo::TimeControl> timeControl ):
-//Track_<KeyFrames>(param.getName()+"_Track", timeControl)
+//Track_<KeyframesRegionView>(param.getName()+"_Track", timeControl)
 ////_dataManager(param)
 //{
 //	std::cout << "timeControl->getTotalTime(): " << timeControl->getTotalTime() << "\n";

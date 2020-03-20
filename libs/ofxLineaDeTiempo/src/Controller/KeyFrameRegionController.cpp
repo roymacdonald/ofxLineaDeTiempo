@@ -7,7 +7,7 @@
 
 #include "LineaDeTiempo/Controller/KeyFrameRegionController.h"
 #include "LineaDeTiempo/Controller/TrackController.h"
-#include "LineaDeTiempo/View/KeyFrames.h"
+#include "LineaDeTiempo/View/KeyframesRegionView.h"
 namespace ofx {
 namespace LineaDeTiempo {
 
@@ -28,7 +28,7 @@ void KeyFrameRegionController::generateView()
 	if(p && p->getView())
 	{
 		
-		setView(p->getView()->addRegion<KeyFrames>(this));
+		setView(p->getView()->addRegion<KeyframesRegionView>(this));
 			
 	}
 

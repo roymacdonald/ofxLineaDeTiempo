@@ -7,7 +7,7 @@
 
 #include "KeyFrame.h"
 #include "ofRectangleHelper.h"
-#include "KeyFrames.h"
+#include "KeyframesRegionView.h"
 #include "TrackView.h"
 namespace ofx {
 namespace LineaDeTiempo {
@@ -46,7 +46,7 @@ void KeyFrame::onDraw() const {
 
 //---------------------------------------------------------------------------------------------------------------------
 void KeyFrame::setSelected(bool select){
-	auto p = dynamic_cast<KeyFrames*>(parent());
+	auto p = dynamic_cast<KeyframesRegionView*>(parent());
     if(p){
         if(!bSelected && select){
           
@@ -69,7 +69,7 @@ void KeyFrame::_onDragging(const DOM::CapturedPointer& pointer)
 	
 	Widget::_onDragging(pointer);
 	
-	auto p = dynamic_cast<KeyFrames*>(parent());
+	auto p = dynamic_cast<KeyframesRegionView*>(parent());
     if(p){
 		
 		DOM::ofRectangleHelper::keepInside(this, ofRectangle(0,0, p->getWidth(), p->getHeight()));
@@ -85,7 +85,7 @@ void KeyFrame::_onDragging(const DOM::CapturedPointer& pointer)
 void KeyFrame::_updatePosition()
 {
 	glm::vec2 pos;
-	auto p = dynamic_cast<KeyFrames*>(parent());
+	auto p = dynamic_cast<KeyframesRegionView*>(parent());
     if(p && p->parentTrack()){
 		pos.y = ofMap(_value, 0, 1, 0 , p->getHeight() - defaultKeyFrameSize, true) + (defaultKeyFrameSize*0.5);
 		
@@ -104,7 +104,7 @@ uint64_t KeyFrame::getTime() const{
 }
 //---------------------------------------------------------------------------------------------------------------------
 void KeyFrame::_updateValue(){
-	auto p = dynamic_cast<KeyFrames*>(parent());
+	auto p = dynamic_cast<KeyframesRegionView*>(parent());
     if(p && p->parentTrack()){
 		_time = p->parentTrack()->screenPositionToTime(getScreenCenterPosition().x);
 		_value = ofMap(getY(), 0 , p->getHeight() - defaultKeyFrameSize, 0, 1, true);

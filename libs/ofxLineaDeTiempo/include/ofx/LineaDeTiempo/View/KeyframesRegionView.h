@@ -1,5 +1,5 @@
 //
-//  KeyFrames.hpp
+//  KeyframesRegionView.hpp
 //  keyframesTest
 //
 //  Created by Roy Macdonald on 2/14/20.
@@ -15,10 +15,10 @@ class TrackView;
 namespace ofx {
 namespace LineaDeTiempo {
 
-class KeyFrames: public RegionView{
+class KeyframesRegionView: public RegionView{
 public:
-	KeyFrames (TrackView* parentTrack, RegionController *controller);
-	virtual ~KeyFrames() = default;
+	KeyframesRegionView (TrackView* parentTrack, RegionController *controller);
+	virtual ~KeyframesRegionView() = default;
 		
 	void selectKeyframe(KeyFrame* k);
 	void unselectKeyframe(KeyFrame* k);
@@ -51,7 +51,7 @@ protected:
 	void _onPointerUp(DOM::PointerUIEventArgs& e);
 
 	std::vector<KeyFrame*> keyFrames;
-	std::vector<KeyFrame*> selectedKeyFrames;
+	std::vector<KeyFrame*> selectedKeyframes;
 
     void updateSelectionRect(const glm::vec2& args);
 
