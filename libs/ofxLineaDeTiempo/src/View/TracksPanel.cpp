@@ -26,7 +26,7 @@ TracksPanel::TracksPanel(const std::string& id, DOM::Element* parentView, const 
 : TrackGroupView(parentView, controller)
 
 {
-	std::cout << "TrackGroupView " << id << "  " << rect << string((controller != nullptr)?controller->getId():"null controller") << "\n";
+//	std::cout << "TrackGroupView " << id << "  " << rect << string((controller != nullptr)?controller->getId():"null controller") << "\n";
 	
 	
 //	setParent(controller->getMainView());

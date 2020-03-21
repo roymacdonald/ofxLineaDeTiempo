@@ -13,7 +13,7 @@ namespace LineaDeTiempo {
 //---------------------------------------------------------------------
 TimeControl::TimeControl()
 {
-	std::cout << "New TimeControl\n";
+//	std::cout << "New TimeControl\n";
 	_updateListener = ofEvents().update.newListener(this, &TimeControl::_update);
 }
 //---------------------------------------------------------------------

@@ -22,10 +22,10 @@ public:
 		if(timeControl){
 			_timeControl = timeControl;
 		}
-		else
-		{
-			ofLogWarning("BaseHasTimeControl::BaseHasTimeControl") << className << " could not be initialize with a nullptr";
-		}
+//		else
+//		{
+//			ofLogWarning("BaseHasTimeControl::BaseHasTimeControl") << className << " could not be initialize with a nullptr";
+//		}
 	}
 	
 	~BaseHasTimeControl() = default;
