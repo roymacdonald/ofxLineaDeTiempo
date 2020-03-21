@@ -488,143 +488,143 @@ void Document::synthesizePointerOverAndEnter(const PointerEventArgs& e,
     target->dispatchEvent(pointerEnterEvent);
 }
 
-std::string toString(DocumentEvent d)
-{
-	if(d == SETUP_EVENT) return "SETUP_EVENT";
-	if(d == UPDATE_EVENT) return "UPDATE_EVENT";
-	if(d == DRAW_EVENT) return "DRAW_EVENT";
-	if(d == EXIT_EVENT) return "EXIT_EVENT";
-	if(d == WINDOW_RESIZED_EVENT) return "WINDOW_RESIZED_EVENT";
-	if(d == FILE_DROPPED_EVENT) return "FILE_DROPPED_EVENT";
-	if(d == KEY_PRESSED_EVENT) return "KEY_PRESSED_EVENT";
-	if(d == KEY_RELEASED_EVENT) return "KEY_RELEASED_EVENT";
-	return "";
-}
+// std::string toString(DocumentEvent d)
+// {
+// 	if(d == SETUP_EVENT) return "SETUP_EVENT";
+// 	if(d == UPDATE_EVENT) return "UPDATE_EVENT";
+// 	if(d == DRAW_EVENT) return "DRAW_EVENT";
+// 	if(d == EXIT_EVENT) return "EXIT_EVENT";
+// 	if(d == WINDOW_RESIZED_EVENT) return "WINDOW_RESIZED_EVENT";
+// 	if(d == FILE_DROPPED_EVENT) return "FILE_DROPPED_EVENT";
+// 	if(d == KEY_PRESSED_EVENT) return "KEY_PRESSED_EVENT";
+// 	if(d == KEY_RELEASED_EVENT) return "KEY_RELEASED_EVENT";
+// 	return "";
+// }
 
 void Document::enableEventListener(DocumentEvent event)
 {
 	ofCoreEvents& events = _window ? _window->events() : ofEvents();
-	std::cout << "Document::enableEventListener " << toString(event);
+	// std::cout << "Document::enableEventListener " << toString(event);
 	
     if( event == SETUP_EVENT && !_enabledListeners[SETUP_EVENT])
     {
-         std::cout << " - SETUP_EVENT";
+         // std::cout << " - SETUP_EVENT";
         _setupListener = events.setup.newListener(this, &Document::setup);
         _enabledListeners[SETUP_EVENT] = true;
     }
 	else 
     if( event == UPDATE_EVENT && !_enabledListeners[UPDATE_EVENT])
     {
-         std::cout << " - UPDATE_EVENT";
+         // std::cout << " - UPDATE_EVENT";
         _updateListener = events.update.newListener(this, &Document::update);
         _enabledListeners[UPDATE_EVENT] = true;
     }
 	else 
     if( event == DRAW_EVENT && !_enabledListeners[DRAW_EVENT])
     {
-         std::cout << " - DRAW_EVENT";
+         // std::cout << " - DRAW_EVENT";
         _drawListener = events.draw.newListener(this, &Document::draw, std::numeric_limits<int>::max());
         _enabledListeners[DRAW_EVENT] = true;
     }
 	else
     if( event == EXIT_EVENT && !_enabledListeners[EXIT_EVENT])
     {
-         std::cout << " - EXIT_EVENT";
+         // std::cout << " - EXIT_EVENT";
         _exitListener = events.exit.newListener(this, &Document::exit);
         _enabledListeners[EXIT_EVENT] = true;
     }
 	else 
     if( event == WINDOW_RESIZED_EVENT && !_enabledListeners[WINDOW_RESIZED_EVENT])
     {
-         std::cout << " - WINDOW_RESIZED_EVENT";
+         // std::cout << " - WINDOW_RESIZED_EVENT";
         _windowResizedListener = events.windowResized.newListener(this, &Document::windowResized, std::numeric_limits<int>::lowest());
         _enabledListeners[WINDOW_RESIZED_EVENT] = true;
     }
 	else 
     if( event == FILE_DROPPED_EVENT && !_enabledListeners[FILE_DROPPED_EVENT])
     {
-         std::cout << " - FILE_DROPPED_EVENT";
+         // std::cout << " - FILE_DROPPED_EVENT";
         _fileDroppedListener = events.fileDragEvent.newListener(this, &Document::fileDragEvent, std::numeric_limits<int>::lowest());
         _enabledListeners[FILE_DROPPED_EVENT] = true;
     }
 	else 
     if( event == KEY_PRESSED_EVENT && !_enabledListeners[KEY_PRESSED_EVENT])
     {
-         std::cout << " - KEY_PRESSED_EVENT";
+         // std::cout << " - KEY_PRESSED_EVENT";
         _keyPressedListener = events.keyPressed.newListener(this, &Document::onKeyEvent, std::numeric_limits<int>::lowest());
         _enabledListeners[KEY_PRESSED_EVENT] = true;
     }
 	else 
     if( event == KEY_RELEASED_EVENT && !_enabledListeners[KEY_RELEASED_EVENT])
     {
-         std::cout << " - KEY_RELEASED_EVENT";
+         // std::cout << " - KEY_RELEASED_EVENT";
         _keyReleasedListener = events.keyReleased.newListener(this, &Document::onKeyEvent, std::numeric_limits<int>::lowest());
         _enabledListeners[KEY_RELEASED_EVENT] = true;
     }
-    std::cout << "\n";
+    // std::cout << "\n";
 // POINTER_EVENT
 
 
 }
 void Document::disableEventListener(DocumentEvent event)
 {
-    std::cout << "Document::disableEventListener " << toString(event);
+    // std::cout << "Document::disableEventListener " << toString(event);
 	if(event == SETUP_EVENT && _enabledListeners[SETUP_EVENT])
     {
-        std::cout << " - SETUP_EVENT";
+        // std::cout << " - SETUP_EVENT";
         _setupListener.unsubscribe();
         _enabledListeners[SETUP_EVENT] = false;
     }
     else
     if(event == UPDATE_EVENT && _enabledListeners[UPDATE_EVENT])
     {
-        std::cout << " - UPDATE_EVENT";
+        // std::cout << " - UPDATE_EVENT";
         _updateListener.unsubscribe();
         _enabledListeners[UPDATE_EVENT] = false;
     }
     else
     if(event == DRAW_EVENT && _enabledListeners[DRAW_EVENT])
     {
-        std::cout << " - DRAW_EVENT";
+        // std::cout << " - DRAW_EVENT";
         _drawListener.unsubscribe();
         _enabledListeners[DRAW_EVENT] = false;
     }
     else
     if(event == EXIT_EVENT && _enabledListeners[EXIT_EVENT])
     {
-        std::cout << " - EXIT_EVENT";
+        // std::cout << " - EXIT_EVENT";
         _exitListener.unsubscribe();
         _enabledListeners[EXIT_EVENT] = false;
     }
     else
     if(event == WINDOW_RESIZED_EVENT && _enabledListeners[WINDOW_RESIZED_EVENT])
     {
-        std::cout << " - WINDOW_RESIZED_EVENT";
+        // std::cout << " - WINDOW_RESIZED_EVENT";
         _windowResizedListener.unsubscribe();
         _enabledListeners[WINDOW_RESIZED_EVENT] = false;
     }
     else
     if(event == FILE_DROPPED_EVENT && _enabledListeners[FILE_DROPPED_EVENT])
     {
-        std::cout << " - FILE_DROPPED_EVENT";
+        // std::cout << " - FILE_DROPPED_EVENT";
         _fileDroppedListener.unsubscribe();
         _enabledListeners[FILE_DROPPED_EVENT] = false;
     }
     else
     if(event == KEY_PRESSED_EVENT && _enabledListeners[KEY_PRESSED_EVENT])
     {
-        std::cout << " - KEY_PRESSED_EVENT";
+        // std::cout << " - KEY_PRESSED_EVENT";
         _keyPressedListener.unsubscribe();
         _enabledListeners[KEY_PRESSED_EVENT] = false;
     }
     else
     if(event == KEY_RELEASED_EVENT && _enabledListeners[KEY_RELEASED_EVENT])
     {
-        std::cout << " - KEY_RELEASED_EVENT";
+        // std::cout << " - KEY_RELEASED_EVENT";
         _keyReleasedListener.unsubscribe();
         _enabledListeners[KEY_RELEASED_EVENT] = false;
     }	
-    std::cout << "\n";
+    // std::cout << "\n";
 }
 bool Document::isListeningEvent(DocumentEvent event)
 {

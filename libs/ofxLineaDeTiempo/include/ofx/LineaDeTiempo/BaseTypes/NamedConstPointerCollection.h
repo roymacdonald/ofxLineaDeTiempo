@@ -149,7 +149,7 @@ template<typename T>
 		
 		if(this->has(t))
 		{
-			ofLogError("NamedConstPointerCollection<T>::add") << "fail. This item is already part of the collection. Not adding it";
+			ofLogError("NamedConstPointerCollection<T>::add") << "fail. This item is already part of the collection. Not adding it" << t->getId();
 			return false;
 		}
 		
