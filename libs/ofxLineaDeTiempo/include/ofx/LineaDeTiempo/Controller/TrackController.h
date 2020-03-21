@@ -19,6 +19,8 @@
 #include "DOM/Node.h"
 
 #include "LineaDeTiempo/Utils/CollectionHelper.h"
+#include "LineaDeTiempo/BaseTypes/BaseHasTimeControl.h"
+
 namespace ofx {
 namespace LineaDeTiempo {
 
@@ -28,6 +30,7 @@ class TrackGroupController;
 
 class TrackController
 : public DOM::Node
+, public BaseHasTimeControl
 //, public BaseHasRegions<RegionController>
 , public BaseViewController<TrackView>
 
@@ -36,7 +39,7 @@ public:
 	
 	//	typedef RegionViewType regionViewType;
 	
-	TrackController(const std::string& name, TrackGroupController* parent);
+	TrackController(const std::string& name, TrackGroupController* parent, TimeControl* timeControl);
 	
 	virtual ~TrackController() = default;
 	
@@ -95,7 +98,7 @@ public:
 	 }
 
 
-	
+	using BaseHasTimeControl::getTimeControl;
 	
 		
 	protected:
@@ -114,7 +117,7 @@ public:
 		
 		_add < NewRegionControllerType, TrackController, RegionController >
 		
-		( _regionsCollection, this, uniqueName, timeRange, this);
+		( _regionsCollection, this, uniqueName, timeRange, this, getTimeControl());
 		
 	}
 

@@ -14,8 +14,9 @@ namespace LineaDeTiempo {
 
 //---------------------------------------------------------------------
 template<typename T>
-KeyframedParameter_<T>::KeyframedParameter_(ofParameter<T>& param)//, std::shared_ptr<TimeControl> timeControl):
+KeyframedParameter_<T>::KeyframedParameter_(ofParameter<T>& param, TimeControl* timeControl)//, std::shared_ptr<TimeControl> timeControl):
 : KeyframedData_<T>(param.getName())
+, BaseHasTimeControl(timeControl, "KeyframedParameter_")
 {
 	_param.makeReferenceTo(param);
 	_paramListener = _param.newListener(this, &KeyframedParameter_<T>::_paramChanged);
@@ -39,7 +40,7 @@ void KeyframedParameter_<T>::_paramChanged(T& param)
 	
 	if(!_bModifyingParam)
 	{
-		KeyframedData_<T>::setValue(param, getTimeControl().getCurrentTime(), KeyframedData_<T>::isKeyFramingEnabled() );
+		KeyframedData_<T>::setValue(param, getTimeControl()->getCurrentTime(), KeyframedData_<T>::isKeyFramingEnabled() );
 	}
 }
 

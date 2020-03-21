@@ -13,8 +13,8 @@ namespace LineaDeTiempo {
 
 
 
-KeyFrameRegionController::KeyFrameRegionController(const std::string& name, const ofRange64u& timeRange, TrackController* parentTrack)
-: RegionController(name, timeRange, parentTrack)
+KeyFrameRegionController::KeyFrameRegionController(const std::string& name, const ofRange64u& timeRange, TrackController* parentTrack, TimeControl* timeControl)
+: RegionController(name, timeRange, parentTrack, timeControl)
 {
 	
 }

@@ -13,9 +13,10 @@ namespace LineaDeTiempo {
 
 
 
-TrackController::TrackController(const std::string& name, TrackGroupController* parent)
+TrackController::TrackController(const std::string& name, TrackGroupController* parent, TimeControl* timeControl)
 : DOM::Node(name, parent)
 //, _parentGroup(parent)
+, BaseHasTimeControl(timeControl, "TrackController")
 //, BaseHasRegions<RegionController>()
 , BaseViewController<TrackView>()
 {

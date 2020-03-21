@@ -45,12 +45,12 @@ ofRectangle TrackView::timeRangeToRect(const ofRange64u& t) const
 
 float TrackView::timeToLocalPosition(const uint64_t& t) const
 {
-	return MUI::Math::lerp(t, 0, getTimeControl().getTotalTime(), 0, getWidth());
+	return MUI::Math::lerp(t, 0, getController()->getTimeControl()->getTotalTime(), 0, getWidth());
 }
 
 uint64_t TrackView::localPositionToTime(float x) const
 {
-	return MUI::Math::lerp(x, 0, getWidth(), 0, getTimeControl().getTotalTime());
+	return MUI::Math::lerp(x, 0, getWidth(), 0, getController()->getTimeControl()->getTotalTime());
 }
 
 float TrackView::timeToScreenPosition(uint64_t time) const

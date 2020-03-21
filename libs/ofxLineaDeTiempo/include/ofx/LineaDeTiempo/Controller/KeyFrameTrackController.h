@@ -23,7 +23,7 @@ class KeyFrameTrackController
 {
 public:
 		
-	KeyFrameTrackController(const std::string& name, TrackGroupController* parent);
+	KeyFrameTrackController(const std::string& name, TrackGroupController* parent, TimeControl* timeControl);
 	
 	virtual ~KeyFrameTrackController() = default;
 	

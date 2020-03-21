@@ -12,12 +12,13 @@ namespace ofx {
 namespace LineaDeTiempo {
 
 //---------------------------------------------------------------------
-Playhead::Playhead(TracksPanel* tracksPanel):
-ConstrainedGrabHandle("Playhead",DOM::HORIZONTAL, {0,0, 3, 100}),
-_tracksPanel(tracksPanel)
+Playhead::Playhead(TracksPanel* tracksPanel, TimeControl* timeControl)
+: ConstrainedGrabHandle("Playhead",DOM::HORIZONTAL, {0,0, 3, 100})
+, _tracksPanel(tracksPanel)
+, BaseHasTimeControl(timeControl, "Playhead")
 {
 	
-	_currentTimeListener = getTimeControl().currentTimeUpdateEvent.newListener(this, &Playhead::_currentTimeChanged);
+	_currentTimeListener = getTimeControl()->currentTimeUpdateEvent.newListener(this, &Playhead::_currentTimeChanged);
 	
 	
 	_draggingStateListener = isDraggingEvent.newListener(this, &Playhead::_draggingStateChanged);
@@ -115,17 +116,16 @@ void Playhead::onDraw() const
 //---------------------------------------------------------------------
 void Playhead::_draggingStateChanged(bool & bDragging)
 {
-	auto & _timeControl = getTimeControl();
 	if(bDragging){
-		_wasPlaying = _timeControl.isPlaying();
-		_timeControl.pause();
+		_wasPlaying = getTimeControl()->isPlaying();
+		getTimeControl()->pause();
 	}
 	else
 	{
 		if(_wasPlaying)
 		{
 			_wasPlaying = false;
-			_timeControl.play();
+			getTimeControl()->play();
 		}
 	}
 }
@@ -135,10 +135,6 @@ void Playhead::_currentTimeChanged(uint64_t& t)
 	if(!isDragging())
 	{
 		updatePosition();
-		//	   if(_tracksPanel)
-		//	   {
-		//		setPosition(screenToParent({_tracksPanel->timeToScreenPosition(t),0}).x - (getWidth() / 2), getY());
-		//	   }
 	}
 }
 //---------------------------------------------------------------------
@@ -146,7 +142,7 @@ void Playhead::updatePosition()
 {
 	if(_tracksPanel)
 	{
-		setPosition(screenToParent({_tracksPanel->timeToScreenPosition(getTimeControl().getCurrentTime()),0}).x - (getWidth() / 2), getY());
+		setPosition(screenToParent({_tracksPanel->timeToScreenPosition(getTimeControl()->getCurrentTime()),0}).x - (getWidth() / 2), getY());
 	}
 }
 //---------------------------------------------------------------------
@@ -154,7 +150,7 @@ void Playhead::_onDragging(const DOM::CapturedPointer& pointer)
 {
 	ConstrainedGrabHandle::_onDragging(pointer);
 	
-	getTimeControl().setCurrentTime(_tracksPanel->screenPositionToTime(parentToScreen({getX() + (getWidth() / 2), 0 }).x));
+	getTimeControl()->setCurrentTime(_tracksPanel->screenPositionToTime(parentToScreen({getX() + (getWidth() / 2), 0 }).x));
 	
 }
 

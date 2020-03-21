@@ -8,7 +8,7 @@
 #pragma once
 #include "ofParameter.h"
 #include "KeyframedData.h"
-
+#include "LineaDeTiempo/BaseTypes/BaseHasTimeControl.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -16,12 +16,11 @@ namespace LineaDeTiempo {
 template<typename ParameterType>
 
 class KeyframedParameter_
-	:
-	public KeyframedData_<ParameterType>
-
+: public KeyframedData_<ParameterType>
+, public BaseHasTimeControl
 {
 public:
-	KeyframedParameter_(ofParameter<ParameterType>& param);//, std::shared_ptr<TimeControl> timeControl);
+	KeyframedParameter_(ofParameter<ParameterType>& param, TimeControl* timeControl);//, std::shared_ptr<TimeControl> timeControl);
 	virtual ~KeyframedParameter_(){}
 	
 	virtual bool update(const uint64_t& time) override;

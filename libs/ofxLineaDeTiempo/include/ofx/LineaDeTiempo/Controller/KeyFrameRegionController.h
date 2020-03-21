@@ -22,7 +22,7 @@ class KeyFrameRegionController
 {
 public:
 
-	KeyFrameRegionController(const std::string& name, const ofRange64u& timeRange, TrackController* parentTrack);
+	KeyFrameRegionController(const std::string& name, const ofRange64u& timeRange, TrackController* parentTrack, TimeControl* timeControl);
 	
 	virtual ~KeyFrameRegionController() = default;
 	

@@ -8,7 +8,7 @@
 #pragma once
 #include "LineaDeTiempo/BaseTypes/BaseViewController.h"
 //#include "LineaDeTiempo/BaseTypes/BaseController.h"
-
+#include "LineaDeTiempo/BaseTypes/BaseHasTimeControl.h"
 #include "LineaDeTiempo/View/RegionView.h"
 #include "ofRange.h"
 #include "DOM/Node.h"
@@ -23,11 +23,12 @@ class TrackController;
 
 class RegionController
 : public DOM::Node
+, public BaseHasTimeControl
 , public BaseViewController<RegionView>
 {
 public:
 
-	RegionController(const std::string& name, const ofRange64u& timeRange, TrackController* parentTrack);
+	RegionController(const std::string& name, const ofRange64u& timeRange, TrackController* parentTrack, TimeControl* timeControl);
 	
 	virtual ~RegionController() = default;
 	
@@ -41,7 +42,8 @@ public:
 	
 	ofEvent<ofRange64u> timeRangeChangedEvent;
 
-
+	using BaseHasTimeControl::getTimeControl;
+	
 protected:
 	
 	ofRange64u _timeRange;

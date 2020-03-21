@@ -42,7 +42,7 @@ TracksPanel::TracksPanel(const std::string& id, DOM::Element* parentView, const 
 	_tracksContainerListeners.push(tracksView->getContainer()->move.newListener(this, &TracksPanel::_tracksMoved));
 	_tracksContainerListeners.push(tracksView->getContainer()->resize.newListener(this, &TracksPanel::_tracksResized));
 
-	_playhead = tracksView->getContainer()->addChild<Playhead>(this);//, _timeControl);
+	_playhead = tracksView->getContainer()->addChild<Playhead>(this, controller->getTimeControl());//, _timeControl);
 //	MUI::Widget::setMoveToFrontOnCapture(false);
 //	tracksView->setScrollV({0,1});
 //	tracksView->setScrollH({0,1});
@@ -128,7 +128,7 @@ float TracksPanel::timeToScreenPosition(uint64_t time) const
 		auto clippingView = tracksView->getClippingView();
 		if(container && clippingView)
 		{
-			return container->localToScreen( {MUI::Math::lerp(time, 0, getTimeControl().getTotalTime(), 0, clippingView->getTracksWidth()), 0}).x ;
+			return container->localToScreen( {MUI::Math::lerp(time, 0, getController()->getTimeControl()->getTotalTime(), 0, clippingView->getTracksWidth()), 0}).x ;
 		}
 	}
 	
@@ -149,7 +149,7 @@ uint64_t  TracksPanel::screenPositionToTime(float x) const
 		if(container && clippingView)
 		{
 			
-			return  MUI::Math::lerp(container->screenToLocal({x, 0}).x, 0, clippingView->getTracksWidth(), 0, getTimeControl().getTotalTime()) ;
+			return  MUI::Math::lerp(container->screenToLocal({x, 0}).x, 0, clippingView->getTracksWidth(), 0, getController()->getTimeControl()->getTotalTime()) ;
 		}
 	}
 	

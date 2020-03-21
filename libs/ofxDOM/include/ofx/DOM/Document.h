@@ -15,6 +15,18 @@
 namespace ofx {
 namespace DOM {
 
+enum DocumentEvent{
+	SETUP_EVENT = 0,
+	UPDATE_EVENT,
+	DRAW_EVENT,
+	EXIT_EVENT,
+	WINDOW_RESIZED_EVENT,
+	FILE_DROPPED_EVENT,
+	KEY_PRESSED_EVENT,
+	KEY_RELEASED_EVENT,
+	NUM_EVENTS
+};
+
 
 /// \brief The Document represents the root DOM Element in an DOM tree.
 class Document: public Element
@@ -86,6 +98,12 @@ public:
     /// \throws DOMException on invalid DOM state or pointer id.
     void releasePointerCaptureForElement(Element* element, std::size_t id);
 
+	
+    void enableEventListener(DocumentEvent event);
+    void disableEventListener(DocumentEvent event);
+    bool isListeningEvent(DocumentEvent event);
+	
+	
 protected:
     /// \brief Map pointer ids to Elements.
     typedef std::unordered_map<std::size_t, Element*> PointerElementMap;
@@ -148,6 +166,8 @@ private:
                                        Element* target,
                                        Element* relatedTarget);
 
+
+    std::vector<bool> _enabledListeners;
 
     /// \brief Setup event listener.
     ofEventListener _setupListener;

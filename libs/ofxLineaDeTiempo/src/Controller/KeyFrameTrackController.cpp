@@ -15,8 +15,8 @@ namespace ofx {
 namespace LineaDeTiempo {
 
 
-KeyFrameTrackController::KeyFrameTrackController(const std::string& name, TrackGroupController* parent)
-:TrackController(name, parent)
+KeyFrameTrackController::KeyFrameTrackController(const std::string& name, TrackGroupController* parent, TimeControl* timeControl)
+:TrackController(name, parent, timeControl)
 {
 	
 }

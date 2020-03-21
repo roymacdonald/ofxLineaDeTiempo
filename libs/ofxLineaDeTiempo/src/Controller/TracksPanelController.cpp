@@ -17,8 +17,11 @@ namespace LineaDeTiempo {
 //,public BaseViewController<TracksPanel>
 
 TracksPanelController::TracksPanelController(const std::string& name)
-: TrackGroupController(name, nullptr)
+: TrackGroupController(name, nullptr, nullptr)
 {
+
+	_uniqueTimeControl = make_unique<TimeControl>();
+	_setTimeControl(  _uniqueTimeControl.get());
 	
 }
 
@@ -28,7 +31,7 @@ void TracksPanelController::setWindow(ofAppBaseWindow* window)
 	{
 		_currentWindow = window;
 		
-		_mainView = std::make_unique<MUI::MUI>(window);
+//		_mainView = std::make_unique<MUI::MUI>(window);
 	}
 }
 
@@ -43,6 +46,8 @@ void TracksPanelController::generateView()
 
 		if(!_mainView){
 			_mainView = std::make_unique<MUI::MUI>(_currentWindow);
+			if(!bAutoDrawEnabled)
+				disableAutoDraw();
 		}
 		
 		_panel = _mainView->addChild<TracksPanel>( this->getId(), _mainView.get(), ofRectangle(0, 0, ofGetWidth(), ofGetHeight()), this);
@@ -115,6 +120,53 @@ void TracksPanelController::_mainViewResized(DOM::ResizeEventArgs&)
 		ofLogError("TracksPanelController::_mainViewMoved") << "the mainView was resized but the panel is null. This should never happen.";
 	}
 }
+
+
+void TracksPanelController::enableAutoDraw()
+{
+	if(_mainView)
+	{
+		_mainView->enableEventListener(DOM::DRAW_EVENT);
+	}
+	bAutoDrawEnabled = true;
+}
+
+void TracksPanelController::disableAutoDraw()
+{
+	if(_mainView)
+	{
+		_mainView->disableEventListener(DOM::DRAW_EVENT);
+	}
+	bAutoDrawEnabled = false;
+}
+
+bool TracksPanelController::isAutoDrawEnabled()
+{
+	if(_mainView)
+	{
+		return _mainView->isListeningEvent(DOM::DRAW_EVENT);
+	}
+	return bAutoDrawEnabled;
+}
+
+void TracksPanelController::draw()
+{
+	if(!isAutoDrawEnabled())
+	{
+		if(_mainView)
+		{
+			ofEventArgs e;
+			_mainView->draw(e);
+		}
+	}
+	else
+	{
+		ofLogWarning("TracksPanelController::draw") << "Do not call TracksPanelController::draw() function when it has auto draw enabled.";
+	}
+}
+
+
+
 
 
 } } // ofx::LineaDeTiempo

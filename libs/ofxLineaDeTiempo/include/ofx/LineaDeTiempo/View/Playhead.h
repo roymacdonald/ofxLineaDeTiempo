@@ -6,12 +6,10 @@
 //
 
 #pragma once
-#include "ConstrainedGrabHandle.h"
-#include "ofRectangleHelper.h"
-//#include "TimeControl.h"
-//#include "TracksPanel.h"
-//#include "Constants.h"
+#include "MUI/Handles/ConstrainedGrabHandle.h"
+#include "MUI/ofRectangleHelper.h"
 
+#include "LineaDeTiempo/BaseTypes/BaseHasTimeControl.h"
 
 
 namespace ofx {
@@ -23,10 +21,13 @@ class TracksPanel;
 
 
 
-class Playhead: public MUI::ConstrainedGrabHandle{
+class Playhead
+: public MUI::ConstrainedGrabHandle
+, public BaseHasTimeControl
+{
 public:
 	
-	Playhead(TracksPanel* tracksPanel);
+	Playhead(TracksPanel* tracksPanel, TimeControl* timeControl);
 	virtual ~Playhead(){}
 	
 	virtual void onDraw() const override;

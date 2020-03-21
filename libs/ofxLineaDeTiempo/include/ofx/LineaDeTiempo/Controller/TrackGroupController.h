@@ -12,6 +12,7 @@
 #include "LineaDeTiempo/Controller/TrackController.h"
 #include "LineaDeTiempo/BaseTypes/NamedConstPointerCollection.h"
 
+#include "LineaDeTiempo/BaseTypes/BaseHasTimeControl.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -22,13 +23,14 @@ class TrackGroupController
 :public DOM::Node
 //,public BaseHasTracks<TrackController>
 //,public BaseHasGroups<TrackGroupController>//<TrackGroupViewType>>
+, public BaseHasTimeControl
 , public BaseViewController<TrackGroupView>
 //,public BaseHasName
 {
 public:
 	
 	
-	TrackGroupController(const std::string& name, TrackGroupController * parent);
+	TrackGroupController(const std::string& name, TrackGroupController * parent, TimeControl* timeControl);
 	
 	virtual void generateView() override;
 	virtual void destroyView() override;
@@ -44,7 +46,7 @@ public:
 		return CollectionHelper::
 		_add< NewTrackControllerType, TrackGroupController, TrackController>
 		
-		( _tracksCollection, this, uniqueName, this);
+		( _tracksCollection, this, uniqueName, this, getTimeControl());
 		
 	}
 	
@@ -63,7 +65,7 @@ public:
 		
 	}
 	
-	
+	using BaseHasTimeControl::getTimeControl;
 	
 	using BaseViewController<TrackGroupView>::getView;
 	using BaseViewController<TrackGroupView>::setView;

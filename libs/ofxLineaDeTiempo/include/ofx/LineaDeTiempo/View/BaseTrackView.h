@@ -11,6 +11,9 @@
 #include "LineaDeTiempo/Controller/TimeControl.h"
 #include "LineaDeTiempo/BaseTypes/BaseHasHeader.h"
 
+
+#include "LineaDeTiempo/BaseTypes/BaseHasTimeControl.h"
+
 #include "LineaDeTiempo/View/TrackHeader.h"
 
 #include "DOM/Element.h"
@@ -26,7 +29,6 @@ class TrackGroupView;
 class BaseTrackView
 : public DOM::Element
 , public BaseHasHeader<TrackHeader>
-
 {
 public:
 

@@ -12,9 +12,9 @@ namespace ofx {
 namespace LineaDeTiempo {
 
 
-RegionController::RegionController(const std::string& name, const ofRange64u& timeRange, TrackController* parentTrack)
+RegionController::RegionController(const std::string& name, const ofRange64u& timeRange, TrackController* parentTrack, TimeControl* timeControl)
 :DOM::Node(name, parentTrack)
-//BaseController(name, parentTrack)
+, BaseHasTimeControl(timeControl, "RegionController")
 , _parentTrack(parentTrack)
 , _timeRange(timeRange)
 {

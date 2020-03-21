@@ -13,8 +13,9 @@ namespace ofx {
 namespace LineaDeTiempo {
 
 
-TrackGroupController::TrackGroupController(const std::string& name, TrackGroupController * parent)
+TrackGroupController::TrackGroupController(const std::string& name, TrackGroupController * parent, TimeControl* timeControl)
 : DOM::Node(name, parent)
+, BaseHasTimeControl(timeControl, "TrackGroupController : " + name)
 //,_parentGroup(parent)
 //,BaseHasTracks<TrackController>()
 //,BaseHasGroups<TrackGroupController>()

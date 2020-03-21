@@ -128,18 +128,27 @@ private:
 };
 
 
-
-static TimeControl & getTimeControl(const std::string& id = "default"){
-	static std::unique_ptr<std::map<std::string, TimeControl>> m;
-	if(!m){
-		// esto ocurrira una sola vez
-		m = make_unique<std::map<std::string, TimeControl>>();
-		
-		//cualquier otro codigo que sea necesario para inicializar correctamente la variable
-	}
-	
-	return (*m)[id];
-}
+//
+//static TimeControl & getTimeControl(const std::string& id = "default"){
+////	static std::unique_ptr<std::map<std::string, TimeControl>> m;
+////	if(!m){
+////		// esto ocurrira una sola vez
+////		m = make_unique<std::map<std::string, TimeControl>>();
+////
+////		//cualquier otro codigo que sea necesario para inicializar correctamente la variable
+////	}
+////
+////	return (*m)[id];
+////	static std::unique_ptr<int> i = make_unique<int>(0);
+////	std::cout << "getTimeControl " << *i << "\n";
+////	
+//	static std::unique_ptr<TimeControl> m = make_unique<TimeControl>();
+//	
+//	return *m;
+//
+//	
+//	
+//}
 
 
 

@@ -25,6 +25,7 @@ BaseTrackView::BaseTrackView(const std::string& id, DOM::Element* parentView)
 //,_parentGroupView(parentGroupView)
 {
 	setParent(parentView);
+	
 }
 
 
