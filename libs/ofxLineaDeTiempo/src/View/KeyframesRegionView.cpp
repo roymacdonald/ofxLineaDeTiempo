@@ -10,13 +10,13 @@
 #include "ofEvent.h"
 
 #include "LineaDeTiempo/View/TrackView.h"
-#include "LineaDeTiempo/Controller/RegionController.h"
+#include "LineaDeTiempo/Controller/KeyFrameRegionController.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
 
 //---------------------------------------------------------------------------------------------------------------------
-KeyframesRegionView::KeyframesRegionView(TrackView* parentTrack, RegionController *controller)
+KeyframesRegionView::KeyframesRegionView(TrackView* parentTrack, KeyFrameRegionController *controller)
 :RegionView(parentTrack, controller)
 {
 	setDraggable(true);
