@@ -10,6 +10,8 @@
 #include "LineaDeTiempo/View/KeyFrame.h"
 #include "LineaDeTiempo/View/RegionView.h"
 
+class KeyFrameRegionController;
+
 class TrackView;
 
 namespace ofx {
@@ -17,7 +19,7 @@ namespace LineaDeTiempo {
 
 class KeyframesRegionView: public RegionView{
 public:
-	KeyframesRegionView (TrackView* parentTrack, RegionController *controller);
+	KeyframesRegionView (TrackView* parentTrack, KeyFrameRegionController *controller);
 	virtual ~KeyframesRegionView() = default;
 		
 	void selectKeyframe(KeyFrame* k);
