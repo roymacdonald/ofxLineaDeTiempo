@@ -6,7 +6,7 @@
 //
 
 #include "LineaDeTiempo/View/KeyFrameView.h"
-//#include "LineaDeTiempo/View/TrackView.h"
+#include "LineaDeTiempo/View/TrackView.h"
 #include "ofRectangleHelper.h"
 #include "LineaDeTiempo/View/KeyframesRegionView.h"
 //#include "LineaDeTiempo/Controller/KeyframeController.h"
@@ -52,10 +52,6 @@ void KeyFrameView::setSelected(bool select){
 	auto p = dynamic_cast<KeyframesRegionView*>(parent());
     if(p){
         if(!_isSelected && select){
-          
-			if(!ofGetKeyPressed(OF_KEY_SHIFT)){
-				p->unselectAllKeyframes();
-			}
 			_isSelected = true;
             p->selectKeyframe(this);
         }else if(_isSelected && !select){
