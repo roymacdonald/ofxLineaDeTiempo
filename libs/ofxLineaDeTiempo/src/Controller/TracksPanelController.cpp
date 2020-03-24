@@ -30,8 +30,6 @@ void TracksPanelController::setWindow(ofAppBaseWindow* window)
 	if(_currentWindow != window)
 	{
 		_currentWindow = window;
-		
-//		_mainView = std::make_unique<MUI::MUI>(window);
 	}
 }
 
@@ -86,10 +84,7 @@ void TracksPanelController::destroyView()
 	}
 }
 
-KeyFrameTrackController* TracksPanelController::addKeyFrameTrack(const std::string& name)
-{
-	return addTrack<KeyFrameTrackController>(name);
-}
+
 
 void TracksPanelController::_mainViewMoved(DOM::MoveEventArgs&)
 {
@@ -164,7 +159,6 @@ void TracksPanelController::draw()
 		ofLogWarning("TracksPanelController::draw") << "Do not call TracksPanelController::draw() function when it has auto draw enabled.";
 	}
 }
-
 
 
 
