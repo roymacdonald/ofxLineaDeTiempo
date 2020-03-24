@@ -14,6 +14,10 @@
 
 #include "LineaDeTiempo/BaseTypes/BaseHasTimeControl.h"
 
+#include "ofParameter.h"
+#include "LineaDeTiempo/Controller/KeyFrameTrackController.h"
+
+
 namespace ofx {
 namespace LineaDeTiempo {
 
@@ -37,38 +41,30 @@ public:
 	
 	virtual ~TrackGroupController() = default;
 	
+	TrackGroupController* add(ofParameterGroup& paramGroup);
+	
+	
+	template<typename DataType>
+	KeyFrameTrackController_<DataType>* add(ofParameter<DataType>& parameter);
+
+	
+	template<typename DataType>
+	KeyFrameTrackController_<DataType> * addTrack( ofParameter<DataType>& parameter);
+
+	
 	template<typename NewTrackControllerType>
-	NewTrackControllerType * addTrack( const std::string& trackName = "")
-	{
-		
-		auto uniqueName = _tracksCollection.makeUniqueName(trackName, "Track");
-		
-		return CollectionHelper::
-		_add< NewTrackControllerType, TrackGroupController, TrackController>
-		
-		( _tracksCollection, this, uniqueName, this, getTimeControl());
-		
-	}
+	NewTrackControllerType * addTrack( const std::string& trackName = "");
+	
+	
+	template<typename DataType>
+	KeyFrameTrackController_<DataType>* addKeyFrameTrack(const std::string& name);
+	
 	
 	bool removeTrack(TrackController* track);
 	
 	
-	template<typename NewGroupControllerType>
-	NewGroupControllerType * addGroup( const std::string& groupName = "")
-	{
-		auto uniqueName = _groupsCollection.makeUniqueName(groupName, "Group");
-		
-		return CollectionHelper::
-		_add< NewGroupControllerType, TrackGroupController, TrackGroupController >
-		
-		( _groupsCollection,  this, uniqueName, this);
-		
-	}
-	
-	using BaseHasTimeControl::getTimeControl;
-	
-	using BaseViewController<TrackGroupView>::getView;
-	using BaseViewController<TrackGroupView>::setView;
+	template<typename NewTrackControllerType>
+	NewTrackControllerType * addGroup( const std::string& groupName = "");
 	
 	bool removeGroup(TrackGroupController* group);
 	
@@ -164,16 +160,14 @@ public:
 		return _tracksCollection.size();
 	}
 	
+	using BaseHasTimeControl::getTimeControl;
 	
+	using BaseViewController<TrackGroupView>::getView;
+	using BaseViewController<TrackGroupView>::setView;
 	
-	
-	
-//	TrackGroupController * parentGroup();
-//	const TrackGroupController * parentGroup() const;
 	
 protected:
 	
-//	TrackGroupController * _parentGroup = nullptr;
 	NamedConstPointerCollection<TrackGroupController> _groupsCollection;
 	NamedConstPointerCollection<TrackController> _tracksCollection;
 	
@@ -182,6 +176,66 @@ private:
 	
 	
 };
+
+
+template<typename DataType>
+KeyFrameTrackController_<DataType>* TrackGroupController::add(ofParameter<DataType>& parameter)
+{
+	return addTrack<DataType> (parameter);
+}
+
+
+template<typename DataType>
+KeyFrameTrackController_<DataType> * TrackGroupController::addTrack( ofParameter<DataType>& parameter)
+{
+	
+	auto uniqueName = _tracksCollection.makeUniqueName(parameter.getName(), "Parameter");
+	
+	if(uniqueName != parameter.getName())
+	{
+		ofLogWarning("TrackGroupController::addTrack") << "There is already another track named: \"" << parameter.getName() << "\".\nRenamed to: \"" << uniqueName << "\"" ;
+		parameter.setName(uniqueName);
+	}
+	
+	return CollectionHelper::
+	_add< KeyFrameTrackController_<DataType>, TrackGroupController, TrackController>
+	
+	( _tracksCollection, this, parameter, this, getTimeControl());
+	
+}
+
+
+template<typename NewTrackControllerType>
+NewTrackControllerType * TrackGroupController::addTrack( const std::string& trackName)
+{
+	
+	auto uniqueName = _tracksCollection.makeUniqueName(trackName, "Track");
+	
+	return CollectionHelper::
+	_add< NewTrackControllerType, TrackGroupController, TrackController>
+	
+	( _tracksCollection, this, uniqueName, this, getTimeControl());
+	
+}
+
+template<typename DataType>
+KeyFrameTrackController_<DataType>* TrackGroupController::addKeyFrameTrack(const std::string& name)
+{
+	return addTrack<KeyFrameTrackController_<DataType>> (name);
+}
+
+template<typename NewTrackControllerType>
+NewTrackControllerType * TrackGroupController::addGroup( const std::string& groupName )
+{
+	auto uniqueName = _groupsCollection.makeUniqueName(groupName, "Group");
+	
+	return CollectionHelper::
+	_add< NewTrackControllerType, TrackGroupController, TrackGroupController >
+	
+	( _groupsCollection,  this, uniqueName, this, getTimeControl());
+	
+}
+
 
 
 } } // ofx::LineaDeTiempo
