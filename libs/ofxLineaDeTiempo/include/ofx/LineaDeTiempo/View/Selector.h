@@ -7,11 +7,11 @@
 
 
 #pragma once
-#include "LineaDeTiempo/View/KeyFrameView.h"
-#include "LineaDeTiempo/View/RegionView.h"
+
 #include "LineaDeTiempo/BaseTypes/BaseSelectable.h"
 #include "ofEvent.h"
-
+#include "DOM/Element.h"
+//#include "ofMain.h"
 
 
 namespace ofx {
@@ -26,7 +26,7 @@ public:
 	static_assert(std::is_base_of<BaseSelectable, ElementType>::value,
 	"Selector<ElementType> instantiation failed. ElementType has to to be derived from ofx::LineaDeTiempo::BaseSelectable.");
 	
-	static_assert(std::is_base_of<BaseSelectable, ElementType>::value,
+	static_assert(std::is_base_of<DOM::Element, ElementType>::value,
 	"Selector<ElementType> instantiation failed. ElementType has to to be derived from ofx::DOM::Element.");
 	
 	
@@ -51,9 +51,15 @@ public:
 	///\brief this function needs to be implemented on the derived class and pass the collection of elements that can be selected.
 	/// these elements must inherit form ofx::LineaDeTiempo::BaseSelectable
 	virtual std::vector<ElementType*> & getCollection() = 0;
-	virtual bool elementSort(ElementType* a, ElementType* b) = 0;
+	
+
+	std::vector<ElementType*> & getSelectedElements();
+	const std::vector<ElementType*> & getSelectedElements() const;
+	
 
 protected:
+	
+	
 	
 	void _SelectorPointerDown(const glm::vec2& localPosition);
 

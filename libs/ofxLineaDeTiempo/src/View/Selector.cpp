@@ -5,8 +5,8 @@
 //  Created by Roy Macdonald on 3/22/20.
 //
 
-#include "SelectionRect.h"
-
+#include "LineaDeTiempo/View/Selector.h"
+#include "ofGraphics.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -47,6 +47,9 @@ bool Selector<ElementType>::_SelectorPointerUp(const glm::vec2& localPosition)
 		_rect.set(0, 0, 0, 0);
 		return true;
 	}else {
+		if(selectedElements.size()){
+			unselectAllElements();
+		}
 		return  false;
 	}
 }
@@ -137,7 +140,15 @@ bool Selector<ElementType>::isElementSelected(ElementType* k)
 {
 	if(k == nullptr) return false;
 	if(selectedElements.size()==0) return false;
-	return binary_search(selectedElements.begin(), selectedElements.end(), k, keyframesort);
+	for(auto e : selectedElements)
+	{
+		if(e && k == e)
+		{
+			return true;
+		}
+	}
+	return false;
+//	return binary_search(selectedElements.begin(), selectedElements.end(), k, keyframesort);
 }
 //---------------------------------------------------------------------------------------------------------------------
 template<typename ElementType>
@@ -153,6 +164,18 @@ void Selector<ElementType>::_setSelectedElementsFromRect(const ofRectangle& r, b
 	}
 }
 
+template<typename ElementType>
+std::vector<ElementType*> & Selector<ElementType>::getSelectedElements()
+{
+	return selectedElements;
+	
+}
+
+template<typename ElementType>
+const std::vector<ElementType*> & Selector<ElementType>::getSelectedElements() const
+{
+	return selectedElements;
+}
 
 
 } } // ofx::LineaDeTiempo
