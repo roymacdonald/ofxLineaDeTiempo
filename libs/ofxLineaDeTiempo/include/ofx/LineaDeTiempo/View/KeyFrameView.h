@@ -12,11 +12,11 @@ namespace ofx {
 namespace LineaDeTiempo {
 
 class KeyframesRegionView;
-class KeyFrame: public MUI::Widget{
+class KeyFrameView: public MUI::Widget{
 public:
 	friend class KeyframesRegionView;
-	KeyFrame(const std::string& id, const glm::vec2& pos);
-	virtual ~KeyFrame(){}
+	KeyFrameView(const std::string& id, const glm::vec2& pos);
+	virtual ~KeyFrameView(){}
 	
 
 	virtual void onDraw() const override;

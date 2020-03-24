@@ -12,10 +12,10 @@
 namespace ofx {
 namespace LineaDeTiempo {
 //---------------------------------------------------------------------------------------------------------------------
-float KeyFrame::defaultKeyFrameSize = 15;
+float KeyFrameView::defaultKeyFrameSize = 15;
 //---------------------------------------------------------------------------------------------------------------------
 
-KeyFrame::KeyFrame(const std::string& id, const glm::vec2& pos):
+KeyFrameView::KeyFrameView(const std::string& id, const glm::vec2& pos):
 Widget(id,0,0, defaultKeyFrameSize, defaultKeyFrameSize)
 {
 	setDraggable(true);
@@ -26,7 +26,7 @@ Widget(id,0,0, defaultKeyFrameSize, defaultKeyFrameSize)
 
 }
 //---------------------------------------------------------------------------------------------------------------------
-void KeyFrame::onDraw() const {
+void KeyFrameView::onDraw() const {
 	Widget::onDraw();
 	if(bSelected){
 		ofPushStyle();
@@ -45,7 +45,7 @@ void KeyFrame::onDraw() const {
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void KeyFrame::setSelected(bool select){
+void KeyFrameView::setSelected(bool select){
 	auto p = dynamic_cast<KeyframesRegionView*>(parent());
     if(p){
         if(!bSelected && select){
@@ -63,7 +63,7 @@ void KeyFrame::setSelected(bool select){
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void KeyFrame::_onDragging(const DOM::CapturedPointer& pointer)
+void KeyFrameView::_onDragging(const DOM::CapturedPointer& pointer)
 {
 	auto delta = getPosition();
 	
@@ -82,7 +82,7 @@ void KeyFrame::_onDragging(const DOM::CapturedPointer& pointer)
 	}
 }
 //---------------------------------------------------------------------------------------------------------------------
-void KeyFrame::_updatePosition()
+void KeyFrameView::_updatePosition()
 {
 	glm::vec2 pos;
 	auto p = dynamic_cast<KeyframesRegionView*>(parent());
@@ -94,16 +94,16 @@ void KeyFrame::_updatePosition()
 	}
 }
 //---------------------------------------------------------------------------------------------------------------------
-float KeyFrame::getValue() const 
+float KeyFrameView::getValue() const
 {
 	return _value;
 }
 //---------------------------------------------------------------------------------------------------------------------
-uint64_t KeyFrame::getTime() const{
+uint64_t KeyFrameView::getTime() const{
 	return _time;
 }
 //---------------------------------------------------------------------------------------------------------------------
-void KeyFrame::_updateValue(){
+void KeyFrameView::_updateValue(){
 	auto p = dynamic_cast<KeyframesRegionView*>(parent());
     if(p && p->parentTrack()){
 		_time = p->parentTrack()->screenPositionToTime(getScreenCenterPosition().x);
@@ -111,7 +111,7 @@ void KeyFrame::_updateValue(){
 	}
 }
 //---------------------------------------------------------------------------------------------------------------------
-void KeyFrame::_onPointerEvent(DOM::PointerUIEventArgs& e)
+void KeyFrameView::_onPointerEvent(DOM::PointerUIEventArgs& e)
 {
     if (e.type() == PointerEventArgs::POINTER_DOWN)
     {
@@ -156,7 +156,7 @@ void KeyFrame::_onPointerEvent(DOM::PointerUIEventArgs& e)
     }
 }
 //---------------------------------------------------------------------------------------------------------------------
-bool KeyFrame::isSelected(){
+bool KeyFrameView::isSelected(){
     return bSelected;
 }
 
