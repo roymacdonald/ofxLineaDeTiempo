@@ -52,12 +52,14 @@ public:
 	
 	
 	
-	template< typename RegionViewType>
-	RegionViewType* addRegion(RegionController * controller )
+	template< typename RegionViewType, typename RegionControllerType>
+	RegionViewType* addRegion(RegionControllerType  * controller )
 	{
 		static_assert(std::is_base_of<RegionView, RegionViewType>::value,
 						  "TrackView::AddRegion : RegionViewType must inherit from ofx::LineaDeTiempo::RegionView");
-			
+		static_assert(std::is_base_of<RegionController, RegionControllerType>::value,
+					  "TrackView:: RegionControllerType must be of type ofx::LineaDeTiempo::RegionController or derived from it");
+		
 		auto r = addChild<RegionViewType>(this,controller);
 		r->setStyles( _regionsStyle);
 		return r;
