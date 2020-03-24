@@ -21,16 +21,13 @@ public:
 	virtual ~BaseSelectable() = default;
 	
 	virtual void setSelected(bool selected) = 0;
-//	{
-//		_isSelected = selected;
-//	}
 	
 	bool isSelected() const
 	{
 		return _isSelected;
 	}
 	
-protected:
+	
 	bool _isSelected = false;
 };
 
