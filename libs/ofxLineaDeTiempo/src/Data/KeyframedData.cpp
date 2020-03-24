@@ -15,52 +15,21 @@ namespace LineaDeTiempo {
 //---------------------------------------------------------------------------------
 template<typename T>
 KeyframedData_<T>::KeyframedData_()
-: KeyframedData_("")
-{
-	
-}
-
-template<typename T>
-KeyframedData_<T>::KeyframedData_(const std::string & name)//, std::shared_ptr<TimeControl> timeControl):
-//_timeControl(timeControl),
-: BaseHasName(name)
 {
 	_lastUpdateTime = std::numeric_limits<uint64_t>::max();
 }
 
-
 //---------------------------------------------------------------------------------
 template<typename T>
-T KeyframedData_<T>::getValueAtTime(const uint64_t& time) 
+T KeyframedData_<T>::getValueAtTime(const uint64_t& time)
 {
-	//	if(_data.size() == 0)
-	//	{
-	//
-	//		return T();
-	//	}
-	//	if(time <= _data[0]->time)
-	//	{
-	//		return _data[0]->value;
-	//	}
-	//	if(_data.back()->time <= time )
-	//	{
-	//		return _data.back()->value;
-	//	}
+
 	T val;
 	
 	if(!_isTimeInDataBounds(val, time)) return val;
 	
 	if(_timedMap.count(time)) return _timedMap[time]->value;
 	
-	//	for(size_t i = 1; i < _data.size(); i++)
-	//	{
-	////		if(_data[i]->time == time)
-	////		{
-	////			return _data[i]->value;
-	////		}
-	////		else
-	//		if(_data[i]->time > time)
-	//		{
 	if(_data.size() < 2)
 	{
 		ofLogError("KeyframedData_<T>::getValueAtTime") << "it should never get to this point. _data.size is less than 2.";
@@ -68,7 +37,7 @@ T KeyframedData_<T>::getValueAtTime(const uint64_t& time)
 	
 	auto i = _findNextIndex(time);
 	if(i <  _data.size()){
-//		return _data[i-1]->interpolateTo( _data[i].get(), time);
+
 		
 		return _currentValue = Interpolator::interpolateTimedData(_data[i-1].get() , _data[i].get(), time);
 		
@@ -91,19 +60,9 @@ TimedData_<T>* KeyframedData_<T>::add(const T& value, const uint64_t& time)
 		_timedMap[time]->value = value;
 		return _timedMap[time];
 	}
-	//	for(auto& d: _data){
-	//		if(d->time == time)
-	//		{
-	//			ofLogNotice("KeyframeTrackDataManager_<T>::add") << "there is already data at this point. Updating to new value";
-	//			d->value = value;
-	//			return d.get();
-	//		}
-	//	}
-	
 	_addToCollection(value, time);
 	
-	//	_data.emplace_back(std::make_unique<TimedData_<T>>(value, time));
-	//	_timedMap[time] = _data.back().get();
+	
 	sortData();
 }
 //---------------------------------------------------------------------------------
@@ -149,11 +108,6 @@ bool KeyframedData_<T>::update(const uint64_t& time)
 		return false;
 	}
 	
-	//	if(_timedMap.count(time)){
-	//		_currentValue = _timedMap[time]->value;
-	//		_lastUpdateTime = time;
-	//		return;
-	//	}
 	
 	if(_lastUpdateTime == time)
 	{
@@ -172,14 +126,6 @@ bool KeyframedData_<T>::update(const uint64_t& time)
 		_currentIndex = _findNextIndex(time);
 	}
 	
-	//	if(_data[_currentIndex]->time == time){
-	//		_currentValue = _data[_currentIndex]->value;
-	//		_currentIndex++;
-	//
-	//
-	//
-	//		return;
-	//	}
 	
 	if(_currentIndex == 0)
 	{
@@ -188,12 +134,6 @@ bool KeyframedData_<T>::update(const uint64_t& time)
 		
 		return false;
 	}
-	
-	//	if(_lastUpdateTime > time)
-	//	{
-	//
-	//		_currentIndex = _findNextIndex(time);
-	//		_lastUpdateTime = time;
 	
 	if(_currentIndex >= _data.size())
 	{
@@ -204,26 +144,9 @@ bool KeyframedData_<T>::update(const uint64_t& time)
 	
 	_currentValue = Interpolator::interpolateTimedData(_data[_currentIndex-1].get() , _data[_currentIndex].get(), time);
 	
-//	_currentValue = _data[_currentIndex-1]->interpolateTo(
-	
-	
 	return true;
 	
-	//		if(_data[_currentIndex]->time == time){
-	//			_currentValue = _data[_currentIndex]->value;
-	//			_currentIndex++;
-	//			return;
-	//		}
-	//	}
-	
-	
-	
-	
-	
-	//	uint64_t _lastUpdateTime = 0;
-	//
-	//	size_t _currentIndex =0;
-	
+
 	
 	
 	
@@ -270,7 +193,13 @@ size_t KeyframedData_<T>::_findNextIndex(const uint64_t& time)
 template<typename T>
 void KeyframedData_<T>::sortData()
 {
-	ofSort(this->_data, KeyframedData_<T>::_sortData);
+	ofSort(this->_data,
+				[](const std::unique_ptr<TimedData_<T>>& a, const std::unique_ptr<TimedData_<T>>& b)
+				{
+					return a->time < b->time;
+				}
+		   );
+//		   timedDataSort);
 }
 //---------------------------------------------------------------------------------
 template<typename T>
@@ -293,34 +222,6 @@ void KeyframedData_<T>::setValue(const T& value, const uint64_t& time, bool bAdd
 	{
 		add(value, time);
 	}
-}
-//---------------------------------------------------------------------------------
-template<typename T>
-void KeyframedData_<T>::_enableKeyframing(bool e)
-{
-	if(_bKeyframingEnabled != e){
-		_bKeyframingEnabled = e;
-		_bKeyframingEnabledProxy = _bKeyframingEnabled;
-		ofNotifyEvent(keyframingEnableEvent, _bKeyframingEnabledProxy, this);
-	}
-}
-//---------------------------------------------------------------------------------
-template<typename T>
-void KeyframedData_<T>::enableKeyframing()
-{
-	_enableKeyframing(true);
-}
-//---------------------------------------------------------------------------------
-template<typename T>
-void KeyframedData_<T>::disableKeyframing()
-{
-	_enableKeyframing(false);
-}
-//---------------------------------------------------------------------------------
-template<typename T>
-bool KeyframedData_<T>::isKeyFramingEnabled() const
-{
-	return _bKeyframingEnabled;
 }
 //---------------------------------------------------------------------------------
 template<typename T>
@@ -347,13 +248,13 @@ void KeyframedData_<T>::fromJson(const ofJson& j)
 			return;
 		}
 		
-		j.at("name").get_to(_name);
+//		j.at("name").get_to(_name);
 		j.at("currentValue").get_to(_currentValue);
 		j.at("lastUpdateTime").get_to(_lastUpdateTime);
 		j.at("currentIndex").get_to(_currentIndex);
-		j.at("bKeyframingEnabled").get_to(_bKeyframingEnabled);
-		
-		
+		setEnableKeyframing(j.at("bKeyframingEnabled").get<bool>());
+
+
 		for(auto& k: j.at("keyframes")){
 			_addToCollection(k.at("value").get<T>(), k.at("time").get<uint64_t>());
 		}
@@ -376,11 +277,11 @@ void KeyframedData_<T>::fromJson(const ofJson& j)
 template<typename T>
 void KeyframedData_<T>::toJson(ofJson& j)
 {
-	j["name"] = _name;
+//	j["name"] = _name;
 	j["currentValue"] = _currentValue;
 	j["lastUpdateTime"] = _lastUpdateTime;
 	j["currentIndex"] = _currentIndex;
-	j["bKeyframingEnabled"] = _bKeyframingEnabled;
+	j["bKeyframingEnabled"] = isKeyFramingEnabled();
 	j["keyframe_type"] = std::string(typeid(T).name());
 	j["keyframes"] = nlohmann::json::array();
 	for(auto& d: _data){
@@ -395,7 +296,7 @@ template<typename T>
 void KeyframedData_<T>::moveAllByTime(const uint64_t& _timeOffset)
 {
 	for(auto& d: _data){
-		d->time += _timeOffset; 
+		d->time += _timeOffset;
 	}
 }
 
@@ -416,7 +317,7 @@ std::ostream& operator<<(std::ostream& os, const KeyframedData_<DataType>& data)
 template<typename DataType>
 std::istream& operator>>(std::istream& is, KeyframedData_<DataType>& data)
 {
-	
+
 	is >> data._name;
 	is.ignore(2);
 	is >> data._currentValue;
@@ -431,19 +332,19 @@ std::istream& operator>>(std::istream& is, KeyframedData_<DataType>& data)
 	is >> size;
 	//	<< data._data.size();
 	DataType d;
-	
+
 	data.clear();
-	
+
 	for(size_t i =0; i < size; i++)
 	{
 		is.ignore(2);
 		is >> d;
 		data._addToCollection(d.value, d.time);
-		
+
 	}
 	data.sortData();
 	return is;
-	
+
 }
 
 
