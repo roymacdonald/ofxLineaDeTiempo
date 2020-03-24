@@ -12,16 +12,19 @@
 #include "LineaDeTiempo/Data/TimedData.h"
 #include "LineaDeTiempo/Controller/TimeControl.h"
 #include "LineaDeTiempo/BaseTypes/BaseHasName.h"
+#include "LineaDeTiempo/BaseTypes/BaseKeyFramer.h"
+
+
 namespace ofx {
 namespace LineaDeTiempo {
 
 
 template<typename DataType>
-class KeyframedData_: public BaseHasName
+class KeyframedData_
+: public BaseKeyFramer
 {
 public:
 	KeyframedData_();
-	KeyframedData_(const std::string & name);//, std::shared_ptr<TimeControl> timeControl);
 	virtual ~KeyframedData_(){}
 	
 	
@@ -50,14 +53,9 @@ public:
 
 	
 	
-	void enableKeyframing();
 	
-	void disableKeyframing();
-	
-	bool isKeyFramingEnabled() const;
-	
-	ofEvent<bool> keyframingEnableEvent;
-	
+
+	std::vector< std::unique_ptr< TimedData_<DataType> > > & getData();
 	const std::vector< std::unique_ptr< TimedData_<DataType> > > & getData() const;
 	
 	
@@ -74,10 +72,6 @@ protected:
 	std::map<uint64_t, TimedData_<DataType>*  > _timedMap;
 	
 	
-	static bool _sortData(const std::unique_ptr<TimedData_<DataType>>& a, const std::unique_ptr<TimedData_<DataType>>& b)
-	{
-		return a->time < b->time;
-	}
 	
 	DataType _currentValue;
 	
@@ -99,17 +93,10 @@ private:
 	
 	bool _isTimeInDataBounds(DataType& d,  const uint64_t& time);
 	
-	bool _bKeyframingEnabled = true;
-	bool _bKeyframingEnabledProxy = true;
-	
-	void _enableKeyframing(bool e);
-	
-//	std::string _name;
 };
 
 
-} } // ofx::LineaDeTiempo
-
+}} //ofx::LineaDeTiempo
 
 
 namespace nlohmann{

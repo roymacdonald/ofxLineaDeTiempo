@@ -31,6 +31,7 @@ template<class DataType>
 class TimedData_: public AbstractSerializable
 {
 public:
+	
 //	static_assert(std::is_base_of<AbstractSerializable, DataType>, "TimedData_<DataType> error. DataType must inherit from ofx::LineaDeTiempo::AbstractSerializable");
 	TimedData_(){}
 	TimedData_(const DataType& _value, const uint64_t& _time):
@@ -40,11 +41,11 @@ public:
 	virtual ~TimedData_(){}
 	
 	DataType value;
-	uint64_t time;
+	uint64_t time = 0;
 	
-	void setTime(uint64_t _time);
-
-	const uint64_t& getTime() const;
+//	void setTime(uint64_t _time);
+//
+//	const uint64_t& getTime() const;
 
 	
 public:
