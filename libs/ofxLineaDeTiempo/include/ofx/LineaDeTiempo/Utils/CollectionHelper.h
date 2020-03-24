@@ -39,15 +39,11 @@ NewControllerType * _add( NamedConstPointerCollection<CollectionType>& collectio
 				  
 				  "CollectionHelper _add(...) failed. TemplateType must be equal to or derived from another Templated Type");
 	
-//	std::cout << "_add:" << getId() << "\n";
-	
 	
 	auto t = parentElement->template addChild<NewControllerType >(std::forward<Args>(args)...);
 	
 	collection.add(t);
-	
-//	t->generateView();
-	
+
 	return t;
 }
 
