@@ -5,18 +5,21 @@
 //  Created by Roy Macdonald on 2/14/20.
 //
 
-#include "KeyFrame.h"
+#include "LineaDeTiempo/View/KeyFrameView.h"
+//#include "LineaDeTiempo/View/TrackView.h"
 #include "ofRectangleHelper.h"
-#include "KeyframesRegionView.h"
-#include "TrackView.h"
+#include "LineaDeTiempo/View/KeyframesRegionView.h"
+//#include "LineaDeTiempo/Controller/KeyframeController.h"
+
 namespace ofx {
 namespace LineaDeTiempo {
 //---------------------------------------------------------------------------------------------------------------------
 float KeyFrameView::defaultKeyFrameSize = 15;
 //---------------------------------------------------------------------------------------------------------------------
 
-KeyFrameView::KeyFrameView(const std::string& id, const glm::vec2& pos):
-Widget(id,0,0, defaultKeyFrameSize, defaultKeyFrameSize)
+KeyFrameView::KeyFrameView(const std::string& id, const glm::vec2& pos)
+: Widget(id,0,0, defaultKeyFrameSize, defaultKeyFrameSize)
+//, BaseHasController<KeyframeController>()
 {
 	setDraggable(true);
 	setShapeDrawMode(MUI::ShapeDrawMode::ELLIPSE);
@@ -28,7 +31,7 @@ Widget(id,0,0, defaultKeyFrameSize, defaultKeyFrameSize)
 //---------------------------------------------------------------------------------------------------------------------
 void KeyFrameView::onDraw() const {
 	Widget::onDraw();
-	if(bSelected){
+	if(isSelected()){
 		ofPushStyle();
 		ofPushMatrix();
 		ofFill();
@@ -48,15 +51,15 @@ void KeyFrameView::onDraw() const {
 void KeyFrameView::setSelected(bool select){
 	auto p = dynamic_cast<KeyframesRegionView*>(parent());
     if(p){
-        if(!bSelected && select){
+        if(!_isSelected && select){
           
 			if(!ofGetKeyPressed(OF_KEY_SHIFT)){
 				p->unselectAllKeyframes();
 			}
-			bSelected = true;
+			_isSelected = true;
             p->selectKeyframe(this);
-        }else if(bSelected && !select){
-            bSelected = false;
+        }else if(_isSelected && !select){
+            _isSelected = false;
             p->unselectKeyframe(this);
         }
     }
@@ -155,9 +158,9 @@ void KeyFrameView::_onPointerEvent(DOM::PointerUIEventArgs& e)
         // unhandled.
     }
 }
-//---------------------------------------------------------------------------------------------------------------------
-bool KeyFrameView::isSelected(){
-    return bSelected;
-}
+////---------------------------------------------------------------------------------------------------------------------
+//bool KeyFrameView::isSelected(){
+//    return bSelected;
+//}
 
 } } // ofx::LineaDeTiempo

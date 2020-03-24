@@ -7,12 +7,15 @@
 
 #pragma once
 #include "ofx/MUI/Widget.h"
-
+#include "LineaDeTiempo/BaseTypes/BaseSelectable.h"
 namespace ofx {
 namespace LineaDeTiempo {
 
 class KeyframesRegionView;
-class KeyFrameView: public MUI::Widget{
+class KeyFrameView
+: public MUI::Widget
+, public BaseSelectable
+{
 public:
 	friend class KeyframesRegionView;
 	KeyFrameView(const std::string& id, const glm::vec2& pos);
@@ -22,8 +25,8 @@ public:
 	virtual void onDraw() const override;
 	
 	
-	void setSelected(bool select);
-	bool isSelected();
+	virtual void setSelected(bool select) override;
+//	bool isSelected();
 		
 	
 	static float defaultKeyFrameSize;
@@ -42,7 +45,7 @@ protected:
 	
     virtual void _onPointerEvent(DOM::PointerUIEventArgs& e) override;
 
-	bool bSelected = false;
+//	bool bSelected = false;
 	
 	bool _moved = false;
 };
