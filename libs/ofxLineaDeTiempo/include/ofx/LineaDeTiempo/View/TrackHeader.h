@@ -29,6 +29,7 @@ public:
 	BaseTrackView* getTrack();
 	const BaseTrackView* getTrack() const;
 	
+	virtual void onDraw() const;
 protected:
 	BaseTrackView* _track = nullptr;
 	TrackGroupView* _group = nullptr;

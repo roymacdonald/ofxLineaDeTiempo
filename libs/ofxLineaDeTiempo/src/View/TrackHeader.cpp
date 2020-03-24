@@ -60,7 +60,14 @@ const BaseTrackView* TrackHeader::getTrack() const
 {
 	return _track;
 }
-
+//---------------------------------------------------------------------
+void TrackHeader::onDraw() const
+{
+	MUI::Widget::onDraw();
+	
+	ofDrawBitmapStringHighlight(getTrack()->getId() , 20, 20);
+	
+}
 
 } } // ofx::LineaDeTiempo
 
