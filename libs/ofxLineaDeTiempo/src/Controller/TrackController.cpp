@@ -38,35 +38,71 @@ TrackController::TrackController(const std::string& name, TrackGroupController* 
 //	( _regionsCollection, uniqueName, timeRange, this);
 //
 //}
+//ofEventListener _timeChangedListener;
+//bool _bListeningTimeChange = false;
+
+void TrackController::enableTimeUpdate()
+{
+	if(!_bListeningTimeChange)
+	{
+		_timeChangedListener = getTimeControl()->currentTimeUpdateEvent.newListener(this, &TrackController::update);
+		_bListeningTimeChange = true;
+	}
+}
+
+void TrackController::disableTimeUpdate()
+{
+	if(_bListeningTimeChange)
+	{
+		_bListeningTimeChange = false;
+		_timeChangedListener.unsubscribe();
+	}
+}
+
+bool TrackController::isUpdatingTime()
+{
+	return _bListeningTimeChange;
+}
 
 bool TrackController::_removeRegion(RegionController* region)
 {
 	return CollectionHelper::_remove<RegionController, TrackController>( region, this,  _regionsCollection);
 }
 
+TrackGroupView* TrackController::_getTrackGroupView()
+{
+	auto p = dynamic_cast<TrackGroupController*>(parent());
+	if(p) return p->getView();
+	return nullptr;
+	
+}
+
 void TrackController::generateView()
 {
-	if(getView()) return;
-	auto p = dynamic_cast<TrackGroupController*>(parent());
-	if(p && p->getView())
-	{
-		
-		setView(p->getView()->addTrack<TrackView>(this));
-			
-	}
-
-	generateChildrenViews(this);
+	_generateView<TrackView>();
+//	if(getView()) return;
+//	auto p = dynamic_cast<TrackGroupController*>(parent());
+//	if(p && p->getView())
+//	{
+//
+//		setView(p->getView()->addTrack<TrackView>(this));
+//
+//	}
+//
+//	generateChildrenViews(this);
 }
 void TrackController::destroyView()
 {
 	if(getView() == nullptr) return;
 	destroyChildrenViews(this);
 	
-	auto p = dynamic_cast<TrackGroupController*>(parent());
-	if(p && p->getView())
+//	auto p = dynamic_cast<TrackGroupController*>(parent());
+	auto view = _getTrackGroupView();
+	if(view)
+//	if(p && p->getView())
 	{
 		
-		if(p->getView()->removeTrack(this) == false)
+		if(view->removeTrack(this) == false)
 		{
 			ofLogError("TrackController::destroyView") << "Could not remove track correctly. " << getId();
 		}

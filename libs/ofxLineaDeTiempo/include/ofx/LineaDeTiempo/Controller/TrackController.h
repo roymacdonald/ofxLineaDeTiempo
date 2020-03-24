@@ -14,6 +14,7 @@
 #include "LineaDeTiempo/Controller/RegionController.h"
 
 #include "LineaDeTiempo/View/TrackView.h"
+#include "LineaDeTiempo/View/TrackGroupView.h"
 #include "ofRange.h"
 #include "LineaDeTiempo/BaseTypes/NamedConstPointerCollection.h"
 #include "DOM/Node.h"
@@ -52,13 +53,13 @@ public:
 	
 	
 	
-	 bool removeRegion(const std::string& name)
-	 {
+	bool removeRegion(const std::string& name)
+	{
 	 	 return _removeRegion(_regionsCollection.at(name));
-	 }
+	}
 
-	 bool removeRegion(const size_t& index)
-	 {
+	bool removeRegion(const size_t& index)
+	{
 	 	 return _removeRegion(_regionsCollection.at(index));
 	 }
 
@@ -100,9 +101,17 @@ public:
 
 	using BaseHasTimeControl::getTimeControl;
 	
-		
-	protected:
-		
+
+	void enableTimeUpdate();
+	void disableTimeUpdate();
+	bool isUpdatingTime();
+	
+	virtual void update(uint64_t& t) = 0;
+	
+protected:
+	
+	
+	
 	NamedConstPointerCollection<RegionController> _regionsCollection;
 
 	
@@ -111,7 +120,8 @@ public:
 	NewRegionControllerType * _addRegion( const std::string& regionName, const ofRange64u& timeRange)
 	{
 		
-		auto uniqueName = _regionsCollection.makeUniqueName(regionName, "Region");
+		
+				auto uniqueName = _regionsCollection.makeUniqueName(regionName, "Region");
 		
 		return CollectionHelper::
 		
@@ -126,7 +136,29 @@ public:
 
 //	TrackGroupController * _parentGroup = nullptr;
 	
+	TrackGroupView* _getTrackGroupView();
+//
+	template<typename ViewType>
+	void _generateView()
+	{
+		static_assert(std::is_base_of<TrackView, ViewType>::value, "TrackController::_generateView: template type ViewType must be equal to ofx::LineaDeTiempo::TrackView or derived from it");
+		if(getView()) return;
+		auto view = _getTrackGroupView();
+		if(view)
+		{
+			setView(view->addTrack<ViewType>(this));
+
+		}
+
+		generateChildrenViews(this);
+	}
+	
+	
 private:
+	ofEventListener _timeChangedListener;
+	bool _bListeningTimeChange = false;
+	
+	
 	
 	
 };
