@@ -7,7 +7,7 @@
 
 #pragma once
 //#include "ofxMUI.h"
-#include "LineaDeTiempo/View/KeyFrameView.h"
+#include "LineaDeTiempo/View/KeyframeView.h"
 #include "LineaDeTiempo/View/RegionView.h"
 #include "LineaDeTiempo/View/Selector.h"
 
@@ -23,76 +23,61 @@ class TrackView;
 
 class KeyframesRegionView
 : public RegionView
-, public Selector<KeyFrameView>
+, public Selector<KeyframeView>
 {
 public:
 	KeyframesRegionView (TrackView* parentTrack, RegionController *controller);
 	virtual ~KeyframesRegionView() = default;
 		
-	void onKeyFrameDrag(KeyFrameView* k, const glm::vec2& delta);
+	void onKeyframeDrag(KeyframeView* k, const glm::vec2& delta);
 	
-	void selectKeyframe(KeyFrameView* k);
-	void unselectKeyframe(KeyFrameView* k);
-    bool isKeyframeSelected(KeyFrameView* k);
+	void selectKeyframe(KeyframeView* k);
+	void unselectKeyframe(KeyframeView* k);
+    bool isKeyframeSelected(KeyframeView* k);
     void unselectAllKeyframes();
     void selectAllKeyframes();
-//    void _setSelectedKeyframesFromRect(const ofRectangle& r, bool bAddToCurrentSelection);
 
-	KeyFrameView* addKeyframe(const glm::vec2& k);
-	bool removeKeyframe(KeyFrameView* k);
 	
-    void updateKeyframeSort();
+	KeyframeView* addKeyframe(const glm::vec2& localPos);
+	KeyframeView* addKeyframe(float value, uint64_t time);
+	
+	bool removeKeyframe(KeyframeView* k);
+	
+	void updateKeyframeSort();
 	
 	virtual void onDraw() const override;
 	
 	virtual void updateLayout() override;
 	
-	ofEvent<KeyFrameView*> keyframeAddedEvent;
-	ofEvent<KeyFrameView*> keyframeRemovedEvent;
 	
-	
-	virtual const std::vector<KeyFrameView*> & getCollection() const override;
-	virtual std::vector<KeyFrameView*> & getCollection() override;
+	virtual const std::vector<KeyframeView*> & getCollection() const override;
+	virtual std::vector<KeyframeView*> & getCollection() override;
 	
 	void onKeyboardEvent(DOM::KeyboardUIEventArgs& evt) ;
 	
-protected:
 	
+	ofEvent<glm::vec2> addKeyframeEvent;
+	ofEvent<KeyframeView*> removeKeyframeEvent;
+	
+
+	
+	
+protected:
+
 	virtual void _removeSelectedElements() override;
 	
-//	virtual bool _sortSelectorElements() override;
-	
-//	ofEventListener selectorListener;
-//	void _selectorRectChanged(ofRectangle& r);
-//
+
 	bool _bIsMultiDim =  false;
 	
 	virtual void _onDragging(const DOM::CapturedPointer& pointer) override;
 	virtual void _onPointerEvent(DOM::PointerUIEventArgs& e) override;
 
-//	void _setSelectedKeyframesFromRect(const ofRectangle& r, bool bAddToCurrentSelection);
-	
-//	void _onPointerDown(DOM::PointerUIEventArgs& e);
-//	void _onPointerUp(DOM::PointerUIEventArgs& e);
 
-	std::vector<KeyFrameView*> keyFrames;
-//	std::vector<KeyFrameView*> selectedKeyframes;
+	std::vector<KeyframeView*> keyFrames;
+	
 
-//    void updateSelectionRect(const glm::vec2& args);
-
-//    ofRectangle selectionRect;
-//	glm::vec2 selectionRectStart;
-	
-//	bool _isSelectingRect() const;
-	
-//	void
-	
-	
 private:
 	
-	
-	
-	size_t _count = 0;
 	
 };
 

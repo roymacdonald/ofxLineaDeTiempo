@@ -1,5 +1,5 @@
 //
-//  KeyFrame.hpp
+//  Keyframe.hpp
 //  keyframesTest
 //
 //  Created by Roy Macdonald on 2/14/20.
@@ -12,29 +12,40 @@ namespace ofx {
 namespace LineaDeTiempo {
 
 class KeyframesRegionView;
-class KeyFrameView
+class KeyframeView
 : public MUI::Widget
 , public BaseSelectable
 {
+private:
+	KeyframeView(const std::string& id, KeyframesRegionView * parentRegionView);
+	
 public:
+	
 	friend class KeyframesRegionView;
-	KeyFrameView(const std::string& id, const glm::vec2& pos);
-	virtual ~KeyFrameView(){}
+	KeyframeView(const std::string& id, const glm::vec2& pos, KeyframesRegionView * parentRegionView);
+	KeyframeView(const std::string& id, float value, uint64_t time,  KeyframesRegionView * parentRegionView);
+	
+	
+	virtual ~KeyframeView(){}
 	
 
 	virtual void onDraw() const override;
 	
 	
 	virtual void setSelected(bool select) override;
-//	bool isSelected();
 		
 	
-	static float defaultKeyFrameSize;
+	static float defaultKeyframeSize;
 	
 	
 	float getValue() const;
 	uint64_t getTime() const;
+	
+	ofEvent<float> valueChangedEvent;
+	ofEvent<uint64_t> timeChangedEvent;
 protected:
+	KeyframesRegionView * _parentRegionView = nullptr;
+
 	uint64_t _time = 0;
 	float _value =0; //normalized
 
