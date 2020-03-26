@@ -1,5 +1,5 @@
 //
-//  KeyFrameTrackController.hpp
+//  KeyframeTrackController.hpp
 //  tracksAndTimeTest
 //
 //  Created by Roy Macdonald on 3/17/20.
@@ -8,8 +8,10 @@
 #pragma once
 
 #include "LineaDeTiempo/Controller/TrackController.h"
-#include "LineaDeTiempo/Controller/KeyFrameRegionController.h"
+#include "LineaDeTiempo/Controller/KeyframeRegionController.h"
+#include "LineaDeTiempo/Data/KeyframedData.h"
 
+#include "ofParameter.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -17,22 +19,45 @@ namespace LineaDeTiempo {
 //parent type forward declaration
 class TrackGroupController;
 
-
-class KeyFrameTrackController
+template <typename DataType>
+class KeyframeTrackController_
 : public TrackController
 {
 public:
 		
-	KeyFrameTrackController(const std::string& name, TrackGroupController* parent, TimeControl* timeControl);
 	
-	virtual ~KeyFrameTrackController() = default;
+	KeyframeTrackController_(ofParameter<DataType>& parameter, TrackGroupController* parent, TimeControl* timeControl);
 	
-	KeyFrameRegionController * addRegion( const std::string& regionName, const ofRange64u& timeRange);
+	KeyframeTrackController_(const std::string& name, TrackGroupController* parent, TimeControl* timeControl);
 	
-	bool removeRegion(KeyFrameRegionController* track);
+	virtual ~KeyframeTrackController_() = default;
+	
+	KeyframeRegionController_<DataType>* addRegion( const std::string& regionName, const ofRange64u& timeRange);
+	
+	bool removeRegion(KeyframeRegionController_<DataType>* track);
+	
+	virtual void generateView() override;
+	virtual void destroyView() override;
 	
 	
+	virtual void update(uint64_t& t) override;
+	ofParameter<DataType>& getParameter();
+	const ofParameter<DataType>& getParameter() const;
+	
+	
+	float getNormalizedValue(const DataType& val);
+	DataType getUnnormalizedValue(float val);
 protected:
+	ofParameter<DataType> _parameter;
+	
+
+	ofEventListener _paramListener;
+	
+	void _paramChanged(DataType& );
+	
+	//	// this is set to true when the param is being modified by the manager, so it does not generate an infinite loop because of the cyclic callbacks.
+	bool _bModifyingParam = false;
+
 	
 	
 	
@@ -44,3 +69,4 @@ private:
 
 
 } } // ofx::LineaDeTiempo
+
