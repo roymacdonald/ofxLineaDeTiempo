@@ -208,7 +208,6 @@ void Selector<ElementType>::selectElement(ElementType* element)
 template<typename ElementType>
 void Selector<ElementType>::unselectElement(ElementType* element)
 {
-	std::cout << __PRETTY_FUNCTION__ << "\n";
 	if(element == nullptr) return;
 	element->_isSelected = false;
 //	element->setSelected(false);
@@ -219,7 +218,6 @@ void Selector<ElementType>::unselectElement(ElementType* element)
 template<typename ElementType>
 void Selector<ElementType>::unselectAllElements()
 {
-	std::cout << __PRETTY_FUNCTION__ << "\n";
 	for(auto& k: selectedElements)
 	{
 		k->_isSelected = false;
