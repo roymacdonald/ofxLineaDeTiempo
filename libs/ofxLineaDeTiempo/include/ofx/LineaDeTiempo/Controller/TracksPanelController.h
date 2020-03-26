@@ -12,7 +12,7 @@
 //#include "LineaDeTiempo/BaseTypes/BaseController.h"
 
 #include "LineaDeTiempo/Controller/TrackGroupController.h"
-#include "LineaDeTiempo/Controller/KeyFrameTrackController.h"
+#include "LineaDeTiempo/Controller/KeyframeTrackController.h"
 
 #include "LineaDeTiempo/View/TracksPanel.h"
 

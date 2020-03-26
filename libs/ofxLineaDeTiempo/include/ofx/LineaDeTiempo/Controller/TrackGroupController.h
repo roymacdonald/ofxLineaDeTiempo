@@ -15,7 +15,7 @@
 #include "LineaDeTiempo/BaseTypes/BaseHasTimeControl.h"
 
 #include "ofParameter.h"
-#include "LineaDeTiempo/Controller/KeyFrameTrackController.h"
+#include "LineaDeTiempo/Controller/KeyframeTrackController.h"
 
 
 namespace ofx {
@@ -45,11 +45,11 @@ public:
 	
 	
 	template<typename DataType>
-	KeyFrameTrackController_<DataType>* add(ofParameter<DataType>& parameter);
+	KeyframeTrackController_<DataType>* add(ofParameter<DataType>& parameter);
 
 	
 	template<typename DataType>
-	KeyFrameTrackController_<DataType> * addTrack( ofParameter<DataType>& parameter);
+	KeyframeTrackController_<DataType> * addTrack( ofParameter<DataType>& parameter);
 
 	
 	template<typename NewTrackControllerType>
@@ -57,7 +57,7 @@ public:
 	
 	
 	template<typename DataType>
-	KeyFrameTrackController_<DataType>* addKeyFrameTrack(const std::string& name);
+	KeyframeTrackController_<DataType>* addKeyframeTrack(const std::string& name);
 	
 	
 	bool removeTrack(TrackController* track);
@@ -179,14 +179,14 @@ private:
 
 
 template<typename DataType>
-KeyFrameTrackController_<DataType>* TrackGroupController::add(ofParameter<DataType>& parameter)
+KeyframeTrackController_<DataType>* TrackGroupController::add(ofParameter<DataType>& parameter)
 {
 	return addTrack<DataType> (parameter);
 }
 
 
 template<typename DataType>
-KeyFrameTrackController_<DataType> * TrackGroupController::addTrack( ofParameter<DataType>& parameter)
+KeyframeTrackController_<DataType> * TrackGroupController::addTrack( ofParameter<DataType>& parameter)
 {
 	
 	auto uniqueName = _tracksCollection.makeUniqueName(parameter.getName(), "Parameter");
@@ -198,7 +198,7 @@ KeyFrameTrackController_<DataType> * TrackGroupController::addTrack( ofParameter
 	}
 	
 	return CollectionHelper::
-	_add< KeyFrameTrackController_<DataType>, TrackGroupController, TrackController>
+	_add< KeyframeTrackController_<DataType>, TrackGroupController, TrackController>
 	
 	( _tracksCollection, this, parameter, this, getTimeControl());
 	
@@ -219,9 +219,9 @@ NewTrackControllerType * TrackGroupController::addTrack( const std::string& trac
 }
 
 template<typename DataType>
-KeyFrameTrackController_<DataType>* TrackGroupController::addKeyFrameTrack(const std::string& name)
+KeyframeTrackController_<DataType>* TrackGroupController::addKeyframeTrack(const std::string& name)
 {
-	return addTrack<KeyFrameTrackController_<DataType>> (name);
+	return addTrack<KeyframeTrackController_<DataType>> (name);
 }
 
 template<typename NewTrackControllerType>
