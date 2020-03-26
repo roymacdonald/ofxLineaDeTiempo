@@ -12,7 +12,7 @@
 #include "LineaDeTiempo/Data/TimedData.h"
 #include "LineaDeTiempo/Controller/TimeControl.h"
 #include "LineaDeTiempo/BaseTypes/BaseHasName.h"
-#include "LineaDeTiempo/BaseTypes/BaseKeyFramer.h"
+#include "LineaDeTiempo/BaseTypes/BaseKeyframer.h"
 
 
 namespace ofx {

@@ -1,5 +1,5 @@
 //
-//  BaseKeyFramer.h
+//  BaseKeyframer.h
 //  tracksAndTimeTest
 //
 //  Created by Roy Macdonald on 3/23/20.
@@ -9,7 +9,7 @@ namespace ofx {
 namespace LineaDeTiempo {
 
 
-class BaseKeyFramer{
+class BaseKeyframer{
 public:
 	void enableKeyframing()
 	{
