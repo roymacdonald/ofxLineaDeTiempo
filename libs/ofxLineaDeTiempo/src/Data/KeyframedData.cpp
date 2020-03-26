@@ -49,6 +49,11 @@ T KeyframedData_<T>::getValueAtTime(const uint64_t& time)
 	
 	
 }
+template<typename T>
+size_t KeyframedData_<T>::size() const
+{
+	return _data.size();
+}
 //---------------------------------------------------------------------------------
 template<typename T>
 TimedData_<T>* KeyframedData_<T>::add(const T& value, const uint64_t& time)
@@ -56,14 +61,15 @@ TimedData_<T>* KeyframedData_<T>::add(const T& value, const uint64_t& time)
 	
 	if(_timedMap.count(time))
 	{
-		ofLogNotice("KeyframeTrackDataManager_<T>::add") << "there is already data at this point. Updating to new value";
+		ofLogNotice("KeyframeTrackDataManager_<T>::add") << "there is already data at this point. Updating to new value. Returning nullptr";
 		_timedMap[time]->value = value;
-		return _timedMap[time];
+		return nullptr;
 	}
 	_addToCollection(value, time);
 	
 	
 	sortData();
+	return _timedMap[time];
 }
 //---------------------------------------------------------------------------------
 template<typename T>
@@ -78,7 +84,8 @@ bool KeyframedData_<T>::remove(TimedData_<T>* d)
 {
 	auto s = _data.size();
 	ofRemove(_data,
-			 [&](std::unique_ptr<TimedData_<T>>& i){
+			 [&](std::unique_ptr<TimedData_<T>>& i)
+			 {
 		if(i.get() == d){
 			_timedMap.erase(i->time);
 			return true;
@@ -275,7 +282,7 @@ void KeyframedData_<T>::fromJson(const ofJson& j)
 
 //---------------------------------------------------------------------------------
 template<typename T>
-void KeyframedData_<T>::toJson(ofJson& j)
+void KeyframedData_<T>::toJson(ofJson& j) const
 {
 //	j["name"] = _name;
 	j["currentValue"] = _currentValue;
