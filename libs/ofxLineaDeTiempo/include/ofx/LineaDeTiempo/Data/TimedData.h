@@ -34,35 +34,30 @@ public:
 	
 //	static_assert(std::is_base_of<AbstractSerializable, DataType>, "TimedData_<DataType> error. DataType must inherit from ofx::LineaDeTiempo::AbstractSerializable");
 	TimedData_(){}
-	TimedData_(const DataType& _value, const uint64_t& _time):
-	value(_value),
-	time(_time)
+	TimedData_(const DataType& _value, const uint64_t& _time)
+	: value(_value)
+	, time(_time)
 	{}
 	virtual ~TimedData_(){}
 	
 	DataType value;
 	uint64_t time = 0;
 	
-//	void setTime(uint64_t _time);
-//
-//	const uint64_t& getTime() const;
 
-	
-public:
 	virtual void fromJson(const ofJson& j) override;
 
 	virtual void toJson(ofJson& j) override;
 	
 };
 
-template<typename DataType>
+template<class DataType>
 inline std::ostream& operator<<(std::ostream& os, const TimedData_<DataType>& data)
 {
 	os <<  data.getTime() << ", " << data.value;
 
 	return os;
 }
-template<typename DataType>
+template<class DataType>
 inline std::istream& operator>>(std::istream& is, TimedData_<DataType>& data)
 {
 	is >> data.time;

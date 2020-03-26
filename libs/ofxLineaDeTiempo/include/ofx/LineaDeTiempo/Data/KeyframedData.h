@@ -21,7 +21,7 @@ namespace LineaDeTiempo {
 
 template<typename DataType>
 class KeyframedData_
-: public BaseKeyFramer
+: public BaseKeyframer
 {
 public:
 	KeyframedData_();
@@ -34,6 +34,8 @@ public:
 	TimedData_<DataType>* add(const DataType& value, const uint64_t& time);
 	
 	bool remove(TimedData_<DataType>* d);
+	
+	size_t size() const;
 	
 	///\brief remove all 
 	void clear();
@@ -63,8 +65,8 @@ public:
 	
 	void fromJson(const ofJson& j);
 	
-	void toJson(ofJson& j);
-	
+	void toJson(ofJson& j) const;
+
 	
 protected:
 	std::vector< std::unique_ptr< TimedData_<DataType> > > _data;
