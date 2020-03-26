@@ -8,18 +8,9 @@
 #pragma once
 #include "MUI/ScrollablePanel.h"
 
-//#include "LineaDeTiempo/BaseTypes/BaseHasTracks.h"
 
 #include "LineaDeTiempo/View/Playhead.h"
-//#include "LineaDeTiempo/View/Tracks.h"
-//#include "LineaDeTiempo/View/TrackView.h"
-//#include "LineaDeTiempo/View/KeyframesRegionView.h"
-
-//#include "LineaDeTiempo/BaseTypes/BaseHasController.h"
-
 #include "LineaDeTiempo/View/TrackGroupView.h"
-//#include "LineaDeTiempo/Controller/TracksPanelController.h"
-//#include "LineaDeTiempo/BaseTypes/BaseHasHeader.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
