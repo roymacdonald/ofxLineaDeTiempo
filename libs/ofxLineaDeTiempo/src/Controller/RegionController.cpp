@@ -22,7 +22,7 @@ RegionController::RegionController(const std::string& name, const ofRange64u& ti
 }
 		
 
-const ofRange64u& RegionController::getTimeRange()
+const ofRange64u& RegionController::getTimeRange() const
  {
  	return _timeRange;
  }

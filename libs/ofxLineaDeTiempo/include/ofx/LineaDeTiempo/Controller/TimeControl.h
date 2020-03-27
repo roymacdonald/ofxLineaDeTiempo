@@ -78,7 +78,13 @@ public:
 	const uint64_t& getCurrentTime() const;
 
 	ofEvent<uint64_t> currentTimeUpdateEvent;
-
+	ofEvent<void> playEvent;
+	ofEvent<void> pauseEvent;
+	ofEvent<void> stopEvent;
+	
+	
+	
+	
 	uint64_t getTotalTime() const;
 	void setTotalTime(uint64_t t);
 
@@ -97,7 +103,6 @@ protected:
 	
 	uint64_t _totalTime = 10000;
 	
-//	ofParameter<uint64_t> _totalTime = {"Total Time", 10000, 0, std::numeric_limits<uint64_t>::max()};//millis or micros?
 
 	uint64_t _currentTime = 0;
 	

@@ -65,31 +65,9 @@ public:
 		}
 	}
 	
-	
-//	template< typename... Args>
-//	ViewType* createView(DOM::Element * parentView, Args&&... args)
-//	{
-//		if(!parentView)return nullptr;
-//		
-//		_view = _parentView->addChild<ViewType>(std::forward<Args>(args)...);
-//		return _view;
-//	}
-//	
-//	bool removeView()
-//	{
-//		if(!_view || !_parentView) return false;
-//		
-//		bool ret = (_parentView->removeChild(_view) != nullptr);
-//		
-//		return ret;
-//	}
-	
-
-	
-	
 	typedef ViewType viewType;
 protected:
-//	DOM::Element * _parentView = nullptr;
+
 	ViewType* _view = nullptr;
 	
 };

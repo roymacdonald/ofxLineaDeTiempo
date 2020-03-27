@@ -127,7 +127,19 @@ void KeyframeRegionController_<T>::_removeKeyframe(KeyframeView*& v)
 	}
 }
 
-
+template<typename T>
+void KeyframeRegionController_<T>::update(uint64_t& t)
+{
+	if(_keyframedData.update(t))
+	{
+		if(_parentTrack)
+		{
+			if(_parentTrack->getParameter().get() != _keyframedData.getCurrentValue())
+			   _parentTrack->getParameter().set(_keyframedData.getCurrentValue());
+		}
+	
+	}
+}
 //template<typename T>
 //void KeyframeRegionController_<T>::_keyframeAdded(KeyframeView * view)
 //{

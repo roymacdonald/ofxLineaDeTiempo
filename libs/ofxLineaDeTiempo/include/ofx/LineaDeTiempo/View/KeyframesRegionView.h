@@ -75,7 +75,10 @@ protected:
 
 	std::vector<KeyframeView*> keyFrames;
 	
-
+	void _makeInterpolationLine();
+	ofPolyline _interpolationLine;
+	ofPolyline _inLine;
+	ofPolyline _outLine;
 private:
 	
 	

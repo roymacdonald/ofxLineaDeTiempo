@@ -48,8 +48,8 @@ protected:
 	
 	ofEventListeners _tracksListeners;
 	
-	void _trackNumChanged(DOM::ElementEventArgs& );// childAdded; childRemoved;
-	void _tracksOrderChanged(DOM::ElementOrderEventArgs& );// childReordered;
+	void _trackNumChanged(DOM::ElementEventArgs& );
+	void _tracksOrderChanged(DOM::ElementOrderEventArgs& );
 
 	
 	

@@ -258,12 +258,6 @@ void Selector<ElementType>::_setSelectedElementsFromRect(const ofRectangle& r)
 		if(!k)continue;
 		if(r.inside(k->getCenterPosition())){
 
-//			if(k->isSelected() == true )
-//			{
-//				ofRemove(selectedElements, [&](ElementType*& key){return key == k;});
-//				k->setSelected(false);
-//			}
-//			else
 			if(k->isSelected() == false )
 			{
 				if(isElementSelected(k) == false){

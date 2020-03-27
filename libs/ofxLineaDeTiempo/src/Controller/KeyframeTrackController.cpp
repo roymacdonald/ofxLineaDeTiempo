@@ -30,19 +30,73 @@ KeyframeTrackController_<DataType>::KeyframeTrackController_(const std::string& 
 	_parameter.setName(name);
 	
 	_paramListener = _parameter.newListener(this, &KeyframeTrackController_<DataType>::_paramChanged);
+
+	_timeControlListeners.push(timeControl->playEvent.newListener(this, &KeyframeTrackController_<DataType>::_findCurrentRegion));
+	_timeControlListeners.push(timeControl->stopEvent.newListener(this, &KeyframeTrackController_<DataType>::_resetCurrentRegion));
+		
+
 	enableTimeUpdate();
 }
 
 template <typename DataType>
-KeyframeRegionController_<DataType> * KeyframeTrackController_<DataType>::addRegion( const std::string& regionName, const ofRange64u& timeRange)
+void KeyframeTrackController_<DataType>::_resetCurrentRegion()
 {
-	return _addRegion<KeyframeRegionController_<DataType>>( regionName, timeRange);
+ _currentRegion = 0;
 }
 
 template <typename DataType>
-bool KeyframeTrackController_<DataType>::removeRegion(KeyframeRegionController_<DataType>* track)
+void KeyframeTrackController_<DataType>::_findNextRegion(const size_t& startIndex)
 {
-	return _removeRegion(track);
+	auto t = getTimeControl()->getCurrentTime();
+	for(size_t i =startIndex; i < _regions.size(); i++)
+	{
+		if(_regions[i]->getTimeRange().contains(t))
+		{
+			_currentRegion =i;
+			break;
+		}
+	}
+	_currentRegion = _regions.size();
+}
+
+
+template <typename DataType>
+void KeyframeTrackController_<DataType>::_findCurrentRegion()
+{
+	_findNextRegion(0);
+//	auto t = getTimeControl()->getCurrentTime();
+//
+//	for(size_t i =0; i < _regions.size(); i++)
+//	{
+//		if(_regions[i]->getTimeRange().contains(t))
+//		{
+//			_currentRegion =i;
+//			break;
+//		}
+//	}
+}
+
+
+
+
+
+
+
+template <typename DataType>
+KeyframeRegionController_<DataType> * KeyframeTrackController_<DataType>::addRegion( const std::string& regionName, const ofRange64u& timeRange)
+{
+	auto r = _addRegion<KeyframeRegionController_<DataType>>( regionName, timeRange);
+	_regions.push_back(r);
+	return r;
+}
+
+template <typename DataType>
+bool KeyframeTrackController_<DataType>::removeRegion(KeyframeRegionController_<DataType>* region)
+{
+	ofRemove(_regions, [&](KeyframeRegionController_<DataType>* a){
+		return a ==  region;
+	});
+	return _removeRegion(region);
 }
 
 template <typename DataType>
@@ -56,9 +110,24 @@ const ofParameter<DataType>& KeyframeTrackController_<DataType>::getParameter() 
 {
 	return _parameter;
 }
+
 template <typename DataType>
 void KeyframeTrackController_<DataType>::update(uint64_t& time)
 {
+	
+	if(_currentRegion < _regions.size() && _regions[_currentRegion])
+	{
+		if( _regions[_currentRegion]->getTimeRange().contains(time) )
+		{
+			_regions[_currentRegion]->update(time);
+		}
+		else if(_regions[_currentRegion]->getTimeRange().max < time)
+		{
+			_findNextRegion(_currentRegion+1);
+			update(time);
+		}
+	}
+	
 //	if(_keyframedData.update(time))
 //	{
 //		_bModifyingParam = true;

@@ -34,23 +34,27 @@ public:
 	
 	KeyframeRegionController_<DataType>* addRegion( const std::string& regionName, const ofRange64u& timeRange);
 	
-	bool removeRegion(KeyframeRegionController_<DataType>* track);
+	bool removeRegion(KeyframeRegionController_<DataType>* region);
 	
 	virtual void generateView() override;
 	virtual void destroyView() override;
 	
 	
 	virtual void update(uint64_t& t) override;
+
 	ofParameter<DataType>& getParameter();
 	const ofParameter<DataType>& getParameter() const;
 	
 	
 	float getNormalizedValue(const DataType& val);
 	DataType getUnnormalizedValue(float val);
+
 protected:
+
+	std::vector<KeyframeRegionController_<DataType>*> _regions;
+	
 	ofParameter<DataType> _parameter;
 	
-
 	ofEventListener _paramListener;
 	
 	void _paramChanged(DataType& );
@@ -59,6 +63,12 @@ protected:
 	bool _bModifyingParam = false;
 
 	
+	void _findCurrentRegion();
+	void _resetCurrentRegion();
+	void _findNextRegion(const size_t& startIndex);
+	size_t _currentRegion = 0;
+	
+	ofEventListeners _timeControlListeners;
 	
 	
 	

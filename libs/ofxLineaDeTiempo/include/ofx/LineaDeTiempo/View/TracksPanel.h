@@ -34,8 +34,6 @@ public:
 
 	virtual void updateLayout() override;
 	
-//	virtual void onDraw() const override;
-	
 	
 	float timeToScreenPosition(uint64_t time) const;
 	uint64_t  screenPositionToTime(float x) const;
@@ -80,8 +78,6 @@ protected:
 	void _tracksResized(DOM::ResizeEventArgs& e);
 	
 	
-	
-//	std::shared_ptr<LineaDeTiempo::TimeControl> _timeControl ;
 	
 	
 	ofRectangle _makeHeadersViewRect();

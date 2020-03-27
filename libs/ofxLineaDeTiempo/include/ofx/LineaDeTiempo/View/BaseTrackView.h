@@ -50,11 +50,7 @@ public:
 	
 	virtual void updateLayout() override;
 	
-//	TrackGroupView* parentGroup();
-//	const TrackGroupView* parentGroup() const;
-//
-//
-	
+
 	
     using DOM::Element::isEnabled;
     using DOM::Element::isFocusable;
@@ -99,9 +95,6 @@ protected:
 	
 	
 	ofColor _color;
-	
-
-//	TrackGroupView* _parentGroupView;
 	
 protected:
 	

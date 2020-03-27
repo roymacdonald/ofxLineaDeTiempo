@@ -110,9 +110,11 @@ void KeyframedData_<T>::clear()
 template<typename T>
 bool KeyframedData_<T>::update(const uint64_t& time)
 {
+	auto prev = _currentValue;
 	if(!_isTimeInDataBounds(_currentValue, time)){
 		_lastUpdateTime = time;
-		return false;
+//		return false;
+		return (prev != _currentValue);
 	}
 	
 	
@@ -122,11 +124,13 @@ bool KeyframedData_<T>::update(const uint64_t& time)
 		return false;
 	}
 	
+	
 	if(_data[_currentIndex]->time == time){// this block might be unnecesary. TODO: Double check
+		
 		_currentValue = _data[_currentIndex]->value;
 		_currentIndex++;
 		_lastUpdateTime = time;
-		return true;
+		return (prev != _currentValue);
 	}
 	
 	if(_data[_currentIndex]->time < time){
@@ -151,7 +155,7 @@ bool KeyframedData_<T>::update(const uint64_t& time)
 	
 	_currentValue = Interpolator::interpolateTimedData(_data[_currentIndex-1].get() , _data[_currentIndex].get(), time);
 	
-	return true;
+	return (prev != _currentValue);
 	
 
 	

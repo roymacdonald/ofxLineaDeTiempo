@@ -52,6 +52,7 @@ void KeyframesRegionView::onKeyframeDrag(KeyframeView* k, const glm::vec2& delta
 			
 		}
 	}
+	_makeInterpolationLine();
 }
 std::vector<KeyframeView*> & KeyframesRegionView::getCollection()
 {
@@ -126,20 +127,40 @@ bool KeyframesRegionView::isKeyframeSelected(KeyframeView* k)
 	return isElementSelected(k);
 }
 //---------------------------------------------------------------------------------------------------------------------
-void KeyframesRegionView::onDraw() const{
-	Widget::onDraw();
-	ofPolyline preview;
+void KeyframesRegionView::_makeInterpolationLine(){
 	glm::vec2 cp;
+	_interpolationLine.clear();
+	_inLine.clear();
+	_outLine.clear();
+	if(keyFrames.size())
+	{
+//		_inLine.addVertex(getShape().getMinX(), keyFrames[0]->getCenterPosition().y);
+		_inLine.addVertex(0, keyFrames[0]->getCenterPosition().y);
+		_inLine.addVertex(glm::vec3(keyFrames[0]->getCenterPosition(),0));
+		
+		
+		
+		_outLine.addVertex(glm::vec3(keyFrames.back()->getCenterPosition(),0));
+		_outLine.addVertex(getWidth(), keyFrames.back()->getCenterPosition().y);
+		
+	}
 	for(auto& k: keyFrames){
 		cp = k->getCenterPosition();
-		preview.addVertex(cp.x, cp.y);
+		_interpolationLine.addVertex(cp.x, cp.y);
 	}
-	ofPushStyle();
+}
+//---------------------------------------------------------------------------------------------------------------------
+void KeyframesRegionView::onDraw() const{
+	Widget::onDraw();
 	
+	ofPushStyle();
 	Selector<KeyframeView>::draw();
+	ofSetColor(ofColor::white, 100);
+	_inLine.draw();
+	_outLine.draw();
 	
 	ofSetColor(ofColor::yellow);
-	preview.draw();
+	_interpolationLine.draw();
 	
 	ofPopStyle();
 	
@@ -160,6 +181,7 @@ void KeyframesRegionView::updateKeyframeSort(){
 	if(selectedKeyframes.size() > 1){
 		std::sort(selectedKeyframes.begin(), selectedKeyframes.end(), compareKeyframeView);
 	}
+	_makeInterpolationLine();
 }
 KeyframeView* KeyframesRegionView::addKeyframe(const glm::vec2& localPos)
 {

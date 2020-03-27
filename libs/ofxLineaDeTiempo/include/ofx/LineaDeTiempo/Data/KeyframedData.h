@@ -77,8 +77,6 @@ protected:
 	
 	DataType _currentValue;
 	
-//	std::shared_ptr<TimeControl> _timeControl;
-	
 private:
 
 	

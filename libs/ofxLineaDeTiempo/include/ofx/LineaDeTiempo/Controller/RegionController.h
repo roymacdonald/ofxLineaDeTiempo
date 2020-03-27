@@ -32,7 +32,7 @@ public:
 	
 	virtual ~RegionController() = default;
 	
-	const ofRange64u& getTimeRange();
+	const ofRange64u& getTimeRange() const;
 	
 	void setTimeRange(const ofRange64u& t);
 	
@@ -43,6 +43,8 @@ public:
 	ofEvent<ofRange64u> timeRangeChangedEvent;
 
 	using BaseHasTimeControl::getTimeControl;
+	
+	virtual void update(uint64_t& t) = 0;
 	
 protected:
 	

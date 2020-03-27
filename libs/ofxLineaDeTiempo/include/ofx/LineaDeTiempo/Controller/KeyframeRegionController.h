@@ -48,6 +48,8 @@ public:
 	
 	const KeyframedData_<DataType>& getKeyframedData() const;
 	
+	virtual void update(uint64_t& t) override;
+	
 protected:
 
 	friend class KeyframeTrackController_< DataType >;

@@ -15,31 +15,11 @@ namespace LineaDeTiempo {
 
 TrackController::TrackController(const std::string& name, TrackGroupController* parent, TimeControl* timeControl)
 : DOM::Node(name, parent)
-//, _parentGroup(parent)
 , BaseHasTimeControl(timeControl, "TrackController")
-//, BaseHasRegions<RegionController>()
 , BaseViewController<TrackView>()
 {
 	
 }
-
-//
-//
-//template<typename NewRegionControllerType>
-//NewRegionControllerType * TrackController::_addRegion( const std::string& regionName, const ofRange64u& timeRange)
-//{
-//
-//	auto uniqueName = _regionsCollection.makeUniqueName(regionName, "Region");
-//
-//	return BaseController::
-//
-//	_add < NewRegionControllerType, RegionController >
-//
-//	( _regionsCollection, uniqueName, timeRange, this);
-//
-//}
-//ofEventListener _timeChangedListener;
-//bool _bListeningTimeChange = false;
 
 void TrackController::enableTimeUpdate()
 {
@@ -80,28 +60,16 @@ TrackGroupView* TrackController::_getTrackGroupView()
 void TrackController::generateView()
 {
 	_generateView<TrackView>();
-//	if(getView()) return;
-//	auto p = dynamic_cast<TrackGroupController*>(parent());
-//	if(p && p->getView())
-//	{
-//
-//		setView(p->getView()->addTrack<TrackView>(this));
-//
-//	}
-//
-//	generateChildrenViews(this);
 }
+
 void TrackController::destroyView()
 {
 	if(getView() == nullptr) return;
 	destroyChildrenViews(this);
 	
-//	auto p = dynamic_cast<TrackGroupController*>(parent());
 	auto view = _getTrackGroupView();
 	if(view)
-//	if(p && p->getView())
 	{
-		
 		if(view->removeTrack(this) == false)
 		{
 			ofLogError("TrackController::destroyView") << "Could not remove track correctly. " << getId();
@@ -109,8 +77,54 @@ void TrackController::destroyView()
 		
 		setView(nullptr);
 	}
-	
 }
+
+
+
+bool TrackController::removeRegion(const std::string& name)
+{
+	 return _removeRegion(_regionsCollection.at(name));
+}
+
+bool TrackController::removeRegion(const size_t& index)
+{
+	 return _removeRegion(_regionsCollection.at(index));
+ }
+
+ RegionController* TrackController::getRegion(const std::string& name)
+ {
+	 return _regionsCollection.at(name);
+ }
+
+ const RegionController* TrackController::getRegion(const std::string& name) const
+ {
+	 return _regionsCollection.at(name);
+ }
+
+ RegionController* TrackController::getRegion(const size_t& index)
+ {
+	 return _regionsCollection.at(index);
+ }
+
+ const RegionController* TrackController::getRegion(const size_t& index)const
+ {
+	 return _regionsCollection.at(index);
+ }
+
+ const std::vector<RegionController*>& TrackController::getRegions()
+ {
+	return _regionsCollection.getCollection();
+ }
+
+ const std::vector<const RegionController*>& TrackController::getRegions() const
+ {
+	 return _regionsCollection.getCollection();
+ }
+
+ size_t TrackController::getNumRegions() const
+ {
+	 return _regionsCollection.size();
+ }
 
 
 

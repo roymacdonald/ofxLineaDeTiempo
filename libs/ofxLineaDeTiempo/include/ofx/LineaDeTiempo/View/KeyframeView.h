@@ -56,8 +56,7 @@ protected:
 	
     virtual void _onPointerEvent(DOM::PointerUIEventArgs& e) override;
 
-//	bool bSelected = false;
-	
+
 	bool _moved = false;
 };
 

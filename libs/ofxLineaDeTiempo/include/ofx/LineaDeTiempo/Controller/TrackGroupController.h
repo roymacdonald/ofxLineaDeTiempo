@@ -25,11 +25,8 @@ namespace LineaDeTiempo {
 
 class TrackGroupController
 :public DOM::Node
-//,public BaseHasTracks<TrackController>
-//,public BaseHasGroups<TrackGroupController>//<TrackGroupViewType>>
 , public BaseHasTimeControl
 , public BaseViewController<TrackGroupView>
-//,public BaseHasName
 {
 public:
 	
