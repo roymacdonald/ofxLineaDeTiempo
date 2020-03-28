@@ -78,6 +78,7 @@ public:
 	ScrollBarType<HandleType, ScrollerData> * _scrollbarV = nullptr;
 protected:
 	
+	bool _bInitScrollData = true;
 	ofEventListeners _scrollListeners;
 	
 	bool _onMouseScrollEvent(ofMouseEventArgs & e);

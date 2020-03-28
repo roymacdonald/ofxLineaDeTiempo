@@ -41,6 +41,12 @@ Widget(id, rect.x,rect.y,rect.width,rect.height)
 //---------------------------------------------------------------------------------------------------
 template<>
 void ScrollablePanel_<ZoomHandle, ofRange_<float>, Scrollbar_, LineaDeTiempo::TracksClippedView, DOM::Element>::updateContainerLayout(){
+	if(_bInitScrollData)
+	{
+		_bInitScrollData = false;
+		_scrollData[0] = {0,1};
+		_scrollData[1] = {0,1};
+	}
 	 _clippingPanel->setZoom(_scrollData);
 	
 }
