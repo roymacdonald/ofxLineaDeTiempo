@@ -92,38 +92,38 @@ TrackGroupController* TrackGroupController::add(ofParameterGroup& _parameters)
 			auto p = _parameters.getInt(i);
 			group->add(p);
 		}
-		// else if(type == typeid(ofParameter <uint32_t> ).name()){
-		// 	auto p = _parameters.get<uint32_t>(i);
-		// 	group->add(p);
-		// }
-		// else if(type == typeid(ofParameter <int64_t> ).name()){
-		// 	auto p = _parameters.get<int64_t>(i);
-		// 	group->add(p);
-		// }
-		// else if(type == typeid(ofParameter <uint64_t> ).name()){
-		// 	auto p = _parameters.get<uint64_t>(i);
-		// 	group->add(p);
-		// }
-		// else if(type == typeid(ofParameter <int8_t> ).name()){
-		// 	auto p = _parameters.get<int8_t>(i);
-		// 	group->add(p);
-		// }
-		// else if(type == typeid(ofParameter <uint8_t> ).name()){
-		// 	auto p = _parameters.get<uint8_t>(i);
-		// 	group->add(p);
-		// }
-		// else if(type == typeid(ofParameter <int16_t> ).name()){
-		// 	auto p = _parameters.get<int16_t>(i);
-		// 	group->add(p);
-		// }
-		// else if(type == typeid(ofParameter <uint16_t> ).name()){
-		// 	auto p = _parameters.get<uint16_t>(i);
-		// 	group->add(p);
-		// }
-		// else if(type == typeid(ofParameter <size_t> ).name()){
-		// 	auto p = _parameters.get<size_t>(i);
-		// 	group->add(p);
-		// }
+		 else if(type == typeid(ofParameter <uint32_t> ).name()){
+		 	auto p = _parameters.get<uint32_t>(i);
+		 	group->add(p);
+		 }
+		 else if(type == typeid(ofParameter <int64_t> ).name()){
+		 	auto p = _parameters.get<int64_t>(i);
+		 	group->add(p);
+		 }
+		 else if(type == typeid(ofParameter <uint64_t> ).name()){
+		 	auto p = _parameters.get<uint64_t>(i);
+		 	group->add(p);
+		 }
+		 else if(type == typeid(ofParameter <int8_t> ).name()){
+		 	auto p = _parameters.get<int8_t>(i);
+		 	group->add(p);
+		 }
+		 else if(type == typeid(ofParameter <uint8_t> ).name()){
+		 	auto p = _parameters.get<uint8_t>(i);
+		 	group->add(p);
+		 }
+		 else if(type == typeid(ofParameter <int16_t> ).name()){
+		 	auto p = _parameters.get<int16_t>(i);
+		 	group->add(p);
+		 }
+		 else if(type == typeid(ofParameter <uint16_t> ).name()){
+		 	auto p = _parameters.get<uint16_t>(i);
+		 	group->add(p);
+		 }
+		 else if(type == typeid(ofParameter <size_t> ).name()){
+		 	auto p = _parameters.get<size_t>(i);
+		 	group->add(p);
+		 }
 		else if(type == typeid(ofParameter <float> ).name()){
 			auto p = _parameters.getFloat(i);
 			group->add(p);
@@ -190,6 +190,7 @@ TrackGroupController* TrackGroupController::add(ofParameterGroup& _parameters)
 			ofLogWarning("TracksPanelController::add") << "no control for parameter of type " << type;
 		}
 	}
+	return group;
 }
 
 

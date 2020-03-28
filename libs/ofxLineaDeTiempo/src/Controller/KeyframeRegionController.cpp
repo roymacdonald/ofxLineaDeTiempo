@@ -26,25 +26,20 @@ template<typename T>
 void KeyframeRegionController_<T>::generateView()
 {
 	if(getView() == nullptr){
-	auto p = dynamic_cast<TrackController*>(parent());
-	if(p && p->getView())
-	{
-		_keyframesRegionView = p->getView()->addRegion<KeyframesRegionView, KeyframeRegionController_<T>>(this);
+		auto p = dynamic_cast<TrackController*>(parent());
+		if(p && p->getView())
+		{
+			_keyframesRegionView = p->getView()->addRegion<KeyframesRegionView, KeyframeRegionController_<T>>(this);
+			
+			setView(_keyframesRegionView);
+			
+			
+			addKeyframeListener = _keyframesRegionView->addKeyframeEvent.newListener(this,&KeyframeRegionController_<T>::_addKeyframeAtScreenPos);
+			
+			removeKeyframeListener = _keyframesRegionView->removeKeyframeEvent.newListener(this, &KeyframeRegionController_<T>::_removeKeyframe);
+			
+		}
 		
-		setView(_keyframesRegionView);
-		
-		
-		addKeyframeListener = _keyframesRegionView->addKeyframeEvent.newListener(this,&KeyframeRegionController_<T>::_addKeyframeAtScreenPos);
-		
-		removeKeyframeListener = _keyframesRegionView->removeKeyframeEvent.newListener(this, &KeyframeRegionController_<T>::_removeKeyframe);
-		
-		
-//		keyframeAddedListener = r->keyframeAddedEvent.newListener(this, &KeyframeRegionController_<T>::_keyframeAdded);
-//
-//		keyframeRemovedListener = r->keyframeRemovedEvent.newListener(this, &KeyframeRegionController_<T>::_keyframeRemoved);
-//
-	}
-
 		generateChildrenViews(this);
 		_keyframesViewMap.clear();
 		for(auto k: _keyframes)
@@ -60,22 +55,22 @@ template<typename T>
 void KeyframeRegionController_<T>::destroyView()
 {
 	if(getView()){
-	destroyChildrenViews(this);
-	_keyframesViewMap.clear();
+		destroyChildrenViews(this);
+		_keyframesViewMap.clear();
 		
-	auto p = dynamic_cast<TrackController*>(parent());
-	if(p && p->getView())
-	{
-		
-		if(p->getView()->removeRegion(this) == false)
+		auto p = dynamic_cast<TrackController*>(parent());
+		if(p && p->getView())
 		{
-			ofLogError("KeyframeRegionController_<T>::destroyView") << "Could not remove track correctly. " << getId();
+			
+			if(p->getView()->removeRegion(this) == false)
+			{
+				ofLogError("KeyframeRegionController_<T>::destroyView") << "Could not remove track correctly. " << getId();
+			}
+			addKeyframeListener.unsubscribe();
+			removeKeyframeListener.unsubscribe();
+			setView(nullptr);
+			_keyframesRegionView = nullptr;
 		}
-		addKeyframeListener.unsubscribe();
-		removeKeyframeListener.unsubscribe();
-		setView(nullptr);
-		_keyframesRegionView = nullptr;
-	}
 	}
 }
 
@@ -130,14 +125,15 @@ void KeyframeRegionController_<T>::_removeKeyframe(KeyframeView*& v)
 template<typename T>
 void KeyframeRegionController_<T>::update(uint64_t& t)
 {
+	std::cout << "-";
 	if(_keyframedData.update(t))
 	{
 		if(_parentTrack)
 		{
 			if(_parentTrack->getParameter().get() != _keyframedData.getCurrentValue())
-			   _parentTrack->getParameter().set(_keyframedData.getCurrentValue());
+				_parentTrack->getParameter().set(_keyframedData.getCurrentValue());
 		}
-	
+		
 	}
 }
 //template<typename T>
@@ -180,23 +176,23 @@ void KeyframeRegionController_<T>::_addKeyframeAtScreenPos(glm::vec2& pos)
 {
 	
 	if(getView() && _parentTrack && _parentTrack->getView()){
-//		std::cout << "pos : " << pos;
+		//		std::cout << "pos : " << pos;
 		
 		auto time = _parentTrack->getView()->screenPositionToTime(pos.x);
 		
-//		std::cout << "  time: " << time ;
+		//		std::cout << "  time: " << time ;
 		
 		auto r = getView()->getScreenShape();
 		
 		auto & p = _parentTrack->getParameter();
 		auto value = ofMap(pos.y, r.getMinY(), r.getMaxY() - KeyframeView::defaultKeyframeSize, p.getMin(), p.getMax(), true);
-
-//		std::cout << "  value: " << value << "\n";
+		
+		//		std::cout << "  value: " << value << "\n";
 		
 		this->addKeyframe(value, time);
-
-//		Esta transformacion de coordenadas no esta funcando bien.
-//		HAcer que se solo una funcion la que hace la transformacion.
+		
+		//		Esta transformacion de coordenadas no esta funcando bien.
+		//		HAcer que se solo una funcion la que hace la transformacion.
 		
 	}
 }
@@ -220,8 +216,19 @@ const KeyframedData_<T>& KeyframeRegionController_<T>::getKeyframedData() const
 //	}
 //}
 
-template class KeyframeRegionController_<int>;
+template class KeyframeRegionController_<int8_t>;
+template class KeyframeRegionController_<int16_t>;
+template class KeyframeRegionController_<int32_t>;
+template class KeyframeRegionController_<int64_t>;
+template class KeyframeRegionController_<uint8_t>;
+template class KeyframeRegionController_<uint16_t>;
+template class KeyframeRegionController_<uint32_t>;
+template class KeyframeRegionController_<uint64_t>;
+template class KeyframeRegionController_<size_t>;
 template class KeyframeRegionController_<float>;
+
+//template class KeyframeRegionController_<int>;
+//template class KeyframeRegionController_<float>;
 
 } } // ofx::LineaDeTiempo
 

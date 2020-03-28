@@ -103,7 +103,18 @@ const TimedData_<DataType> *  KeyframeController<DataType>::getData() const
 	return _data;
 }
 
-template class KeyframeController<int>;
+template class KeyframeController<int8_t>;
+template class KeyframeController<int16_t>;
+template class KeyframeController<int32_t>;
+template class KeyframeController<int64_t>;
+template class KeyframeController<uint8_t>;
+template class KeyframeController<uint16_t>;
+template class KeyframeController<uint32_t>;
+template class KeyframeController<uint64_t>;
+template class KeyframeController<size_t>;
 template class KeyframeController<float>;
+
+//template class KeyframeController<int>;
+//template class KeyframeController<float>;
 
 } } // ofx::LineaDeTiempo
