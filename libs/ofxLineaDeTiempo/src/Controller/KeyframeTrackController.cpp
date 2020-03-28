@@ -18,18 +18,21 @@ namespace LineaDeTiempo {
 //
 template <typename DataType>
 KeyframeTrackController_<DataType>::KeyframeTrackController_(ofParameter<DataType>& parameter,TrackGroupController* parent, TimeControl* timeControl)
-: KeyframeTrackController_<DataType>(parameter.getName(), parent, timeControl)
+: TrackController(parameter.getName(), parent, timeControl)
+, BaseHasOfParameter<DataType>(parameter)
 {
-	_parameter.makeReferenceTo(parameter);
+//	_parameter.makeReferenceTo(parameter);
+	enableTimeUpdate();
 }
 
 template <typename DataType>
 KeyframeTrackController_<DataType>::KeyframeTrackController_(const std::string& name, TrackGroupController* parent, TimeControl* timeControl)
 : TrackController(name, parent, timeControl)
+, BaseHasOfParameter<DataType>(name)
 {
-	_parameter.setName(name);
-	
-	_paramListener = _parameter.newListener(this, &KeyframeTrackController_<DataType>::_paramChanged);
+//	_parameter.setName(name);
+//
+//	_paramListener = _parameter.newListener(this, &KeyframeTrackController_<DataType>::_paramChanged);
 
 	enableTimeUpdate();
 }
@@ -47,17 +50,17 @@ bool KeyframeTrackController_<DataType>::removeRegion(KeyframeRegionController_<
 	return _removeRegion(region);
 }
 
-template <typename DataType>
-ofParameter<DataType>& KeyframeTrackController_<DataType>::getParameter()
-{
-	return _parameter;
-}
-
-template <typename DataType>
-const ofParameter<DataType>& KeyframeTrackController_<DataType>::getParameter() const
-{
-	return _parameter;
-}
+//template <typename DataType>
+//ofParameter<DataType>& KeyframeTrackController_<DataType>::getParameter()
+//{
+//	return _parameter;
+//}
+//
+//template <typename DataType>
+//const ofParameter<DataType>& KeyframeTrackController_<DataType>::getParameter() const
+//{
+//	return _parameter;
+//}
 
 
 template <typename DataType>
@@ -103,13 +106,13 @@ void KeyframeTrackController_<DataType>::destroyView()
 template <typename DataType>
 DataType KeyframeTrackController_<DataType>::getUnnormalizedValue(float val)
 {
-return ofMap((float)val, 0, 1, (float)_parameter.getMin(), (float)_parameter.getMax(), true);
+return ofMap((float)val, 0, 1, (float)getParameter().getMin(), (float)getParameter().getMax(), true);
 }
 
 template <typename DataType>
 float KeyframeTrackController_<DataType>::getNormalizedValue(const DataType& val)
 {
-	return ofMap((float)val, (float)_parameter.getMin(), (float)_parameter.getMax(), 0, 1, true);
+	return ofMap((float)val, (float)getParameter().getMin(), (float)getParameter().getMax(), 0, 1, true);
 }
 
 } } // ofx::LineaDeTiempo
