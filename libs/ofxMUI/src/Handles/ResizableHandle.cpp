@@ -23,7 +23,7 @@ ResizableHandle::ResizableHandle(const std::string& id, DOM::Orientation orienta
 	
 	
 	this->setFocusable(false);
-	this->setHighlightOnOver(false);
+	this->setHighlightOnOver(true);
 	
 	inHandle = this->addChild<ConstrainedGrabHandle>(id+"_Z_in_handle_", orientation, r);
 	outHandle = this->addChild<ConstrainedGrabHandle>(id+"_Z_out_handle_", orientation, r);
