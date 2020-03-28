@@ -18,8 +18,46 @@ TrackController::TrackController(const std::string& name, TrackGroupController* 
 , BaseHasTimeControl(timeControl, "TrackController")
 , BaseViewController<TrackView>()
 {
-	
+	_timeControlListeners.push(timeControl->playEvent.newListener(this, &TrackController::_findCurrentRegion));
+	_timeControlListeners.push(timeControl->stopEvent.newListener(this, &TrackController::_resetCurrentRegion));
+		
+
 }
+
+
+
+
+void TrackController::_resetCurrentRegion()
+{
+ _currentRegion = 0;
+}
+
+
+void TrackController::_findNextRegion(const size_t& startIndex)
+{
+//	std::cout << "TrackController::_findNextRegion " << startIndex <<"\n";
+	auto t = getTimeControl()->getCurrentTime();
+	auto regions = _regionsCollection.getCollection();
+	for(size_t i =startIndex; i < regions.size(); i++)
+	{
+		if(regions[i]->getTimeRange().min >= t)
+		{
+			_currentRegion =i;
+			return;
+		}
+	}
+	_currentRegion = regions.size();
+}
+
+
+void TrackController::_findCurrentRegion()
+{
+	_findNextRegion(0);
+
+}
+
+
+
 
 void TrackController::enableTimeUpdate()
 {
@@ -79,6 +117,24 @@ void TrackController::destroyView()
 	}
 }
 
+void TrackController::update(uint64_t& time)
+{
+//	std::cout << _regionsCollection.size() << " , " << std::boolalpha << (bool)(_regionsCollection.at(_currentRegion)) << "\n" ;
+	if(_currentRegion < _regionsCollection.size() && _regionsCollection.at(_currentRegion))
+	{
+//		std::cout << "1";
+		auto r = _regionsCollection.at(_currentRegion);
+		if( r->getTimeRange().contains(time) )
+		{
+			r->update(time);
+		}
+		else if(r->getTimeRange().max < time)
+		{
+			_findNextRegion(_currentRegion+1);
+			update(time);
+		}
+	}
+}
 
 
 bool TrackController::removeRegion(const std::string& name)
@@ -125,7 +181,10 @@ bool TrackController::removeRegion(const size_t& index)
  {
 	 return _regionsCollection.size();
  }
-
+const size_t& TrackController::getCurrentRegion()const
+{
+	return _currentRegion;
+}
 
 
 } } // ofx::LineaDeTiempo

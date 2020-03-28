@@ -87,10 +87,12 @@ public:
 	
 	bool isUpdatingTime();
 	
-	virtual void update(uint64_t& t) = 0;
+	void update(uint64_t& t);
+	
+	const size_t& getCurrentRegion()const;
 	
 protected:
-	
+	size_t _currentRegion = 0;
 	
 	
 	NamedConstPointerCollection<RegionController> _regionsCollection;
@@ -133,6 +135,14 @@ protected:
 		
 		generateChildrenViews(this);
 	}
+	
+	
+	void _findCurrentRegion();
+	void _resetCurrentRegion();
+	void _findNextRegion(const size_t& startIndex);
+//	size_t _currentRegion = 0;
+	
+	ofEventListeners _timeControlListeners;
 	
 	
 private:
