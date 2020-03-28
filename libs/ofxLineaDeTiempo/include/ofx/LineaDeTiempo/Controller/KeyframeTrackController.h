@@ -40,8 +40,6 @@ public:
 	virtual void destroyView() override;
 	
 	
-	virtual void update(uint64_t& t) override;
-
 	ofParameter<DataType>& getParameter();
 	const ofParameter<DataType>& getParameter() const;
 	
@@ -50,8 +48,6 @@ public:
 	DataType getUnnormalizedValue(float val);
 
 protected:
-
-	std::vector<KeyframeRegionController_<DataType>*> _regions;
 	
 	ofParameter<DataType> _parameter;
 	
@@ -62,16 +58,6 @@ protected:
 	//	// this is set to true when the param is being modified by the manager, so it does not generate an infinite loop because of the cyclic callbacks.
 	bool _bModifyingParam = false;
 
-	
-	void _findCurrentRegion();
-	void _resetCurrentRegion();
-	void _findNextRegion(const size_t& startIndex);
-	size_t _currentRegion = 0;
-	
-	ofEventListeners _timeControlListeners;
-	
-	
-	
 private:
 	
 	
