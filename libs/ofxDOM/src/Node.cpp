@@ -553,9 +553,9 @@ void Node::printStructure(std::string prefix)
 	std::cout << prefix << getId() << "\n";
 	prefix += "   ";
 	
-	for(auto c: children())
+	for(auto& c: _children)
 	{
-		c->printStructure(prefix);
+		if(c) c->printStructure(prefix);
 	}
 	
 }
