@@ -126,9 +126,10 @@ void EdgeHandle::onUpdate(){
 		_pointerCaptureTime = ofGetElapsedTimeMillis();
 //		std::cout << "_pointerCaptureTime: " << _pointerCaptureTime << "\n";
 
-	}else if(_wasPointerOver && !isPointerOver()){
+	}else if(_wasPointerOver && !isPointerOver() && !isDragging()){
 		_wasPointerOver = false;
 		_pointerCaptureTime = 0;
+		
 		setHidden(true);
 	}
 //
