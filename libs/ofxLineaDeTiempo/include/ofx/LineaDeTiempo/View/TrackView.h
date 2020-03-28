@@ -38,7 +38,9 @@ public:
 	virtual void setColor(const ofColor& color) override;
 	
 	
-	ofRectangle timeRangeToRect(const ofRange64u& t) const;
+	ofRectangle timeRangeToRect(const ofRange64u& time) const;
+	
+	ofRange64u  rectToTimeRange(const ofRectangle& rect) const;
 	
 	float timeToLocalPosition(const uint64_t& t) const;
 	

@@ -30,11 +30,16 @@ shared_ptr<MUI::Styles> TrackView::getRegionsStyle()
 void TrackView::setColor(const ofColor& color)
 {
 	BaseTrackView::setColor(color);
-	
 	_regionsStyle->setColor(_color, MUI::Styles::ROLE_BACKGROUND);
-	
 }
 
+ofRange64u  TrackView::rectToTimeRange(const ofRectangle& rect) const
+{
+	ofRange64u t;
+	t.min = localPositionToTime(rect.getMinX());
+	t.max = localPositionToTime(rect.getMaxX());
+	return t;
+}
 
 ofRectangle TrackView::timeRangeToRect(const ofRange64u& t) const
 {
@@ -74,8 +79,6 @@ void TrackView::setHeightFactor(float factor)
 	_unscaledHeight = BaseTrackView::initialHeight * _heightFactor;
 }
 
-
-
 bool TrackView::removeRegion(RegionController * controller)
 {
 	if(controller == nullptr) return false;
@@ -93,6 +96,7 @@ float TrackView::getUnscaledHeight()
 {
 	return _unscaledHeight;
 }
+
 float TrackView::updateScaledShape(float y, float yScale, float width)
 {
 	auto h = BaseTrackView::initialHeight * _heightFactor * yScale;
@@ -100,6 +104,7 @@ float TrackView::updateScaledShape(float y, float yScale, float width)
 	updateLayout();
 	return h;
 }
+
 void TrackView::updateLayout()
 {
 	for(auto c: children())
