@@ -28,10 +28,10 @@ const ofRange64u& RegionController::getTimeRange() const
  }
 
 
-void RegionController::setTimeRange(const ofRange64u& t){
+void RegionController::setTimeRange(const ofRange64u& t, bool updateView ){
  	if(_timeRange != t){
  		_timeRange = t;
-		if(getView())
+		if(updateView && getView())
 		{
 			getView()->updateRectFromTimeRange(_timeRange);
 		}

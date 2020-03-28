@@ -34,7 +34,7 @@ public:
 	
 	const ofRange64u& getTimeRange() const;
 	
-	void setTimeRange(const ofRange64u& t);
+	void setTimeRange(const ofRange64u& t, bool updateView = true);
 	
 	TrackController * getParentTrack();
 	
@@ -48,12 +48,12 @@ public:
 	
 protected:
 	
-	ofRange64u _timeRange;
+	
 
 	TrackController * _parentTrack;
 
 private:
-	
+	ofRange64u _timeRange;
 	
 };
 
