@@ -289,6 +289,14 @@ void Widget::drawShape(float x, float y, float width, float height, float radius
 		ofDrawRectangle(x, y, width, height);
 	}else if(_drawMode == ShapeDrawMode::ROUNDED_RECTANGLE){
 		ofDrawRectRounded(x, y, width, height, radius);
+	}else if(_drawMode == ShapeDrawMode::TOP_ROUNDED_RECTANGLE){
+        ofDrawRectRounded(x, y, 0, width, height, radius, radius, 0, 0);
+	}else if(_drawMode == ShapeDrawMode::BOTTOM_ROUNDED_RECTANGLE){
+        ofDrawRectRounded(x, y, 0, width, height, 0, 0, radius, radius);
+	}else if(_drawMode == ShapeDrawMode::LEFT_ROUNDED_RECTANGLE){
+        ofDrawRectRounded(x, y, 0, width, height, radius, 0, 0, radius);
+	}else if(_drawMode == ShapeDrawMode::RIGHT_ROUNDED_RECTANGLE){
+        ofDrawRectRounded(x, y, 0, width, height, 0, radius, radius, 0);
 	}
 }
 

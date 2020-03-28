@@ -84,7 +84,7 @@ public:
 	
 	
 	/// \brief sets the way this widget's shape is going to be drawn
-	/// \param drawMode  the draw mode to set (ELLIPSE, RECTANGLE or ROUNDED_RECTANGLE). RECTANGLE by default
+	/// \param drawMode  the draw mode to set (ELLIPSE, RECTANGLE, ROUNDED_RECTANGLE, TOP_ROUNDED_RECTANGLE, BOTTOM_ROUNDED_RECTANGLE, LEFT_ROUNDED_RECTANGLE or RIGHT_ROUNDED_RECTANGLE). RECTANGLE by default
 	void setShapeDrawMode(ShapeDrawMode drawMode);
 	
 	/// \brief Gets the way this widget's shape is going to be drawn
@@ -151,7 +151,7 @@ protected:
     std::map<uint64_t, std::function<void(DOM::KeyboardUIEventArgs& event)>> _keyboardListeners;
 
 	
-	/// \brief the the way the shape is going to be drawn (ELLIPSE, RECTANGLE or ROUNDED_RECTANGLE)
+	/// \brief the the way the shape is going to be drawn (ELLIPSE, RECTANGLE, ROUNDED_RECTANGLE, TOP_ROUNDED_RECTANGLE, BOTTOM_ROUNDED_RECTANGLE, LEFT_ROUNDED_RECTANGLE or RIGHT_ROUNDED_RECTANGLE)
 	ShapeDrawMode _drawMode = ShapeDrawMode::RECTANGLE;
 	
 	

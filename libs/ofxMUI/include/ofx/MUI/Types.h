@@ -61,9 +61,16 @@ enum class ShapeDrawMode
 	/// \brief Draws an element as a rectangle
 	RECTANGLE,
 	/// \brief Draws an element as a rectangle with rounded corners
-	ROUNDED_RECTANGLE
+	ROUNDED_RECTANGLE,
+	/// \brief Draws an element as a rectangle with its top corners rounded
+	TOP_ROUNDED_RECTANGLE,
+	/// \brief Draws an element as a rectangle with its bottom corners rounded
+	BOTTOM_ROUNDED_RECTANGLE,
+	/// \brief Draws an element as a rectangle with its left corners rounded
+	LEFT_ROUNDED_RECTANGLE,
+	/// \brief Draws an element as a rectangle with its right corners rounded
+	RIGHT_ROUNDED_RECTANGLE
 };
-
 
 
 
