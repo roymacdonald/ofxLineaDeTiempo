@@ -20,12 +20,14 @@ TimeControl::TimeControl()
 void TimeControl::play()
 {
 	_setState(PLAYING);
+	
 }
 //---------------------------------------------------------------------
 void TimeControl::stop()
 {
 	_setState(STOPPED);
 }
+//---------------------------------------------------------------------
 void TimeControl::tooglePlay()
 {
 	if(!isPlaying())
@@ -111,10 +113,8 @@ bool TimeControl::isOutTimeEnabled() const
 //---------------------------------------------------------------------
 void TimeControl::setCurrentTime(const uint64_t& currentTime)
 {
-//	if(_currentTime != currentTime){
-		_currentTime = currentTime;
-		_notifyCurrentTime();
-//	}
+	_currentTime = currentTime;
+	_notifyCurrentTime();
 }
 //---------------------------------------------------------------------
 const uint64_t& TimeControl::getCurrentTime() const
@@ -184,6 +184,8 @@ void TimeControl::_setState(TimeControlState state)
 		if(_state == STOPPED)
 		{
 			_currentTime = _getStartTime();
+			
+			ofNotifyEvent(stopEvent,this);
 		}
 		else if(_state == PLAYING)
 		{
@@ -195,10 +197,21 @@ void TimeControl::_setState(TimeControlState state)
 			
 //			_playStartTime =
 			_prevUpdateTime = _playStartTime;// _currentTime;
+			
+			ofNotifyEvent(playEvent,this);
 		}
-		// TODO: handle individual states
+		else if(_state == PAUSED)
+		{
+			ofNotifyEvent(pauseEvent,this);
+		}
 		
+		// TODO: handle individual states
 	}
+	
+	
+	
+	
+	
 }
 
 //---------------------------------------------------------------------
@@ -217,9 +230,7 @@ TimeControlState TimeControl::getState() const
 {
 	return _state;
 }
-
-//---------------------------------------------------------------------
-void TimeControl::drawDebug(float x, float y)
+std::string TimeControl::getDebugString()
 {
 	stringstream ss;
 	ss << "_totalTime: " << _totalTime << "\n";
@@ -229,8 +240,14 @@ void TimeControl::drawDebug(float x, float y)
 	ss << "_bLoop: " << _bLoop << "\n";
 	ss << "_playStartTime: " << _playStartTime << "\n";
 	ss << "_state: " << _state << "\n";
+	return ss.str();
+}
+//---------------------------------------------------------------------
+void TimeControl::drawDebug(float x, float y)
+{
 	
-	ofDrawBitmapStringHighlight(ss.str(), x, y);
+	
+	ofDrawBitmapStringHighlight(getDebugString(), x, y);
 	
 }
 
