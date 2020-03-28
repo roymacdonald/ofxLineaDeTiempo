@@ -46,14 +46,14 @@ namespace LineaDeTiempo {
 //template class TimedData_<glm::mat4>;
 //#endif
 //
-//template class TimedData_<char>;
-//template class TimedData_<unsigned char>;
-//template class TimedData_<short>;
-//template class TimedData_<unsigned short>;
+template class TimedData_<char>;
+template class TimedData_<unsigned char>;
+template class TimedData_<short>;
+template class TimedData_<unsigned short>;
 template class TimedData_<int>;
-//template class TimedData_<unsigned int>;
-//template class TimedData_<long>;
-//template class TimedData_<unsigned long>;
+template class TimedData_<unsigned int>;
+template class TimedData_<long>;
+template class TimedData_<unsigned long>;
 template class TimedData_<float>;
 //template class TimedData_<double>;
 //#ifdef ENABLE_LONG_DOUBLE_TIMED_DATA
@@ -89,14 +89,14 @@ template class TimedData_<float>;
 //
 //
 //
-//template class KeyframedData_<char>;
-//template class KeyframedData_<unsigned char>;
-//template class KeyframedData_<short>;
-//template class KeyframedData_<unsigned short>;
+template class KeyframedData_<char>;
+template class KeyframedData_<unsigned char>;
+template class KeyframedData_<short>;
+template class KeyframedData_<unsigned short>;
 template class KeyframedData_<int>;
-//template class KeyframedData_<unsigned int>;
-//template class KeyframedData_<long>;
-//template class KeyframedData_<unsigned long>;
+template class KeyframedData_<unsigned int>;
+template class KeyframedData_<long>;
+template class KeyframedData_<unsigned long>;
 template class KeyframedData_<float>;
 //template class KeyframedData_<double>;
 //#ifdef ENABLE_LONG_DOUBLE_TIMED_DATA
