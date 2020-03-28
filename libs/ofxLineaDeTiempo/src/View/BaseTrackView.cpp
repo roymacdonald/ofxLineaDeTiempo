@@ -20,7 +20,7 @@ ofColor BaseTrackView::edgeColor = ofColor(120);
 const float BaseTrackView::initialHeight = 150;
 
 BaseTrackView::BaseTrackView(const std::string& id, DOM::Element* parentView)
-:DOM::Element(id, 0, 0, 150, 150)
+:DOM::Element(id, 0, 0, parentView->getWidth(), 150)
 ,BaseHasHeader<TrackHeader>()
 //,_parentGroupView(parentGroupView)
 {
