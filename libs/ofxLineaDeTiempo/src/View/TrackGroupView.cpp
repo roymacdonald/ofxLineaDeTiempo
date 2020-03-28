@@ -131,7 +131,6 @@ float TrackGroupView::getUnscaledHeight()
 }
 float TrackGroupView::updateScaledShape(float y, float yScale, float width)
 {
-
 	float h = _groupTopMargin;
 	
 	for(auto c: children())
@@ -139,7 +138,7 @@ float TrackGroupView::updateScaledShape(float y, float yScale, float width)
 		auto t = dynamic_cast<BaseTrackView*>(c);
 		if(t)
 		{
-			h+= t->updateScaledShape(y,  yScale, width);
+			h+= t->updateScaledShape(h,  yScale, width);
 		}
 	}
 	
@@ -147,6 +146,23 @@ float TrackGroupView::updateScaledShape(float y, float yScale, float width)
 	updateLayout();
 	return h;
 }
+//void TrackGroupView::updateLayout()
+//{
+//	std::cout << "TrackGroupView::updateLayout()\n";
+//
+//	float currentY = _groupTopMargin;
+//	for (auto c : children()){
+//		auto t = dynamic_cast<BaseTrackView*>(c);
+//		if (t){
+//			std::cout << getWidth() << "\n";
+//			currentY += t->updateScaledShape(currentY, 1, getWidth());
+//		}
+//	}
+//	auto s = getChildShape();
+//	
+//	setSize(s.width , s.height);
+//	
+//}
 
 
 } } // ofx::LineaDeTiempo

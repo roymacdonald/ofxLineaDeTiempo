@@ -42,7 +42,7 @@ public:
 	
 	bool removeGroup(TrackGroupController * controller);
 
-	
+//	virtual void updateLayout() override;
 	
 	float getTrackHeaderWidth();
 	void setTrackHeaderWidth(float w);
@@ -64,7 +64,7 @@ protected:
 	ofEventListeners _parentListeners;
 	
 	
-	float _groupTopMargin = 10;
+	float _groupTopMargin =25;
 	
 	virtual void _updateContainers();
 	
