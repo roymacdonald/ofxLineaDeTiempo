@@ -19,7 +19,6 @@ namespace LineaDeTiempo {
 //---------------------------------------------------------------------------------------------------------------------
 KeyframesRegionView::KeyframesRegionView(TrackView* parentTrack, RegionController *controller)
 : RegionView(parentTrack, controller)
-, Selector<KeyframeView>(this, this)
 {
 	addEventListener(keyDown,
 					 &KeyframesRegionView::onKeyboardEvent,
@@ -30,29 +29,32 @@ KeyframesRegionView::KeyframesRegionView(TrackView* parentTrack, RegionControlle
 					 false,
 					 std::numeric_limits<int>::lowest());
 	
-	
+	_selector.setLimitingElement(this);
+	_selector.addTarget(this);
 	setDraggable(true);
 //	setMoveToFrontOnCapture(false);
 }
 //---------------------------------------------------------------------------------------------------------------------
 void KeyframesRegionView::onKeyframeDrag(KeyframeView* k, const glm::vec2& delta)
 {
-	auto & selectedKeyframes = getSelectedElements();
-	for(auto s : selectedKeyframes){
-		if(s != k ){
-			
-			auto r = s->getShape();
-			r.x = s->getX() - delta.x;
-			r.y = s->getY() - delta.y;
-			
-			DOM::ofRectangleHelper::keepInside(r, ofRectangle(0,0, getWidth(), getHeight()));
-			
-			s->setPosition(r.getPosition());
-			s->_updateValue();
-			
+	auto selectedKeyframes = _selector.getSelectedElements(this);
+	if(selectedKeyframes){
+		for(auto s : *selectedKeyframes){
+			if(s != k ){
+				
+				auto r = s->getShape();
+				r.x = s->getX() - delta.x;
+				r.y = s->getY() - delta.y;
+				
+				DOM::ofRectangleHelper::keepInside(r, ofRectangle(0,0, getWidth(), getHeight()));
+				
+				s->setPosition(r.getPosition());
+				s->_updateValue();
+				
+			}
 		}
+		_makeInterpolationLine();
 	}
-	_makeInterpolationLine();
 }
 std::vector<KeyframeView*> & KeyframesRegionView::getCollection()
 {
@@ -68,7 +70,7 @@ void KeyframesRegionView::_onDragging(const DOM::CapturedPointer& pointer)
 	auto local = screenToLocal(pointer.position());
 //	updateSelectionRect(local);
 
-	_SelectorDragging(local);
+	_selector.onPointerDrag(local, this);
 	
 }
 //---------------------------------------------------------------------------------------------------------------------
@@ -78,13 +80,13 @@ void KeyframesRegionView::_onPointerEvent(DOM::PointerUIEventArgs& e)
 	auto local = screenToLocal( e.screenPosition());
 	if (e.type() == PointerEventArgs::POINTER_DOWN)
 	{
-		_SelectorPointerDown(local);
+		_selector.onPointerDown(local, this);
 
 	}
 	else if (e.type() == PointerEventArgs::POINTER_UP)
 	{
 //		_onPointerUp(e);
-		auto wasSelecting = _SelectorPointerUp(local);
+		auto wasSelecting = _selector.onPointerUp(local, this);
 		if(!wasSelecting)
 		{
 			
@@ -104,27 +106,27 @@ void KeyframesRegionView::_onPointerEvent(DOM::PointerUIEventArgs& e)
 //---------------------------------------------------------------------------------------------------------------------
 void KeyframesRegionView::selectKeyframe(KeyframeView* keyframe)
 {
-	selectElement(keyframe);
+	_selector.selectElement(keyframe, this);
 }
 //---------------------------------------------------------------------------------------------------------------------
 void KeyframesRegionView::unselectKeyframe(KeyframeView* k)
 {
-	unselectElement(k);
+	_selector.unselectElement(k, this);
 }
 //---------------------------------------------------------------------------------------------------------------------
 void KeyframesRegionView::unselectAllKeyframes()
 {
-	unselectAllElements();
+	_selector.unselectAllElements();
 }
 //---------------------------------------------------------------------------------------------------------------------
 void KeyframesRegionView::selectAllKeyframes()
 {
-	selectAllElements();
+	_selector.selectAllElements();
 }
 //---------------------------------------------------------------------------------------------------------------------
 bool KeyframesRegionView::isKeyframeSelected(KeyframeView* k)
 {
-	return isElementSelected(k);
+	return _selector.isElementSelected(k, this);
 }
 //---------------------------------------------------------------------------------------------------------------------
 void KeyframesRegionView::_makeInterpolationLine(){
@@ -154,7 +156,7 @@ void KeyframesRegionView::onDraw() const{
 	Widget::onDraw();
 	
 	ofPushStyle();
-	Selector<KeyframeView>::draw();
+	_selector.draw();
 	ofSetColor(ofColor::white, 100);
 	_inLine.draw();
 	_outLine.draw();
@@ -176,13 +178,15 @@ void KeyframesRegionView::updateKeyframeSort(){
 	if(numChildren() > 1){
 		std::sort(keyFrames.begin(), keyFrames.end(), compareKeyframeView);
 	}
-	auto & selectedKeyframes = getSelectedElements();
-	
-	if(selectedKeyframes.size() > 1){
-		std::sort(selectedKeyframes.begin(), selectedKeyframes.end(), compareKeyframeView);
+	auto selectedKeyframes = _selector.getSelectedElements(this);
+	if(selectedKeyframes){
+	if(selectedKeyframes->size() > 1){
+		std::sort(selectedKeyframes->begin(), selectedKeyframes->end(), compareKeyframeView);
 	}
 	_makeInterpolationLine();
+	}
 }
+
 KeyframeView* KeyframesRegionView::addKeyframe(const glm::vec2& localPos)
 {
 	
@@ -207,11 +211,11 @@ bool KeyframesRegionView::removeKeyframe(KeyframeView* k){
 	auto c = removeChild(k);
 	if(c){
 		ofRemove(keyFrames, [&](KeyframeView*& key){return key == k;});
-		ofRemove(getSelectedElements(), [&](KeyframeView*& key){return key == k;});
+		auto selected = _selector.getSelectedElements(this);
+		if(selected)
+			ofRemove(*selected, [&](KeyframeView*& key){return key == k;});
 		
 		updateKeyframeSort();
-
-
 		return true;
 	}
 	return false;
@@ -231,26 +235,23 @@ void KeyframesRegionView::onKeyboardEvent(DOM::KeyboardUIEventArgs& evt)
 {
 	if (this == evt.target())
     {
-		_SelectorKeyboardEvent(evt);
+		_selector.onKeyboardEvent(evt, this);
     }
 }
 
-void KeyframesRegionView::_removeSelectedElements()
+void KeyframesRegionView::removeElements(std::vector<KeyframeView*> & elementsToRemove)
 {
-	auto& sel = getSelectedElements();
-	
-	for(auto s: sel)
+	for(auto s: elementsToRemove)
 	{
 
 		if(s == nullptr) continue;
-//		ofRemove(keyFrames, [&](KeyframeView*& key){return key == s;});
 		
 		ofNotifyEvent(removeKeyframeEvent, s, this);
 		
 	}
 	updateKeyframeSort();
 	
-	sel.clear();
+	elementsToRemove.clear();
 	
 }
 

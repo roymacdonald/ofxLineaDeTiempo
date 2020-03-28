@@ -10,7 +10,7 @@
 #include "LineaDeTiempo/View/KeyframeView.h"
 #include "LineaDeTiempo/View/RegionView.h"
 #include "LineaDeTiempo/View/Selector.h"
-
+#include "LineaDeTiempo/BaseTypes/BaseHasCollection.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -21,9 +21,11 @@ class RegionController;
 class TrackView;
 
 
+
+
 class KeyframesRegionView
 : public RegionView
-, public Selector<KeyframeView>
+, public BaseHasCollection<KeyframeView>
 {
 public:
 	KeyframesRegionView (TrackView* parentTrack, RegionController *controller);
@@ -49,7 +51,7 @@ public:
 	
 	virtual void updateLayout() override;
 	
-	
+//
 	virtual const std::vector<KeyframeView*> & getCollection() const override;
 	virtual std::vector<KeyframeView*> & getCollection() override;
 	
@@ -64,7 +66,9 @@ public:
 	
 protected:
 
-	virtual void _removeSelectedElements() override;
+	Selector<KeyframeView> _selector;
+	
+	virtual void removeElements(std::vector<KeyframeView*> & elementsToRemove) override;
 	
 
 	bool _bIsMultiDim =  false;
