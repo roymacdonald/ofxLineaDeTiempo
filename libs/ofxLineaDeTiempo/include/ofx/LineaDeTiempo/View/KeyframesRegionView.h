@@ -72,6 +72,8 @@ protected:
 	virtual void _onDragging(const DOM::CapturedPointer& pointer) override;
 	virtual void _onPointerEvent(DOM::PointerUIEventArgs& e) override;
 
+	virtual void _onTimeRangeChange() override;
+	
 
 	std::vector<KeyframeView*> keyFrames;
 	

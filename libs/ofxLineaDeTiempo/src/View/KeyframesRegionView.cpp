@@ -254,14 +254,14 @@ void KeyframesRegionView::_removeSelectedElements()
 	
 }
 
-//void KeyframesRegionView::updateKeyframeTimeAndValue(KeyframeView* k)
-//{
-//	auto c = dynamic_cast<KeyframeRegionController*>(getController());
-//	if(c)
-//	{
-//		c->updateKeyframeTimeAndValue(k);
-//	}
-//}
+void KeyframesRegionView::_onTimeRangeChange()
+{
+	for(auto k : keyFrames)
+	{
+		k->_updateValue();
+	}
+	updateKeyframeSort();
+}
 
 } } // ofx::LineaDeTiempo
 
