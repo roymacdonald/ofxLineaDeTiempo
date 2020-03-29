@@ -286,8 +286,9 @@ void KeyframedData_<T>::fromJson(const ofJson& j)
 
 //---------------------------------------------------------------------------------
 template<typename T>
-void KeyframedData_<T>::toJson(ofJson& j) const
+ofJson KeyframedData_<T>::toJson() const
 {
+	ofJson j;
 //	j["name"] = _name;
 	j["currentValue"] = _currentValue;
 	j["lastUpdateTime"] = _lastUpdateTime;
@@ -299,6 +300,8 @@ void KeyframedData_<T>::toJson(ofJson& j) const
 		if(d) j["keyframes"].emplace_back(*(d.get())) ;
 	}
 	j["num_keyframes"] = j["keyframes"].size();
+	
+	return j;
 }
 
 
@@ -310,56 +313,23 @@ void KeyframedData_<T>::moveAllByTime(const uint64_t& _timeOffset)
 		d->time += _timeOffset;
 	}
 }
-
-template<typename DataType>
-std::ostream& operator<<(std::ostream& os, const KeyframedData_<DataType>& data)
+template<typename T>
+std::string KeyframedData_<T>::toString() const
 {
-	os << data._name << ", "
-	<< data._currentValue << ", "
-	<< data._lastUpdateTime << ", "
-	<< data._currentIndex << ", "
-	<< data._bKeyframingEnabled << ", "
-	<< data._data.size();
-	for(auto& d: data._data){
-		os << ", " << d ;
+	
+	std::stringstream ss;
+	//		os << _name << ", "
+	ss
+	<< "currentValue: " << _currentValue << "\n"
+	<< "lastUpdateTime: " << _lastUpdateTime << "\n"
+	<< "currentIndex: " << _currentIndex << "\n"
+	//		<< _bKeyframingEnabled << ", "
+	<< "data size: " << _data.size() << "\n";
+	for(auto& d: _data){
+		ss << "    " << d->time << ", " << d->value << "\n";
 	}
-	return os;
+	return ss.str();
 }
-template<typename DataType>
-std::istream& operator>>(std::istream& is, KeyframedData_<DataType>& data)
-{
-
-	is >> data._name;
-	is.ignore(2);
-	is >> data._currentValue;
-	is.ignore(2);
-	is >> data._lastUpdateTime;
-	is.ignore(2);
-	is >> data._currentIndex;
-	is.ignore(2);
-	is >> data._bKeyframingEnabled;
-	is.ignore(2);
-	size_t size;
-	is >> size;
-	//	<< data._data.size();
-	DataType d;
-
-	data.clear();
-
-	for(size_t i =0; i < size; i++)
-	{
-		is.ignore(2);
-		is >> d;
-		data._addToCollection(d.value, d.time);
-
-	}
-	data.sortData();
-	return is;
-
-}
-
-
-
 
 } } // ofx::LineaDeTiempo
 

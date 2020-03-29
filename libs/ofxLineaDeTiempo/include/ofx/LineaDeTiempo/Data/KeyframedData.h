@@ -22,6 +22,7 @@ namespace LineaDeTiempo {
 template<typename DataType>
 class KeyframedData_
 : public BaseKeyframer
+, public AbstractSerializable
 {
 public:
 	KeyframedData_();
@@ -50,11 +51,7 @@ public:
 	
 
 	
-	friend std::ostream& operator<<(std::ostream& os, const KeyframedData_<DataType>& data);
-	friend std::istream& operator>>(std::istream& is, KeyframedData_<DataType>& data);
-
-	
-	
+	std::string toString() const;
 	
 
 	std::vector< std::unique_ptr< TimedData_<DataType> > > & getData();
@@ -63,9 +60,9 @@ public:
 	
 	void moveAllByTime(const uint64_t& _timeOffset);
 	
-	void fromJson(const ofJson& j);
-	
-	void toJson(ofJson& j) const;
+	virtual void fromJson(const ofJson& j) override;
+
+	virtual ofJson toJson() override;
 
 	
 protected:
@@ -96,23 +93,7 @@ private:
 };
 
 
+
+
 }} //ofx::LineaDeTiempo
-
-
-namespace nlohmann{
-template <typename T>
-struct adl_serializer<ofx::LineaDeTiempo::KeyframedData_<T>> {
-	static void from_json(const json& j, ofx::LineaDeTiempo::KeyframedData_<T> & k)
-	{
-		k.fromJson(j);
-		
-	}
-
-	static void to_json(json& j, ofx::LineaDeTiempo::KeyframedData_<T> k)
-	{
-		k.toJson(j);
-	}
-};
-
-}
 

@@ -7,17 +7,7 @@
 
 #pragma once
 #include <stdint.h>
-//#include <vector>
-//#include <map>
 #include <type_traits>
-//#include "MUI/Utils.h"
-//#include "ofMath.h"
-//#include "ofLog.h"
-//#include "ofColor.h"
-//#include "ofRectangle.h"
-//#include <glm/gtx/matrix_interpolation.hpp>
-
-//#include "ofJson.h"
 #include "LineaDeTiempo/Data/jsonSerializer.h"
 #include "LineaDeTiempo/BaseTypes/AbstractSerializable.h"
 #include "ofEvent.h"
@@ -46,7 +36,7 @@ public:
 
 	virtual void fromJson(const ofJson& j) override;
 
-	virtual void toJson(ofJson& j) override;
+	virtual ofJson toJson() override;
 	
 };
 
