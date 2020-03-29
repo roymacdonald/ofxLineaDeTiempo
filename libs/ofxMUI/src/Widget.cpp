@@ -126,11 +126,6 @@ void Widget::onDraw() const
 	if(_drawMode == ShapeDrawMode::ELLIPSE){
 		ofPopMatrix();
 	}
-#ifdef OFX_MUI_WIDGET_DEBUG
-	if(!debugString.empty()){
-		ofDrawBitmapStringHighlight(debugString, getX()+ 10, getY() + 24);
-	}
-#endif
 }
 
 
@@ -282,6 +277,7 @@ void Widget::_onPointerCaptureEvent(DOM::PointerCaptureUIEventArgs& e)
         _setIsDragging(false);
     }
 }
+
 void Widget::drawShape(float x, float y, float width, float height, float radius)const{
 	if(_drawMode == ShapeDrawMode::ELLIPSE){
 		ofDrawEllipse(x, y, width, height);
@@ -323,6 +319,18 @@ void Widget::setHighlightOnOver(bool bHighlight){
 bool Widget::isHighlightingOnOver(){
 	return _highlightOnOver;
 };
+
+void Widget::printStructure(std::string prefix)
+{
+	std::cout << prefix << getId() << "  " <<  getShape() << " "<< std::boolalpha << _isDraggable << "\n";
+	prefix += "   ";
+	
+	for(auto c: children())
+	{
+		c->printStructure(prefix);
+	}
+	
+}
 
 
 } } // namespace ofx::MUI

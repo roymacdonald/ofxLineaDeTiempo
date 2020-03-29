@@ -14,7 +14,6 @@
 #include "ofx/DOM/Events.h"
 #include "ofx/MUI/Types.h"
 
-#define OFX_MUI_WIDGET_DEBUG
 
 namespace ofx {
 namespace MUI {
@@ -92,11 +91,7 @@ public:
 	ShapeDrawMode getShapeDrawMode() const;
 	
 	
-	#ifdef OFX_MUI_WIDGET_DEBUG
-		void setDebugString(const std::string& str){
-			debugString = str;
-		}
-	#endif
+	
 	///\brief This event gets triggered whenever the dragging state changes. 
 	ofEvent<bool> isDraggingEvent;
 	
@@ -116,6 +111,8 @@ public:
 	
 	///\brief returns true if will highlight when the position pointer is over
 	bool isHighlightingOnOver();
+	
+	virtual void printStructure(std::string prefix = "") override;
 	
 protected:
 	///\brief Callback when dragging happens. override to change behavior
@@ -166,11 +163,6 @@ protected:
 private:
     /// \brief The shared Styles.
     mutable std::shared_ptr<Styles> _styles = nullptr;
-
-	#ifdef OFX_MUI_WIDGET_DEBUG
-		std::string debugString;
-//		mutable bool bDrawDebugString = false;
-	#endif
 
 	
 };

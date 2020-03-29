@@ -11,7 +11,7 @@
 namespace ofx {
 namespace MUI {
 
-const uint64_t EdgeHandle::onOverDrawDelay = 300;
+const uint64_t EdgeHandle::onOverDrawDelay = 200;
 
 //---------------------------------------------------------------------------------------
 EdgeHandle::EdgeHandle(const std::string& id, DOM::RectEdge edge, DOM::Element* target):

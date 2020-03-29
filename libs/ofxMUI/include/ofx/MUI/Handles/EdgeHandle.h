@@ -31,7 +31,6 @@ public:
 	///\ brief the ammount of time, in milliseconds that will pass once the pointer is over and that the Handle starts showing.
 	static const uint64_t onOverDrawDelay;
 	
-
 	
 	
 protected:
