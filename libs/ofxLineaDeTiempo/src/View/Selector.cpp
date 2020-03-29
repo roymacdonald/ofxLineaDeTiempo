@@ -12,88 +12,149 @@
 namespace ofx {
 namespace LineaDeTiempo {
 
-template<typename ElementType>
-Selector<ElementType>::Selector()
+template<typename T>
+Selector<T>::Selector()
 : _rect(0,0,0,0)
 {
-	
+	_drawListener = ofEvents().draw.newListener(this, &Selector<T>::_draw,  std::numeric_limits<int>::max());
 }
 
-template<typename ElementType>
-void Selector<ElementType>::setLimitingElement(DOM::Element * limitingElement)
+template<typename T>
+void Selector<T>::setLimitingElement(DOM::Element * limitingElement)
 {
 	_limitingElement = limitingElement;
 }
 
-template<typename ElementType>
-const ofRectangle& Selector<ElementType>::getRect() const
+template<typename T>
+const ofRectangle& Selector<T>::getRect() const
 {
 	return _rect;
 }
 
-template<typename ElementType>
-bool Selector<ElementType>::isSelectingRect() const
+template<typename T>
+bool Selector<T>::isSelectingRect() const
 {
-	return _rect.getArea() > 0.5;
+	return _rect.getArea() > 1;
 }
 
-template<typename ElementType>
-void Selector<ElementType>::onPointerDown(const glm::vec2& localPosition, DOM::Element* caller)
+template<typename T>
+void Selector<T>::onPointerDown(const glm::vec2& screenPosition, DOM::Element* caller)
 {
-	_selectionRectStart =  localPosition;
+	_selectionRectStart =  screenPosition;
 	_rect.set(_selectionRectStart, 0, 0);
 	
 	
+//	std::cout << "Selector<T>::onPointerDown  " << std::boolalpha << _bAddToCurrentSelection << std::endl;
 	if(!_bAddToCurrentSelection){
-		unselectAllElements();
+		_bHadSelectedElements = unselectAllElements();
 	}
 }
 
-template<typename ElementType>
-bool Selector<ElementType>::onPointerUp(const glm::vec2& localPosition, DOM::Element* caller)
+template<typename T>
+bool Selector<T>::onPointerUp(const glm::vec2& screenPosition, DOM::Element* caller)
 {
 	if(isSelectingRect()){
-		_updateSelectionRect( localPosition, caller);
+		_updateSelectionRect( screenPosition, caller);
 		_rect.set(0, 0, 0, 0);
 		return true;
 	}else {
-		return unselectAllElements();
+			if(!_bAddToCurrentSelection){
+			auto u = unselectAllElements();
+	
+//			std::cout << "Selector<T>::onPointerUp  add: " << std::boolalpha << _bAddToCurrentSelection
+//				<< "  unsel: " << u << "  hadSel: " << _bHadSelectedElements << std::endl;
+				
+			u |= _bHadSelectedElements;
+		
+			_bHadSelectedElements = false;
+			return u;
+		}
+		
 	}
 }
 
 
-template<typename ElementType>
-void Selector<ElementType>::onPointerDrag(const glm::vec2& localPosition, DOM::Element* caller)
+template<typename T>
+void Selector<T>::onPointerDrag(const glm::vec2& screenPosition, DOM::Element* caller)
 {
-	_updateSelectionRect(localPosition, caller);
+	_updateSelectionRect(screenPosition, caller);
 }
 
-template<typename ElementType>
-void Selector<ElementType>::_updateSelectionRect(const glm::vec2& localPosition, DOM::Element* caller)
+template<typename T>
+void Selector<T>::_updateSelectionRect(const glm::vec2& screenPosition, DOM::Element* caller)
 {
 	
 	_rect.set(_selectionRectStart, 0, 0);
-	_rect.width = localPosition.x - _selectionRectStart.x;
-	_rect.height = localPosition.y - _selectionRectStart.y;
+	_rect.width = screenPosition.x - _selectionRectStart.x;
+	_rect.height = screenPosition.y - _selectionRectStart.y;
 	_rect.standardize();
 	
 	
 	
 	if( caller && _limitingElement){
-		auto s = _limitingElement->getScreenShape();
-		_rect = _rect.getIntersection(ofRectangle(caller->screenToLocal(s.getMin()), caller->screenToLocal(s.getMax()) ));
+		
+		_rect = _rect.getIntersection(_limitingElement->getScreenShape());
 	}
+	
 	
 	_setSelectedElementsFromRect(_rect);
 	
 	ofNotifyEvent(selectionRectUpdated, _rect, this);
 	
 }
-
-template<typename ElementType>
-void Selector<ElementType>::draw() const
+template<typename T>
+bool Selector<T>::_checkIntersection(const ofRectangle& r, T * k) const
 {
-	if(isSelectingRect()){
+	if(_intersectionMode == SELECTOR_USE_CENTER_POSITION)
+	{
+		return r.inside(k->getScreenCenterPosition());
+	}
+	else
+		if(_intersectionMode == SELECTOR_USE_RECTANGLE)
+		{
+			return r.intersects(k->getScreenShape());
+			//		return r.inside(k->getScreenCenterPosition();
+		}
+	return false;
+}
+//---------------------------------------------------------------------------------------------------------------------
+template<typename T>
+void Selector<T>::_setSelectedElementsFromRect(const ofRectangle& r)
+{
+	for(auto& t: _targetSelectedElementsMap){
+		if(t.first){
+			for(auto& k: t.first->getCollection()){
+				if(!k)continue;
+				bool _isSelected = isElementSelected(k, t.first) ;
+				if(_checkIntersection(r, k))
+					//				if(r.inside(k->getScreenCenterPosition()))
+				{
+					if(!k->isSelected() && !_isSelected )
+					{
+						t.second.get()->push_back(k);
+						k->_isSelected = true;
+					}
+				}
+				else if(!_bAddToCurrentSelection) {
+					if(k->isSelected() || _isSelected )
+					{
+						unselectElement(k, t.first);
+					}
+				}
+			}
+		}
+	}
+}
+
+template<typename T>
+void Selector<T>::draw() const{
+	_bNeedsDraw = true;
+}
+
+template<typename T>
+void Selector<T>::_draw(ofEventArgs&)
+{
+	if(_bNeedsDraw && isSelectingRect()){
 		ofPushStyle();
 		ofSetColor(0);
 		ofSetLineWidth(1);
@@ -105,12 +166,14 @@ void Selector<ElementType>::draw() const
 		ofDrawRectangle(_rect);
 		
 		ofPopStyle();
+		
+		_bNeedsDraw = false;
 	}
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-template<typename ElementType>
-void Selector<ElementType>::selectElement(ElementType* element, BaseHasCollection<ElementType>* owner)
+template<typename T>
+void Selector<T>::selectElement(T* element, BaseHasCollection<T>* owner)
 {
 	if(!element || !owner) return;
 	if(_targetSelectedElementsMap.count(owner) == 0) return;
@@ -126,26 +189,26 @@ void Selector<ElementType>::selectElement(ElementType* element, BaseHasCollectio
 		_targetSelectedElementsMap[owner]->push_back(element);
 	}
 	
-
+	
 }
 //---------------------------------------------------------------------------------------------------------------------
-template<typename ElementType>
-void Selector<ElementType>::unselectElement(ElementType* element, BaseHasCollection<ElementType>* owner)
+template<typename T>
+void Selector<T>::unselectElement(T* element, BaseHasCollection<T>* owner)
 {
 	if(element == nullptr || !owner) return;
 	if(_targetSelectedElementsMap.count(owner) == 0) return;
 	
 	element->_isSelected = false;
-
+	
 	
 	if(_targetSelectedElementsMap[owner]){
-		ofRemove(*_targetSelectedElementsMap[owner], [&](ElementType*& key){return key == element;});
+		ofRemove(*_targetSelectedElementsMap[owner], [&](T*& key){return key == element;});
 	}
-
+	
 }
 //---------------------------------------------------------------------------------------------------------------------
-template<typename ElementType>
-bool Selector<ElementType>::unselectAllElements()
+template<typename T>
+bool Selector<T>::unselectAllElements()
 {
 	bool unselected = false;
 	for(auto& t: _targetSelectedElementsMap){
@@ -159,8 +222,8 @@ bool Selector<ElementType>::unselectAllElements()
 	return unselected;
 }
 //---------------------------------------------------------------------------------------------------------------------
-template<typename ElementType>
-void Selector<ElementType>::selectAllElements()
+template<typename T>
+void Selector<T>::selectAllElements()
 {
 	for(auto& t: _targetSelectedElementsMap){
 		t.second.get()->clear();
@@ -174,8 +237,8 @@ void Selector<ElementType>::selectAllElements()
 	}
 }
 //---------------------------------------------------------------------------------------------------------------------
-template<typename ElementType>
-bool Selector<ElementType>::isElementSelected(ElementType* k, BaseHasCollection<ElementType>* owner)
+template<typename T>
+bool Selector<T>::isElementSelected(T* k, BaseHasCollection<T>* owner)
 {
 	if(k == nullptr || !owner) return false;
 	if(_targetSelectedElementsMap.count(owner) == 0) return false;
@@ -187,37 +250,12 @@ bool Selector<ElementType>::isElementSelected(ElementType* k, BaseHasCollection<
 		}
 	}
 	return false;
-//	return binary_search(selectedElements.begin(), selectedElements.end(), k, keyframesort);
-}
-//---------------------------------------------------------------------------------------------------------------------
-template<typename ElementType>
-void Selector<ElementType>::_setSelectedElementsFromRect(const ofRectangle& r)
-{
-	for(auto& t: _targetSelectedElementsMap){
-		if(t.first){
-			for(auto& k: t.first->getCollection()){
-				if(!k)continue;
-				bool _isSelected = isElementSelected(k, t.first) ;
-				if(r.inside(k->getCenterPosition()))
-				{
-					if(!k->isSelected() && !_isSelected )
-					{
-						t.second.get()->push_back(k);
-						k->_isSelected = true;
-					}
-				}
-				else
-				if(k->isSelected() || _isSelected )
-				{
-					unselectElement(k, t.first);
-				}
-			}
-		}
-	}
+	// TODO: find if a binary search is faster
+	//	return binary_search(selectedElements.begin(), selectedElements.end(), k, keyframesort);
 }
 
-template<typename ElementType>
-std::vector<ElementType*> * Selector<ElementType>::getSelectedElements(BaseHasCollection<ElementType>* target)
+template<typename T>
+std::vector<T*> * Selector<T>::getSelectedElements(BaseHasCollection<T>* target)
 {
 	if(_targetSelectedElementsMap.count(target))
 	{
@@ -227,54 +265,67 @@ std::vector<ElementType*> * Selector<ElementType>::getSelectedElements(BaseHasCo
 }
 
 
-template<typename ElementType>
-bool Selector<ElementType>::addTarget(BaseHasCollection<ElementType>* target)
+template<typename T>
+bool Selector<T>::addTarget(BaseHasCollection<T>* target)
 {
 	if(_targetSelectedElementsMap.count(target))
 	{
-		ofLogWarning("Selector<ElementType>::addTarget") << "Unable to add target as it  already exists.";
+		ofLogWarning("Selector<T>::addTarget") << "Unable to add target as it  already exists.";
 		return false;
 	}
 	
-	_targetSelectedElementsMap[target] = std::move(std::make_unique<std::vector<ElementType*>>());
+	_targetSelectedElementsMap[target] = std::move(std::make_unique<std::vector<T*>>());
 	return true;
 }
 
-template<typename ElementType>
-bool Selector<ElementType>::removeTarget(BaseHasCollection<ElementType>* target)
+template<typename T>
+bool Selector<T>::removeTarget(BaseHasCollection<T>* target)
 {
 	auto n = _targetSelectedElementsMap.erase(target);
 	if(n) return true;
 	
-	ofLogWarning("Selector<ElementType>::removeTarget") << "Unable to remove target as it was never added.";
+	ofLogWarning("Selector<T>::removeTarget") << "Unable to remove target as it was never added.";
 	return false;
-
+	
 }
 
+template<typename T>
+void Selector<T>::setIntersectionMode(SelectorIntersectionMode mode)
+{
+	_intersectionMode = mode;
+}
 
+template<typename T>
+SelectorIntersectionMode Selector<T>::getIntersectionMode() const
+{
+	return _intersectionMode;
+}
 
-template<typename ElementType>
-void Selector<ElementType>::onKeyboardEvent(DOM::KeyboardUIEventArgs& evt, DOM::Element* caller)
+template<typename T>
+void Selector<T>::onKeyboardEvent(DOM::KeyboardUIEventArgs& evt, DOM::Element* caller)
 {
 	if(evt.type() == DOM::KeyboardUIEventArgs::KEY_DOWN){
 		if(evt.shiftKey()){
 			_bAddToCurrentSelection = true;
 		}
 		else
-		if(evt.key().key == OF_KEY_BACKSPACE)
-		{
-			for(auto& t: _targetSelectedElementsMap){
-				if(t.first){
-					t.first->removeElements(*t.second.get());
+			if(evt.key().key == OF_KEY_BACKSPACE)
+			{
+				for(auto& t: _targetSelectedElementsMap){
+					if(t.first){
+						t.first->removeElements(*t.second.get());
+					}
 				}
+				
 			}
-			
-		}
 	}
 	else
 	{
 		_bAddToCurrentSelection = false;
 	}
+	
+//	std::cout << "Selector<T>::onKeyboardEvent  " << std::boolalpha << _bAddToCurrentSelection << std::endl;
+	
 }
 
 

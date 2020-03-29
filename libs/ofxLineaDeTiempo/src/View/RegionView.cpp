@@ -23,7 +23,7 @@ RegionView::RegionView (TrackView* parentTrack, RegionController *controller)
 , BaseHasController<RegionController>(controller)
 , BaseHasHeader<RegionHeaderView>()
 {
-	setFocusable(true);
+//	setFocusable(false);
 	updateLayout();
 	
 	_leftHandle = addChild<MUI::EdgeHandle>("leftHandle", DOM::RECT_LEFT, this);
@@ -40,7 +40,7 @@ RegionView::RegionView (TrackView* parentTrack, RegionController *controller)
 	
 	if(controller)
 		_timeRangeChangeListener = controller->timeRangeChangedEvent.newListener(this, &RegionView::_timeRangeChanged);
-	
+	setDraggable(true);
 }
 
 void RegionView::_timeRangeChanged(ofRange64u& timeRange)
@@ -53,6 +53,7 @@ void RegionView::_timeRangeChanged(ofRange64u& timeRange)
 }
 void RegionView::moved(DOM::MoveEventArgs&)
 {
+	
 	bIgnoreTimeRangeChange = true;
 	updateTimeRangeFromRect();
 	bIgnoreTimeRangeChange = false;
@@ -60,6 +61,8 @@ void RegionView::moved(DOM::MoveEventArgs&)
 
 void RegionView::resized (DOM::ResizeEventArgs&)
 {
+	if(_leftHandle && _leftHandle->isDragging()) return;
+	
 	bIgnoreTimeRangeChange = true;
 	updateTimeRangeFromRect();
 	bIgnoreTimeRangeChange = false;
@@ -67,25 +70,25 @@ void RegionView::resized (DOM::ResizeEventArgs&)
 
 
 void RegionView::updateLayout() {
-	if(getController())
+	if(getController() && !bIgnoreTimeRangeChange)
 	updateRectFromTimeRange(getController()->getTimeRange());
 }
 
 void RegionView::updateTimeRangeFromRect()
 {
 	if(_parentTrack && getController()){
-		std::cout << "RegionView::updateTimeRangeFromRect " << getId() << "  -  " << getShape();
+//		std::cout << "RegionView::updateTimeRangeFromRect " << getId() << "  -  " << getShape();
 		getController()->setTimeRange(_parentTrack->rectToTimeRange(getShape()), false);
 		
-		std::cout << "  " << getController()->getTimeRange() << "\n";
+//		std::cout << "  " << getController()->getTimeRange() << "\n";
 	}
 }
 
 void RegionView::updateRectFromTimeRange(const ofRange64u& timeRange){
 	if(_parentTrack){
-		std::cout << "RegionView::updateRectFromTimeRange " << getId() << "  -  " <<  timeRange;
+//		std::cout << "RegionView::updateRectFromTimeRange " << getId() << "  -  " <<  timeRange;
 		setShape(_parentTrack->timeRangeToRect(timeRange));
-		std::cout << "  " << getShape() << "\n";
+//		std::cout << "  " << getShape() << "\n";
 	}
 }
 

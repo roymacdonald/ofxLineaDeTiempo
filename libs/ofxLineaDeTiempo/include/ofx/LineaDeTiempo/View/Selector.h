@@ -19,6 +19,18 @@
 namespace ofx {
 namespace LineaDeTiempo {
 
+
+///\brief Defines the different methods for finding if an element is intersecting the Selector's rectangle.
+enum SelectorIntersectionMode{
+	
+	/// The element will be selected only when its center is inside the selector's rectangle
+	SELECTOR_USE_CENTER_POSITION =0,
+	/// The element will be selected when its rectangle intersects the selector's rectangle
+	SELECTOR_USE_RECTANGLE
+};
+
+
+
 template<typename ElementType>
 class Selector
 {
@@ -60,54 +72,55 @@ public:
 	bool removeTarget(BaseHasCollection<ElementType>* target);
 	
 	
-//	///\brief this function needs to be implemented on the derived class and pass the collection of elements that can be selected.
-//	/// these elements must inherit form ofx::LineaDeTiempo::BaseSelectable
-//	virtual std::vector<ElementType*> & getCollection() = 0;
-//	virtual const std::vector<ElementType*> & getCollection() const= 0;
-
 	std::vector<ElementType*> * getSelectedElements(BaseHasCollection<ElementType>* target);
 	
 	
 	void onKeyboardEvent(DOM::KeyboardUIEventArgs& evt, DOM::Element* caller);
 	
-	void onPointerDown(const glm::vec2& localPosition, DOM::Element* caller);
+	void onPointerDown(const glm::vec2& screenPosition, DOM::Element* caller);
 	
-	bool onPointerUp(const glm::vec2& localPosition, DOM::Element* caller);
+	bool onPointerUp(const glm::vec2& screenPosition, DOM::Element* caller);
 	
-	void onPointerDrag(const glm::vec2& localPosition, DOM::Element* caller);
-	
-
+	void onPointerDrag(const glm::vec2& screenPosition, DOM::Element* caller);
 	
 	
+	
+	
+	void setIntersectionMode(SelectorIntersectionMode mode);
+	
+	SelectorIntersectionMode getIntersectionMode() const;
 	
 	
 protected:
-
-//	virtual void _removeSelectedElements() = 0;
-	
-	// implement the keyboard listener function in the derived class and pass it to the selector
-	//	void onKeyboardDownEvent(DOM::KeyboardUIEventArgs& evt) ;
-	
 	
 	
 	void _setSelectedElementsFromRect(const ofRectangle& r);
 	void _updateSelectionRect(const glm::vec2& args, DOM::Element* caller);
 	
-	
-//	std::vector<ElementType*> selectedElements;
 
+	bool _checkIntersection(const ofRectangle& r,  ElementType * k ) const;
+	
 	std::map<BaseHasCollection<ElementType>*, std::unique_ptr<std::vector<ElementType*>> > _targetSelectedElementsMap;
 	
+	void _draw(ofEventArgs&);
+	
 private:
+	
+	SelectorIntersectionMode _intersectionMode = SELECTOR_USE_CENTER_POSITION;
 	
 	bool _bAddToCurrentSelection = false;
 	
     ofRectangle _rect;
+	ofRectangle _localRect;
 	glm::vec2 _selectionRectStart;
 	
 	DOM::Element * _limitingElement = nullptr;
 	
 	
+	ofEventListener _drawListener;
+	mutable bool _bNeedsDraw = false;
+
+	bool _bHadSelectedElements = false;
 };
 } } // ofx::LineaDeTiempo
 

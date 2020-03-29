@@ -12,18 +12,20 @@ namespace ofx {
 namespace LineaDeTiempo {
 
 class KeyframesRegionView;
+class KeyframeCollectionView;
 class KeyframeView
 : public MUI::Widget
 , public BaseSelectable
 {
 private:
-	KeyframeView(const std::string& id, KeyframesRegionView * parentRegionView);
+	KeyframeView(const std::string& id, KeyframeCollectionView * parentRegionView);
 	
 public:
 	
 	friend class KeyframesRegionView;
-	KeyframeView(const std::string& id, const glm::vec2& pos, KeyframesRegionView * parentRegionView);
-	KeyframeView(const std::string& id, float value, uint64_t time,  KeyframesRegionView * parentRegionView);
+	friend class KeyframeCollectionView;
+	
+	KeyframeView(const std::string& id, float value, uint64_t time,  KeyframeCollectionView * parentView);
 	
 	
 	virtual ~KeyframeView(){}
@@ -44,7 +46,7 @@ public:
 	ofEvent<float> valueChangedEvent;
 	ofEvent<uint64_t> timeChangedEvent;
 protected:
-	KeyframesRegionView * _parentRegionView = nullptr;
+	KeyframeCollectionView * _parentView = nullptr;
 
 	uint64_t _time = 0;
 	float _value =0; //normalized
