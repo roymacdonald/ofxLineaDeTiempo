@@ -19,21 +19,28 @@ namespace LineaDeTiempo {
 template <typename DataType>
 KeyframeTrackController_<DataType>::KeyframeTrackController_(ofParameter<DataType>& parameter,TrackGroupController* parent, TimeControl* timeControl)
 : TrackController(parameter.getName(), parent, timeControl)
-, BaseHasOfParameter<DataType>(parameter)
 {
 //	_parameter.makeReferenceTo(parameter);
-	enableTimeUpdate();
+	_parameter.makeReferenceTo(parameter);
+//	_parameter.makeReferenceTo(parameter);
+//	_paramListener = _parameter.newListener(this, &BaseHasOfParameter<DataType>::_paramChanged);
+	
+//	_paramListener = _parameter.newListener(this, &KeyframeTrackController_<DataType>::_paramChanged);
+	this->enableTimeUpdate();
 }
 
 template <typename DataType>
 KeyframeTrackController_<DataType>::KeyframeTrackController_(const std::string& name, TrackGroupController* parent, TimeControl* timeControl)
 : TrackController(name, parent, timeControl)
-, BaseHasOfParameter<DataType>(name)
 {
 //	_parameter.setName(name);
 //
 //	_paramListener = _parameter.newListener(this, &KeyframeTrackController_<DataType>::_paramChanged);
 
+	_parameter.setName(name);
+	
+//	_paramListener = _parameter.newListener(this, &KeyframeTrackController_<DataType>::_paramChanged);
+	
 	enableTimeUpdate();
 }
 
@@ -50,17 +57,17 @@ bool KeyframeTrackController_<DataType>::removeRegion(KeyframeRegionController_<
 	return _removeRegion(region);
 }
 
-//template <typename DataType>
-//ofParameter<DataType>& KeyframeTrackController_<DataType>::getParameter()
-//{
-//	return _parameter;
-//}
-//
-//template <typename DataType>
-//const ofParameter<DataType>& KeyframeTrackController_<DataType>::getParameter() const
-//{
-//	return _parameter;
-//}
+template <typename DataType>
+ofParameter<DataType>& KeyframeTrackController_<DataType>::getParameter()
+{
+	return _parameter;
+}
+
+template <typename DataType>
+const ofParameter<DataType>& KeyframeTrackController_<DataType>::getParameter() const
+{
+	return _parameter;
+}
 
 
 template <typename DataType>

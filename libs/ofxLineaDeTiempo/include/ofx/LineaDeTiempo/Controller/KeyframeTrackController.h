@@ -1,4 +1,4 @@
-//
+
 //  KeyframeTrackController.hpp
 //  tracksAndTimeTest
 //
@@ -22,7 +22,6 @@ class TrackGroupController;
 template <typename DataType>
 class KeyframeTrackController_
 : public TrackController
-, public BaseHasOfParameter<DataType>
 {
 public:
 		
@@ -40,11 +39,9 @@ public:
 	virtual void generateView() override;
 	virtual void destroyView() override;
 	
-	using BaseHasOfParameter<DataType>::getParameter;
-	
-//	ofParameter<DataType>& getParameter();
-//	const ofParameter<DataType>& getParameter() const;
-//
+
+	ofParameter<DataType>& getParameter();
+	const ofParameter<DataType>& getParameter() const;
 	
 	
 	float getNormalizedValue(const DataType& val);
@@ -52,11 +49,12 @@ public:
 
 protected:
 	
-//	ofParameter<DataType> _parameter;
-//	
-//	ofEventListener _paramListener;
 	
-	virtual void _paramChanged(DataType& ) override;
+	ofParameter<DataType> _parameter;
+	
+	ofEventListener _paramListener;
+	
+	void _paramChanged(DataType& );
 	
 	//	// this is set to true when the param is being modified by the manager, so it does not generate an infinite loop because of the cyclic callbacks.
 	bool _bModifyingParam = false;
