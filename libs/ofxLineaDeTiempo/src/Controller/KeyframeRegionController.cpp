@@ -26,18 +26,20 @@ template<typename T>
 void KeyframeRegionController_<T>::generateView()
 {
 	if(getView() == nullptr){
-		auto p = dynamic_cast<TrackController*>(parent());
+//		auto p = dynamic_cast<TrackController*>(parent());
+		auto p = _parentTrack;
 		if(p && p->getView())
 		{
-			_keyframesRegionView = p->getView()->addRegion<KeyframesRegionView, KeyframeRegionController_<T>>(this);
+			_keyframesRegionView = p->getView()->template addRegion<KeyframesRegionView, KeyframeRegionController_<T>>(this);
 			
 			setView(_keyframesRegionView);
 			
+			if(_keyframesRegionView->getCollectionView()){
+				auto cv = _keyframesRegionView->getCollectionView();
+			addKeyframeListener = cv -> addKeyframeEvent.newListener(this,&KeyframeRegionController_<T>::_addKeyframeAtScreenPos);
 			
-			addKeyframeListener = _keyframesRegionView->addKeyframeEvent.newListener(this,&KeyframeRegionController_<T>::_addKeyframeAtScreenPos);
-			
-			removeKeyframeListener = _keyframesRegionView->removeKeyframeEvent.newListener(this, &KeyframeRegionController_<T>::_removeKeyframe);
-			
+			removeKeyframeListener = cv->removeKeyframeEvent.newListener(this, &KeyframeRegionController_<T>::_removeKeyframe);
+			}
 		}
 		
 		generateChildrenViews(this);
@@ -125,7 +127,6 @@ void KeyframeRegionController_<T>::_removeKeyframe(KeyframeView*& v)
 template<typename T>
 void KeyframeRegionController_<T>::update(uint64_t& t)
 {
-	std::cout << "-";
 	if(_keyframedData.update(t))
 	{
 		if(_parentTrack)
@@ -181,11 +182,13 @@ void KeyframeRegionController_<T>::_addKeyframeAtScreenPos(glm::vec2& pos)
 		auto time = _parentTrack->getView()->screenPositionToTime(pos.x);
 		
 		//		std::cout << "  time: " << time ;
+		auto r = _keyframesRegionView->getCollectionView()->getScreenShape();
 		
-		auto r = getView()->getScreenShape();
+		auto margin = KeyframeView::defaultKeyframeSize * 0.5;
 		
 		auto & p = _parentTrack->getParameter();
-		auto value = ofMap(pos.y, r.getMinY(), r.getMaxY() - KeyframeView::defaultKeyframeSize, p.getMin(), p.getMax(), true);
+		
+		auto value = ofMap(pos.y, r.getMinY() + margin , r.getMaxY() - margin , p.getMin(), p.getMax(), true);
 		
 		//		std::cout << "  value: " << value << "\n";
 		
@@ -216,17 +219,33 @@ const KeyframedData_<T>& KeyframeRegionController_<T>::getKeyframedData() const
 //	}
 //}
 
-template class KeyframeRegionController_<int8_t>;
-template class KeyframeRegionController_<int16_t>;
-template class KeyframeRegionController_<int32_t>;
-template class KeyframeRegionController_<int64_t>;
-template class KeyframeRegionController_<uint8_t>;
-template class KeyframeRegionController_<uint16_t>;
-template class KeyframeRegionController_<uint32_t>;
-template class KeyframeRegionController_<uint64_t>;
-template class KeyframeRegionController_<size_t>;
+template class KeyframeRegionController_<char>;
+template class KeyframeRegionController_<unsigned char>;
+template class KeyframeRegionController_<signed char>;
+template class KeyframeRegionController_<short>;
+template class KeyframeRegionController_<unsigned short>;
+template class KeyframeRegionController_<int>;
+template class KeyframeRegionController_<unsigned int>;
+template class KeyframeRegionController_<long>;
+template class KeyframeRegionController_<unsigned long>;
+template class KeyframeRegionController_<long long>;
+template class KeyframeRegionController_<unsigned long long>;
 template class KeyframeRegionController_<float>;
+template class KeyframeRegionController_<double>;
+template class KeyframeRegionController_<long double>;
 
+
+//template class KeyframeRegionController_<int8_t>;
+//template class KeyframeRegionController_<int16_t>;
+//template class KeyframeRegionController_<int32_t>;
+//template class KeyframeRegionController_<int64_t>;
+//template class KeyframeRegionController_<uint8_t>;
+//template class KeyframeRegionController_<uint16_t>;
+//template class KeyframeRegionController_<uint32_t>;
+//template class KeyframeRegionController_<uint64_t>;
+//template class KeyframeRegionController_<size_t>;
+//template class KeyframeRegionController_<float>;
+//
 //template class KeyframeRegionController_<int>;
 //template class KeyframeRegionController_<float>;
 
