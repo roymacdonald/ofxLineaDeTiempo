@@ -535,7 +535,9 @@ public:
 	///\brief get if is drawing children by translating  or applying a viewport.
 	bool isDrawingAsViewport() const;
 	
-void printStructure(std::string prefix = "");
+	
+	
+	virtual void printStructure(std::string prefix = "");
 	
 protected:
     /// \brief Setup method called by parent Element.
