@@ -65,21 +65,25 @@ bool _remove( ElementType* toRemove, ParentType* parentElement, NamedConstPointe
 	
 	
 	
-	auto e = dynamic_cast<ElementType*>(toRemove);
-	if(e){
-		auto g = parentElement->removeChild(e);
+//	auto e = dynamic_cast<ElementType*>(toRemove);
+	if(toRemove){
+		toRemove->destroyView();
+		auto g = parentElement->removeChild(toRemove);
 		if(g)
 		{
 			
-			collection.remove(e);
+			collection.remove(toRemove);
 			
-			e->destroyView();
 			
 			return true;
 			
 		}
+		else
+		{
+			ofLogError("CollectionHelper::_remove") << "failed. could not remove the element from its parent";
+		}
 	}
-	ofLogError("BaseController::_remove : failed.");
+	ofLogError("CollectionHelper::_remove") << "failed. element to remove is invalid. (nullptr)";
 	return false;
 	
 }
