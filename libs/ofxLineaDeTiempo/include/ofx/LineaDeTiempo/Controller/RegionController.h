@@ -54,7 +54,6 @@ public:
 					
 protected:
 		
-	std::string _dataTypeName = "";
 	
 
 	TrackController * _parentTrack;

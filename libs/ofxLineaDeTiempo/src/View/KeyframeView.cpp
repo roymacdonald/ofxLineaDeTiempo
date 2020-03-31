@@ -12,7 +12,7 @@
 
 //#include "LineaDeTiempo/Controller/KeyframeController.h"
 
-#include "LineaDeTiempo/Utils/Constants.h"
+#include "LineaDeTiempo/Utils/ConstVars.h"
 
 
 namespace ofx {

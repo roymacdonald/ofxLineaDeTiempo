@@ -12,7 +12,7 @@
 #include "LineaDeTiempo/View/TrackView.h"
 #include "LineaDeTiempo/Controller/RegionController.h"
 #include "LineaDeTiempo/Controller/KeyframeRegionController.h"
-#include "LineaDeTiempo/Utils/Constants.h"
+#include "LineaDeTiempo/Utils/ConstVars.h"
 
 
 namespace ofx {

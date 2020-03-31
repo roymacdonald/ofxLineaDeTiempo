@@ -8,7 +8,7 @@
 #include "LineaDeTiempo/View/BaseTrackView.h"
 #include "LineaDeTiempo/View/TrackGroupView.h"
 #include "MUI/Utils.h"
-#include "LineaDeTiempo/Utils/Constants.h"
+#include "LineaDeTiempo/Utils/ConstVars.h"
 
 
 namespace ofx {

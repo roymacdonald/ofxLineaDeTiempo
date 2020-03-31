@@ -38,13 +38,15 @@ public:
 	
 	TrackController(const std::string& name, TrackGroupController* parent, TimeControl* timeControl);
 	
-	virtual ~TrackController();
+	virtual ~TrackController() = default;
 	
 	
 	
 	virtual void generateView() override;
 	virtual void destroyView() override;
 	
+
+	bool removeRegion(RegionController* track);
 	
 	
 	bool removeRegion(const std::string& name);
@@ -137,7 +139,7 @@ protected:
 	
 	
 	
-	bool _removeRegion(RegionController* track);
+	
 	
 	
 	/// as regions need to be templated, in order to avoid the parsing of the data type I'll delegate it to the derived class which already "know" which templated type to use.

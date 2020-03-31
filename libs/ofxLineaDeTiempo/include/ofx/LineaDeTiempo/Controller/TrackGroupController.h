@@ -37,7 +37,7 @@ public:
 	virtual void generateView() override;
 	virtual void destroyView() override;
 	
-	virtual ~TrackGroupController();// DEFAULT_BASE_VIEW_CONTROLLER_DESTRUCTOR
+	virtual ~TrackGroupController() = default;
 	
 	TrackGroupController* add(ofParameterGroup& paramGroup);
 	

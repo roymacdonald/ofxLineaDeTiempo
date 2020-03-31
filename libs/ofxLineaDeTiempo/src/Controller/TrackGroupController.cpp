@@ -20,10 +20,6 @@ TrackGroupController::TrackGroupController(const std::string& name, TrackGroupCo
 {
 }
 
-TrackGroupController::~TrackGroupController()
-{
-//	destroyView();
-}
 
 void TrackGroupController::generateView()
 {

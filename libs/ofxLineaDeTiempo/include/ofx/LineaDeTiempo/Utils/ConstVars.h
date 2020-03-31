@@ -30,4 +30,5 @@ static float RegionViewHeaderHeight = 18.f;
 //float RegionView::headerHeight = 18.f;
 
 }} //ofx::LineaDeTiempo
-//#include "LineaDeTiempo/Utils/Constants.h"
+//#include "LineaDeTiempo/Utils/ConstVars.h"
+

@@ -8,7 +8,7 @@
 #include "LineaDeTiempo/Controller/KeyframeRegionController.h"
 #include "LineaDeTiempo/Controller/KeyframeTrackController.h"
 #include "LineaDeTiempo/View/KeyframesRegionView.h"
-#include "LineaDeTiempo/Utils/Constants.h"
+#include "LineaDeTiempo/Utils/ConstVars.h"
 namespace ofx {
 namespace LineaDeTiempo {
 
@@ -28,11 +28,6 @@ KeyframeRegionController_<T>::KeyframeRegionController_(const std::string& name,
 	setTimeRange(timeRange, false);
 }
 
-template<typename T>
-KeyframeRegionController_<T>::~KeyframeRegionController_()
-{
-	destroyView();
-}
 
 template<typename T>
 void KeyframeRegionController_<T>::generateView()

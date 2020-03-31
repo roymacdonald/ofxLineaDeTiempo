@@ -23,11 +23,6 @@ TrackController::TrackController(const std::string& name, TrackGroupController* 
 }
 
 
-TrackController::~TrackController()
-{
-	destroyView();
-}
-
 void TrackController::_resetCurrentRegion()
 {
  _currentRegion = 0;
@@ -83,7 +78,7 @@ bool TrackController::isUpdatingTime()
 	return _bListeningTimeChange;
 }
 
-bool TrackController::_removeRegion(RegionController* region)
+bool TrackController::removeRegion(RegionController* region)
 {
 	return CollectionHelper::_remove<RegionController, TrackController>( region, this,  _regionsCollection);
 }
@@ -140,12 +135,12 @@ void TrackController::update(uint64_t& time)
 
 bool TrackController::removeRegion(const std::string& name)
 {
-	 return _removeRegion(_regionsCollection.at(name));
+	 return removeRegion(_regionsCollection.at(name));
 }
 
 bool TrackController::removeRegion(const size_t& index)
 {
-	 return _removeRegion(_regionsCollection.at(index));
+	 return removeRegion(_regionsCollection.at(index));
  }
 
  RegionController* TrackController::getRegion(const std::string& name)

@@ -22,9 +22,9 @@ KeyframeTrackController_<DataType>::KeyframeTrackController_(ofParameter<DataTyp
 {
 
 	_parameter.makeReferenceTo(parameter);
-
 	
 //	_paramListener = _parameter.newListener(this, &KeyframeTrackController_<DataType>::_paramChanged);
+
 	this->enableTimeUpdate();
 	_dataTypeName = typeid(DataType).name();
 }
@@ -33,10 +33,6 @@ template <typename DataType>
 KeyframeTrackController_<DataType>::KeyframeTrackController_(const std::string& name, TrackGroupController* parent, TimeControl* timeControl)
 : TrackController(name, parent, timeControl)
 {
-//	_parameter.setName(name);
-//
-//	_paramListener = _parameter.newListener(this, &KeyframeTrackController_<DataType>::_paramChanged);
-
 	_parameter.setName(name);
 	
 //	_paramListener = _parameter.newListener(this, &KeyframeTrackController_<DataType>::_paramChanged);
@@ -62,12 +58,6 @@ KeyframeRegionController_<DataType> * KeyframeTrackController_<DataType>::addReg
 	return r;
 }
 
-//template <typename DataType>
-//bool KeyframeTrackController_<DataType>::removeRegion(KeyframeRegionController_<DataType>* region)
-//{
-//	return _removeRegion(region);
-//}
-
 template <typename DataType>
 ofParameter<DataType>& KeyframeTrackController_<DataType>::getParameter()
 {
@@ -89,37 +79,6 @@ void KeyframeTrackController_<DataType>::_paramChanged(DataType& ){
 //	}
 }
 //
-//template <typename DataType>
-//void KeyframeTrackController_<DataType>::generateView()
-//{
-//
-//	if(is_multi_dim_param<DataType>::value)
-//	{
-////		_generateView<MultiDimTrackView>();
-//	}
-//	else
-//	{
-//		TrackController::generateView();
-//	}
-//
-//
-//
-//}
-//
-//template <typename DataType>
-//void KeyframeTrackController_<DataType>::destroyView()
-//{
-//	if(is_multi_dim_param<DataType>::value)
-//	{
-//
-//	}
-//	else
-//	{
-//		TrackController::destroyView();
-//	}
-//
-//
-//}
 
 template <typename DataType>
 DataType KeyframeTrackController_<DataType>::getUnnormalizedValue(float val)
@@ -132,6 +91,7 @@ float KeyframeTrackController_<DataType>::getNormalizedValue(const DataType& val
 {
 	return ofMap((float)val, (float)getParameter().getMin(), (float)getParameter().getMax(), 0, 1, true);
 }
+
 template <typename DataType>
 void KeyframeTrackController_<DataType>::_addRegionFromJson(const std::string& name, ofJson j)
 {

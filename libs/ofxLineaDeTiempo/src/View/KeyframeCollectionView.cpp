@@ -14,7 +14,7 @@
 #include "LineaDeTiempo/Controller/KeyframeRegionController.h"
 #include "LineaDeTiempo/View/KeyframesRegionView.h"
 #include "LineaDeTiempo/View/RegionView.h"
-#include "LineaDeTiempo/Utils/Constants.h"
+#include "LineaDeTiempo/Utils/ConstVars.h"
 
 namespace ofx {
 namespace LineaDeTiempo {

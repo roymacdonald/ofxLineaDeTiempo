@@ -9,7 +9,7 @@
 
 //#include "LineaDeTiempo/BaseTypes/BaseHasController.h"
 #include "LineaDeTiempo/View/TrackView.h"
-#include "LineaDeTiempo/Utils/Constants.h"
+#include "LineaDeTiempo/Utils/ConstVars.h"
 
 namespace ofx {
 namespace LineaDeTiempo {

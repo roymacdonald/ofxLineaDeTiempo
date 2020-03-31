@@ -9,7 +9,7 @@
 #include "LineaDeTiempo/View/RegionHeaderView.h"
 #include "LineaDeTiempo/View/RegionView.h"
 #include "LineaDeTiempo/View/TrackView.h"
-#include "LineaDeTiempo/Utils/Constants.h"
+#include "LineaDeTiempo/Utils/ConstVars.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
