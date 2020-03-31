@@ -45,8 +45,10 @@ void Node::setId(const std::string& id)
     _id = id;
 }
 
-
-
+void Node::removeAllChildren()
+{
+	_children.clear();
+}
 
 std::unique_ptr<Node> Node::removeChild(Node* element)
 {

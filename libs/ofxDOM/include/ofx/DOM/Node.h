@@ -71,6 +71,9 @@ public:
     /// \returns a std::unique_ptr<Node> to the child.
     std::unique_ptr<Node> removeChild(Node* node);
 
+	/// \brief remove and release ownership of a all children Nodes.
+	void removeAllChildren();
+	
     /// \brief Move this Node in front of all of its siblings.
     void moveToFront();
 
