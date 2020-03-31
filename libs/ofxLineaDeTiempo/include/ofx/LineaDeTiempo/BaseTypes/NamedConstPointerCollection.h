@@ -12,10 +12,12 @@
 #include "ofx/DOM/Node.h"
 #include <type_traits>
 #include "ofLog.h"
+#include "LineaDeTiempo/BaseTypes/AbstractSerializable.h"
 namespace ofx {
 namespace LineaDeTiempo {
 template<typename T>
 class NamedConstPointerCollection
+: public AbstractSerializable
 {
 public:
 	
@@ -65,7 +67,15 @@ public:
 	
 	std::string makeUniqueName(std::string name, const std::string& defaultName);
 	
+	virtual void fromJson(const ofJson& j) override{}
+	virtual ofJson toJson() override;
+	
+	bool checkJson(const ofJson& j);
+//	void fromJson(const ofJson& j,  T* newElement (const std::string&));
+	
 protected:
+
+	
 	
 	std::vector<T*> _elements;
 	std::vector<const T*> _constElements;
@@ -283,6 +293,104 @@ std::string  NamedConstPointerCollection<T>::makeUniqueName(std::string name, co
 	return makeUniqueName(name, defaultName);
 	
 	// TODO: IMPLEMENT A NICER WAY TO GET UNIQUE NAMES
+}
+
+//template<typename T>
+//void NamedConstPointerCollection<T>::checkJson(const ofJson& j,  void newElement (const ofJson&))
+//{
+//
+//	auto dt = j["classType"].get<std::string>();
+//	auto tt = typeid( T ).name();
+//	if(dt != tt )
+//	{
+//		ofLogError("NamedConstPointerCollection<DataType>::fromJson") << "DataType is different from what was saved. " << dt << " != " << tt;
+//		return;
+//	}
+//	if(j.count("elements") && j["elements"].is_array())
+//	{
+//		for(auto e: j["elements"])
+//		{
+//			if(j.count("name"))
+//			{
+//				newElement(e);
+//			}
+//		}
+//	}
+//}
+
+template<typename T>
+bool NamedConstPointerCollection<T>::checkJson(const ofJson& j)
+{
+//	j["class"] = "NamedConstPointerCollection";
+	auto dt = j["classType"].get<std::string>();
+	auto tt = typeid( T ).name();
+	if(dt != tt )
+	{
+		ofLogError("NamedConstPointerCollection<DataType>::checkJson") << "DataType is different from what was saved. " << dt << " != " << tt;
+		return false;
+	}
+	if(j.count("elements") && j["elements"].is_array())
+	{
+		return true;
+	}
+		ofLogError("NamedConstPointerCollection<DataType>::checkJson") <<  "no elements array";
+	return false;
+//	if(j.count("elements") && j["elements"].is_array())
+//	{
+//		for(auto e: j["elements"])
+//		{
+//			if(j.count("name"))
+//			{
+//				cout << j["name"].get<std::string>();
+//			}
+//
+//		}
+//	}
+//	for(auto e: _elements)
+//	{
+//		auto a = dynamic_cast<AbstractSerializable*>(e);
+//		if(a)
+//		{
+//			jsonElements.push_back(a->toJson());
+//		}
+//		else
+//		{
+//			std::cout << "not serializable\n";
+//		}
+//	}
+//	j["num_elements"] = _elements.size();
+//	j["elements"] = jsonElements;
+
+
+//
+	
+}
+
+template<typename T>
+ofJson NamedConstPointerCollection<T>::toJson()
+{
+
+	ofJson j;
+	j["class"] = "NamedConstPointerCollection";
+	j["classType"] = typeid( T ).name();
+	auto jsonElements = ofJson::array();
+	
+	for(auto e: _elements)
+	{
+		auto a = dynamic_cast<AbstractSerializable*>(e);
+		if(a)
+		{
+			jsonElements.push_back(a->toJson());
+		}
+		else
+		{
+			std::cout << "not serializable\n";
+		}
+	}
+	j["num_elements"] = _elements.size();
+	j["elements"] = jsonElements;
+	
+	return j;
 }
 
 

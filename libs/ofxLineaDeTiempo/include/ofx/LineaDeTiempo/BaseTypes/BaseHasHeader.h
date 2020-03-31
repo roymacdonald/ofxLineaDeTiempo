@@ -2,52 +2,33 @@
 //  BaseHasHeader.h
 //  timedDataTest
 //
-//  Created by Roy Macdonald on 3/10/20.
+////  Created by Roy Macdonald on 3/10/20.
+////
 //
-
-#pragma once
-
-namespace ofx {
-namespace LineaDeTiempo {
-
-
-
-template<typename HeaderType>
-class BaseHasHeader
-{
-public:
-	BaseHasHeader()
-	{
-		
-	}
-	BaseHasHeader(HeaderType* header)
-	{
-		_header = header;
-	}
-
-	virtual ~BaseHasHeader() = default;
-	
-	void setHeader(HeaderType* header)
-	{
-		_header = header;
-	}
-	
-	HeaderType* getHeader()
-	{
-		return _header;
-	}
-
-	const HeaderType* getHeader() const
-	{
-		return _header;
-	}
-	
-	typedef HeaderType headerType;
-	
-protected:
-	HeaderType* _header = nullptr;
-	
-};
-
-
-}}  //ofx::LineaDeTiempo
+//#pragma once
+//
+//namespace ofx {
+//namespace LineaDeTiempo {
+//
+//
+//
+//template<typename HeaderType>
+//class BaseHasHeader
+//{
+//public:
+//
+//	virtual ~BaseHasHeader() = default;
+//
+//
+//	virtual void setHeader(HeaderType* header) = 0;
+//
+//	virtual HeaderType* getHeader() = 0;
+//
+//	virtual const HeaderType* getHeader() const = 0;
+//
+//
+//};
+//
+//
+//}}  //ofx::LineaDeTiempo
+//

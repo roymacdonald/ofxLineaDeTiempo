@@ -8,14 +8,16 @@
 #include "LineaDeTiempo/Controller/KeyframeController.h"
 #include "LineaDeTiempo/Controller/KeyframeRegionController.h"
 #include "LineaDeTiempo/Controller/KeyframeTrackController.h"
+#include "LineaDeTiempo/View/RegionView.h"
+#include "LineaDeTiempo/View/KeyframesRegionView.h"
+
 namespace ofx {
 namespace LineaDeTiempo {
 
 
 template<typename DataType>
 KeyframeController<DataType>::KeyframeController( const std::string& name, TimedData_<DataType> * data, KeyframeRegionController_<DataType>* parentRegion)
-: DOM::Node(name, parentRegion)
-, BaseViewController<KeyframeView>()
+: BaseController<KeyframeView>(name, parentRegion, nullptr)
 ,_parentRegion(parentRegion)
 ,_data(data)
 {
@@ -32,12 +34,8 @@ void KeyframeController<DataType>::generateView()
 			
 			auto val = _parentRegion->_parentTrack->getNormalizedValue(_data->value);
 		
-//			cout << "Normalized Val: " << val << "  time: " << _data->time << "  val: " << _data->value <<  "\n";
-			
 			auto view =p_view->addKeyframe(val, _data->time);
-
-			
-			
+	
 			setView(view);
 			
 			viewListeners.push(view->valueChangedEvent.newListener(this, &KeyframeController<DataType>::_valueChanged));
@@ -103,16 +101,32 @@ const TimedData_<DataType> *  KeyframeController<DataType>::getData() const
 	return _data;
 }
 
-template class KeyframeController<int8_t>;
-template class KeyframeController<int16_t>;
-template class KeyframeController<int32_t>;
-template class KeyframeController<int64_t>;
-template class KeyframeController<uint8_t>;
-template class KeyframeController<uint16_t>;
-template class KeyframeController<uint32_t>;
-template class KeyframeController<uint64_t>;
-template class KeyframeController<size_t>;
+//template class KeyframeController<int8_t>;
+//template class KeyframeController<int16_t>;
+//template class KeyframeController<int32_t>;
+//template class KeyframeController<int64_t>;
+//template class KeyframeController<uint8_t>;
+//template class KeyframeController<uint16_t>;
+//template class KeyframeController<uint32_t>;
+//template class KeyframeController<uint64_t>;
+//template class KeyframeController<size_t>;
+//template class KeyframeController<float>;
+
+
+template class KeyframeController<char>;
+template class KeyframeController<unsigned char>;
+template class KeyframeController<signed char>;
+template class KeyframeController<short>;
+template class KeyframeController<unsigned short>;
+template class KeyframeController<int>;
+template class KeyframeController<unsigned int>;
+template class KeyframeController<long>;
+template class KeyframeController<unsigned long>;
+template class KeyframeController<long long>;
+template class KeyframeController<unsigned long long>;
 template class KeyframeController<float>;
+template class KeyframeController<double>;
+template class KeyframeController<long double>;
 
 //template class KeyframeController<int>;
 //template class KeyframeController<float>;

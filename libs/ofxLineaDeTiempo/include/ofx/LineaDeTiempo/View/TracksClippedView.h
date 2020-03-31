@@ -1,5 +1,5 @@
 //
-//  Tracks.h
+//  TracksClippedView.h
 //
 //  Created by Roy Macdonald on 2/18/20.
 //
@@ -13,8 +13,12 @@
 namespace ofx {
 namespace LineaDeTiempo {
 
-class TracksClippedView: public MUI::ClippedView{
+class TracksClippedView
+: public MUI::ClippedView
+
+{
 public:
+
 	TracksClippedView(const std::string& id, const ofRectangle& rect);
 	virtual ~TracksClippedView(){}
 	

@@ -14,10 +14,10 @@
 namespace ofx {
 namespace LineaDeTiempo {
 //---------------------------------------------------------------------
-TrackHeader::TrackHeader(BaseTrackView* track, float width, TrackGroupView* group):
-	Widget("_header", 0, 0, width, BaseTrackView::initialHeight),
-	_track(track),
-	_group(group)
+TrackHeader::TrackHeader(const std::string& id, const ofRectangle& rect, BaseTrackView* track,  TrackGroupView* group)
+: Widget(id, rect)
+, _track(track)
+, _group(group)
 {
 	if(_track)
 	{
@@ -63,10 +63,11 @@ const BaseTrackView* TrackHeader::getTrack() const
 //---------------------------------------------------------------------
 void TrackHeader::onDraw() const
 {
+	if(_track){
 	MUI::Widget::onDraw();
 	
 	ofDrawBitmapStringHighlight(getTrack()->getId() , 20, 20);
-	
+	}
 }
 
 } } // ofx::LineaDeTiempo

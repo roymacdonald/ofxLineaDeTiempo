@@ -9,12 +9,11 @@
 #include "ofMain.h"
 #include "ofRange.h"
 #include <map>
+#include "LineaDeTiempo/BaseTypes/AbstractSerializable.h"
 
 
 namespace ofx {
 namespace LineaDeTiempo {
-
-
 
 
 
@@ -31,10 +30,15 @@ struct TimeBound
 {
 	uint64_t time = 0;
 	bool enabled = false;
+
+	
+	
 	
 };
 
 class TimeControl
+: public AbstractSerializable
+
 {
 public:
 	
@@ -95,6 +99,9 @@ public:
 	
 	void drawDebug(float x, float y);
 	std::string getDebugString();
+	
+	virtual void fromJson(const ofJson& j) override;
+	virtual ofJson toJson() override;
 	
 protected:
 	

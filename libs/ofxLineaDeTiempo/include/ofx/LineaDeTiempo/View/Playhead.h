@@ -9,8 +9,7 @@
 #include "MUI/Handles/ConstrainedGrabHandle.h"
 #include "MUI/ofRectangleHelper.h"
 
-#include "LineaDeTiempo/BaseTypes/BaseHasTimeControl.h"
-
+#include "LineaDeTiempo/Controller/TimeControl.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -19,11 +18,8 @@ namespace LineaDeTiempo {
 class TracksPanel;
 
 
-
-
 class Playhead
 : public MUI::ConstrainedGrabHandle
-, public BaseHasTimeControl
 {
 public:
 	
@@ -41,9 +37,7 @@ protected:
 
 	ofEventListener _draggingStateListener;
 	void _draggingStateChanged(bool & bDragging);
-	
-	TracksPanel* _tracksPanel = nullptr;
-	
+		
 	void _tracksViewShapeChanged(DOM::ResizeEventArgs &);
 	
 	ofEventListeners _tracksListeners;
@@ -51,11 +45,14 @@ protected:
 	void _trackNumChanged(DOM::ElementEventArgs& );
 	void _tracksOrderChanged(DOM::ElementOrderEventArgs& );
 
-	
-	
 	virtual void _onDragging(const DOM::CapturedPointer& pointer)override;
 	
+	TimeControl* _timeControl = nullptr;
+
+	TracksPanel* _tracksPanel = nullptr;
+	
 private:
+	
 	
 	bool _wasPlaying = false;
 	

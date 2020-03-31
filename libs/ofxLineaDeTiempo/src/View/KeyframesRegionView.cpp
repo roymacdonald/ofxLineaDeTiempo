@@ -12,18 +12,20 @@
 #include "LineaDeTiempo/View/TrackView.h"
 #include "LineaDeTiempo/Controller/RegionController.h"
 #include "LineaDeTiempo/Controller/KeyframeRegionController.h"
+#include "LineaDeTiempo/Utils/Constants.h"
+
 
 namespace ofx {
 namespace LineaDeTiempo {
 
 //---------------------------------------------------------------------------------------------------------------------
-KeyframesRegionView::KeyframesRegionView(TrackView* parentTrack, RegionController *controller)
-: RegionView(parentTrack, controller)
+KeyframesRegionView::KeyframesRegionView(TrackView* parentTrack, RegionController *controller, shared_ptr<MUI::Styles> regionStyles)
+: RegionView(parentTrack, controller, regionStyles)
 {
 	
-	_collectionView = addChild<KeyframeCollectionView>(getId()+"_view", getWidth(), getHeight()- RegionView::headerHeight, this, &_selector, controller);
+	_collectionView = addChild<KeyframeCollectionView>(getId()+"_view", getWidth(), getHeight()- RegionViewHeaderHeight, this, &_selector, controller);
 	
-	_collectionView->setStyles(getStyles());
+	_collectionView->setStyles(regionStyles);
 	
 	_selector.setLimitingElement(_collectionView);
 	_selector.addTarget(_collectionView);
@@ -38,11 +40,6 @@ void KeyframesRegionView::onDraw() const{
 	_selector.draw();
 	
 }
-//
-//KeyframeView* KeyframesRegionView::addKeyframe(const glm::vec2& screenPos)
-//{
-//	return _collectionView->addKeyframe(screenPos);
-//}
 
 KeyframeView* KeyframesRegionView::addKeyframe(float value, uint64_t time)
 {
@@ -53,19 +50,6 @@ KeyframeView* KeyframesRegionView::addKeyframe(float value, uint64_t time)
 bool KeyframesRegionView::removeKeyframe(KeyframeView* k){
 	return _collectionView->removeKeyframe(k);
 
-}
-
-//---------------------------------------------------------------------------------------------------------------------
-//void KeyframesRegionView::updateLayout()
-//{
-//	RegionView::updateLayout();
-//	_collectionView->setPosition(0, RegionView::headerHeight);
-//	_collectionView->updateLayout();
-//}
-
-void KeyframesRegionView::_onTimeRangeChange()
-{
-//	updateLayout();
 }
 
 Selector<KeyframeView>& KeyframesRegionView::getSelector()

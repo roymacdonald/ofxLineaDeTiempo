@@ -11,10 +11,12 @@
 #include "LineaDeTiempo/Controller/KeyframeRegionController.h"
 #include "LineaDeTiempo/Data/KeyframedData.h"
 
-#include "LineaDeTiempo/BaseTypes/BaseHasOfParameter.h"
+
+
 
 namespace ofx {
 namespace LineaDeTiempo {
+
 
 //parent type forward declaration
 class TrackGroupController;
@@ -23,6 +25,7 @@ template <typename DataType>
 class KeyframeTrackController_
 : public TrackController
 {
+
 public:
 		
 	
@@ -31,14 +34,20 @@ public:
 	KeyframeTrackController_(const std::string& name, TrackGroupController* parent, TimeControl* timeControl);
 	
 	virtual ~KeyframeTrackController_() = default;
+
+	virtual void fromJson(const ofJson& j) override;
+	virtual ofJson toJson() override;
+
+	
 	
 	KeyframeRegionController_<DataType>* addRegion( const std::string& regionName, const ofRange64u& timeRange);
+	KeyframeRegionController_<DataType>* addRegion( const std::string& regionName);
 	
-	bool removeRegion(KeyframeRegionController_<DataType>* region);
+//	bool removeRegion(KeyframeRegionController_<DataType>* region);
 	
-	virtual void generateView() override;
-	virtual void destroyView() override;
-	
+//	virtual void generateView() override;
+//	virtual void destroyView() override;
+//	
 
 	ofParameter<DataType>& getParameter();
 	const ofParameter<DataType>& getParameter() const;
@@ -46,9 +55,15 @@ public:
 	
 	float getNormalizedValue(const DataType& val);
 	DataType getUnnormalizedValue(float val);
+	
+	
+	
 
 protected:
 	
+	
+	
+	virtual void _addRegionFromJson(const std::string& name, ofJson j) override;
 	
 	ofParameter<DataType> _parameter;
 	

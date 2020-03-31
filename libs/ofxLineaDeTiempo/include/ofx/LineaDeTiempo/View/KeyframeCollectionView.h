@@ -27,7 +27,6 @@ class TrackView;
 
 class KeyframeCollectionView
 : public MUI::Widget
-//: public DOM::Element
 , public BaseHasCollection<KeyframeView>
 {
 public:

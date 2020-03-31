@@ -8,6 +8,7 @@
 #include "KeyframedData.h"
 #include "ofLog.h"
 #include "LineaDeTiempo/Controller/Interpolator.h"
+#include "ofEvent.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -242,6 +243,35 @@ const std::vector< std::unique_ptr< TimedData_<T> > > & KeyframedData_<T>::getDa
 }
 
 
+template<typename T>
+void KeyframedData_<T>::enableKeyframing()
+{
+	setEnableKeyframing(true);
+}
+
+template<typename T>
+void KeyframedData_<T>::disableKeyframing()
+{
+	setEnableKeyframing(false);
+}
+
+template<typename T>
+bool KeyframedData_<T>::isKeyFramingEnabled() const
+{
+	return _bKeyframingEnabled;
+}
+
+
+template<typename T>
+void KeyframedData_<T>::setEnableKeyframing(bool e)
+{
+	if(_bKeyframingEnabled != e){
+		_bKeyframingEnabled = e;
+		_bKeyframingEnabledProxy = _bKeyframingEnabled;
+		ofNotifyEvent(keyframingEnableEvent, _bKeyframingEnabledProxy, this);
+	}
+}
+
 
 //---------------------------------------------------------------------------------
 template<typename T>
@@ -286,7 +316,7 @@ void KeyframedData_<T>::fromJson(const ofJson& j)
 
 //---------------------------------------------------------------------------------
 template<typename T>
-ofJson KeyframedData_<T>::toJson() const
+ofJson KeyframedData_<T>::toJson() 
 {
 	ofJson j;
 //	j["name"] = _name;

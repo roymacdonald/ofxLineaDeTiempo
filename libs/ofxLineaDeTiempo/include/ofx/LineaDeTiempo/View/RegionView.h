@@ -8,11 +8,11 @@
 #pragma once
 //#include "ofxMUI.h"
 #include "ofRange.h"
-#include "LineaDeTiempo/BaseTypes/BaseHasController.h"
 #include "MUI/Widget.h"
 #include "MUI/Handles/EdgeHandle.h"
 #include "LineaDeTiempo/View/RegionHeaderView.h"
-#include "LineaDeTiempo/BaseTypes/BaseHasHeader.h"
+#include <memory>
+
 namespace ofx {
 namespace LineaDeTiempo {
 
@@ -23,30 +23,23 @@ class RegionController;
 
 class RegionView
 : public MUI::Widget
-, public BaseHasController<RegionController>
-, public BaseHasHeader<RegionHeaderView>
-
 {
 public:
 	
 	
-	RegionView (TrackView* parentTrack, RegionController *controller);
+	RegionView (TrackView* parentTrack, RegionController *controller, std::shared_ptr<MUI::Styles> regionStyles);
 	
 	virtual ~RegionView() = default;
 	
 		
-	virtual void updateRectFromTimeRange(const ofRange64u& timeRange);
-	virtual void updateTimeRangeFromRect();
+	void updateRectFromTimeRange(const ofRange64u& timeRange);
+	void updateTimeRangeFromRect();
 	virtual void updateLayout() override;
 
 	const TrackView* parentTrack() const;
 	TrackView* parentTrack();
 	
-	static float headerHeight;
-	
-	using BaseHasController<RegionController>::getController;
-	using BaseHasController<RegionController>::setController;
-	
+//	static float headerHeight;
 	
 	
 protected:
@@ -66,12 +59,14 @@ protected:
 		
 	}// = 0;
 	
+	RegionController * _controller = nullptr;
+	
 
 	MUI::EdgeHandle* _leftHandle = nullptr;
 	MUI::EdgeHandle* _rightHandle = nullptr;
 	TrackView* _parentTrack = nullptr;
 	
-	
+	RegionHeaderView* _header = nullptr;
 };
 
 

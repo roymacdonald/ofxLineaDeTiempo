@@ -22,7 +22,8 @@ class TrackHeader
 
 {
 public:
-	TrackHeader(BaseTrackView* track, float width, TrackGroupView* group);
+//	TrackHeader(const std::string& id, const ofRectangle& rect);
+	TrackHeader(const std::string& id, const ofRectangle& rect, BaseTrackView* track,  TrackGroupView* group);
 	
 	virtual ~TrackHeader(){}
 	

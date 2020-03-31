@@ -7,8 +7,9 @@
 
 #pragma once
 
-#include "LineaDeTiempo/BaseTypes/BaseHasController.h"
+//#include "LineaDeTiempo/BaseTypes/BaseHasController.h"
 #include "LineaDeTiempo/View/TrackView.h"
+#include "LineaDeTiempo/Utils/Constants.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -18,7 +19,7 @@ class TrackController;
 
 class TrackGroupView
 : public BaseTrackView
-, public BaseHasController<TrackGroupController>
+//, public BaseHasController<TrackGroupController>
 {
 public:
 
@@ -50,11 +51,26 @@ public:
 	virtual float getUnscaledHeight() override;
 	virtual float updateScaledShape(float y, float yScale, float width) override;
 	
+	
+	virtual void _updateContainers();
+	
+	
+//	virtual const TrackGroupController * getController() const override;
+//	
+//	virtual TrackGroupController * getController() override;
+//	
+//	virtual void setController(TrackGroupController * controller) override;
+//	
+//	
+	
+	
 protected:
 	
-	virtual DOM::Element* _getTracksContainer();
-	virtual DOM::Element* _getHeadersContainer();
 	
+	TrackGroupController* _controller = nullptr;
+	
+	DOM::Element* _tracksContainer = nullptr;
+//	DOM::Element* _headersContainer = nullptr;
 	
 	void _enableParentShapeListener();
 	void _disableParentShapeListener();
@@ -65,10 +81,15 @@ protected:
 	
 	
 	float _groupTopMargin =25;
-	
-	virtual void _updateContainers();
+
 	
 		float _trackHeaderWidth = 200;
+	
+	bool _containersCheck(const std::string & callerName);
+	
+
+	TrackGroupView* _parentGroup = nullptr;
+
 private:
 	
 	
@@ -80,13 +101,21 @@ TrackViewType* TrackGroupView::addTrack(TrackController * controller)
 {
 	static_assert(std::is_base_of<TrackView, TrackViewType>::value,
 				  "TrackViewType must inherit from ofx::LineaDeTiempo::TrackView");
+	if(!controller)
+	{
+		ofLogError("TrackGroupView::addTrack") << "controller is invalid. " << getId();
+		return nullptr;
+	}
 	
-	auto c = _getTracksContainer();
-	auto hc = _getHeadersContainer();
-	if(c && hc){
+	if(_containersCheck("addTrack") == false)
+	{
+		return nullptr;
+	}
+	
+//	if(_tracksContainer && _headersContainer){
 		
-		auto t = c->addChild<TrackViewType>(this, controller);
-		auto h = hc->addChild<TrackHeader>(t, _trackHeaderWidth, this);
+		auto t = _tracksContainer->addChild<TrackViewType>(this, controller);
+		auto h = _header->addChild<TrackHeader>( "_header", ofRectangle(0, 0, _trackHeaderWidth, TrackInitialHeight), t , this);
 				
 		ofColor color;
 		color.setHsb(ofRandom(255), ofRandom(200, 255), ofRandom(150,255));
@@ -97,9 +126,9 @@ TrackViewType* TrackGroupView::addTrack(TrackController * controller)
 		_updateContainers();
 		
 		return t;
-	}
-	ofLogError("TrackGroupView::addTrack") << "can not add track because container is nullptr";
-	return nullptr;
+//	}
+//	ofLogError("TrackGroupView::addTrack") << "can not add track because container is nullptr";
+//	return nullptr;
 }
 
 
@@ -109,19 +138,26 @@ GroupViewType* TrackGroupView::addGroup(TrackGroupController * controller )
 	static_assert(std::is_base_of<TrackGroupView, GroupViewType>::value,
 				  "TrackViewType must inherit from ofx::LineaDeTiempo::TrackView");
 	
-	auto c = _getTracksContainer();
-	auto hc = _getHeadersContainer();
-	if(c && hc){
+	if(!controller)
+	{
+		ofLogError("TrackGroupView::addGroup") << "controller is invalid. " << getId();
+		return nullptr;
+	}
+	
+	if(_containersCheck("addGroup") == false)
+	{
+		return nullptr;
+	}
 		
-		auto t = c->addChild<GroupViewType>(this, controller);
-		auto h = hc->addChild<TrackHeader>(t, _trackHeaderWidth, this);
+		auto t = _tracksContainer->addChild<GroupViewType>(this, controller);
+		auto h = _header->addChild<TrackHeader>( "_header", ofRectangle(0, 0, _trackHeaderWidth, TrackInitialHeight), t , this);
 				
 		_updateContainers();
 		
 		return t;
-	}
-	ofLogError("TrackGroupView::addTrack") << "can not add track because container is nullptr";
-	return nullptr;
+//	}
+//	ofLogError("TrackGroupView::addTrack") << "can not add track because container is nullptr";
+//	return nullptr;
 }
 
 

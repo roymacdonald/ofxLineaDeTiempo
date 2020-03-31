@@ -55,16 +55,12 @@ public:
 			tracksView->setScrollV({0,1});
 		}
 	}
+	virtual void _updateContainers() override;
 protected:
 	
 	MUI::TracksScrollPanel* tracksView;
-	MUI::ClippedView * headersView;
+	MUI::ClippedView_<TrackHeader> * headersView;
 	
-	virtual DOM::Element* _getTracksContainer() override;
-	virtual DOM::Element* _getHeadersContainer() override;
-
-
-	virtual void _updateContainers() override;
 
 
 	ofEventListeners _tracksContainerListeners;
@@ -82,6 +78,9 @@ protected:
 	
 	ofRectangle _makeHeadersViewRect();
 	ofRectangle _makeTracksViewRect();
+
+	ofEventListener _parentListener;
+	void _parentViewResized(DOM::ResizeEventArgs&);
 	
 private:
 	

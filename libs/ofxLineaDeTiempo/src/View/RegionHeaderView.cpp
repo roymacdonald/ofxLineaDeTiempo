@@ -9,13 +9,14 @@
 #include "LineaDeTiempo/View/RegionHeaderView.h"
 #include "LineaDeTiempo/View/RegionView.h"
 #include "LineaDeTiempo/View/TrackView.h"
+#include "LineaDeTiempo/Utils/Constants.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
 
 
 RegionHeaderView::RegionHeaderView(RegionView* parentRegion)
-: MUI::ConstrainedGrabHandle("GrabHandle", DOM::HORIZONTAL, ofRectangle(0,0,parentRegion->getWidth(), RegionView::headerHeight))
+: MUI::ConstrainedGrabHandle("GrabHandle", DOM::HORIZONTAL, ofRectangle(0,0,parentRegion->getWidth(), RegionViewHeaderHeight))
 , _parentRegion(parentRegion)
 {
 	this->constrainTo(_parentRegion->parentTrack());
@@ -31,7 +32,7 @@ RegionHeaderView::RegionHeaderView(RegionView* parentRegion)
 
 void RegionHeaderView::_parentResized(DOM::ResizeEventArgs &)
 {
-	this->setSize(_parentRegion->getWidth(), RegionView::headerHeight);
+	this->setSize(_parentRegion->getWidth(), RegionViewHeaderHeight);
 }
 
 void RegionHeaderView::_onDragging(const DOM::CapturedPointer& pointer)

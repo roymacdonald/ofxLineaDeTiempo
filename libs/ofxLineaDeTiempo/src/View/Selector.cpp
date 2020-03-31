@@ -132,7 +132,7 @@ void Selector<T>::_setSelectedElementsFromRect(const ofRectangle& r)
 					if(!k->isSelected() && !_isSelected )
 					{
 						t.second.get()->push_back(k);
-						k->_isSelected = true;
+						k->setSelectedNoEvents(true);
 					}
 				}
 				else if(!_bAddToCurrentSelection) {
@@ -178,7 +178,7 @@ void Selector<T>::selectElement(T* element, BaseHasCollection<T>* owner)
 	if(!element || !owner) return;
 	if(_targetSelectedElementsMap.count(owner) == 0) return;
 	
-	element->_isSelected = true;
+	element->setSelectedNoEvents(true);
 	
 	if(!_bAddToCurrentSelection)
 		unselectAllElements();
@@ -198,7 +198,7 @@ void Selector<T>::unselectElement(T* element, BaseHasCollection<T>* owner)
 	if(element == nullptr || !owner) return;
 	if(_targetSelectedElementsMap.count(owner) == 0) return;
 	
-	element->_isSelected = false;
+	element->setSelectedNoEvents(false);
 	
 	
 	if(_targetSelectedElementsMap[owner]){
@@ -215,7 +215,7 @@ bool Selector<T>::unselectAllElements()
 		unselected |= (t.second.get()->size() > 0);
 		for(auto& k: *t.second.get())
 		{
-			k->_isSelected = false;
+			k->setSelectedNoEvents(false);
 		}
 		t.second.get()->clear();
 	}
@@ -230,7 +230,7 @@ void Selector<T>::selectAllElements()
 		if(t.first){
 			for(auto& k: t.first->getCollection())
 			{
-				k->_isSelected = true;
+				k->setSelectedNoEvents(true);
 				t.second.get()->push_back(k);
 			}
 		}

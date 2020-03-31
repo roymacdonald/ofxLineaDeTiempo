@@ -14,9 +14,7 @@ namespace LineaDeTiempo {
 
 
 TrackController::TrackController(const std::string& name, TrackGroupController* parent, TimeControl* timeControl)
-: DOM::Node(name, parent)
-, BaseHasTimeControl(timeControl, "TrackController")
-, BaseViewController<TrackView>()
+: BaseController<TrackView>(name, parent, timeControl)
 {
 	_timeControlListeners.push(timeControl->playEvent.newListener(this, &TrackController::_findCurrentRegion));
 	_timeControlListeners.push(timeControl->stopEvent.newListener(this, &TrackController::_resetCurrentRegion));
@@ -25,7 +23,10 @@ TrackController::TrackController(const std::string& name, TrackGroupController* 
 }
 
 
-
+TrackController::~TrackController()
+{
+	destroyView();
+}
 
 void TrackController::_resetCurrentRegion()
 {
@@ -186,5 +187,85 @@ const size_t& TrackController::getCurrentRegion()const
 	return _currentRegion;
 }
 
+void TrackController::fromJson(const ofJson& j)
+{
+//	j["class"] = "TrackController";
+	
+	_currentRegion = j.value("_currentRegion", 0);
+
+//	_regionsCollection.fromJson(j["_regionsCollection"]);
+	
+
+	setId(j["name"]);
+	
+	
+	if(j.count("_regionsCollection")){
+		auto r = j["_regionsCollection"];
+		if(_regionsCollection.checkJson(r))
+		{
+			_makeFromJson(r);
+		}
+	}
+}
+void TrackController::_makeFromJson(const ofJson& json)
+{
+	for(auto j: json["elements"])
+	{
+		if(	j.count("class") > 0 && j.count("name") > 0){
+			
+			auto clss = j["class"].get<std::string>();
+			auto name = j["name"].get<std::string>();
+			
+			if(clss == "KeyframeRegionController_")
+			{
+				if(j.count("_dataTypeName")){
+					auto dataTypeName = j["_dataTypeName"].get<std::string>();
+					RegionController* r = getRegion(name);
+					if(r)
+					{
+						if(dataTypeName == r->getDataTypeName())
+						{
+							r->fromJson(j);
+						}
+						else
+						{
+							ofLogWarning("TrackRegionController::_makeFromJson") << "dataTypeNames differ " << dataTypeName << " != " <<  r->getDataTypeName();
+						}
+					}
+					else
+					{
+						_addRegionFromJson(name, j);
+					}
+				}
+			}
+			else
+			{
+				ofLogWarning("TrackGroupController::_makeFromJson") << "unknown class:  " << clss;
+			}
+		}
+		else
+		{
+			ofLogWarning("TrackGroupController::_makeFromJson") << " malformed json. does not have name or class objects";
+		}
+	}
+}
+
+
+
+
+ofJson TrackController::toJson()
+{
+	ofJson j;
+	j["class"] = "TrackController";
+//	j["view"] = bool(getView());
+	j["name"] = getId();
+	j["_currentRegion"] = _currentRegion;
+	
+	j["_regionsCollection"] =_regionsCollection.toJson();
+
+	j["_dataTypeName"] = _dataTypeName;
+	
+	return j;
+}
 
 } } // ofx::LineaDeTiempo

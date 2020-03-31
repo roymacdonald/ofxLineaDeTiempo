@@ -30,25 +30,30 @@ class KeyframeRegionController_
 {
 public:
 
+	KeyframeRegionController_( const std::string& name, TrackController* parentTrack, TimeControl* timeControl);
 	KeyframeRegionController_( const std::string& name, const ofRange64u& timeRange, TrackController* parentTrack, TimeControl* timeControl);
 	
-	virtual ~KeyframeRegionController_() = default;
+	virtual ~KeyframeRegionController_();
 	
 	virtual void generateView() override;
 	virtual void destroyView() override;
-	
-	using  BaseViewController<RegionView>::getView;
-	using  BaseViewController<RegionView>::setView;
-	
+
 	
 	KeyframeController<DataType>* addKeyframe(DataType value, uint64_t time);
 	
 	bool removeKeyframe(KeyframeController<DataType>* keyframe);
 	
+	void removeAllKeyframes();
+	
 	
 	const KeyframedData_<DataType>& getKeyframedData() const;
 	
 	virtual void update(uint64_t& t) override;
+	
+	
+	virtual void fromJson(const ofJson& j) override;
+	virtual ofJson toJson() override;
+	
 	
 protected:
 

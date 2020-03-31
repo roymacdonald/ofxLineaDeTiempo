@@ -6,7 +6,7 @@
 ////
 //
 #pragma once
-#include "LineaDeTiempo/BaseTypes/BaseViewController.h"
+//#include "LineaDeTiempo/BaseTypes/BaseViewController.h"
 
 #include "LineaDeTiempo/Controller/TrackGroupController.h"
 #include "LineaDeTiempo/Controller/KeyframeTrackController.h"
@@ -57,10 +57,25 @@ public:
 	
 	void draw();
 	
-
+	///\brief saves the whole timeline state and data.
+	/// uses a JSON file. If the passed filepath does not have an extension or it has one different from ".json"
+	/// it will add/replace the extension with ".json"
+	///\returns true if saved correctly. false otherwise
+	bool save(const std::filesystem::path& filepath);
+	
+	///\brief loads the whole timeline state and data.
+	/// must be a .json file. Otherwise it will return false.
+	///
+	///\returns true if loaded corectly. If the file is malformed or if the parser finds any inconsistency it will return false.
+	bool load(const std::filesystem::path& filepath);
 	
 	
 protected:
+	
+	
+	virtual void fromJson(const ofJson& j) override;
+
+	virtual ofJson toJson() override;
 	
 	TracksPanel* _panel = nullptr;
 	

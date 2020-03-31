@@ -15,10 +15,10 @@ namespace LineaDeTiempo {
 Playhead::Playhead(TracksPanel* tracksPanel, TimeControl* timeControl)
 : ConstrainedGrabHandle("Playhead",DOM::HORIZONTAL, {0,0, 3, 100})
 , _tracksPanel(tracksPanel)
-, BaseHasTimeControl(timeControl, "Playhead")
+, _timeControl(timeControl)
 {
 	
-	_currentTimeListener = getTimeControl()->currentTimeUpdateEvent.newListener(this, &Playhead::_currentTimeChanged);
+	_currentTimeListener = timeControl->currentTimeUpdateEvent.newListener(this, &Playhead::_currentTimeChanged);
 	
 	
 	_draggingStateListener = isDraggingEvent.newListener(this, &Playhead::_draggingStateChanged);
@@ -26,7 +26,6 @@ Playhead::Playhead(TracksPanel* tracksPanel, TimeControl* timeControl)
 	if(_tracksPanel)
 	{
 		this->constrainTo(_tracksPanel->getClippingView());
-		
 		
 		auto v = tracksPanel->getClippingView();
 		_tracksListeners.push( v->resize.newListener(this, &Playhead::_tracksViewShapeChanged));
@@ -68,10 +67,6 @@ void Playhead::onDraw() const
 	ofFill();
 	
 	
-	//		auto styles = getStyles();
-	
-	//		if (isPointerDown())
-	//		{
 	if(isDragging()){
 		ofSetColor(255, 200);
 	}
@@ -79,15 +74,6 @@ void Playhead::onDraw() const
 	{
 		ofSetColor(ofColor::red);
 	}
-	//		}
-	//		else if (isPointerOver() && _highlightOnOver)
-	//		{
-	//			ofSetColor(styles->getColor(Styles::ROLE_BACKGROUND, Styles::STATE_OVER));
-	//		}
-	//		else
-	//		{
-	//			ofSetColor(styles->getColor(Styles::ROLE_BACKGROUND, Styles::STATE_NORMAL));
-	//		}
 	
 	ofDrawRectangle(0, 0, getWidth(), getHeight());
 	
@@ -102,11 +88,6 @@ void Playhead::onDraw() const
 	{
 		ofSetColor(30, 120);
 		ofDrawRectangle(0, 0, getWidth(), getHeight());
-		//			ofSetColor(styles->getColor(Styles::ROLE_BORDER, Styles::STATE_OVER));
-	}
-	else
-	{
-		//			ofSetColor(styles->getColor(Styles::ROLE_BORDER, Styles::STATE_NORMAL));
 	}
 	
 	
@@ -116,16 +97,17 @@ void Playhead::onDraw() const
 //---------------------------------------------------------------------
 void Playhead::_draggingStateChanged(bool & bDragging)
 {
+	if(!_timeControl) return;
 	if(bDragging){
-		_wasPlaying = getTimeControl()->isPlaying();
-		getTimeControl()->pause();
+		_wasPlaying = _timeControl->isPlaying();
+		_timeControl->pause();
 	}
 	else
 	{
 		if(_wasPlaying)
 		{
 			_wasPlaying = false;
-			getTimeControl()->play();
+			_timeControl->play();
 		}
 	}
 }
@@ -140,9 +122,9 @@ void Playhead::_currentTimeChanged(uint64_t& t)
 //---------------------------------------------------------------------
 void Playhead::updatePosition()
 {
-	if(_tracksPanel)
+	if(_tracksPanel && _timeControl)
 	{
-		setPosition(screenToParent({_tracksPanel->timeToScreenPosition(getTimeControl()->getCurrentTime()),0}).x - (getWidth() / 2), getY());
+		setPosition(screenToParent({_tracksPanel->timeToScreenPosition(_timeControl->getCurrentTime()),0}).x - (getWidth() / 2), getY());
 	}
 }
 //---------------------------------------------------------------------
@@ -150,7 +132,10 @@ void Playhead::_onDragging(const DOM::CapturedPointer& pointer)
 {
 	ConstrainedGrabHandle::_onDragging(pointer);
 	
-	getTimeControl()->setCurrentTime(_tracksPanel->screenPositionToTime(parentToScreen({getX() + (getWidth() / 2), 0 }).x));
+	if(_tracksPanel && _timeControl)
+	{
+		_timeControl->setCurrentTime(_tracksPanel->screenPositionToTime(parentToScreen({getX() + (getWidth() / 2), 0 }).x));
+	}
 	
 }
 

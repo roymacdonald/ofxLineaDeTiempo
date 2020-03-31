@@ -13,22 +13,17 @@ namespace LineaDeTiempo {
 class BaseSelectable
 {
 public:
-	BaseSelectable()
-	{
-		
-	}
+	
 	
 	virtual ~BaseSelectable() = default;
 	
 	virtual void setSelected(bool selected) = 0;
 	
-	bool isSelected() const
-	{
-		return _isSelected;
-	}
 	
+	virtual bool isSelected() const = 0;
 	
-	bool _isSelected = false;
+	virtual void setSelectedNoEvents(bool selected) = 0;
+	
 };
 
 } } // ofx::LineaDeTiempo

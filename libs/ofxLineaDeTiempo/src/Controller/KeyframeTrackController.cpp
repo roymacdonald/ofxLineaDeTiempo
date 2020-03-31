@@ -20,13 +20,13 @@ template <typename DataType>
 KeyframeTrackController_<DataType>::KeyframeTrackController_(ofParameter<DataType>& parameter,TrackGroupController* parent, TimeControl* timeControl)
 : TrackController(parameter.getName(), parent, timeControl)
 {
-//	_parameter.makeReferenceTo(parameter);
+
 	_parameter.makeReferenceTo(parameter);
-//	_parameter.makeReferenceTo(parameter);
-//	_paramListener = _parameter.newListener(this, &BaseHasOfParameter<DataType>::_paramChanged);
+
 	
 //	_paramListener = _parameter.newListener(this, &KeyframeTrackController_<DataType>::_paramChanged);
 	this->enableTimeUpdate();
+	_dataTypeName = typeid(DataType).name();
 }
 
 template <typename DataType>
@@ -42,7 +42,18 @@ KeyframeTrackController_<DataType>::KeyframeTrackController_(const std::string& 
 //	_paramListener = _parameter.newListener(this, &KeyframeTrackController_<DataType>::_paramChanged);
 	
 	enableTimeUpdate();
+	
+	_dataTypeName = typeid(DataType).name();
+	
 }
+
+template <typename DataType>
+KeyframeRegionController_<DataType> * KeyframeTrackController_<DataType>::addRegion( const std::string& regionName)
+{
+	auto r = _addRegion<KeyframeRegionController_<DataType>>( regionName);
+	return r;
+}
+
 
 template <typename DataType>
 KeyframeRegionController_<DataType> * KeyframeTrackController_<DataType>::addRegion( const std::string& regionName, const ofRange64u& timeRange)
@@ -51,11 +62,11 @@ KeyframeRegionController_<DataType> * KeyframeTrackController_<DataType>::addReg
 	return r;
 }
 
-template <typename DataType>
-bool KeyframeTrackController_<DataType>::removeRegion(KeyframeRegionController_<DataType>* region)
-{
-	return _removeRegion(region);
-}
+//template <typename DataType>
+//bool KeyframeTrackController_<DataType>::removeRegion(KeyframeRegionController_<DataType>* region)
+//{
+//	return _removeRegion(region);
+//}
 
 template <typename DataType>
 ofParameter<DataType>& KeyframeTrackController_<DataType>::getParameter()
@@ -77,38 +88,38 @@ void KeyframeTrackController_<DataType>::_paramChanged(DataType& ){
 //		_keyframedData.setValue(_parameter, getTimeControl()->getCurrentTime(), _keyframedData.isKeyFramingEnabled() );
 //	}
 }
-
-template <typename DataType>
-void KeyframeTrackController_<DataType>::generateView()
-{
-
-	if(is_multi_dim_param<DataType>::value)
-	{
-//		_generateView<MultiDimTrackView>();
-	}
-	else
-	{
-		TrackController::generateView();
-	}
-
-
-
-}
-
-template <typename DataType>
-void KeyframeTrackController_<DataType>::destroyView()
-{
-	if(is_multi_dim_param<DataType>::value)
-	{
-
-	}
-	else
-	{
-		TrackController::destroyView();
-	}
-
-
-}
+//
+//template <typename DataType>
+//void KeyframeTrackController_<DataType>::generateView()
+//{
+//
+//	if(is_multi_dim_param<DataType>::value)
+//	{
+////		_generateView<MultiDimTrackView>();
+//	}
+//	else
+//	{
+//		TrackController::generateView();
+//	}
+//
+//
+//
+//}
+//
+//template <typename DataType>
+//void KeyframeTrackController_<DataType>::destroyView()
+//{
+//	if(is_multi_dim_param<DataType>::value)
+//	{
+//
+//	}
+//	else
+//	{
+//		TrackController::destroyView();
+//	}
+//
+//
+//}
 
 template <typename DataType>
 DataType KeyframeTrackController_<DataType>::getUnnormalizedValue(float val)
@@ -121,6 +132,56 @@ float KeyframeTrackController_<DataType>::getNormalizedValue(const DataType& val
 {
 	return ofMap((float)val, (float)getParameter().getMin(), (float)getParameter().getMax(), 0, 1, true);
 }
+template <typename DataType>
+void KeyframeTrackController_<DataType>::_addRegionFromJson(const std::string& name, ofJson j)
+{
+	addRegion(name)->fromJson(j);
+}
+
+
+template <typename DataType>
+void KeyframeTrackController_<DataType>::fromJson(const ofJson& j)
+{
+	if(	j.count("class") > 0 && j.count("name") > 0){
+		auto clss = j["class"].get<std::string>();
+		if(clss != "KeyframeTrackController_")
+		{
+			ofLogError("KeyframeTrackController_<DataType>::fromJson") << "failed. class name stored in json is different from this one : " << clss;
+			return;
+		}
+		
+		auto dt = j["_dataTypeName"].get<std::string>();
+		
+		if(dt != std::string(typeid(DataType).name()))
+		{
+			ofLogError("KeyframeTrackController_<DataType>::fromJson") << "failed. DataType seems to be different to the one saved on file";
+			return;
+		}
+		
+		TrackController::fromJson(j);
+		
+	}
+	else{
+		ofLogError("KeyframeTrackController_<DataType>::fromJson") << "json malformed. No class or name objects.";
+	}
+}
+
+template <typename DataType>
+ofJson KeyframeTrackController_<DataType>::toJson()
+{
+	
+	ofJson j = TrackController::toJson();
+	j["class"] = "KeyframeTrackController_";
+	j["name"] = getId();
+	j["view"] = bool(getView());
+	
+	
+
+
+	return j;
+}
+
+
 
 } } // ofx::LineaDeTiempo
 

@@ -5,7 +5,7 @@
 //  Created by Roy Macdonald on 3/6/20.
 //
 
-//#include "LineaDeTiempo/Controller/TracksController.h"
+//#include "LineaDeTiempo/Controller/TrackController.h"
 #include "LineaDeTiempo/Controller/TracksPanelController.h"
 //#include "ofxMUI.h"
 namespace ofx {
@@ -14,7 +14,6 @@ namespace LineaDeTiempo {
 
 
 
-//,public BaseViewController<TracksPanel>
 
 TracksPanelController::TracksPanelController(const std::string& name)
 : TrackGroupController(name, nullptr, nullptr)
@@ -159,8 +158,89 @@ void TracksPanelController::draw()
 		ofLogWarning("TracksPanelController::draw") << "Do not call TracksPanelController::draw() function when it has auto draw enabled.";
 	}
 }
+bool TracksPanelController::save(const std::filesystem::path& filepath)
+{
+	
+	
+	
+	ofSaveJson(filepath, toJson());
+}
+
+bool TracksPanelController::load(const std::filesystem::path& filepath)
+{
+	fromJson(ofLoadJson(filepath));
+}
 
 
+void TracksPanelController::fromJson(const ofJson& j)
+{
+	
+	TrackGroupController::fromJson(j);
+	
+//		j["class"] = "TracksPanelController";
+	
+	
+//			if(_panel)
+//			{
+	//			j["_panel"] = _panel->toJson();
+//			}
+			
+			
+	//		ofAppBaseWindow* _currentWindow = nullptr;
+			
+
+			
+			
+			
+			if(_uniqueTimeControl)
+			{
+				_uniqueTimeControl->fromJson(j["timeControl"]);
+			}
+			
+			
+	if(j["bAutoDrawEnabled"].get<bool>())
+	{
+		enableAutoDraw();
+	}
+	else
+	{
+		disableAutoDraw();
+	}
+
+	if(j["_mainView"].get<bool>())// = (_mainView != nullptr);
+	{
+		generateView();
+	}
+	
+	
+}
+
+ofJson TracksPanelController::toJson()
+{
+	ofJson j = TrackGroupController::toJson();
+	j["class"] = "TracksPanelController";
+		if(_panel)
+		{
+//			j["_panel"] = _panel->toJson();
+		}
+		
+		
+//		ofAppBaseWindow* _currentWindow = nullptr;
+		
+		j["_mainView"] = (_mainView != nullptr);
+		
+		
+		
+		if(_uniqueTimeControl)
+		{
+			j["timeControl"] =_uniqueTimeControl->toJson();
+		}
+		
+		
+		j["bAutoDrawEnabled"] = bAutoDrawEnabled;
+	
+	return j;
+}
 
 
 } } // ofx::LineaDeTiempo

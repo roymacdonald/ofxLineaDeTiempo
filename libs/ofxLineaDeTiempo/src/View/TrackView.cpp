@@ -16,8 +16,8 @@ namespace LineaDeTiempo {
 
 TrackView::TrackView(DOM::Element* parentView, TrackController* controller)
 : BaseTrackView(controller->getId(), parentView)
-, _unscaledHeight(BaseTrackView::initialHeight)
-, BaseHasController<TrackController>(controller)
+, _unscaledHeight(TrackInitialHeight)
+, _controller(controller)
 {
 	_regionsStyle = make_shared<MUI::Styles>();
 }
@@ -50,12 +50,12 @@ ofRectangle TrackView::timeRangeToRect(const ofRange64u& t) const
 
 float TrackView::timeToLocalPosition(const uint64_t& t) const
 {
-	return MUI::Math::lerp(t, 0, getController()->getTimeControl()->getTotalTime(), 0, getWidth());
+	return MUI::Math::lerp(t, 0, _controller->getTimeControl()->getTotalTime(), 0, getWidth());
 }
 
 uint64_t TrackView::localPositionToTime(float x) const
 {
-	return MUI::Math::lerp(x, 0, getWidth(), 0, getController()->getTimeControl()->getTotalTime());
+	return MUI::Math::lerp(x, 0, getWidth(), 0, _controller->getTimeControl()->getTotalTime());
 }
 
 float TrackView::timeToScreenPosition(uint64_t time) const
@@ -76,17 +76,26 @@ float TrackView::getHeightFactor() const
 void TrackView::setHeightFactor(float factor)
 {
 	_heightFactor = factor;
-	_unscaledHeight = BaseTrackView::initialHeight * _heightFactor;
+	_unscaledHeight = TrackInitialHeight * _heightFactor;
 }
 
 bool TrackView::removeRegion(RegionController * controller)
 {
-	if(controller == nullptr) return false;
+	if(controller == nullptr)
+	{
+		ofLogError("TrackView::removeRegion") << "failed. RegionController is nullptr";
+		return false;
+	}
 
 	auto region = controller->getView();
 	if(region){
 
-		return (removeChild(region) != nullptr);
+		if(removeChild(region) == nullptr)
+		{
+			ofLogError("TrackView::removeRegion") << "failed. removeChild returned a  nullptr";
+			return false;
+		}
+		return true;
 		
 	}
 	return false;
@@ -99,7 +108,7 @@ float TrackView::getUnscaledHeight()
 
 float TrackView::updateScaledShape(float y, float yScale, float width)
 {
-	auto h = BaseTrackView::initialHeight * _heightFactor * yScale;
+	auto h = TrackInitialHeight * _heightFactor * yScale;
 	setShape({0, y, width, h});
 	updateLayout();
 	return h;
@@ -112,5 +121,21 @@ void TrackView::updateLayout()
 		if(c) c->updateLayout();
 	}
 }
+
+//
+//const TrackController * TrackView::getController() const
+//{
+//	return _controller;
+//}
+//TrackController * TrackView::getController()
+//{
+//	return _controller;
+//}
+//void TrackView::setController(TrackController * controller)
+//{
+//	_controller = controller;
+//}
+
+
 
 }} //ofx::LineaDeTiempo

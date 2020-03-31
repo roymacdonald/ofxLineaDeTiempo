@@ -9,10 +9,7 @@
 
 
 #include "LineaDeTiempo/Controller/TimeControl.h"
-#include "LineaDeTiempo/BaseTypes/BaseHasHeader.h"
-
-
-#include "LineaDeTiempo/BaseTypes/BaseHasTimeControl.h"
+//#include "LineaDeTiempo/BaseTypes/BaseHasHeader.h"
 
 #include "LineaDeTiempo/View/TrackHeader.h"
 
@@ -28,7 +25,7 @@ class TrackGroupView;
 
 class BaseTrackView
 : public DOM::Element
-, public BaseHasHeader<TrackHeader>
+//, public BaseHasHeader<TrackHeader>
 {
 public:
 
@@ -41,16 +38,23 @@ public:
 	virtual void setColor(const ofColor& color);
 	const ofColor& getColor() const;
 
-	static ofColor backgroundColor;
-	static ofColor edgeColor;
-	static const float initialHeight;
-	
+//	static ofColor backgroundColor;
+//	static ofColor edgeColor;
+//	static const float initialHeight;
+//	
 	
 	virtual void onDraw() const override;
 	
 	virtual void updateLayout() override;
 	
 
+	void setHeader(TrackHeader* header);
+	
+	TrackHeader* getHeader();
+	
+	const TrackHeader* getHeader() const;
+
+	
 	
     using DOM::Element::isEnabled;
     using DOM::Element::isFocusable;
@@ -91,6 +95,7 @@ public:
 	
 protected:
 	
+	TrackHeader* _header = nullptr;
 	
 	
 	

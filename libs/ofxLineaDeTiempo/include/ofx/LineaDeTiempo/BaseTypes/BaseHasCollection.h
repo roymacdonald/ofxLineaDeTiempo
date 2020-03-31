@@ -17,13 +17,13 @@ template<typename ElementType>
 class BaseHasCollection{
 public:
 
+	virtual ~BaseHasCollection() = default;
+	
 	
 	virtual std::vector<ElementType*> & getCollection() = 0;
 
 	virtual const std::vector<ElementType*> & getCollection() const= 0;
 
-
-	
 	virtual void removeElements(std::vector<ElementType*> &) = 0;
 	
 };

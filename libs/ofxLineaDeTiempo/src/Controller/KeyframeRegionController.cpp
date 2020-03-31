@@ -8,18 +8,30 @@
 #include "LineaDeTiempo/Controller/KeyframeRegionController.h"
 #include "LineaDeTiempo/Controller/KeyframeTrackController.h"
 #include "LineaDeTiempo/View/KeyframesRegionView.h"
-
+#include "LineaDeTiempo/Utils/Constants.h"
 namespace ofx {
 namespace LineaDeTiempo {
 
 
 template<typename T>
-KeyframeRegionController_<T>::KeyframeRegionController_(const std::string& name, const ofRange64u& timeRange, TrackController* parentTrack, TimeControl* timeControl)
-: RegionController(name, timeRange, parentTrack, timeControl)
+KeyframeRegionController_<T>::KeyframeRegionController_(const std::string& name, TrackController* parentTrack, TimeControl* timeControl)
+: RegionController(name, parentTrack, timeControl)
 , _parentTrack(dynamic_cast<KeyframeTrackController_<T>*>(parentTrack))
 {
+	_dataTypeName = typeid(T).name();
+}
 
-	
+template<typename T>
+KeyframeRegionController_<T>::KeyframeRegionController_(const std::string& name, const ofRange64u& timeRange, TrackController* parentTrack, TimeControl* timeControl)
+: KeyframeRegionController_(name, parentTrack, timeControl)
+{
+	setTimeRange(timeRange, false);
+}
+
+template<typename T>
+KeyframeRegionController_<T>::~KeyframeRegionController_()
+{
+	destroyView();
 }
 
 template<typename T>
@@ -60,13 +72,13 @@ void KeyframeRegionController_<T>::destroyView()
 		destroyChildrenViews(this);
 		_keyframesViewMap.clear();
 		
-		auto p = dynamic_cast<TrackController*>(parent());
-		if(p && p->getView())
+		
+		if(_parentTrack && _parentTrack->getView())
 		{
 			
-			if(p->getView()->removeRegion(this) == false)
+			if(_parentTrack->getView()->removeRegion(this) == false)
 			{
-				ofLogError("KeyframeRegionController_<T>::destroyView") << "Could not remove track correctly. " << getId();
+				ofLogError("KeyframeRegionController_<T>::destroyView") << "Could not remove region correctly. " << getId();
 			}
 			addKeyframeListener.unsubscribe();
 			removeKeyframeListener.unsubscribe();
@@ -106,6 +118,14 @@ bool KeyframeRegionController_<T>::removeKeyframe(KeyframeController<T>* keyfram
 	}
 	
 	return (removeChild(keyframe) != nullptr);
+}
+
+template<typename T>
+void KeyframeRegionController_<T>::removeAllKeyframes()
+{
+	_keyframedData.clear();
+	_keyframesViewMap.clear();
+	removeAllChildren();
 }
 
 
@@ -184,7 +204,7 @@ void KeyframeRegionController_<T>::_addKeyframeAtScreenPos(glm::vec2& pos)
 		//		std::cout << "  time: " << time ;
 		auto r = _keyframesRegionView->getCollectionView()->getScreenShape();
 		
-		auto margin = KeyframeView::defaultKeyframeSize * 0.5;
+		auto margin = DefaultKeyframeSize * 0.5;
 		
 		auto & p = _parentTrack->getParameter();
 		
@@ -204,6 +224,54 @@ template<typename T>
 const KeyframedData_<T>& KeyframeRegionController_<T>::getKeyframedData() const
 {
 	return _keyframedData;
+}
+template<typename T>
+void KeyframeRegionController_<T>::fromJson(const ofJson& j)
+{
+	RegionController::fromJson(j);
+//	setId(j["name"]);
+	
+	if(j.count("_keyframedData")== 0 || j.count("_dataTypeName") == 0)
+	{
+		ofLogError("KeyframeRegionController_<T>::fromJson") << "failed. Malformed json. DataTypeName or keyframedData elements not present";
+		return;
+	}
+	auto dt = j["_dataTypeName"].get<std::string>();
+	
+	if(dt != getDataTypeName())
+	{
+		ofLogError("KeyframeRegionController_<T>::fromJson") << "failed. DataType seems to be different to the one saved on file";
+		return;
+	}
+
+	removeAllKeyframes();
+
+	KeyframedData_<T> key_data;
+	
+	key_data.fromJson(j["_keyframedData"]);
+
+	auto& data = key_data.getData();
+	
+	for(auto& d: data)
+	{
+		
+		addKeyframe(d->value, d->time);
+	}
+
+}
+
+template<typename T>
+ofJson KeyframeRegionController_<T>::toJson()
+{
+	ofJson j = RegionController::toJson();
+	j["class"] = "KeyframeRegionController_";
+//	j["name"] = getId();
+//	j["view"] = bool(getView());
+
+	j["_keyframedData"] = _keyframedData.toJson();
+
+
+	return j;
 }
 
 

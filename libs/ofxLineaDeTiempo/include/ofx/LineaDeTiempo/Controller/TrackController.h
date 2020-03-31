@@ -7,17 +7,18 @@
 
 #pragma once
 
-#include "LineaDeTiempo/BaseTypes/BaseViewController.h"
+#include "LineaDeTiempo/Controller/BaseController.h"
+
 #include "LineaDeTiempo/Controller/RegionController.h"
 
 #include "LineaDeTiempo/View/TrackView.h"
 #include "LineaDeTiempo/View/TrackGroupView.h"
 #include "ofRange.h"
 #include "LineaDeTiempo/BaseTypes/NamedConstPointerCollection.h"
-#include "DOM/Node.h"
 
 #include "LineaDeTiempo/Utils/CollectionHelper.h"
-#include "LineaDeTiempo/BaseTypes/BaseHasTimeControl.h"
+
+#include "LineaDeTiempo/BaseTypes/AbstractSerializable.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -27,10 +28,8 @@ class TrackGroupController;
 
 
 class TrackController
-: public DOM::Node
-, public BaseHasTimeControl
-//, public BaseHasRegions<RegionController>
-, public BaseViewController<TrackView>
+: public BaseController<TrackView>
+, public AbstractSerializable
 
 {
 public:
@@ -39,14 +38,12 @@ public:
 	
 	TrackController(const std::string& name, TrackGroupController* parent, TimeControl* timeControl);
 	
-	virtual ~TrackController() = default;
+	virtual ~TrackController();
 	
 	
 	
 	virtual void generateView() override;
 	virtual void destroyView() override;
-	
-	using BaseViewController<TrackView>::getView;
 	
 	
 	
@@ -78,8 +75,6 @@ public:
 	
 	
 	
-	using BaseHasTimeControl::getTimeControl;
-	
 	
 	void enableTimeUpdate();
 	
@@ -91,7 +86,17 @@ public:
 	
 	const size_t& getCurrentRegion()const;
 	
+
+	virtual void fromJson(const ofJson& j) override;
+	virtual ofJson toJson() override;
+
+	
+	
+				
 protected:
+	
+	
+	
 	size_t _currentRegion = 0;
 	
 	
@@ -103,7 +108,6 @@ protected:
 	NewRegionControllerType * _addRegion( const std::string& regionName, const ofRange64u& timeRange)
 	{
 		
-		
 		auto uniqueName = _regionsCollection.makeUniqueName(regionName, "Region");
 		
 		return CollectionHelper::
@@ -114,8 +118,30 @@ protected:
 		
 	}
 	
+	template<typename NewRegionControllerType>//, typename NewRegionViewType>
+	NewRegionControllerType * _addRegion( const std::string& regionName)
+	{
+		//TODO: this function should be reduced into a single one.
+		
+		auto uniqueName = _regionsCollection.makeUniqueName(regionName, "Region");
+		
+		return CollectionHelper::
+		
+		_add < NewRegionControllerType, TrackController, RegionController >
+		
+		( _regionsCollection, this, uniqueName, this, getTimeControl());
+		
+	}
+	
+	
+	
+	
 	
 	bool _removeRegion(RegionController* track);
+	
+	
+	/// as regions need to be templated, in order to avoid the parsing of the data type I'll delegate it to the derived class which already "know" which templated type to use.
+	virtual void _addRegionFromJson(const std::string& name, ofJson j)= 0;
 	
 	//	TrackGroupController * _parentGroup = nullptr;
 	
@@ -143,7 +169,8 @@ protected:
 //	size_t _currentRegion = 0;
 	
 	ofEventListeners _timeControlListeners;
-	
+
+	void _makeFromJson(const ofJson& json);
 	
 private:
 	ofEventListener _timeChangedListener;

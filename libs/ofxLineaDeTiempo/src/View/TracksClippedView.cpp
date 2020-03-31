@@ -5,7 +5,7 @@
 //  Created by Roy Macdonald on 2/18/20.
 //
 
-#include "Tracks.h"
+#include "LineaDeTiempo/View/TracksClippedView.h"
 #include "LineaDeTiempo/View/TrackView.h"
 #include "LineaDeTiempo/View/TrackGroupView.h"
 namespace ofx {

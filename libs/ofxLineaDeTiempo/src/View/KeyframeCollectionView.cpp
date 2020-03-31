@@ -14,6 +14,7 @@
 #include "LineaDeTiempo/Controller/KeyframeRegionController.h"
 #include "LineaDeTiempo/View/KeyframesRegionView.h"
 #include "LineaDeTiempo/View/RegionView.h"
+#include "LineaDeTiempo/Utils/Constants.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -21,7 +22,7 @@ namespace LineaDeTiempo {
 //---------------------------------------------------------------------------------------------------------------------
 KeyframeCollectionView::KeyframeCollectionView (const std::string & name, float width, float height, KeyframesRegionView* parentRegion, Selector<KeyframeView>* selector, RegionController *controller)
 //: DOM::Element(name, 0, RegionView::headerHeight, width, height)
-: MUI::Widget(name, 0, RegionView::headerHeight, width, height)
+: MUI::Widget(name, 0, RegionViewHeaderHeight, width, height)
 , _parentRegion(parentRegion)
 , _selector(selector)
 {
@@ -47,7 +48,7 @@ void KeyframeCollectionView::_parentResized(DOM::ResizeEventArgs &args)
 {
 //	std::cout << "KeyframeCollectionView::_parentResized\n";
 //	if(ofGetKeyPressed('q')){
-	setShape({0, RegionView::headerHeight, _parentRegion->getWidth(), getHeight()});
+	setShape({0, RegionViewHeaderHeight, _parentRegion->getWidth(), getHeight()});
 	
 	updateLayout();
 	_makeInterpolationLine();

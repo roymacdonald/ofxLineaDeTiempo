@@ -11,8 +11,6 @@
 #include <map>
 #include "LineaDeTiempo/Data/TimedData.h"
 #include "LineaDeTiempo/Controller/TimeControl.h"
-#include "LineaDeTiempo/BaseTypes/BaseHasName.h"
-#include "LineaDeTiempo/BaseTypes/BaseKeyframer.h"
 
 
 namespace ofx {
@@ -21,8 +19,7 @@ namespace LineaDeTiempo {
 
 template<typename DataType>
 class KeyframedData_
-: public BaseKeyframer
-, public AbstractSerializable
+: public AbstractSerializable
 {
 public:
 	KeyframedData_();
@@ -54,7 +51,7 @@ public:
 	std::string toString() const;
 	
 
-	std::vector< std::unique_ptr< TimedData_<DataType> > > & getData();
+	
 	const std::vector< std::unique_ptr< TimedData_<DataType> > > & getData() const;
 	
 	
@@ -65,7 +62,25 @@ public:
 	virtual ofJson toJson() override;
 
 	
+	void enableKeyframing();
+	
+	void disableKeyframing();
+	
+	bool isKeyFramingEnabled() const;
+	
+	ofEvent<bool> keyframingEnableEvent;
+
+	void setEnableKeyframing(bool e);
+	
+	
+	
 protected:
+	
+	bool _bKeyframingEnabled = true;
+	
+	bool _bKeyframingEnabledProxy = true;
+		
+	
 	std::vector< std::unique_ptr< TimedData_<DataType> > > _data;
 	
 	std::map<uint64_t, TimedData_<DataType>*  > _timedMap;

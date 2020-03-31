@@ -12,11 +12,13 @@
 #include "LineaDeTiempo/Controller/TrackController.h"
 #include "LineaDeTiempo/BaseTypes/NamedConstPointerCollection.h"
 
-#include "LineaDeTiempo/BaseTypes/BaseHasTimeControl.h"
+#include "LineaDeTiempo/Controller/BaseController.h"
+
+//#include "LineaDeTiempo/BaseTypes/BaseHasTimeControl.h"
 
 #include "ofParameter.h"
 #include "LineaDeTiempo/Controller/KeyframeTrackController.h"
-
+#include "LineaDeTiempo/BaseTypes/AbstractSerializable.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -24,9 +26,8 @@ namespace LineaDeTiempo {
 
 
 class TrackGroupController
-:public DOM::Node
-, public BaseHasTimeControl
-, public BaseViewController<TrackGroupView>
+: public BaseController<TrackGroupView>
+, public AbstractSerializable
 {
 public:
 	
@@ -36,7 +37,7 @@ public:
 	virtual void generateView() override;
 	virtual void destroyView() override;
 	
-	virtual ~TrackGroupController() = default;
+	virtual ~TrackGroupController();// DEFAULT_BASE_VIEW_CONTROLLER_DESTRUCTOR
 	
 	TrackGroupController* add(ofParameterGroup& paramGroup);
 	
@@ -63,107 +64,63 @@ public:
 	template<typename NewTrackControllerType>
 	NewTrackControllerType * addGroup( const std::string& groupName = "");
 	
+	
+	
 	bool removeGroup(TrackGroupController* group);
 	
-	bool removeGroup(const std::string& name)
-	{
-		return removeGroup(_groupsCollection.at(name));
-	}
+	bool removeGroup(const std::string& name);
 	
-	bool removeGroup(const size_t& index)
-	{
-		return removeGroup(_groupsCollection.at(index));
-	}
+	bool removeGroup(const size_t& index);
 	
-	TrackGroupController* getGroup(const std::string& name)
-	{
-		return _groupsCollection.at(name);
-	}
+	TrackGroupController* getGroup(const std::string& name);
 	
-	const TrackGroupController* getGroup(const std::string& name) const
-	{
-		return _groupsCollection.at(name);
-	}
+	const TrackGroupController* getGroup(const std::string& name) const;
 	
-	TrackGroupController* getGroup(const size_t& index)
-	{
-		return _groupsCollection.at(index);
-	}
+	TrackGroupController* getGroup(const size_t& index);
 	
-	const TrackGroupController* getGroup(const size_t& index)const
-	{
-		return _groupsCollection.at(index);
-	}
+	const TrackGroupController* getGroup(const size_t& index)const;
 	
-	const std::vector<TrackGroupController*>& getGroups()
-	{
-		return _groupsCollection.getCollection();
-	}
+	const std::vector<TrackGroupController*>& getGroups();
 	
-	const std::vector<const TrackGroupController*>& getGroups() const
-	{
-		return _groupsCollection.getCollection();
-	}
+	const std::vector<const TrackGroupController*>& getGroups() const;
 	
-	size_t getNumGroups() const
-	{
-		return _groupsCollection.size();
-	}
+	size_t getNumGroups() const;
 	
 	
 	
-	bool removeTrack(const std::string& name)
-	{
-		return removeTrack(_tracksCollection.at(name));
-	}
+	bool removeTrack(const std::string& name);
 	
-	bool removeTrack(const size_t& index)
-	{
-		return removeTrack(_tracksCollection.at(index));
-	}
+	bool removeTrack(const size_t& index);
 	
-	TrackController* getTrack(const std::string& name)
-	{
-		return _tracksCollection.at(name);
-	}
+	TrackController* getTrack(const std::string& name);
 	
-	const TrackController* getTrack(const std::string& name) const
-	{
-		return _tracksCollection.at(name);
-	}
+	const TrackController* getTrack(const std::string& name) const;
 	
-	TrackController* getTrack(const size_t& index)
-	{
-		return _tracksCollection.at(index);
-	}
+	TrackController* getTrack(const size_t& index);
 	
-	const TrackController* getTrack(const size_t& index)const
-	{
-		return _tracksCollection.at(index);
-	}
+	const TrackController* getTrack(const size_t& index)const;
 	
-	const std::vector<TrackController*>& getTracks()
-	{
-		return _tracksCollection.getCollection();
-	}
+	const std::vector<TrackController*>& getTracks();
 	
-	const std::vector<const TrackController*>& getTracks() const
-	{
-		return _tracksCollection.getCollection();
-	}
+	const std::vector<const TrackController*>& getTracks() const;
 	
-	size_t getNumTracks() const
-	{
-		return _tracksCollection.size();
-	}
+	size_t getNumTracks() const;
 	
-	using BaseHasTimeControl::getTimeControl;
 	
-	using BaseViewController<TrackGroupView>::getView;
-	using BaseViewController<TrackGroupView>::setView;
 	
+	
+	virtual void fromJson(const ofJson& j) override;
+
+	virtual ofJson toJson() override;
+
 	
 protected:
+	void _makeFromJson(const ofJson& j);
+	
+	TrackController* _addTrack(const std::string& trackName, const std::string& typeName, const std::string& paramType);
+	
+	TrackGroupController * _addGroup( const std::string& groupName);
+	
 	
 	NamedConstPointerCollection<TrackGroupController> _groupsCollection;
 	NamedConstPointerCollection<TrackController> _tracksCollection;

@@ -6,15 +6,22 @@
 //
 
 #include "LineaDeTiempo/View/TrackGroupView.h"
+#include "LineaDeTiempo/View/TracksPanel.h"
 #include "LineaDeTiempo/Controller/TrackGroupController.h"
 #include "LineaDeTiempo/Controller/TrackController.h"
+
 namespace ofx {
 namespace LineaDeTiempo {
 
 TrackGroupView::TrackGroupView(DOM::Element* parentView, TrackGroupController * controller)
 : BaseTrackView(controller->getId(), parentView)
-, BaseHasController<TrackGroupController>(controller)
+, _parentGroup(dynamic_cast<TrackGroupView*>(parentView))
+, _controller(controller)
 {
+
+	_tracksContainer = this;
+	
+	
 	_enableParentShapeListener();
 }
 
@@ -42,12 +49,26 @@ void TrackGroupView::_disableParentShapeListener()
 
 void TrackGroupView::_updateContainers()
 {
-	auto c = _getTracksContainer();
-	if(c) c->updateLayout();
-	if(c != this)updateLayout();
+	
+	if(_tracksContainer) _tracksContainer->updateLayout();
+	if(_tracksContainer != this)updateLayout();
 	
 }
-
+bool TrackGroupView::_containersCheck(const std::string & callerName)
+{
+	if(!_tracksContainer)
+	{
+		ofLogError("TrackGroupView::"+callerName) << "tracks container is invalid. " << getId();
+		return false;
+	}
+	
+	if(!_header)
+	{
+		ofLogError("TrackGroupView::"+callerName) << "headers container is invalid. " << getId();
+		return false;
+	}
+	return true;
+}
 
 bool TrackGroupView::removeTrack(TrackController* controller)
 {
@@ -56,57 +77,89 @@ bool TrackGroupView::removeTrack(TrackController* controller)
 		ofLogError("TrackGroupView::removeTrack") << "controller is nulptr";
 		return false;
 	}
+	
 	auto track = controller->getView();
-	auto c = _getTracksContainer();
-	auto hc = _getHeadersContainer();
-	if(c && hc){
-
-		auto tr = c->removeChild(track);
-		auto h = hc->removeChild(track->getHeader());
-
-		_updateContainers();
-		return true;
+	if(!track)
+	{
+		ofLogError("TrackGroupView::removeTrack") << "track view is invalid. " << getId();
+		return false;
 	}
-	if(!c) 	ofLogError("TrackGroupView::removeTrack") << "tracks container is invalid. " << getId();
-	if(!hc) 	ofLogError("TrackGroupView::removeTrack") << "headers container is invalid. " << getId();
-	return false;
+	
+	if(_containersCheck("removeTrack") == false)
+	{
+		return false;
+	}
+//	if(!_tracksContainer)
+//	{
+//		ofLogError("TrackGroupView::removeTrack") << "tracks container is invalid. " << getId();
+//		return false;
+//	}
+//
+//	if(!_headersContainer)
+//	{
+//		ofLogError("TrackGroupView::removeTrack") << "headers container is invalid. " << getId();
+//		return false;
+//	}
+	
+	
+
+	auto tr = _tracksContainer->removeChild(track);
+	auto h = _header->removeChild(track->getHeader());
+
+	_updateContainers();
+	return true;
+	
 }
 
 bool TrackGroupView::removeGroup(TrackGroupController * controller)
 {
-	if(controller == nullptr) return false;
-
-	auto group = controller->getView();
-	auto c = _getTracksContainer();
-	auto hc = _getHeadersContainer();
-	if(c && hc){
-
-		auto tr = c->removeChild(group);
-		auto h = hc->removeChild(group->getHeader());
-
-		_updateContainers();
-		return true;
+	if(controller == nullptr)
+	{
+		ofLogError("TrackGroupView::removeGroup") << "controller is nulptr";
+		return false;
 	}
-	return false;
-}
+	
+	auto track = controller->getView();
+	if(!track)
+	{
+		ofLogError("TrackGroupView::removeGroup") << "track view is invalid. " << getId();
+		return false;
+	}
+	if(_containersCheck("removeGroup") == false)
+	{
+		return false;
+	}
+	
+//	if(!_tracksContainer)
+//	{
+//		ofLogError("TrackGroupView::removeTrack") << "tracks container is invalid. " << getId();
+//		return false;
+//	}
+//
+//	if(!_headersContainer)
+//	{
+//		ofLogError("TrackGroupView::removeTrack") << "headers container is invalid. " << getId();
+//		return false;
+//	}
+	
 
+	auto tr = _tracksContainer->removeChild(track);
+	auto h = _header->removeChild(track->getHeader());
 
-
-DOM::Element* TrackGroupView::_getTracksContainer()
-{
-	return this;
-}
-DOM::Element* TrackGroupView::_getHeadersContainer()
-{
-	return _header;
+	_updateContainers();
+	return true;
+	
 }
 
 //---------------------------------------------------------------------
-float TrackGroupView::getTrackHeaderWidth(){
+float TrackGroupView::getTrackHeaderWidth()
+{
 	return _trackHeaderWidth;
 }
+
 //---------------------------------------------------------------------
-void TrackGroupView::setTrackHeaderWidth(float w){
+void TrackGroupView::setTrackHeaderWidth(float w)
+{
 	if(!ofIsFloatEqual(_trackHeaderWidth, w)){
 		_trackHeaderWidth = w;
 		updateLayout();
@@ -162,6 +215,20 @@ float TrackGroupView::updateScaledShape(float y, float yScale, float width)
 //	
 //	setSize(s.width , s.height);
 //	
+//}
+
+//
+//const TrackGroupController * TrackGroupView::getController() const
+//{
+//	return _controller;
+//}
+//TrackGroupController * TrackGroupView::getController()
+//{
+//	return _controller;
+//}
+//void TrackGroupView::setController(TrackGroupController * controller)
+//{
+//	_controller = controller;
 //}
 
 

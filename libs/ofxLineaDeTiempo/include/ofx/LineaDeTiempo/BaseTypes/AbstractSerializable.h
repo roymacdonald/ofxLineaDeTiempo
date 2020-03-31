@@ -13,17 +13,13 @@ namespace LineaDeTiempo {
 class AbstractSerializable
 {
 public:
-//	BaseHasName();
-//	
-//	BaseHasName(const std::string & name);
-//	
 	virtual ~AbstractSerializable()
 	{
 		
 	}
 	virtual void fromJson(const ofJson& j) = 0;
 
-	virtual void toJson(ofJson& j) = 0;
+	virtual ofJson toJson() = 0;
 	
 	
 	

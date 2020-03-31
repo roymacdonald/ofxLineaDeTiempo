@@ -251,4 +251,46 @@ void TimeControl::drawDebug(float x, float y)
 	
 }
 
+void TimeControl::fromJson(const ofJson& j)
+{
+	
+	j["_totalTime"].get_to( _totalTime);
+	j["_currentTime"].get_to( _currentTime);
+	j["_inTime"]["enabled"].get_to( _inTime.enabled);
+	j["_inTime"]["time"].get_to( _inTime.time);
+	j["_outTime"]["enabled"].get_to( _outTime.enabled);
+	j["_outTime"]["time"].get_to( _outTime.time);
+	j["_bLoop"].get_to( _bLoop);
+	j["_playStartTime"].get_to( _playStartTime);
+	j["_prevUpdateTime"].get_to( _prevUpdateTime);
+	j["_state"].get_to( _state);
+	
+
+}
+
+ofJson TimeControl::toJson()
+{
+	ofJson j;
+	j["class"] = "TimeControl";
+	
+
+	j["_totalTime"]          = _totalTime;
+	j["_currentTime"]        = _currentTime;
+	j["_inTime"]["enabled"]  = _inTime.enabled;
+	j["_inTime"]["time"]     = _inTime.time;
+	j["_outTime"]["enabled"] = _outTime.enabled;
+	j["_outTime"]["time"]    = _outTime.time;
+	j["_bLoop"]              = _bLoop;
+	j["_playStartTime"]      = _playStartTime;
+	j["_prevUpdateTime"]     = _prevUpdateTime;
+	j["_state"]              = _state;
+	
+	
+
+
+	return j;
+}
+
+
+
 } } // ofx::LineaDeTiempo

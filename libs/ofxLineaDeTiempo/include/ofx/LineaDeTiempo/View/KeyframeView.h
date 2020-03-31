@@ -13,6 +13,8 @@ namespace LineaDeTiempo {
 
 class KeyframesRegionView;
 class KeyframeCollectionView;
+
+
 class KeyframeView
 : public MUI::Widget
 , public BaseSelectable
@@ -24,6 +26,7 @@ public:
 	
 	friend class KeyframesRegionView;
 	friend class KeyframeCollectionView;
+
 	
 	KeyframeView(const std::string& id, float value, uint64_t time,  KeyframeCollectionView * parentView);
 	
@@ -34,10 +37,16 @@ public:
 	virtual void onDraw() const override;
 	
 	
-	virtual void setSelected(bool select) override;
-		
+
 	
-	static float defaultKeyframeSize;
+//	static float defaultKeyframeSize;
+	
+	
+	virtual bool isSelected() const override;
+	
+	virtual void setSelected(bool selected) override;
+	
+	virtual void setSelectedNoEvents(bool selected) override;
 	
 	
 	float getValue() const;
@@ -58,8 +67,13 @@ protected:
 	
     virtual void _onPointerEvent(DOM::PointerUIEventArgs& e) override;
 
-
+private:
 	bool _moved = false;
+	
+	bool _isSelected = false;
+
+	
+	
 };
 
 

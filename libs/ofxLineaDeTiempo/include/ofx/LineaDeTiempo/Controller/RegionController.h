@@ -6,13 +6,14 @@
 ////
 //
 #pragma once
-#include "LineaDeTiempo/BaseTypes/BaseViewController.h"
-//#include "LineaDeTiempo/BaseTypes/BaseController.h"
-#include "LineaDeTiempo/BaseTypes/BaseHasTimeControl.h"
+
+#include "LineaDeTiempo/Controller/BaseController.h"
+
 #include "LineaDeTiempo/View/RegionView.h"
 #include "ofRange.h"
-#include "DOM/Node.h"
+
 #include <type_traits>
+#include "LineaDeTiempo/BaseTypes/AbstractSerializable.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -22,12 +23,13 @@ class TrackController;
 
 
 class RegionController
-: public DOM::Node
-, public BaseHasTimeControl
-, public BaseViewController<RegionView>
+: public BaseController<RegionView>
+, public AbstractSerializable
 {
 public:
 
+	RegionController(const std::string& name, TrackController* parentTrack, TimeControl* timeControl);
+	
 	RegionController(const std::string& name, const ofRange64u& timeRange, TrackController* parentTrack, TimeControl* timeControl);
 	
 	virtual ~RegionController() = default;
@@ -42,12 +44,17 @@ public:
 	
 	ofEvent<ofRange64u> timeRangeChangedEvent;
 
-	using BaseHasTimeControl::getTimeControl;
 	
 	virtual void update(uint64_t& t) = 0;
 	
-protected:
+	virtual void fromJson(const ofJson& j) override;
+	virtual ofJson toJson() override;
 	
+	const std::string&  getDataTypeName() const;
+					
+protected:
+		
+	std::string _dataTypeName = "";
 	
 
 	TrackController * _parentTrack;
