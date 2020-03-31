@@ -11,7 +11,7 @@
 #include "Scrollbar.h"
 #include "ClippedView.h"
 #include "ScaledView.h"
-#include "Tracks.h"
+#include "TracksClippedView.h"
 #include "Constants.h"
 #include "Margins.h"
 namespace ofx {

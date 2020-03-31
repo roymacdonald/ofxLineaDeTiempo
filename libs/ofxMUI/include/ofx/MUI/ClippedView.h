@@ -23,8 +23,19 @@ class ClippedView_
 {
 public:
 	static_assert(std::is_base_of<DOM::Element, ContainerType>(), "ContainerType must be an DOM::Element or derived from DOM::Element.");
-	ClippedView_(const std::string& id, const ofRectangle& rect);
-	    
+	template <typename... Args>
+	ClippedView_(const std::string& id, const ofRectangle& rect, Args&&... args)
+	: DOM::Element(id, rect.x, rect.y, rect.width, rect.height)
+	{
+
+		setDrawAsViewport(true);
+		setFocusable(false);
+		container = addChild<ContainerType>(id+"_Container", rect, std::forward<Args>(args)...);
+		container->setFocusable(false);
+		container->setDrawChildrenOnly(true);
+	//	createLayout<ClippedViewLayout>(this);
+	}
+	
 	
 	virtual ~ClippedView_(){}
 	
