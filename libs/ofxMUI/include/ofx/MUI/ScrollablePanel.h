@@ -8,12 +8,12 @@
 #pragma once
 
 //#include "ofxMUI.h"
-#include "Scrollbar.h"
-#include "ClippedView.h"
-#include "ScaledView.h"
-#include "TracksClippedView.h"
-#include "Constants.h"
-#include "Margins.h"
+#include "MUI/Scrollbar.h"
+#include "MUI/ClippedView.h"
+#include "MUI/ScaledView.h"
+#include "LineaDeTiempo/View/TracksClippedView.h"
+#include "MUI/Constants.h"
+#include "MUI/Margins.h"
 namespace ofx {
 namespace MUI {
 
