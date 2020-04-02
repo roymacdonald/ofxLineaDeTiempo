@@ -9,6 +9,7 @@
 #pragma once
 
 #include <vector>
+#include "ofRectangle.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -25,6 +26,7 @@ public:
 	virtual const std::vector<ElementType*> & getCollection() const= 0;
 
 	virtual void removeElements(std::vector<ElementType*> &) = 0;
+	
 	
 };
 

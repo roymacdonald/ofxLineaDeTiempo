@@ -8,6 +8,7 @@
 #pragma once
 #include "LineaDeTiempo/Controller/RegionController.h"
 #include "LineaDeTiempo/Controller/KeyframeController.h"
+#include "LineaDeTiempo/Controller/KeyframeCollectionController.h"
 #include "LineaDeTiempo/View/KeyframesRegionView.h"
 #include "LineaDeTiempo/View/KeyframeView.h"
 
@@ -30,7 +31,6 @@ class KeyframeRegionController_
 {
 public:
 
-	KeyframeRegionController_( const std::string& name, TrackController* parentTrack, TimeControl* timeControl);
 	KeyframeRegionController_( const std::string& name, const ofRange64u& timeRange, TrackController* parentTrack, TimeControl* timeControl);
 	
 	virtual ~KeyframeRegionController_() = default;
@@ -38,39 +38,39 @@ public:
 	virtual void generateView() override;
 	virtual void destroyView() override;
 
+
+	virtual size_t getNumDimensions() const override;
 	
-	KeyframeController<DataType>* addKeyframe(DataType value, uint64_t time);
+	virtual bool update(uint64_t& t) override;
 	
-	bool removeKeyframe(KeyframeController<DataType>* keyframe);
-	
-	void removeAllKeyframes();
-	
-	
-	const KeyframedData_<DataType>& getKeyframedData() const;
-	
-	virtual void update(uint64_t& t) override;
+
 	
 	
 	virtual void fromJson(const ofJson& j) override;
 	virtual ofJson toJson() override;
 	
+	KeyframesRegionView* getKeyframesRegionView();
+	const KeyframesRegionView* getKeyframesRegionView() const;
+	
+	void removeAllKeyframes();
+	
+	
+	
+	
+	KeyframeTrackController_<DataType>* getParentKeyframeTrack();
+	const KeyframeTrackController_<DataType>* getParentKeyframeTrack()const;
+	
+	
+//TODO: Terminar de implementar esta clase para que funque con los parametros multidimensionales
 	
 protected:
-
+	bool _update(const uint64_t& t, ofParameter<DataType>& param);
+	
 	friend class KeyframeTrackController_< DataType >;
 	friend class KeyframeController<DataType>;
-
 	
-	ofEventListener addKeyframeListener;
-	void _addKeyframeAtScreenPos(glm::vec2& pos);
+	std::vector<KeyframeCollectionController<DataType>* > _collections;
 	
-	ofEventListener removeKeyframeListener;
-	void _removeKeyframe(KeyframeView*& v);
-	
-	KeyframedData_<DataType> _keyframedData;
-
-	std::vector<KeyframeController<DataType>* > _keyframes;
-	std::unordered_map<KeyframeView*, KeyframeController<DataType>*>_keyframesViewMap;
 	
 	
 	KeyframeTrackController_<DataType>* _parentTrack = nullptr;

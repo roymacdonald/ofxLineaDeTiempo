@@ -28,7 +28,7 @@ class RegionController
 {
 public:
 
-	RegionController(const std::string& name, TrackController* parentTrack, TimeControl* timeControl);
+//	RegionController(const std::string& name, TrackController* parentTrack, TimeControl* timeControl);
 	
 	RegionController(const std::string& name, const ofRange64u& timeRange, TrackController* parentTrack, TimeControl* timeControl);
 	
@@ -45,22 +45,22 @@ public:
 	ofEvent<ofRange64u> timeRangeChangedEvent;
 
 	
-	virtual void update(uint64_t& t) = 0;
+	virtual bool update(uint64_t& t) = 0;
 	
 	virtual void fromJson(const ofJson& j) override;
 	virtual ofJson toJson() override;
 	
 	const std::string&  getDataTypeName() const;
-					
-protected:
-		
 	
-
-	TrackController * _parentTrack;
+	
+	virtual size_t getNumDimensions() const = 0;
+	
+protected:
+	
 
 private:
 	ofRange64u _timeRange;
-	
+	TrackController * _parentTrack;
 };
 
 

@@ -93,6 +93,6 @@ template class BaseController<KeyframeView>;
 template class BaseController<RegionView>;
 template class BaseController<TrackView>;
 template class BaseController<TrackGroupView>;
-
+template class BaseController<KeyframeCollectionView>;
 
 } } // ofx::LineaDeTiempo

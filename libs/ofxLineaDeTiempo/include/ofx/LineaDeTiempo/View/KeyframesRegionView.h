@@ -25,27 +25,39 @@ public:
 	KeyframesRegionView (TrackView* parentTrack, RegionController *controller, shared_ptr<MUI::Styles> regionStyles);
 	virtual ~KeyframesRegionView() = default;
 			
-	KeyframeView* addKeyframe(float value, uint64_t time);
+	KeyframeView* addKeyframe(float value, uint64_t time, size_t viewIndex);
 
-	bool removeKeyframe(KeyframeView* k);
+	bool removeKeyframe(KeyframeView* k, size_t viewIndex);
 
 	
 	virtual void onDraw() const override;
-		
+	
+	
+	virtual void updateLayout() override;
+	
+	
 	Selector<KeyframeView>& getSelector();
-	const Selector<KeyframeView>& getSelector() const;
+	const Selector<KeyframeView >& getSelector() const;
 
-	KeyframeCollectionView* getCollectionView() {return _collectionView;}
+	const std::vector<KeyframeCollectionView *>& getViews();
+	const std::vector<KeyframeCollectionView *>& getViews() const;
+	
 	
 protected:
 
-	KeyframeCollectionView* _collectionView;
+	float _getCollectionViewHeight() const;
+	
+	ofRectangle _allViewsRect;
+	
+	std::vector<KeyframeCollectionView *> _views;
 	
 	Selector<KeyframeView> _selector;
 		
 	
-	
 		
+	RegionController * _controller = nullptr;
+	
+	
 };
 
 

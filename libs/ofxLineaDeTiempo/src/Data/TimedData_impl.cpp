@@ -58,8 +58,8 @@ template class TimedData_<unsigned long>;
 template class TimedData_<long long>;
 template class TimedData_<unsigned long long>;
 template class TimedData_<float>;
-template class TimedData_<double>;
-template class TimedData_<long double>;
+//template class TimedData_<double>;
+//template class TimedData_<long double>;
 
 //template class TimedData_<double>;
 //#ifdef ENABLE_LONG_DOUBLE_TIMED_DATA
@@ -107,8 +107,8 @@ template class KeyframedData_<unsigned long>;
 template class KeyframedData_<long long>;
 template class KeyframedData_<unsigned long long>;
 template class KeyframedData_<float>;
-template class KeyframedData_<double>;
-template class KeyframedData_<long double>;
+//template class KeyframedData_<double>;
+//template class KeyframedData_<long double>;
 	
 // template class KeyframedData_<char>;
 // template class KeyframedData_<unsigned char>;

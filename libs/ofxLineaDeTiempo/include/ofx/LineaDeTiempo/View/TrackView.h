@@ -74,9 +74,9 @@ public:
 	virtual float updateScaledShape(float y, float yScale, float width) override;
 
 	
-//	virtual const TrackController * getController() const override;
-//	
-//	virtual TrackController * getController() override;
+	const TrackController * getController() const;
+	
+	TrackController * getController();
 //	
 //	virtual void setController(TrackController * controller) override;
 //	

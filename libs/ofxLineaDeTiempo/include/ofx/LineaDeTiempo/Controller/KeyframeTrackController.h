@@ -11,7 +11,7 @@
 #include "LineaDeTiempo/Controller/KeyframeRegionController.h"
 #include "LineaDeTiempo/Data/KeyframedData.h"
 
-
+#include "LineaDeTiempo/Utils/ofxTypeTraits.h"
 
 
 namespace ofx {
@@ -53,14 +53,32 @@ public:
 	const ofParameter<DataType>& getParameter() const;
 	
 	
-	float getNormalizedValue(const DataType& val);
-	DataType getUnnormalizedValue(float val);
 	
 	
+//	
+//	template<>
+//	typename std::enable_if<is_multi_dim_param<DataType>::value, float>::type
+//	getUnnormalizedValue(float val, size_t dim){
+//		return ofMap(val, 0, 1, getParameter().getMin()[dim], (float)getParameter().getMax()[dim], true);
+//	}
+//	
+//	
+//	template<typename D>
+//	typename std::enable_if<not is_multi_dim_param<D>::value, bool>::type
+//	_paramNeedsUpdate(const ofParameter<D>& param){
+//		return param.get() !=  _keyframedData.getCurrentValue();
+//	}
+//	
+//	float getNormalizedValue(const DataType& val);
+//	DataType getUnnormalizedValue(float val);
+//	
 	
+
 
 protected:
 	
+
+	void _setup();
 	
 	
 	virtual void _addRegionFromJson(const std::string& name, ofJson j) override;

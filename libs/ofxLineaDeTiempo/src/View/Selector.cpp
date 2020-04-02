@@ -20,9 +20,9 @@ Selector<T>::Selector()
 }
 
 template<typename T>
-void Selector<T>::setLimitingElement(DOM::Element * limitingElement)
+void Selector<T>::setLimitingRect(const ofRectangle& r)
 {
-	_limitingElement = limitingElement;
+	_limitingRect = r;
 }
 
 template<typename T>
@@ -91,9 +91,9 @@ void Selector<T>::_updateSelectionRect(const glm::vec2& screenPosition, DOM::Ele
 	
 	
 	
-	if( caller && _limitingElement){
+	if( !_limitingRect.isEmpty()){
 		
-		_rect = _rect.getIntersection(_limitingElement->getScreenShape());
+		_rect = _rect.getIntersection(_limitingRect);
 	}
 	
 	

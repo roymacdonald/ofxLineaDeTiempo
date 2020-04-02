@@ -7,6 +7,7 @@
 
 #pragma once
 #include "ofColor.h"
+#include <vector>
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -28,6 +29,19 @@ static const float DefaultKeyframeSize = 15.0;
 //RegionView
 static float RegionViewHeaderHeight = 18.f;
 //float RegionView::headerHeight = 18.f;
+
+static const std::string DimensionNames [4] = { "x", "y", "z", "w" };
+
+
+static std::string GetNameForDimension(const size_t & dim, const size_t & totalDims)
+{
+	if(totalDims <= 4){
+		return DimensionNames[dim];
+	}
+	
+	return ofToString(dim);
+	
+}
 
 }} //ofx::LineaDeTiempo
 //#include "LineaDeTiempo/Utils/ConstVars.h"

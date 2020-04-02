@@ -54,3 +54,21 @@ template<>
 struct type_dimensions<glm::quat>: std::integral_constant< int, 4>{};
 template<> 
 struct type_dimensions<glm::mat4>: std::integral_constant< int, 16>{};
+
+
+
+//template< class T >
+//struct type_single_dimension : std::integral_constant< int, is_ofColor<T>::value ?4: 1 > {};
+//
+//template<>
+//struct type_dimensions<glm::vec2>: std::integral_constant< int, 2>{};
+//template<>
+//struct type_dimensions<glm::vec3>: std::integral_constant< int, 3>{};
+//template<>
+//struct type_dimensions<glm::vec4>: std::integral_constant< int, 4>{};
+//template<>
+//struct type_dimensions<glm::quat>: std::integral_constant< int, 4>{};
+//template<>
+//struct type_dimensions<glm::mat4>: std::integral_constant< int, 16>{};
+
+

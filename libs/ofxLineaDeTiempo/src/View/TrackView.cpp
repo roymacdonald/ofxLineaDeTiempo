@@ -123,14 +123,14 @@ void TrackView::updateLayout()
 }
 
 //
-//const TrackController * TrackView::getController() const
-//{
-//	return _controller;
-//}
-//TrackController * TrackView::getController()
-//{
-//	return _controller;
-//}
+const TrackController * TrackView::getController() const
+{
+	return _controller;
+}
+TrackController * TrackView::getController()
+{
+	return _controller;
+}
 //void TrackView::setController(TrackController * controller)
 //{
 //	_controller = controller;

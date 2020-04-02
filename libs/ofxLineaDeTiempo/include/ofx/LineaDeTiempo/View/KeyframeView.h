@@ -20,7 +20,7 @@ class KeyframeView
 , public BaseSelectable
 {
 private:
-	KeyframeView(const std::string& id, KeyframeCollectionView * parentRegionView);
+	
 	
 public:
 	
@@ -37,7 +37,9 @@ public:
 	virtual void onDraw() const override;
 	
 	
-
+	static float positionToValue(float pos, KeyframeView * k);
+	
+	static float valueToPosition(float value, KeyframeView * k);
 	
 //	static float defaultKeyframeSize;
 	
@@ -75,6 +77,5 @@ private:
 	
 	
 };
-
 
 } } // ofx::LineaDeTiempo

@@ -25,12 +25,39 @@ class RegionController;
 class TrackView;
 
 
+struct AddKeyframeEventArgs
+{
+	AddKeyframeEventArgs(){}
+	AddKeyframeEventArgs(float value, uint64_t _time, KeyframeCollectionView* _view)
+	:normalizedValue(value)
+	,time(_time)
+	,view(_view)
+	{}
+	
+	
+	float normalizedValue = 0;
+	uint64_t time = 0;
+	KeyframeCollectionView* view = nullptr;
+};
+
+struct RemoveKeyframesEventArgs
+{
+	RemoveKeyframesEventArgs(){}
+	RemoveKeyframesEventArgs(KeyframeCollectionView* _view)
+	:view(_view)
+	{}
+
+	std::vector<KeyframeView*> keyframes;
+	KeyframeCollectionView* view = nullptr;
+};
+
+
 class KeyframeCollectionView
 : public MUI::Widget
 , public BaseHasCollection<KeyframeView>
 {
 public:
-	KeyframeCollectionView (const std::string & name, float width, float height, KeyframesRegionView* parentRegion, Selector<KeyframeView>* selector, RegionController *controller);
+	KeyframeCollectionView (const std::string & name, const ofRectangle& rect, KeyframesRegionView* parentRegion, Selector<KeyframeView>* selector, RegionController *controller);
 	virtual ~KeyframeCollectionView() = default;
 		
 	void onKeyframeDrag(KeyframeView* k, const glm::vec2& delta);
@@ -42,7 +69,7 @@ public:
     void selectAllKeyframes();
 
 	
-//	KeyframeView* addKeyframe(const glm::vec2& screenPos);
+
 	KeyframeView* addKeyframe(float value, uint64_t time);
 	
 	bool removeKeyframe(KeyframeView* k);
@@ -53,40 +80,35 @@ public:
 	
 	virtual void updateLayout() override;
 	
-//
 	virtual const std::vector<KeyframeView*> & getCollection() const override;
 	virtual std::vector<KeyframeView*> & getCollection() override;
 	
-//	void onKeyboardEvent(DOM::KeyboardUIEventArgs& evt) ;
 	
-	
-	ofEvent<glm::vec2> addKeyframeEvent;
-	ofEvent<KeyframeView*> removeKeyframeEvent;
+	ofEvent<AddKeyframeEventArgs> addKeyframeEvent;
+	ofEvent<RemoveKeyframesEventArgs> removeKeyframeEvent;
 	
 	TrackView* parentTrack();
 
 
 	void onKeyboardEvent(DOM::KeyboardUIEventArgs& evt) ;
 	
+	float keyframePositionToValue(float pos);
+	float keyframeValueToPosition(float value);
+
+	
+	
+	virtual void removeElements(std::vector<KeyframeView*> & elementsToRemove) override;
+
+	
+//	static std::string debugString;
+	
 	
 	
 protected:
-
-	void _parentResized(DOM::ResizeEventArgs &);
-	
-//	Selector<KeyframeView> _selector;
-	
-	virtual void removeElements(std::vector<KeyframeView*> & elementsToRemove) override;
-	
-
-//	bool _bIsMultiDim =  false;
 	
 	virtual void _onDragging(const DOM::CapturedPointer& pointer) override;
 	virtual void _onPointerEvent(DOM::PointerUIEventArgs& e) override;
 
-//	virtual void _onTimeRangeChange() override;
-	
-	ofEventListener _parentListener;
 	
 	KeyframesRegionView* _parentRegion = nullptr;
 	
@@ -103,6 +125,5 @@ private:
 	
 	
 };
-
 
 } } // ofx::LineaDeTiempo

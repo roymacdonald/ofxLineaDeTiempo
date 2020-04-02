@@ -19,10 +19,12 @@
 namespace ofx {
 namespace LineaDeTiempo {
 
+
+//std::string KeyframeCollectionView::debugString  = "";
 //---------------------------------------------------------------------------------------------------------------------
-KeyframeCollectionView::KeyframeCollectionView (const std::string & name, float width, float height, KeyframesRegionView* parentRegion, Selector<KeyframeView>* selector, RegionController *controller)
+KeyframeCollectionView::KeyframeCollectionView (const std::string & name, const ofRectangle& rect, KeyframesRegionView* parentRegion, Selector<KeyframeView>* selector, RegionController *controller)
 //: DOM::Element(name, 0, RegionView::headerHeight, width, height)
-: MUI::Widget(name, 0, RegionViewHeaderHeight, width, height)
+: MUI::Widget(name, rect)
 , _parentRegion(parentRegion)
 , _selector(selector)
 {
@@ -35,7 +37,7 @@ KeyframeCollectionView::KeyframeCollectionView (const std::string & name, float 
 					 false,
 					 std::numeric_limits<int>::lowest());
 	
-	_parentListener = _parentRegion->resize.newListener(this, &KeyframeCollectionView::_parentResized);
+//	_parentListener = _parentRegion->resize.newListener(this, &KeyframeCollectionView::_parentResized);
 	
 	setDraggable(true);
 	setFocusable(true);
@@ -44,16 +46,13 @@ KeyframeCollectionView::KeyframeCollectionView (const std::string & name, float 
 	setHighlightOnOver(true);
 }
 
-void KeyframeCollectionView::_parentResized(DOM::ResizeEventArgs &args)
-{
-//	std::cout << "KeyframeCollectionView::_parentResized\n";
-//	if(ofGetKeyPressed('q')){
-	setShape({0, RegionViewHeaderHeight, _parentRegion->getWidth(), getHeight()});
-	
-	updateLayout();
-	_makeInterpolationLine();
-//	}
-}
+//void KeyframeCollectionView::_parentResized(DOM::ResizeEventArgs &args)
+//{
+//	if(_parentRegion)
+//		setShape({0, RegionViewHeaderHeight, _parentRegion->getWidth(), _parentRegion->getCollectionViewHeight()});
+//	
+//
+//}
 
 //---------------------------------------------------------------------------------------------------------------------
 void KeyframeCollectionView::onKeyframeDrag(KeyframeView* k, const glm::vec2& delta)
@@ -101,6 +100,9 @@ void KeyframeCollectionView::_onDragging(const DOM::CapturedPointer& pointer)
 void KeyframeCollectionView::_onPointerEvent(DOM::PointerUIEventArgs& e)
 {
 	MUI::Widget::_onPointerEvent(e);
+	
+	
+	
 	if (e.type() == PointerEventArgs::POINTER_DOWN)
 	{
 		if(_parentRegion) _selector->onPointerDown(e.screenPosition(), this);
@@ -108,24 +110,38 @@ void KeyframeCollectionView::_onPointerEvent(DOM::PointerUIEventArgs& e)
 	}
 	else if (e.type() == PointerEventArgs::POINTER_UP)
 	{
-		//		_onPointerUp(e);
-		if(_parentRegion){
+	
+//		debugString  = "screenPosition: " + ofToString(e.screenPosition().y) + "\n";
+//		debugString += "localPosition : " + ofToString(e.localPosition().y) + "\n";
+//		debugString += "localToScreen : " + ofToString(localToScreen(e.localPosition()).y) + "\n";
+//		debugString += "screenToLocal : " + ofToString(screenToLocal(e.screenPosition()).y) + "\n";
+//		debugString += "pos to value  : " + ofToString(keyframePositionToValue(screenToLocal(e.screenPosition()).y)) + "\n";
+//		
+//		
+		
+		if(_parentRegion && parentTrack()){
 			auto wasSelecting =  _selector->onPointerUp(e.screenPosition(), this);
 			if(!wasSelecting)
 			{
 				
-				//			auto p =  screenToLocal(e.screenPosition());
-				auto p =  e.screenPosition();
 				
-//							std::cout << ofGetMouseX() << ", " << ofGetMouseY() << " -- " << p << endl;
 				
-//				if(ofRectangle(0,0,getWidth(), getHeight()).inside(e.localPosition())){
+				
+				
+				auto v = keyframePositionToValue(screenToLocal(e.screenPosition()).y);
+	
+//				std::cout << "\nKeyframeCollectionView::_onPointerEvent  local y: " << e.localPosition().y;
+//				std::cout << "  screen y: "  << e.screenPosition().y;
+//				std::cout << "  l2c:  " << localToScreen(e.localPosition()).y;
+//				std::cout << "  y value: " << v << "\n";
+				
+				AddKeyframeEventArgs args(v,
+										 parentTrack()->screenPositionToTime(e.screenPosition().x),
+										  this);
 
-					ofNotifyEvent(addKeyframeEvent, p, this);
-//				}
-//				ofNotifyEvent(addKeyframeEvent, p, this);
 				
-				//			addKeyframe();
+				ofNotifyEvent(addKeyframeEvent, args, this);
+
 				
 			}
 		}
@@ -218,16 +234,6 @@ void KeyframeCollectionView::updateKeyframeSort(){
 	}
 }
 
-//KeyframeView* KeyframeCollectionView::addKeyframe(const glm::vec2& screenPos)
-//{
-//
-//	std::cout << "new keyframe at "<< screenPos << std::endl;
-// 	auto c = this->addChild<KeyframeView>("_k"+ofToString(keyFrames.size()), screenToLocal(screenPos) , this);
-//	keyFrames.push_back(c);
-//	updateKeyframeSort();
-//	return c;
-//}
-
 KeyframeView* KeyframeCollectionView::addKeyframe(float value, uint64_t time)
 {
 //	std::cout << "new keyframe val: "<< value << " time: " << time << std::endl;
@@ -262,26 +268,23 @@ void KeyframeCollectionView::updateLayout()
 	{
 		if(k)k->_updatePosition();
 	}
+	_makeInterpolationLine();
 }
-
-//void KeyframeCollectionView::onKeyboardEvent(DOM::KeyboardUIEventArgs& evt)
-//{
-//	if (this == evt.target())
-//	{
-//		if(_parentRegion) _selector->onKeyboardEvent(evt, this);
-//	}
-//}
 
 void KeyframeCollectionView::removeElements(std::vector<KeyframeView*> & elementsToRemove)
 {
+	RemoveKeyframesEventArgs args( this);
 	for(auto s: elementsToRemove)
 	{
 		
 		if(s == nullptr) continue;
 		
-		ofNotifyEvent(removeKeyframeEvent, s, this);
+		args.keyframes.push_back(s);
 		
 	}
+	
+	ofNotifyEvent(removeKeyframeEvent, args, this);
+	
 	updateKeyframeSort();
 	
 	elementsToRemove.clear();
@@ -294,7 +297,6 @@ TrackView* KeyframeCollectionView::parentTrack()
 	return nullptr;
 }
 
-
 void KeyframeCollectionView::onKeyboardEvent(DOM::KeyboardUIEventArgs& evt)
 {
 	if (this == evt.target())
@@ -302,6 +304,29 @@ void KeyframeCollectionView::onKeyboardEvent(DOM::KeyboardUIEventArgs& evt)
 		if(_parentRegion) _selector->onKeyboardEvent(evt, this);
     }
 }
+
+float KeyframeCollectionView::keyframePositionToValue(float pos)
+{
+	
+	auto h2 = DefaultKeyframeSize *0.5;
+	
+	auto val =  ofMap(pos, h2 , getHeight() - h2, 1, 0, true);
+	
+//	 std::cout <<  "KeyframeCollectionView::keyframePositionToValue  pos: "  << pos << "  h: " << getHeight() << "  val: " << val << "\n";
+	
+	
+	return val;
+	
+}
+
+float KeyframeCollectionView::keyframeValueToPosition(float value)
+{
+	
+	auto h2 = DefaultKeyframeSize *0.5;
+	return ofMap(value, 1, 0, h2 , getHeight() - h2, true);
+	
+}
+
 
 
 } } // ofx::LineaDeTiempo

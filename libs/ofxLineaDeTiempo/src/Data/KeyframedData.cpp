@@ -118,7 +118,6 @@ bool KeyframedData_<T>::update(const uint64_t& time)
 		return (prev != _currentValue);
 	}
 	
-	
 	if(_lastUpdateTime == time)
 	{
 		ofLogError("KeyframedData_<T>::update") << "time reached the maximum time possible or something else went wrong";
@@ -153,6 +152,9 @@ bool KeyframedData_<T>::update(const uint64_t& time)
 		ofLogError("KeyframedData_<T>::update") << "_currentIndex >= _data.size()). this should not happen";
 		return false;
 	}
+	
+	std::cout <<" KeyframedData<D>::update\n";
+	
 	
 	_currentValue = Interpolator::interpolateTimedData(_data[_currentIndex-1].get() , _data[_currentIndex].get(), time);
 	
@@ -279,21 +281,32 @@ void KeyframedData_<T>::fromJson(const ofJson& j)
 {
 	try
 	{
-		
-		
-		if(j.at("keyframe_type").get<std::string>() != std::string(typeid(T).name()) ||
-		   !j.at("keyframes").is_array()
-		   )
+	
+	std::vector<std::string> keys = {"currentValue", "lastUpdateTime", "currentIndex", "bKeyframingEnabled", "keyframe_type", "keyframes", "num_keyframes"};
+
+		for(auto& k : keys)
+		{
+			if(j.count(k) == 0)
+			{
+				ofLogError("KeyframedData_<T>::fromJson") << "failed key check. no key : \"" << k << "\". Probably json file is malformed or corrupt.";		
+			}
+		}
+
+
+		if(j.at("keyframe_type").get<std::string>() != std::string(typeid(T).name()) || !j.at("keyframes").is_array())
 		{
 			ofLogError("KeyframedData_<T>::fromJson") << "failed. probably json file is malformed or corrupt.";
 			return;
 		}
 		
-//		j.at("name").get_to(_name);
-		j.at("currentValue").get_to(_currentValue);
-		j.at("lastUpdateTime").get_to(_lastUpdateTime);
-		j.at("currentIndex").get_to(_currentIndex);
-		setEnableKeyframing(j.at("bKeyframingEnabled").get<bool>());
+
+//		_currentValue = j.at("currentValue").get<T>();
+		_lastUpdateTime = j.value("lastUpdateTime", _lastUpdateTime);
+		_currentIndex = j.value("currentIndex", _currentIndex);
+		 
+		bool _eK = j.value("bKeyframingEnabled", true);
+		 
+		setEnableKeyframing(_eK);
 
 
 		for(auto& k: j.at("keyframes")){

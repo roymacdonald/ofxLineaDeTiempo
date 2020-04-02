@@ -86,13 +86,16 @@ public:
 	
 	void update(uint64_t& t);
 	
-	const size_t& getCurrentRegion()const;
+	
+	const size_t& getCurrentRegionIndex() const;
 	
 
 	virtual void fromJson(const ofJson& j) override;
 	virtual ofJson toJson() override;
 
 	
+	///\ returns the number of dimensions of this region, which depend on the DataType of the templated controller that extends from this.
+	/// integers and floats are 1, a glm::vec3 is 3, etc.
 	
 				
 protected:
@@ -120,20 +123,7 @@ protected:
 		
 	}
 	
-	template<typename NewRegionControllerType>//, typename NewRegionViewType>
-	NewRegionControllerType * _addRegion( const std::string& regionName)
-	{
-		//TODO: this function should be reduced into a single one.
-		
-		auto uniqueName = _regionsCollection.makeUniqueName(regionName, "Region");
-		
-		return CollectionHelper::
-		
-		_add < NewRegionControllerType, TrackController, RegionController >
-		
-		( _regionsCollection, this, uniqueName, this, getTimeControl());
-		
-	}
+
 	
 	
 	

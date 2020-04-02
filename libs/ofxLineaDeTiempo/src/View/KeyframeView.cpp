@@ -20,9 +20,11 @@ namespace LineaDeTiempo {
 //---------------------------------------------------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------------------------------------------------
-KeyframeView::KeyframeView(const std::string& id, KeyframeCollectionView * parentView)
+KeyframeView::KeyframeView(const std::string& id, float value, uint64_t time, KeyframeCollectionView * parentView)
 : Widget(id,0,0, DefaultKeyframeSize, DefaultKeyframeSize)
 , _parentView(parentView)
+, _time(time)
+, _value(value)
 {
 	if(!_parentView)
 	{
@@ -31,12 +33,6 @@ KeyframeView::KeyframeView(const std::string& id, KeyframeCollectionView * paren
 	
 	setDraggable(true);
 	setShapeDrawMode(MUI::ShapeDrawMode::ELLIPSE);
-}
-KeyframeView::KeyframeView(const std::string& id, float value, uint64_t time, KeyframeCollectionView * parentView)
-: KeyframeView(id, parentView)
-{
-	_time = time;
-	_value = value;
 	_updatePosition();
 }
 
@@ -84,11 +80,11 @@ void KeyframeView::_onDragging(const DOM::CapturedPointer& pointer)
 	auto delta = getPosition();
 	
 	Widget::_onDragging(pointer);
-		std::cout << "KeyframeView::_onDragging";
+//		std::cout << "KeyframeView::_onDragging";
 //	auto p = dynamic_cast<KeyframesRegionView*>(parent());
     if(_parentView){
 		
-		std::cout << "xxx";
+//		std::cout << "xxx";
 		
 		DOM::ofRectangleHelper::keepInside(this, ofRectangle(0,0, _parentView->getWidth(), _parentView->getHeight()));
 			
@@ -98,7 +94,7 @@ void KeyframeView::_onDragging(const DOM::CapturedPointer& pointer)
 		
 		_parentView->onKeyframeDrag(this, delta);
 	}
-	std::cout << "\n";
+//	std::cout << "\n";
 }
 //---------------------------------------------------------------------------------------------------------------------
 float KeyframeView::getValue() const
@@ -117,7 +113,7 @@ void KeyframeView::_updatePosition()
 	
     if(p && p->parentTrack()){
 		auto m = (DefaultKeyframeSize*0.5);
-		pos.y = ofMap(_value, 0, 1, m , p->getHeight() -m, true);
+		pos.y = p->keyframeValueToPosition(_value);
 		
 //		pos.y = timeToLocalPosition()
 		auto s = p->parentTrack()->timeToScreenPosition(_time);
@@ -141,12 +137,12 @@ bool KeyframeView::isSelected() const
 //---------------------------------------------------------------------------------------------------------------------
 void KeyframeView::_updateValue(){
 //	auto p = dynamic_cast<KeyframesRegionView*>(parent());
-	std::cout << "KeyframeView::_updateValue";
+	
 	auto p = _parentView;
     if(p && p->parentTrack()){
-		std::cout << "xxx";
+	
 		auto t = p->parentTrack()->screenPositionToTime(getScreenCenterPosition().x);
-		auto v = ofMap(getY(), 0 , p->getHeight() - DefaultKeyframeSize, 0, 1, true);
+		auto v = p->keyframePositionToValue(getCenterPosition().y);
 		
 		if(t != _time)
 		{
@@ -160,7 +156,7 @@ void KeyframeView::_updateValue(){
 		}
 		
 	}
-	std::cout << "\n";
+	
 }
 //---------------------------------------------------------------------------------------------------------------------
 void KeyframeView::_onPointerEvent(DOM::PointerUIEventArgs& e)

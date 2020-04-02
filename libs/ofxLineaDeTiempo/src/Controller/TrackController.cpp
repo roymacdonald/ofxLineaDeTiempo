@@ -177,7 +177,7 @@ bool TrackController::removeRegion(const size_t& index)
  {
 	 return _regionsCollection.size();
  }
-const size_t& TrackController::getCurrentRegion()const
+const size_t& TrackController::getCurrentRegionIndex()const
 {
 	return _currentRegion;
 }

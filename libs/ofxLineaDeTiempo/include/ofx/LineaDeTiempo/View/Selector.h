@@ -10,9 +10,11 @@
 
 #include "LineaDeTiempo/BaseTypes/BaseSelectable.h"
 #include "LineaDeTiempo/BaseTypes/BaseHasCollection.h"
+
 //#include "ofEvent.h"
 #include "DOM/Element.h"
 #include "ofMain.h"
+
 
 #include <map>
 
@@ -45,7 +47,9 @@ public:
 	
 	Selector();
 	
-	void setLimitingElement(DOM::Element * limitingElement);
+	
+	///\brief Rectangle that limits the selectors area. Must be in screen coordinates
+	void setLimitingRect(const ofRectangle& r);
 	
 	bool isSelectingRect() const;
 	
@@ -114,7 +118,7 @@ private:
 	ofRectangle _localRect;
 	glm::vec2 _selectionRectStart;
 	
-	DOM::Element * _limitingElement = nullptr;
+	ofRectangle _limitingRect;
 	
 	
 	ofEventListener _drawListener;

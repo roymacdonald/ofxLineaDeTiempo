@@ -21,17 +21,55 @@ namespace LineaDeTiempo {
 //---------------------------------------------------------------------------------------------------------------------
 KeyframesRegionView::KeyframesRegionView(TrackView* parentTrack, RegionController *controller, shared_ptr<MUI::Styles> regionStyles)
 : RegionView(parentTrack, controller, regionStyles)
+, _controller(controller)
 {
 	
-	_collectionView = addChild<KeyframeCollectionView>(getId()+"_view", getWidth(), getHeight()- RegionViewHeaderHeight, this, &_selector, controller);
+	auto numDims = _controller->getNumDimensions();
 	
-	_collectionView->setStyles(regionStyles);
+	std::cout << "KeyframesRegionView " << numDims << "\n";
+
+	ofRectangle rect(0, RegionViewHeaderHeight, getWidth(), _getCollectionViewHeight());
 	
-	_selector.setLimitingElement(_collectionView);
-	_selector.addTarget(_collectionView);
+	for(size_t i = 0; i < numDims; ++i)
+	{
+		auto c = addChild<KeyframeCollectionView>(GetNameForDimension(i, numDims), rect, this, &_selector, controller);
+		_views.push_back(c);
+		c->setStyles(regionStyles);
+		_selector.addTarget(c);
+		
+		rect.y += rect.height;
+		
+	}
+		
+//	_selector.setLimitingElement(this);
+//	setLimitingRect
 	
 	setDraggable(false);
 	
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+void KeyframesRegionView::updateLayout()
+{
+//	std::cout << "KeyframesRegionView::updateLayout\n";
+	
+	ofRectangle rect(0, RegionViewHeaderHeight, getWidth(), _getCollectionViewHeight());
+	
+	for(auto v: _views)
+	{
+		v->setShape(rect);
+		
+		rect.y += rect.height;
+		
+	}
+	
+	_allViewsRect.set( localToScreen({0, RegionViewHeaderHeight}) , getWidth(), getHeight() - RegionViewHeaderHeight);
+	
+	
+//	std::cout << "KeyframesRegionView::updateLayout  "<< _allViewsRect <<"\n";
+	
+	
+	_selector.setLimitingRect(_allViewsRect);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -41,15 +79,20 @@ void KeyframesRegionView::onDraw() const{
 	
 }
 
-KeyframeView* KeyframesRegionView::addKeyframe(float value, uint64_t time)
+KeyframeView* KeyframesRegionView::addKeyframe(float value, uint64_t time, size_t viewIndex)
 {
-	return _collectionView->addKeyframe(value, time);
+	if(viewIndex < _views.size()){
+		return _views[viewIndex]->addKeyframe(value, time);
+	}
+	return nullptr;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool KeyframesRegionView::removeKeyframe(KeyframeView* k){
-	return _collectionView->removeKeyframe(k);
-
+bool KeyframesRegionView::removeKeyframe(KeyframeView* k, size_t viewIndex){
+	if(viewIndex < _views.size()){
+		return _views[viewIndex]->removeKeyframe(k);
+	}
+	return nullptr;
 }
 
 Selector<KeyframeView>& KeyframesRegionView::getSelector()
@@ -61,6 +104,26 @@ const Selector<KeyframeView>& KeyframesRegionView::getSelector() const
 {
 	return _selector;
 }
+
+float KeyframesRegionView::_getCollectionViewHeight() const
+{
+	if(_controller)
+	{
+		return(getHeight() - RegionViewHeaderHeight)/ float(_controller->getNumDimensions());
+	}
+	return getHeight() - RegionViewHeaderHeight;
+}
+
+const std::vector<KeyframeCollectionView *>& KeyframesRegionView::getViews()
+{
+	return _views;
+}
+
+const std::vector<KeyframeCollectionView *>& KeyframesRegionView::getViews() const
+{
+	return _views;
+}
+
 
 } } // ofx::LineaDeTiempo
 
