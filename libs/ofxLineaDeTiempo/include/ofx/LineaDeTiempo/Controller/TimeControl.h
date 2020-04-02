@@ -36,6 +36,16 @@ struct TimeBound
 	
 };
 
+
+class Debug{
+public:
+	
+	
+	static std::string str;
+	
+};
+
+
 class TimeControl
 : public AbstractSerializable
 

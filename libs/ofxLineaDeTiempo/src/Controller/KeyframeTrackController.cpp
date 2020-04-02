@@ -83,19 +83,7 @@ void KeyframeTrackController_<T>::_paramChanged(T& ){
 	//		_keyframedData.setValue(_parameter, getTimeControl()->getCurrentTime(), _keyframedData.isKeyFramingEnabled() );
 	//	}
 }
-//
 
-//template <typename T>
-//T KeyframeTrackController_<T>::getUnnormalizedValue(float val)
-//{
-//	return ofMap((float)val, 0, 1, (float)getParameter().getMin(), (float)getParameter().getMax(), true);
-//}
-//
-//template <typename T>
-//float KeyframeTrackController_<T>::getNormalizedValue(const T& val)
-//{
-//	return ofMap((float)val, (float)getParameter().getMin(), (float)getParameter().getMax(), 0, 1, true);
-//}
 
 template <typename T>
 void KeyframeTrackController_<T>::_addRegionFromJson(const std::string& name, ofJson j)

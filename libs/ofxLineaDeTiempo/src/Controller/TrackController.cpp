@@ -7,7 +7,7 @@
 
 #include "LineaDeTiempo/Controller/TrackController.h"
 #include "LineaDeTiempo/Controller/TrackGroupController.h"
-
+#include "LineaDeTiempo/Data/KeyframedData.h"
 namespace ofx {
 namespace LineaDeTiempo {
 
@@ -29,14 +29,14 @@ void TrackController::_resetCurrentRegion()
 }
 
 
-void TrackController::_findNextRegion(const size_t& startIndex)
+void TrackController::_findRegionAtCurrentTime(const size_t& startIndex)
 {
-//	std::cout << "TrackController::_findNextRegion " << startIndex <<"\n";
+//	std::cout << "TrackController::_findRegionAtCurrentTime " << startIndex <<"\n";
 	auto t = getTimeControl()->getCurrentTime();
-	auto regions = _regionsCollection.getCollection();
-	for(size_t i =startIndex; i < regions.size(); i++)
+	auto& regions = _regionsCollection.getCollection();
+	for(size_t i =startIndex; i < regions.size(); ++i)
 	{
-		if(regions[i]->getTimeRange().min >= t)
+		if(regions[i]->getTimeRange().max > t)
 		{
 			_currentRegion =i;
 			return;
@@ -48,7 +48,8 @@ void TrackController::_findNextRegion(const size_t& startIndex)
 
 void TrackController::_findCurrentRegion()
 {
-	_findNextRegion(0);
+	std::cout << "TrackController::_findCurrentRegion\n";
+	_findRegionAtCurrentTime(0);
 
 }
 
@@ -116,6 +117,11 @@ void TrackController::destroyView()
 void TrackController::update(uint64_t& time)
 {
 //	std::cout << _regionsCollection.size() << " , " << std::boolalpha << (bool)(_regionsCollection.at(_currentRegion)) << "\n" ;
+	
+	
+//	Debug::str = "";
+	
+	Debug::str += getId() + " currentRegion " + ofToString(_currentRegion) + "\n";
 	if(_currentRegion < _regionsCollection.size() && _regionsCollection.at(_currentRegion))
 	{
 //		std::cout << "1";
@@ -126,7 +132,7 @@ void TrackController::update(uint64_t& time)
 		}
 		else if(r->getTimeRange().max < time)
 		{
-			_findNextRegion(_currentRegion+1);
+			_findRegionAtCurrentTime(_currentRegion+1);
 			update(time);
 		}
 	}

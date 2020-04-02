@@ -35,43 +35,21 @@ public:
 	
 	virtual ~KeyframeTrackController_() = default;
 
+	
 	virtual void fromJson(const ofJson& j) override;
+	
 	virtual ofJson toJson() override;
 
 	
-	
 	KeyframeRegionController_<DataType>* addRegion( const std::string& regionName, const ofRange64u& timeRange);
+	
 	KeyframeRegionController_<DataType>* addRegion( const std::string& regionName);
 	
-//	bool removeRegion(KeyframeRegionController_<DataType>* region);
-	
-//	virtual void generateView() override;
-//	virtual void destroyView() override;
-//	
+
 
 	ofParameter<DataType>& getParameter();
+	
 	const ofParameter<DataType>& getParameter() const;
-	
-	
-	
-	
-//	
-//	template<>
-//	typename std::enable_if<is_multi_dim_param<DataType>::value, float>::type
-//	getUnnormalizedValue(float val, size_t dim){
-//		return ofMap(val, 0, 1, getParameter().getMin()[dim], (float)getParameter().getMax()[dim], true);
-//	}
-//	
-//	
-//	template<typename D>
-//	typename std::enable_if<not is_multi_dim_param<D>::value, bool>::type
-//	_paramNeedsUpdate(const ofParameter<D>& param){
-//		return param.get() !=  _keyframedData.getCurrentValue();
-//	}
-//	
-//	float getNormalizedValue(const DataType& val);
-//	DataType getUnnormalizedValue(float val);
-//	
 	
 
 

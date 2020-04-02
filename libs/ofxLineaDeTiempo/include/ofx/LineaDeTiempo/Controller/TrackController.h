@@ -157,7 +157,7 @@ protected:
 	
 	void _findCurrentRegion();
 	void _resetCurrentRegion();
-	void _findNextRegion(const size_t& startIndex);
+	void _findRegionAtCurrentTime(const size_t& startIndex);
 //	size_t _currentRegion = 0;
 	
 	ofEventListeners _timeControlListeners;

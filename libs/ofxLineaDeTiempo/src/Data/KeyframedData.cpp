@@ -13,6 +13,7 @@
 namespace ofx {
 namespace LineaDeTiempo {
 
+
 //---------------------------------------------------------------------------------
 template<typename T>
 KeyframedData_<T>::KeyframedData_()
@@ -37,7 +38,7 @@ T KeyframedData_<T>::getValueAtTime(const uint64_t& time)
 	}
 	
 	auto i = _findNextIndex(time);
-	if(i <  _data.size()){
+	if( 0 < i && i <  _data.size()){
 
 		
 		return _currentValue = Interpolator::interpolateTimedData(_data[i-1].get() , _data[i].get(), time);
@@ -111,7 +112,14 @@ void KeyframedData_<T>::clear()
 template<typename T>
 bool KeyframedData_<T>::update(const uint64_t& time)
 {
+	Debug::str += "Index: " + ofToString(_currentIndex)+"\n";
+	
 	auto prev = _currentValue;
+	_currentValue = getValueAtTime(time);
+	
+	return (prev != _currentValue);
+	
+	
 	if(!_isTimeInDataBounds(_currentValue, time)){
 		_lastUpdateTime = time;
 //		return false;
@@ -153,7 +161,7 @@ bool KeyframedData_<T>::update(const uint64_t& time)
 		return false;
 	}
 	
-	std::cout <<" KeyframedData<D>::update\n";
+//	std::cout <<" KeyframedData<D>::update\n";
 	
 	
 	_currentValue = Interpolator::interpolateTimedData(_data[_currentIndex-1].get() , _data[_currentIndex].get(), time);
@@ -192,7 +200,7 @@ bool KeyframedData_<T>::_isTimeInDataBounds(T& d,  const uint64_t& time)
 template<typename T>
 size_t KeyframedData_<T>::_findNextIndex(const uint64_t& time)
 {
-	for(size_t i = 1; i < _data.size(); i++)
+	for(size_t i = 0; i < _data.size(); i++)
 	{
 		if(_data[i]->time > time)
 		{

@@ -74,6 +74,8 @@ public:
 	
 	
 	
+	
+	
 protected:
 	
 	bool _bKeyframingEnabled = true;

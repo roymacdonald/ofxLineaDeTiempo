@@ -10,6 +10,9 @@
 namespace ofx {
 namespace LineaDeTiempo {
 
+std::string Debug::str = "";
+
+
 //---------------------------------------------------------------------
 TimeControl::TimeControl()
 {
@@ -173,6 +176,7 @@ void TimeControl::_update(ofEventArgs&)
 //---------------------------------------------------------------------
 void TimeControl::_notifyCurrentTime()
 {
+	Debug::str = "";
 	_currentTimeCopy = _currentTime;
 	ofNotifyEvent(currentTimeUpdateEvent, _currentTimeCopy, this);
 }
