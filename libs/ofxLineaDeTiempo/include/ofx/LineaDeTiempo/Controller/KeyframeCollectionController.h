@@ -54,11 +54,6 @@ public:
 		
 		auto d = _keyframedData.add(value, time);
 		
-		//		stringstream ss;
-		//		ss <<  "KeyframeCollectionController::addKeyFrame  value: " << value << "   time: " << time << "\n";
-		//
-		//		KeyframeCollectionView::debugString += ss.str();
-		
 		
 		auto k = addChild<KeyframeController<RegionDataType>>( "k_"+ofToString(_dimensionIndex)+"_"+ofToString(_keyframedData.size()), d, this );
 		
@@ -119,12 +114,6 @@ public:
 	
 	
 	
-	
-	
-	
-	
-	
-	
 protected:
 	
 	
@@ -148,7 +137,7 @@ protected:
 	KeyframeRegionController_<RegionDataType> * _parentRegion = nullptr;
 	
 	template<typename D>
-	typename std::enable_if<is_multi_dim_param<D>::value, bool>::type
+	inline typename std::enable_if<is_multi_dim_param<D>::value  and std::is_floating_point<D>::value, bool>::type
 	_paramNeedsUpdate(D& param){
 		auto& d = _keyframedData.getCurrentValue();
 		if(! ofIsFloatEqual(param[_dimensionIndex],  d))
@@ -160,7 +149,21 @@ protected:
 	}
 	
 	template<typename D>
-	typename std::enable_if<not is_multi_dim_param<D>::value, bool>::type
+	inline typename std::enable_if<is_multi_dim_param<D>::value and not std::is_floating_point<D>::value, bool>::type
+	_paramNeedsUpdate(D& param){
+		auto& d = _keyframedData.getCurrentValue();
+		if(param[_dimensionIndex] !=  d)
+		{
+			param[_dimensionIndex] =  d;
+			return true;
+		}
+		return false;
+	}
+	
+	
+	
+	template<typename D>
+	inline typename std::enable_if<not is_multi_dim_param<D>::value  and not std::is_floating_point<D>::value, bool>::type
 	_paramNeedsUpdate(D& param){
 		if(param !=  _keyframedData.getCurrentValue())
 		{
@@ -169,6 +172,19 @@ protected:
 		}
 		return false;
 	}
+	
+	template<typename D>
+	inline typename std::enable_if<not is_multi_dim_param<D>::value  and std::is_floating_point<D>::value, bool>::type
+	_paramNeedsUpdate(D& param){
+		if(ofIsFloatEqual(param,  _keyframedData.getCurrentValue()))
+		{
+			param =  _keyframedData.getCurrentValue();
+			return true;
+		}
+		return false;
+	}
+	
+	
 	
 	
 	

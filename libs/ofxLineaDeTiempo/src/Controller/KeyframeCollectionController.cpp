@@ -187,7 +187,7 @@ template<typename D>
 void KeyframeCollectionController<D>::fromJson(const ofJson& j)
 {
 	
-	std::cout << "KeyframeCollectionController<D>::fromJson\n";
+//	std::cout << "KeyframeCollectionController<D>::fromJson\n";
 	
 	setId(j["name"]);
 	
@@ -255,27 +255,38 @@ ofJson KeyframeCollectionController<D>::toJson()
 //
 //}
 
-
-
-
-template class KeyframeCollectionController<char>;
-template class KeyframeCollectionController<unsigned char>;
-template class KeyframeCollectionController<signed char>;
-template class KeyframeCollectionController<short>;
-template class KeyframeCollectionController<unsigned short>;
-template class KeyframeCollectionController<int>;
-template class KeyframeCollectionController<unsigned int>;
-template class KeyframeCollectionController<long>;
-template class KeyframeCollectionController<unsigned long>;
-template class KeyframeCollectionController<long long>;
-template class KeyframeCollectionController<unsigned long long>;
-template class KeyframeCollectionController<float>;
-//template class KeyframeCollectionController<double, double>;
-//template class KeyframeCollectionController<long double, long double>;
-
-
 template class KeyframeCollectionController<glm::vec2>;
 template class KeyframeCollectionController<glm::vec3>;
+template class KeyframeCollectionController<glm::vec4>;
+
+template class KeyframeCollectionController<         char>;
+template class KeyframeCollectionController<unsigned char>;
+template class KeyframeCollectionController<  signed char>;
+template class KeyframeCollectionController<         short>;
+template class KeyframeCollectionController<unsigned short>;
+template class KeyframeCollectionController<         int>;
+template class KeyframeCollectionController<unsigned int>;
+template class KeyframeCollectionController<         long>;
+template class KeyframeCollectionController<unsigned long>;
+template class KeyframeCollectionController<         long long>;
+template class KeyframeCollectionController<unsigned long long>;
+template class KeyframeCollectionController<float>;
+template class KeyframeCollectionController<double>;
+template class KeyframeCollectionController<long double>;
+
+template class KeyframeCollectionController<ofColor_<char>>;
+template class KeyframeCollectionController<ofColor_<unsigned char>>;
+template class KeyframeCollectionController<ofColor_<short>>;
+template class KeyframeCollectionController<ofColor_<unsigned short>>;
+template class KeyframeCollectionController<ofColor_<int>>;
+template class KeyframeCollectionController<ofColor_<unsigned int>>;
+template class KeyframeCollectionController<ofColor_<long>>;
+template class KeyframeCollectionController<ofColor_<unsigned long>>;
+template class KeyframeCollectionController<ofColor_<float>>;
+//template class KeyframeCollectionController<ofColor_<double>>;
+
+
+
 
 
 } } // ofx::LineaDeTiempo
