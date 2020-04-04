@@ -23,14 +23,16 @@ class TrackHeader
 {
 public:
 //	TrackHeader(const std::string& id, const ofRectangle& rect);
-	TrackHeader(const std::string& id, const ofRectangle& rect, BaseTrackView* track,  TrackGroupView* group);
+	TrackHeader(const std::string& id, const ofRectangle& rect, BaseTrackView* track,  TrackGroupView* group, bool belongsToPanel);
 	
 	virtual ~TrackHeader(){}
 	
 	BaseTrackView* getTrack();
 	const BaseTrackView* getTrack() const;
 	
-	virtual void onDraw() const;
+	virtual void onDraw() const override;
+	
+	bool isGroupHeader() const;
 protected:
 	BaseTrackView* _track = nullptr;
 	TrackGroupView* _group = nullptr;
@@ -43,6 +45,8 @@ protected:
 	
 	void _updateFromTrack();
 	
+	bool _bGroupHeader = false;
 	
+	bool _belongsToPanel = false;
 };
 } } // ofx::LineaDeTiempo
