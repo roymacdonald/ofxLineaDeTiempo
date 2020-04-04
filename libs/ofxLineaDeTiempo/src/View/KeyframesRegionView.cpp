@@ -25,8 +25,7 @@ KeyframesRegionView::KeyframesRegionView(TrackView* parentTrack, RegionControlle
 {
 	
 	auto numDims = _controller->getNumDimensions();
-	
-	std::cout << "KeyframesRegionView " << numDims << "\n";
+
 
 	ofRectangle rect(0, RegionViewHeaderHeight, getWidth(), _getCollectionViewHeight());
 	
@@ -40,10 +39,7 @@ KeyframesRegionView::KeyframesRegionView(TrackView* parentTrack, RegionControlle
 		rect.y += rect.height;
 		
 	}
-		
-//	_selector.setLimitingElement(this);
-//	setLimitingRect
-	
+			
 	setDraggable(false);
 	
 }
@@ -51,7 +47,8 @@ KeyframesRegionView::KeyframesRegionView(TrackView* parentTrack, RegionControlle
 //---------------------------------------------------------------------------------------------------------------------
 void KeyframesRegionView::updateLayout()
 {
-//	std::cout << "KeyframesRegionView::updateLayout\n";
+	
+	RegionView::updateLayout();
 	
 	ofRectangle rect(0, RegionViewHeaderHeight, getWidth(), _getCollectionViewHeight());
 	
@@ -64,9 +61,6 @@ void KeyframesRegionView::updateLayout()
 	}
 	
 	_allViewsRect.set( localToScreen({0, RegionViewHeaderHeight}) , getWidth(), getHeight() - RegionViewHeaderHeight);
-	
-	
-//	std::cout << "KeyframesRegionView::updateLayout  "<< _allViewsRect <<"\n";
 	
 	
 	_selector.setLimitingRect(_allViewsRect);
