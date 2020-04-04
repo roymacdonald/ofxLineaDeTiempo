@@ -22,7 +22,6 @@ TrackController::TrackController(const std::string& name, TrackGroupController* 
 
 }
 
-
 void TrackController::_resetCurrentRegion()
 {
  _currentRegion = 0;
@@ -31,7 +30,6 @@ void TrackController::_resetCurrentRegion()
 
 void TrackController::_findRegionAtCurrentTime(const size_t& startIndex)
 {
-//	std::cout << "TrackController::_findRegionAtCurrentTime " << startIndex <<"\n";
 	auto t = getTimeControl()->getCurrentTime();
 	auto& regions = _regionsCollection.getCollection();
 	for(size_t i =startIndex; i < regions.size(); ++i)
@@ -48,13 +46,9 @@ void TrackController::_findRegionAtCurrentTime(const size_t& startIndex)
 
 void TrackController::_findCurrentRegion()
 {
-	std::cout << "TrackController::_findCurrentRegion\n";
 	_findRegionAtCurrentTime(0);
 
 }
-
-
-
 
 void TrackController::enableTimeUpdate()
 {
@@ -116,15 +110,8 @@ void TrackController::destroyView()
 
 void TrackController::update(uint64_t& time)
 {
-//	std::cout << _regionsCollection.size() << " , " << std::boolalpha << (bool)(_regionsCollection.at(_currentRegion)) << "\n" ;
-	
-	
-//	Debug::str = "";
-	
-	Debug::str += getId() + " currentRegion " + ofToString(_currentRegion) + "\n";
 	if(_currentRegion < _regionsCollection.size() && _regionsCollection.at(_currentRegion))
 	{
-//		std::cout << "1";
 		auto r = _regionsCollection.at(_currentRegion);
 		if( r->getTimeRange().contains(time) )
 		{
@@ -190,12 +177,8 @@ const size_t& TrackController::getCurrentRegionIndex()const
 
 void TrackController::fromJson(const ofJson& j)
 {
-//	j["class"] = "TrackController";
 	
 	_currentRegion = j.value("_currentRegion", 0);
-
-//	_regionsCollection.fromJson(j["_regionsCollection"]);
-	
 
 	setId(j["name"]);
 	
@@ -208,6 +191,7 @@ void TrackController::fromJson(const ofJson& j)
 		}
 	}
 }
+
 void TrackController::_makeFromJson(const ofJson& json)
 {
 	for(auto j: json["elements"])
@@ -258,7 +242,6 @@ ofJson TrackController::toJson()
 {
 	ofJson j;
 	j["class"] = "TrackController";
-//	j["view"] = bool(getView());
 	j["name"] = getId();
 	j["_currentRegion"] = _currentRegion;
 	
