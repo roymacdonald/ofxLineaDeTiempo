@@ -46,5 +46,15 @@ void RegionHeaderView::_onDragging(const DOM::CapturedPointer& pointer)
 	
 }
 
+void RegionHeaderView::onDraw() const
+{
+	
+    MUI::Widget::onDraw();
+	if(_parentRegion && _parentRegion->parentTrack())
+	{
+		ofSetColor(_parentRegion->parentTrack()->getTextColor());
+		ofDrawBitmapString(_parentRegion->getId() , 20, (RegionViewHeaderHeight * 0.5 - 7 + 11));
+	}
+}
 
 } } // ofx::LineaDeTiempo

@@ -25,7 +25,7 @@ public:
 	virtual ~RegionHeaderView() = default;
 
 
-	
+	virtual void onDraw() const override;
 	
 	
 protected:
