@@ -16,25 +16,11 @@ namespace ofx {
 namespace LineaDeTiempo {
 
 
-//template< typename T>
-//KeyframeController<T>::KeyframeController( const std::string& name, TimedData_<T> * data, KeyframeCollectionController<T>* parentController)
-//: BaseController<KeyframeView>(name, parentController, nullptr)
-//,_parentController(parentController)
-//,_data(data)
-//{
-//	
-//}
-	
 template< typename T>
 void KeyframeController<T>::generateView()
 {
 	if(getView() == nullptr && _data && _parentController && _parentController->getView()){
 		
-			
-			
-//			auto val = _parentRegion->_parentTrack->getNormalizedValue(_data->value);
-
-
 	
 			auto view = _parentController->getView()->addKeyframe(_parentController->normalizeValue(_data->value), _data->time);
 			
@@ -91,38 +77,36 @@ void KeyframeController<T>::_timeChanged(uint64_t& t)
 	}
 }
 
-//template< typename T>
-//TimedData_<T> *  KeyframeController<T>::getData()
-//{
-//	return _data;
-//}
-//template< typename T>
-//const TimedData_<T> *  KeyframeController<T>::getData() const
-//{
-//	return _data;
-//}
-
-
 
 template class KeyframeController<glm::vec2>;
 template class KeyframeController<glm::vec3>;
+template class KeyframeController<glm::vec4>;
 
-template class KeyframeController<char>;
+template class KeyframeController<         char>;
 template class KeyframeController<unsigned char>;
-template class KeyframeController<signed char>;
-template class KeyframeController<short>;
+template class KeyframeController<  signed char>;
+template class KeyframeController<         short>;
 template class KeyframeController<unsigned short>;
-template class KeyframeController<int>;
+template class KeyframeController<         int>;
 template class KeyframeController<unsigned int>;
-template class KeyframeController<long>;
+template class KeyframeController<         long>;
 template class KeyframeController<unsigned long>;
-template class KeyframeController<long long>;
+template class KeyframeController<         long long>;
 template class KeyframeController<unsigned long long>;
 template class KeyframeController<float>;
-//template class KeyframeController<double, double>;
-//template class KeyframeController<long double, long double>;
+template class KeyframeController<double>;
+template class KeyframeController<long double>;
 
-//template class KeyframeController<int>;
-//template class KeyframeController<float>;
+template class KeyframeController<ofColor_<char>>;
+template class KeyframeController<ofColor_<unsigned char>>;
+template class KeyframeController<ofColor_<short>>;
+template class KeyframeController<ofColor_<unsigned short>>;
+template class KeyframeController<ofColor_<int>>;
+template class KeyframeController<ofColor_<unsigned int>>;
+template class KeyframeController<ofColor_<long>>;
+template class KeyframeController<ofColor_<unsigned long>>;
+template class KeyframeController<ofColor_<float>>;
+//template class KeyframeController<ofColor_<double>>;
+
 
 } } // ofx::LineaDeTiempo

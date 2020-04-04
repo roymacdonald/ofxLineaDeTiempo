@@ -39,9 +39,6 @@ template <typename T>
 void KeyframeTrackController_<T>::_setup()
 {
 
-		
-	//	_paramListener = _parameter.newListener(this, &KeyframeTrackController_<T>::_paramChanged);
-	
 	this->enableTimeUpdate();
 	_dataTypeName = typeid(T).name();
 	
@@ -78,6 +75,8 @@ const ofParameter<T>& KeyframeTrackController_<T>::getParameter() const
 
 template <typename T>
 void KeyframeTrackController_<T>::_paramChanged(T& ){
+	
+	//TODO: implement listener so changes done externaly to a param can get recorded
 	//	if(!_bModifyingParam)
 	//	{
 	//		_keyframedData.setValue(_parameter, getTimeControl()->getCurrentTime(), _keyframedData.isKeyFramingEnabled() );
@@ -139,26 +138,23 @@ ofJson KeyframeTrackController_<T>::toJson()
 
 //template class ofx::LineaDeTiempo::KeyframeTrackController_<ofRectangle>;
 
-//template class ofx::LineaDeTiempo::KeyframeTrackController_<ofColor_<char>>;
-//template class ofx::LineaDeTiempo::KeyframeTrackController_<ofColor_<unsigned char>>;
-//template class ofx::LineaDeTiempo::KeyframeTrackController_<ofColor_<short>>;
-//template class ofx::LineaDeTiempo::KeyframeTrackController_<ofColor_<unsigned short>>;
-//template class ofx::LineaDeTiempo::KeyframeTrackController_<ofColor_<int>>;
-//template class ofx::LineaDeTiempo::KeyframeTrackController_<ofColor_<unsigned int>>;
-//template class ofx::LineaDeTiempo::KeyframeTrackController_<ofColor_<long>>;
-//template class ofx::LineaDeTiempo::KeyframeTrackController_<ofColor_<unsigned long>>;
-//template class ofx::LineaDeTiempo::KeyframeTrackController_<ofColor_<float>>;
+template class ofx::LineaDeTiempo::KeyframeTrackController_<ofColor_<char>>;
+template class ofx::LineaDeTiempo::KeyframeTrackController_<ofColor_<unsigned char>>;
+template class ofx::LineaDeTiempo::KeyframeTrackController_<ofColor_<short>>;
+template class ofx::LineaDeTiempo::KeyframeTrackController_<ofColor_<unsigned short>>;
+template class ofx::LineaDeTiempo::KeyframeTrackController_<ofColor_<int>>;
+template class ofx::LineaDeTiempo::KeyframeTrackController_<ofColor_<unsigned int>>;
+template class ofx::LineaDeTiempo::KeyframeTrackController_<ofColor_<long>>;
+template class ofx::LineaDeTiempo::KeyframeTrackController_<ofColor_<unsigned long>>;
+template class ofx::LineaDeTiempo::KeyframeTrackController_<ofColor_<float>>;
 //template class ofx::LineaDeTiempo::KeyframeTrackController_<ofColor_<double>>;
 
 template class ofx::LineaDeTiempo::KeyframeTrackController_<glm::vec2>;
 template class ofx::LineaDeTiempo::KeyframeTrackController_<glm::vec3>;
-//template class ofx::LineaDeTiempo::KeyframeTrackController_<glm::vec4>;
+template class ofx::LineaDeTiempo::KeyframeTrackController_<glm::vec4>;
 //template class ofx::LineaDeTiempo::KeyframeTrackController_<glm::quat>;
 //template class ofx::LineaDeTiempo::KeyframeTrackController_<glm::mat4>;
 //
-//template class ofx::LineaDeTiempo::KeyframeTrackController_<ofVec2f>;
-//template class ofx::LineaDeTiempo::KeyframeTrackController_<ofVec3f>;
-//template class ofx::LineaDeTiempo::KeyframeTrackController_<ofVec4f>;
 
 //template class ofx::LineaDeTiempo::KeyframeTrackController_<bool>;
 //template class ofx::LineaDeTiempo::KeyframeTrackController_<void>;
@@ -175,8 +171,8 @@ template class ofx::LineaDeTiempo::KeyframeTrackController_<unsigned long>;
 template class ofx::LineaDeTiempo::KeyframeTrackController_<long long>;
 template class ofx::LineaDeTiempo::KeyframeTrackController_<unsigned long long>;
 template class ofx::LineaDeTiempo::KeyframeTrackController_<float>;
-//template class ofx::LineaDeTiempo::KeyframeTrackController_<double>;
-//template class ofx::LineaDeTiempo::KeyframeTrackController_<long double>;
+template class ofx::LineaDeTiempo::KeyframeTrackController_<double>;
+template class ofx::LineaDeTiempo::KeyframeTrackController_<long double>;
 
 
 
