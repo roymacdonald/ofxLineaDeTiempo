@@ -50,15 +50,11 @@ void KeyframeView::onDraw() const {
 		ofPopMatrix();
 		ofPopStyle();
 	}
-	
-	ofDrawBitmapString(ofToString(getValue()) +"\n"+ofToString(getTime()),  20,  getHeight() );
-	
-	
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void KeyframeView::setSelected(bool select){
-//	auto p = dynamic_cast<KeyframesRegionView*>(parent());
+
     if(_parentView){
         if(!_isSelected && select){
 			_isSelected = true;
@@ -80,11 +76,7 @@ void KeyframeView::_onDragging(const DOM::CapturedPointer& pointer)
 	auto delta = getPosition();
 	
 	Widget::_onDragging(pointer);
-//		std::cout << "KeyframeView::_onDragging";
-//	auto p = dynamic_cast<KeyframesRegionView*>(parent());
     if(_parentView){
-		
-//		std::cout << "xxx";
 		
 		DOM::ofRectangleHelper::keepInside(this, ofRectangle(0,0, _parentView->getWidth(), _parentView->getHeight()));
 			
@@ -94,7 +86,6 @@ void KeyframeView::_onDragging(const DOM::CapturedPointer& pointer)
 		
 		_parentView->onKeyframeDrag(this, delta);
 	}
-//	std::cout << "\n";
 }
 //---------------------------------------------------------------------------------------------------------------------
 float KeyframeView::getValue() const
@@ -115,12 +106,9 @@ void KeyframeView::_updatePosition()
 		auto m = (DefaultKeyframeSize*0.5);
 		pos.y = p->keyframeValueToPosition(_value);
 		
-//		pos.y = timeToLocalPosition()
 		auto s = p->parentTrack()->timeToScreenPosition(_time);
 		
 		pos.x = p->screenToParent({s,0}).x;
-		
-//		std::cout << "time: " << _time << " value: " << _value << " t2s: " << s <<"  x: " << pos.x << "\n";
 		
 		
 		setCenterPosition(pos);
@@ -136,7 +124,6 @@ bool KeyframeView::isSelected() const
 
 //---------------------------------------------------------------------------------------------------------------------
 void KeyframeView::_updateValue(){
-//	auto p = dynamic_cast<KeyframesRegionView*>(parent());
 	
 	auto p = _parentView;
     if(p && p->parentTrack()){
@@ -154,9 +141,7 @@ void KeyframeView::_updateValue(){
 			_value = v;
 			ofNotifyEvent(valueChangedEvent, v, this);
 		}
-		
 	}
-	
 }
 //---------------------------------------------------------------------------------------------------------------------
 void KeyframeView::_onPointerEvent(DOM::PointerUIEventArgs& e)
@@ -203,9 +188,5 @@ void KeyframeView::_onPointerEvent(DOM::PointerUIEventArgs& e)
         // unhandled.
     }
 }
-////---------------------------------------------------------------------------------------------------------------------
-//bool KeyframeView::isSelected(){
-//    return bSelected;
-//}
 
 } } // ofx::LineaDeTiempo
