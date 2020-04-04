@@ -11,6 +11,7 @@
 
 #include "LineaDeTiempo/View/Playhead.h"
 #include "LineaDeTiempo/View/TrackGroupView.h"
+#include "LineaDeTiempo/View/TimeRuler.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -34,6 +35,7 @@ public:
 
 	virtual void updateLayout() override;
 	
+	virtual void onDraw() const override;
 	
 	float timeToScreenPosition(uint64_t time) const;
 	uint64_t  screenPositionToTime(float x) const;
@@ -47,21 +49,23 @@ public:
 	DOM::Element* getContainer();
 	const DOM::Element* getContainer() const;
 	
-	void setup()
-	{
-		if(tracksView)
-		{
-			tracksView->setScrollH({0,1});
-			tracksView->setScrollV({0,1});
-		}
-	}
+	
 	virtual void _updateContainers() override;
+	
+	shared_ptr<MUI::Styles> getRegionsStyle();
+	
+	
+	void setTracksHeaderWidth(float w);
+	
 protected:
+	friend class TracksPanelController;
+	
+	void _setup();
 	
 	MUI::TracksScrollPanel* tracksView;
 	MUI::ClippedView_<TrackHeader> * headersView;
 	
-
+	TimeRuler * _timeRuler = nullptr;
 
 	ofEventListeners _tracksContainerListeners;
 	
@@ -74,7 +78,7 @@ protected:
 	void _tracksResized(DOM::ResizeEventArgs& e);
 	
 	
-	
+	shared_ptr<MUI::Styles> _regionsStyle = nullptr;
 	
 	ofRectangle _makeHeadersViewRect();
 	ofRectangle _makeTracksViewRect();

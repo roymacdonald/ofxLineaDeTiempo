@@ -15,7 +15,7 @@
 #include "LineaDeTiempo/Controller/TrackController.h"
 
 #include "LineaDeTiempo/View/TrackHeader.h"
-
+#include "LineaDeTiempo/Utils/ConstVars.h"
 
 
 namespace ofx {
@@ -32,13 +32,16 @@ TracksPanel::TracksPanel(const std::string& id, DOM::Element* parentView, const 
 	tracksView->setForceShowScrollbars(true);
 	tracksView->setMoveToFrontOnCapture(false);
 
-	headersView = addChild<MUI::ClippedView_<TrackHeader>>(id + "headersView", _makeHeadersViewRect(), nullptr, nullptr);
+	headersView = addChild<MUI::ClippedView_<TrackHeader>>(id + "headersView", _makeHeadersViewRect(), nullptr, nullptr, true);
 	
 	_tracksContainerListeners.push(tracksView->getContainer()->move.newListener(this, &TracksPanel::_tracksMoved));
 	_tracksContainerListeners.push(tracksView->getContainer()->resize.newListener(this, &TracksPanel::_tracksResized));
 
 	_playhead = tracksView->getContainer()->addChild<Playhead>(this, controller->getTimeControl());//, _timeControl);
 
+	
+	_timeRuler = addChild<TimeRuler>(this, controller->getTimeControl());
+	
 	
 	_tracksContainer = tracksView->getContainer();
 	_header = headersView->container;
@@ -47,8 +50,35 @@ TracksPanel::TracksPanel(const std::string& id, DOM::Element* parentView, const 
 	_parentListener = parentView->resize.newListener(this, &TracksPanel::_parentViewResized);
 	
 
+	_regionsStyle = make_shared<MUI::Styles>();
+	_regionsStyle->setColor(RegionBackgroundColor, MUI::Styles::ROLE_BACKGROUND);
+	
+	_isPanel = true;
 	
 }
+
+void TracksPanel::_setup()
+{
+	if(tracksView)
+	{
+		tracksView->setScrollH({0,1});
+		tracksView->setScrollV({0,1});
+		_setTracksHeaderWidth(getTracksHeaderWidth());
+	}
+}
+
+
+void TracksPanel::setTracksHeaderWidth(float w)
+{
+	_setTracksHeaderWidth(w);
+	
+}
+
+shared_ptr<MUI::Styles> TracksPanel::getRegionsStyle()
+{
+	return _regionsStyle;
+}
+
 
 void TracksPanel::_parentViewResized(DOM::ResizeEventArgs&)
 {
@@ -99,6 +129,12 @@ void TracksPanel::_updateContainers(){
 	tracksView->updateLayout();
 	tracksView->updateContainerLayout();
 }
+//---------------------------------------------------------------------
+void TracksPanel::onDraw() const
+{
+	BaseTrackView::onDraw();
+	ofSetDrawBitmapMode(OF_BITMAPMODE_SIMPLE);
+}
 
 //---------------------------------------------------------------------
 void TracksPanel::updateLayout()
@@ -121,19 +157,20 @@ void TracksPanel::updateLayout()
 		_playhead->moveToFront();
 		
 	}
+	if(_timeRuler)_timeRuler->updateLayout();
 }
 
 //---------------------------------------------------------------------
 ofRectangle TracksPanel::_makeHeadersViewRect()
 {
 	
-	return ofRectangle(0, CONTAINER_MARGIN, _trackHeaderWidth, getHeight() - (CONTAINER_MARGIN * 2) - SCROLL_BAR_SIZE);
+	return ofRectangle(0, TimeRulerInitialHeight + CONTAINER_MARGIN, _trackHeaderWidth, getHeight() - (CONTAINER_MARGIN * 2) - SCROLL_BAR_SIZE - TimeRulerInitialHeight);
 }
 
 //---------------------------------------------------------------------
 ofRectangle TracksPanel::_makeTracksViewRect()
 {
-	return ofRectangle(_trackHeaderWidth, 0, getWidth() - _trackHeaderWidth, getHeight());
+	return ofRectangle(_trackHeaderWidth, TimeRulerInitialHeight , getWidth() - _trackHeaderWidth, getHeight() - TimeRulerInitialHeight );
 }
 	
 
@@ -160,6 +197,8 @@ float TracksPanel::timeToScreenPosition(uint64_t time) const
 uint64_t  TracksPanel::screenPositionToTime(float x) const
 {
 
+	
+	//TODO: get rid of this functions
 	if(tracksView)
 	{
 		auto container = tracksView->getContainer();
@@ -178,7 +217,7 @@ uint64_t  TracksPanel::screenPositionToTime(float x) const
 	
 }
 
-
+ 
 
 
 }
