@@ -21,6 +21,7 @@ namespace ofx {
 namespace LineaDeTiempo {
 
 class TrackGroupView;
+class TracksPanel;
 
 
 class BaseTrackView
@@ -37,11 +38,9 @@ public:
 	
 	virtual void setColor(const ofColor& color);
 	const ofColor& getColor() const;
-
-//	static ofColor backgroundColor;
-//	static ofColor edgeColor;
-//	static const float initialHeight;
-//	
+	ofEvent<ofColor> colorChangeEvent;
+	
+	const ofColor& getTextColor() const;
 	
 	virtual void onDraw() const override;
 	
@@ -54,6 +53,10 @@ public:
 	
 	const TrackHeader* getHeader() const;
 
+
+	TrackGroupView* getParentGroupView();
+	
+	TracksPanel* getParentPanel();
 	
 	
     using DOM::Element::isEnabled;
@@ -97,10 +100,11 @@ protected:
 	
 	TrackHeader* _header = nullptr;
 	
+	TrackGroupView* _parentGroupView = nullptr;
 	
 	
 	ofColor _color;
-	
+	ofColor _textColor;
 protected:
 	
 };
