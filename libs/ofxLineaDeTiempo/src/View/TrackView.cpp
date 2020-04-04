@@ -19,18 +19,20 @@ TrackView::TrackView(DOM::Element* parentView, TrackController* controller)
 , _unscaledHeight(TrackInitialHeight)
 , _controller(controller)
 {
-	_regionsStyle = make_shared<MUI::Styles>();
+	_regionsHeaderStyle = make_shared<MUI::Styles>();
+	colorListener = BaseTrackView::colorChangeEvent.newListener(this, &TrackView::colorChanged);
 }
 
-shared_ptr<MUI::Styles> TrackView::getRegionsStyle()
+shared_ptr<MUI::Styles> TrackView::getRegionsHeaderStyle()
 {
-	return _regionsStyle;
+	return _regionsHeaderStyle;
+
 }
 
-void TrackView::setColor(const ofColor& color)
+
+void TrackView::colorChanged(ofColor& color)
 {
-	BaseTrackView::setColor(color);
-	_regionsStyle->setColor(_color, MUI::Styles::ROLE_BACKGROUND);
+	_regionsHeaderStyle->setColor(color , MUI::Styles::ROLE_BACKGROUND);
 }
 
 ofRange64u  TrackView::rectToTimeRange(const ofRectangle& rect) const
@@ -131,11 +133,6 @@ TrackController * TrackView::getController()
 {
 	return _controller;
 }
-//void TrackView::setController(TrackController * controller)
-//{
-//	_controller = controller;
-//}
-
 
 
 }} //ofx::LineaDeTiempo
