@@ -32,9 +32,7 @@ public:
 	float getHeightFactor() const;
 	void setHeightFactor(float factor);
 	
-	shared_ptr<MUI::Styles> getRegionsStyle();
-	
-	virtual void setColor(const ofColor& color) override;
+	shared_ptr<MUI::Styles> getRegionsHeaderStyle();
 	
 	
 	ofRectangle timeRangeToRect(const ofRange64u& time) const;
@@ -61,8 +59,7 @@ public:
 		static_assert(std::is_base_of<RegionController, RegionControllerType>::value,
 					  "TrackView:: RegionControllerType must be of type ofx::LineaDeTiempo::RegionController or derived from it");
 		
-		auto r = addChild<RegionViewType>(this,controller, _regionsStyle);
-		r->setStyles( _regionsStyle);
+		auto r = addChild<RegionViewType>(this,controller, _regionsHeaderStyle);
 		return r;
 
 	}
@@ -77,16 +74,19 @@ public:
 	const TrackController * getController() const;
 	
 	TrackController * getController();
-//	
-//	virtual void setController(TrackController * controller) override;
-//	
-	
+
 protected:
 
 	float _heightFactor = 1;
 	float _unscaledHeight;
-	shared_ptr<MUI::Styles> _regionsStyle = nullptr;
-
+	
+	shared_ptr<MUI::Styles> _regionsHeaderStyle = nullptr;
+	
+	
+	void colorChanged(ofColor& color);
+	
+	ofEventListener colorListener;
+	
 	TrackController* _controller = nullptr;
 	
 };
