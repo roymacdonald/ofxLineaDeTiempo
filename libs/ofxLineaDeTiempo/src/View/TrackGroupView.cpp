@@ -15,7 +15,6 @@ namespace LineaDeTiempo {
 
 TrackGroupView::TrackGroupView(DOM::Element* parentView, TrackGroupController * controller)
 : BaseTrackView(controller->getId(), parentView)
-, _parentGroup(dynamic_cast<TrackGroupView*>(parentView))
 , _controller(controller)
 {
 
@@ -152,25 +151,48 @@ bool TrackGroupView::removeGroup(TrackGroupController * controller)
 }
 
 //---------------------------------------------------------------------
-float TrackGroupView::getTrackHeaderWidth()
+float TrackGroupView::getTracksHeaderWidth()
 {
 	return _trackHeaderWidth;
 }
 
 //---------------------------------------------------------------------
-void TrackGroupView::setTrackHeaderWidth(float w)
+void TrackGroupView::_setTracksHeaderWidth(float w)
 {
 	if(!ofIsFloatEqual(_trackHeaderWidth, w)){
 		_trackHeaderWidth = w;
+		
+		auto indent = HeaderViewIndent;
+		if(_isPanel)
+		{
+			indent = 0;
+		}
+		
+		for(auto c : _tracksContainer->children<TrackGroupView>())
+		{
+			c->_setTracksHeaderWidth(_trackHeaderWidth - indent);
+			
+		}
+		
+		
 		updateLayout();
 	}
 }
 
+float TrackGroupView::_getInitialYpos()
+{
+	auto p = dynamic_cast<TrackGroupView*>(parent());
+	if(!p && numSiblings() == 1)
+	{
+		return 0;
+	}
+	return _groupTopMargin;
+}
 
 float TrackGroupView::getUnscaledHeight()
 {
-	float h = _groupTopMargin;
-	
+	float h = _getInitialYpos();
+		
 	for(auto c: children())
 	{
 		auto t = dynamic_cast<BaseTrackView*>(c);
@@ -184,7 +206,7 @@ float TrackGroupView::getUnscaledHeight()
 }
 float TrackGroupView::updateScaledShape(float y, float yScale, float width)
 {
-	float h = _groupTopMargin;
+	float h = _getInitialYpos();
 	
 	for(auto c: children())
 	{
@@ -199,37 +221,7 @@ float TrackGroupView::updateScaledShape(float y, float yScale, float width)
 	updateLayout();
 	return h;
 }
-//void TrackGroupView::updateLayout()
-//{
-//	std::cout << "TrackGroupView::updateLayout()\n";
-//
-//	float currentY = _groupTopMargin;
-//	for (auto c : children()){
-//		auto t = dynamic_cast<BaseTrackView*>(c);
-//		if (t){
-//			std::cout << getWidth() << "\n";
-//			currentY += t->updateScaledShape(currentY, 1, getWidth());
-//		}
-//	}
-//	auto s = getChildShape();
-//	
-//	setSize(s.width , s.height);
-//	
-//}
 
-//
-//const TrackGroupController * TrackGroupView::getController() const
-//{
-//	return _controller;
-//}
-//TrackGroupController * TrackGroupView::getController()
-//{
-//	return _controller;
-//}
-//void TrackGroupView::setController(TrackGroupController * controller)
-//{
-//	_controller = controller;
-//}
 
 
 } } // ofx::LineaDeTiempo
