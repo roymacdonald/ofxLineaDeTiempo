@@ -8,7 +8,8 @@
 #pragma once
 
 
-#include "ofx/MUI/Widget.h"
+//#include "ofx/MUI/Widget.h"
+#include "ofx/DOM/Element.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -18,11 +19,11 @@ class TrackGroupView;
 
 
 class TrackHeader
-: public MUI::Widget
+: public DOM::Element
 
 {
 public:
-//	TrackHeader(const std::string& id, const ofRectangle& rect);
+
 	TrackHeader(const std::string& id, const ofRectangle& rect, BaseTrackView* track,  TrackGroupView* group, bool belongsToPanel);
 	
 	virtual ~TrackHeader(){}

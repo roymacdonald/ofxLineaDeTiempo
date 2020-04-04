@@ -15,7 +15,7 @@ namespace ofx {
 namespace LineaDeTiempo {
 //---------------------------------------------------------------------
 TrackHeader::TrackHeader(const std::string& id, const ofRectangle& rect, BaseTrackView* track,  TrackGroupView* group, bool belongsToPanel)
-: Widget(id, rect)
+: DOM::Element(id, rect)
 , _track(track)
 , _group(group)
 , _belongsToPanel(belongsToPanel)
@@ -77,11 +77,21 @@ bool TrackHeader::isGroupHeader() const
 void TrackHeader::onDraw() const
 {
 	if(_track){
-		MUI::Widget::onDraw();
+//		DOM::Element::onDraw();
 		if(!_belongsToPanel){
+			
 			ofFill();
+
+			ofSetColor(TrackBackgroundColor);
+			ofDrawRectangle(0, 0, getWidth(), getHeight());
+			
 			ofSetColor(_track->getColor());
 			ofDrawRectangle(0, 0, getWidth(), ViewTopHeaderHeight);
+			
+			ofNoFill();
+			ofSetColor(TrackEdgeColor);
+			ofDrawRectangle(0, 0, getWidth(), getHeight());
+			
 			
 			ofSetColor(_track->getTextColor());
 			
