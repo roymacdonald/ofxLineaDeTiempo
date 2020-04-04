@@ -81,12 +81,12 @@ void TrackHeader::onDraw() const
 		if(!_belongsToPanel){
 			ofFill();
 			ofSetColor(_track->getColor());
-			ofDrawRectangle(0, 0, getWidth(), RegionViewHeaderHeight);
+			ofDrawRectangle(0, 0, getWidth(), ViewTopHeaderHeight);
 			
 			ofSetColor(_track->getTextColor());
 			
 			
-			ofDrawBitmapString( (isGroupHeader()?"group ":"track ") + getTrack()->getId() , 20, (RegionViewHeaderHeight * 0.5 - 7 + 11));
+			ofDrawBitmapString( (isGroupHeader()?"group ":"track ") + getTrack()->getId() , 20, (ViewTopHeaderHeight * 0.5 - 7 + 11));
 		}
 	}
 }

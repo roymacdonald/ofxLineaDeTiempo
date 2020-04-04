@@ -49,7 +49,7 @@ KeyframeCollectionView::KeyframeCollectionView (const std::string & name, const 
 //void KeyframeCollectionView::_parentResized(DOM::ResizeEventArgs &args)
 //{
 //	if(_parentRegion)
-//		setShape({0, RegionViewHeaderHeight, _parentRegion->getWidth(), _parentRegion->getCollectionViewHeight()});
+//		setShape({0, ViewTopHeaderHeight, _parentRegion->getWidth(), _parentRegion->getCollectionViewHeight()});
 //	
 //
 //}

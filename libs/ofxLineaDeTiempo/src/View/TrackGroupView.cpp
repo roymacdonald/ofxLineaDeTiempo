@@ -186,7 +186,7 @@ float TrackGroupView::_getInitialYpos()
 	{
 		return 0;
 	}
-	return _groupTopMargin;
+	return ViewTopHeaderHeight;
 }
 
 float TrackGroupView::getUnscaledHeight()

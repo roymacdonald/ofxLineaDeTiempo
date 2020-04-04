@@ -27,7 +27,7 @@ KeyframesRegionView::KeyframesRegionView(TrackView* parentTrack, RegionControlle
 	auto numDims = _controller->getNumDimensions();
 
 
-	ofRectangle rect(0, RegionViewHeaderHeight, getWidth(), _getCollectionViewHeight());
+	ofRectangle rect(0, ViewTopHeaderHeight, getWidth(), _getCollectionViewHeight());
 	
 	for(size_t i = 0; i < numDims; ++i)
 	{
@@ -50,7 +50,7 @@ void KeyframesRegionView::updateLayout()
 	
 	RegionView::updateLayout();
 	
-	ofRectangle rect(0, RegionViewHeaderHeight, getWidth(), _getCollectionViewHeight());
+	ofRectangle rect(0, ViewTopHeaderHeight, getWidth(), _getCollectionViewHeight());
 	
 	for(auto v: _views)
 	{
@@ -60,7 +60,7 @@ void KeyframesRegionView::updateLayout()
 		
 	}
 	
-	_allViewsRect.set( localToScreen({0, RegionViewHeaderHeight}) , getWidth(), getHeight() - RegionViewHeaderHeight);
+	_allViewsRect.set( localToScreen({0, ViewTopHeaderHeight}) , getWidth(), getHeight() - ViewTopHeaderHeight);
 	
 	
 	_selector.setLimitingRect(_allViewsRect);
@@ -103,9 +103,9 @@ float KeyframesRegionView::_getCollectionViewHeight() const
 {
 	if(_controller)
 	{
-		return(getHeight() - RegionViewHeaderHeight)/ float(_controller->getNumDimensions());
+		return(getHeight() - ViewTopHeaderHeight)/ float(_controller->getNumDimensions());
 	}
-	return getHeight() - RegionViewHeaderHeight;
+	return getHeight() - ViewTopHeaderHeight;
 }
 
 const std::vector<KeyframeCollectionView *>& KeyframesRegionView::getViews()

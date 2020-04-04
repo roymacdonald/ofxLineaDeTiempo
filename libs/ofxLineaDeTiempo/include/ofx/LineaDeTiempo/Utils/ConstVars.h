@@ -22,7 +22,7 @@ static const float   TrackInitialHeight = 150.0;
 static const float DefaultKeyframeSize = 5.0;
 
 //RegionView
-static float RegionViewHeaderHeight = 18.f;
+static float ViewTopHeaderHeight = 18.f;
 static const ofColor RegionBackgroundColor = ofColor(80);
 
 //HeaderView

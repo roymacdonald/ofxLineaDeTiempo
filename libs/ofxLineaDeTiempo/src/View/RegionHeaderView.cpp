@@ -16,7 +16,7 @@ namespace LineaDeTiempo {
 
 
 RegionHeaderView::RegionHeaderView(RegionView* parentRegion)
-: MUI::ConstrainedGrabHandle("GrabHandle", DOM::HORIZONTAL, ofRectangle(0,0,parentRegion->getWidth(), RegionViewHeaderHeight))
+: MUI::ConstrainedGrabHandle("GrabHandle", DOM::HORIZONTAL, ofRectangle(0,0,parentRegion->getWidth(), ViewTopHeaderHeight))
 , _parentRegion(parentRegion)
 {
 	this->constrainTo(_parentRegion->parentTrack());
@@ -32,7 +32,7 @@ RegionHeaderView::RegionHeaderView(RegionView* parentRegion)
 
 void RegionHeaderView::_parentResized(DOM::ResizeEventArgs &)
 {
-	this->setSize(_parentRegion->getWidth(), RegionViewHeaderHeight);
+	this->setSize(_parentRegion->getWidth(), ViewTopHeaderHeight);
 }
 
 void RegionHeaderView::_onDragging(const DOM::CapturedPointer& pointer)
@@ -53,7 +53,7 @@ void RegionHeaderView::onDraw() const
 	if(_parentRegion && _parentRegion->parentTrack())
 	{
 		ofSetColor(_parentRegion->parentTrack()->getTextColor());
-		ofDrawBitmapString(_parentRegion->getId() , 20, (RegionViewHeaderHeight * 0.5 - 7 + 11));
+		ofDrawBitmapString(_parentRegion->getId() , 20, (ViewTopHeaderHeight * 0.5 - 7 + 11));
 	}
 }
 
