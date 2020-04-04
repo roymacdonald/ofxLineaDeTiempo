@@ -27,7 +27,7 @@ TracksPanel::TracksPanel(const std::string& id, DOM::Element* parentView, const 
 
 {
 	setShape(rect);
-	tracksView = DOM::Element::addChild<MUI::TracksScrollPanel>(id + "_tracksView", _makeTracksViewRect());
+	tracksView = addChild<MUI::TracksScrollPanel>(id + "_tracksView", _makeTracksViewRect());
 	
 	tracksView->setForceShowScrollbars(true);
 	tracksView->setMoveToFrontOnCapture(false);
@@ -37,7 +37,7 @@ TracksPanel::TracksPanel(const std::string& id, DOM::Element* parentView, const 
 	_tracksContainerListeners.push(tracksView->getContainer()->move.newListener(this, &TracksPanel::_tracksMoved));
 	_tracksContainerListeners.push(tracksView->getContainer()->resize.newListener(this, &TracksPanel::_tracksResized));
 
-	_playhead = tracksView->getContainer()->addChild<Playhead>(this, controller->getTimeControl());//, _timeControl);
+	
 
 	
 	_timeRuler = addChild<TimeRuler>(this, controller->getTimeControl());
@@ -54,6 +54,8 @@ TracksPanel::TracksPanel(const std::string& id, DOM::Element* parentView, const 
 	_regionsStyle->setColor(RegionBackgroundColor, MUI::Styles::ROLE_BACKGROUND);
 	
 	_isPanel = true;
+	
+	_timeRuler->moveToFront();
 	
 }
 
@@ -109,7 +111,6 @@ const DOM::Element* TracksPanel::getContainer() const
 void TracksPanel::_tracksMoved(DOM::MoveEventArgs& e)
 {
 	_updateHeadersFromTracks();
-	_playhead->updatePosition();
 }
 
 //---------------------------------------------------------------------
@@ -152,11 +153,7 @@ void TracksPanel::updateLayout()
 	}
 	
 	if(tracksView)  tracksView->setShape(_makeTracksViewRect());
-	if(_playhead){
-		_playhead->setSize(_playhead->getWidth(), getHeight());
-		_playhead->moveToFront();
-		
-	}
+
 	if(_timeRuler)_timeRuler->updateLayout();
 }
 

@@ -10,8 +10,10 @@
 
 #include "ofx/MUI/Widget.h"
 #include "ofMesh.h"
-#include "TimeControl.h"
+#include "LineaDeTiempo/Controller/TimeControl.h"
 #include "ofRange.h"
+#include "LineaDeTiempo/View/Playhead.h"
+
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -87,7 +89,14 @@ protected:
 	std::vector<bool> bDraw ;
 	std::vector<float> multipliers ;// = {1.f, 1000.f, (1000.f *60 ),  (1000.f *60 *60 ) };
 	
-	  ofVboMesh textMesh;
+	ofVboMesh textMesh;
+	Playhead * _playhead = nullptr;
+	void _updatePlayheadSize();
+	
+	ofEventListener _panelResizeListener;
+	void _onPanelResize(DOM::ResizeEventArgs& e);
+	
+	
 	
 };
 
@@ -113,6 +122,9 @@ protected:
 	
 	
 	ofEventListeners _panelListeners;
+	
+	
+	
 	
 	void _tracksContainerMoved(DOM::MoveEventArgs& e);
 	void _tracksContainerResized(DOM::ResizeEventArgs& e);

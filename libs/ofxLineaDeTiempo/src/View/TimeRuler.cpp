@@ -31,7 +31,7 @@ TimeRuler::TimeRuler(TracksPanel* panel, TimeControl* timeControl)
 	
 	
 	setDrawChildrenOnly(true);
-	
+	moveToFront();
 	
 	
 }
@@ -157,9 +157,11 @@ TimeRulerBar::TimeRulerBar( TracksPanel* panel, TimeControl* timeControl)
 	setDraggable(true);
 	setHighlightOnOver(false);
 	
+	_playhead = addChild<Playhead>(panel, timeControl);//,
 	
-
-	
+	_panelResizeListener = _panel->resize.newListener(this, &TimeRulerBar::_onPanelResize);
+	moveToFront();
+	_updatePlayheadSize();
 }
 
 void TimeRulerBar::_onDragging(const DOM::CapturedPointer& pointer)
@@ -186,15 +188,7 @@ void TimeRulerBar::_makeRulerLines()
 {
 	if(_panel){
 		
-//		float distances [4];
-//		bool bDraw [4];
-//
-//		_MILLIS =0,
-//		_SECONDS,
-//		_MUNUTES,
-//		_HOURS
 		
-
 		_rulerLines.clear();
 		
 		_rulerLines.setMode(OF_PRIMITIVE_LINES);
@@ -210,48 +204,47 @@ void TimeRulerBar::_makeRulerLines()
 			distances[i] = d* multipliers[i];
 			
 			
-			 if(distances[i] > _minLineDist && distances[i] < getWidth())
-			 {
-				 startIndex = min(i, startIndex);
-				 endIndex = max(i, endIndex);
-			 }
+			if(distances[i] > _minLineDist && distances[i] < getWidth())
+			{
+				startIndex = min(i, startIndex);
+				endIndex = max(i, endIndex);
+			}
 		}
 		
 		
 		for(int i = startIndex; i < endIndex + 1; ++i)
 		{
-//			 if(distances[i] > _minLineDist && distances[i] < getWidth())
-//			 {
-				 uint64_t startTime = (uint64_t) floor(_currentRange.min/multipliers[i]) * multipliers[i] ;
-//				 std::cout << i << "   startTime: " << startTime << " rangeMIn: " << _currentRange.min << "\n";
-				 if(_currentRange.max > (startTime))
-				 {
-					 float h = ofMap(i, startIndex, endIndex, getHeight()*0.3, getHeight(), true);
-					 float x = screenToLocal({_panel->timeToScreenPosition(startTime),0}).x;
-					 for(size_t j = 0; x < w; ++j ){
-						 
-						 x += distances[i];
-						
-						 if(x < getWidth())
-						 {
-							 _rulerLines.addVertex({x, 0, 0});
-							 _rulerLines.addVertex({x, h, 0});
-						 }
-					 }
-					 
-//				 }
-			 }
+			uint64_t startTime = (uint64_t) floor(_currentRange.min/multipliers[i]) * multipliers[i] ;
+			if(_currentRange.max > (startTime))
+			{
+				float h = ofMap(i, startIndex, endIndex, getHeight()*0.3, getHeight(), true);
+				float x = screenToLocal({_panel->timeToScreenPosition(startTime),0}).x;
+				for(size_t j = 0; x < w; ++j ){
+					
+					x += distances[i];
+					
+					if(x < getWidth())
+					{
+						_rulerLines.addVertex({x, 0, 0});
+						_rulerLines.addVertex({x, h, 0});
+					}
+				}
+			}
 		}
-////		std::cout << "TimeRulerBar::_makeRulerLines  " << d << " - " << _rulerLines.getNumVertices()
-//
-//		<< " MILLIS  " << distances[_MILLIS]
-//		<< " SECONDS " << distances[_SECONDS]
-//		<< " MINUTES " << distances[_MINUTES]
-//		<< " HOURS   " << distances[_HOURS]
-//		<< "\n";
-//
-		
 	}
+}
+void TimeRulerBar::_updatePlayheadSize()
+{
+	if(_playhead){
+		float h =  _panel->getClippingView()->getScreenShape().getMaxY() - getScreenY();
+		_playhead->setSize(_playhead->getWidth(), h);
+		_playhead->moveToFront();
+	}
+}
+
+void TimeRulerBar::_onPanelResize(DOM::ResizeEventArgs& e)
+{
+	_updatePlayheadSize();
 }
 
 void TimeRulerBar::onDraw() const

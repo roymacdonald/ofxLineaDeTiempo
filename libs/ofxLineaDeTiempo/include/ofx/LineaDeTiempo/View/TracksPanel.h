@@ -9,7 +9,7 @@
 #include "MUI/ScrollablePanel.h"
 
 
-#include "LineaDeTiempo/View/Playhead.h"
+
 #include "LineaDeTiempo/View/TrackGroupView.h"
 #include "LineaDeTiempo/View/TimeRuler.h"
 
@@ -40,8 +40,6 @@ public:
 	float timeToScreenPosition(uint64_t time) const;
 	uint64_t  screenPositionToTime(float x) const;
 	
-
-	Playhead * _playhead = nullptr;
 	
 	TracksClippedView* getClippingView();
 	const TracksClippedView* getClippingView()const;
@@ -57,6 +55,8 @@ public:
 	
 	void setTracksHeaderWidth(float w);
 	
+	TimeRuler * _timeRuler = nullptr;
+	
 protected:
 	friend class TracksPanelController;
 	
@@ -64,15 +64,12 @@ protected:
 	
 	MUI::TracksScrollPanel* tracksView;
 	MUI::ClippedView_<TrackHeader> * headersView;
-	
-	TimeRuler * _timeRuler = nullptr;
 
 	ofEventListeners _tracksContainerListeners;
 	
 	
 	void _updateHeadersFromTracks();
 
-	
 	
 	void _tracksMoved(DOM::MoveEventArgs& e);
 	void _tracksResized(DOM::ResizeEventArgs& e);

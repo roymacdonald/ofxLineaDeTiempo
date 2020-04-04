@@ -79,6 +79,7 @@ public:
 	///\returns the total time in milliseconds
 	const uint64_t& getTotalTime() const;
 	
+	TracksPanel* _panel = nullptr;
 	
 protected:
 	
@@ -87,7 +88,7 @@ protected:
 
 	virtual ofJson toJson() override;
 	
-	TracksPanel* _panel = nullptr;
+	
 	
 	
 	ofAppBaseWindow* _currentWindow = nullptr;

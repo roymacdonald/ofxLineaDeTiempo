@@ -34,6 +34,10 @@ static float HeaderViewIndent = 25.f;
 
 static float TimeRulerInitialHeight = 30.f;
 
+static float PlayheadTriangleSize = 5.f;
+
+static float PlayheadWidth = 3.f;
+
 //Names
 
 static const std::string DimensionNames [4] = { "x", "y", "z", "w" };

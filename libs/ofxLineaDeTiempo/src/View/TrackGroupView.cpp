@@ -182,7 +182,7 @@ void TrackGroupView::_setTracksHeaderWidth(float w)
 float TrackGroupView::_getInitialYpos()
 {
 	auto p = dynamic_cast<TrackGroupView*>(parent());
-	if(!p && numSiblings() == 1)
+	if(!p && numSiblings() == 0)
 	{
 		return 0;
 	}

@@ -7,13 +7,15 @@
 
 #include "LineaDeTiempo/View/Playhead.h"
 #include "LineaDeTiempo/Controller/TimeControl.h"
-#include "TracksPanel.h"
+#include "LineaDeTiempo/View/TracksPanel.h"
+#include "LineaDeTiempo/Utils/ConstVars.h"
+
 namespace ofx {
 namespace LineaDeTiempo {
 
 //---------------------------------------------------------------------
 Playhead::Playhead(TracksPanel* tracksPanel, TimeControl* timeControl)
-: ConstrainedGrabHandle("Playhead",DOM::HORIZONTAL, {0,0, 3, 100})
+: ConstrainedGrabHandle("Playhead",DOM::HORIZONTAL, {0,0, PlayheadWidth, 100})
 , _tracksPanel(tracksPanel)
 , _timeControl(timeControl)
 {
@@ -27,12 +29,24 @@ Playhead::Playhead(TracksPanel* tracksPanel, TimeControl* timeControl)
 	{
 		this->constrainTo(_tracksPanel->getClippingView());
 		
-		auto v = tracksPanel->getClippingView();
-		_tracksListeners.push( v->resize.newListener(this, &Playhead::_tracksViewShapeChanged));
-		_tracksListeners.push( v->childAdded.newListener(this, &Playhead::_trackNumChanged));
-		_tracksListeners.push( v->childRemoved.newListener(this, &Playhead::_trackNumChanged));
-		_tracksListeners.push( v->childReordered.newListener(this, &Playhead::_tracksOrderChanged));
+//		auto v = tracksPanel->getClippingView();
+//		_tracksListeners.push( v->resize.newListener(this, &Playhead::_tracksViewShapeChanged));
+//		_tracksListeners.push( v->childAdded.newListener(this, &Playhead::_trackNumChanged));
+//		_tracksListeners.push( v->childRemoved.newListener(this, &Playhead::_trackNumChanged));
+//		_tracksListeners.push( v->childReordered.newListener(this, &Playhead::_tracksOrderChanged));
 	}
+	
+	
+	_playheadTriangle.setMode(OF_PRIMITIVE_TRIANGLES);
+	
+	
+	
+	_playheadTriangle.addVertex({ (PlayheadWidth - PlayheadTriangleSize) *0.5 , 0, 0});
+	_playheadTriangle.addVertex({ (PlayheadWidth + PlayheadTriangleSize) *0.5 , 0, 0});
+	_playheadTriangle.addVertex({ PlayheadWidth*0.5 , PlayheadTriangleSize * sin(ofDegToRad(60)), 0});
+	
+	
+	
 	moveToFront();
 }
 
@@ -52,14 +66,14 @@ void Playhead::_tracksOrderChanged(DOM::ElementOrderEventArgs& e)
 }
 
 
-//---------------------------------------------------------------------
-void Playhead::_tracksViewShapeChanged(DOM::ResizeEventArgs &)
-{
-	if(_tracksPanel)
-	{
-		setSize(getSize().x, _tracksPanel->getClippingView()->getHeight());
-	}
-}
+////---------------------------------------------------------------------
+//void Playhead::_tracksViewShapeChanged(DOM::ResizeEventArgs &)
+//{
+//	if(_tracksPanel)
+//	{
+//		setSize(getSize().x, _tracksPanel->getClippingView()->getHeight());
+//	}
+//}
 //---------------------------------------------------------------------
 void Playhead::onDraw() const
 {
@@ -75,6 +89,13 @@ void Playhead::onDraw() const
 		ofSetColor(ofColor::red);
 	}
 	
+	
+	ofSetColor(200);
+	
+	_playheadTriangle.draw();
+
+	
+	
 	ofDrawRectangle(0, 0, getWidth(), getHeight());
 	
 	ofNoFill();
@@ -89,7 +110,7 @@ void Playhead::onDraw() const
 		ofSetColor(30, 120);
 		ofDrawRectangle(0, 0, getWidth(), getHeight());
 	}
-	
+	_playheadTriangle.drawWireframe();
 	
 	ofPopStyle();
 	
@@ -134,6 +155,7 @@ void Playhead::_onDragging(const DOM::CapturedPointer& pointer)
 	
 	if(_tracksPanel && _timeControl)
 	{
+		
 		_timeControl->setCurrentTime(_tracksPanel->screenPositionToTime(parentToScreen({getX() + (getWidth() / 2), 0 }).x));
 	}
 	

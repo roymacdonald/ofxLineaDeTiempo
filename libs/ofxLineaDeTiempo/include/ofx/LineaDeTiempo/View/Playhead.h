@@ -54,6 +54,9 @@ protected:
 private:
 	
 	
+	
+	ofMesh _playheadTriangle;
+	
 	bool _wasPlaying = false;
 	
 };
