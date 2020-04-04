@@ -27,7 +27,7 @@ class RegionView
 public:
 	
 	
-	RegionView (TrackView* parentTrack, RegionController *controller, std::shared_ptr<MUI::Styles> regionStyles);
+	RegionView (TrackView* parentTrack, RegionController *controller, std::shared_ptr<MUI::Styles> headerStyles);
 	
 	virtual ~RegionView() = default;
 	

@@ -17,12 +17,13 @@ namespace LineaDeTiempo {
 
 
 
-RegionView::RegionView (TrackView* parentTrack, RegionController *controller, std::shared_ptr<MUI::Styles> regionStyles)
+RegionView::RegionView (TrackView* parentTrack, RegionController *controller, std::shared_ptr<MUI::Styles> headerStyles)
 : Widget(controller->getId(), 0,0, TrackInitialHeight, TrackInitialHeight)
 , _parentTrack(parentTrack)
 , _controller(controller)
 {
-	setStyles(regionStyles);
+	
+//	setStyles(regionStyles);
 	
 //	setFocusable(false);
 	updateLayout();
@@ -31,6 +32,7 @@ RegionView::RegionView (TrackView* parentTrack, RegionController *controller, st
 	_rightHandle = addChild<MUI::EdgeHandle>("rightHandle", DOM::RECT_RIGHT, this);
 	
 	_header = addChild<RegionHeaderView>(this);
+	_header->setStyles(headerStyles);
 	
 	setShapeDrawMode(MUI::ShapeDrawMode::ROUNDED_RECTANGLE);
 
