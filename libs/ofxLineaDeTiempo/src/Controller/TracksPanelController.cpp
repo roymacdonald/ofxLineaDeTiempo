@@ -13,7 +13,9 @@ namespace LineaDeTiempo {
 
 
 
-
+TracksPanelController::TracksPanelController():
+TracksPanelController("LineaDeTiempo")
+{}
 
 TracksPanelController::TracksPanelController(const std::string& name)
 : TrackGroupController(name, nullptr, nullptr)
@@ -21,7 +23,7 @@ TracksPanelController::TracksPanelController(const std::string& name)
 
 	_uniqueTimeControl = make_unique<TimeControl>();
 	_setTimeControl(  _uniqueTimeControl.get());
-	
+	disableAutoDraw();
 }
 
 void TracksPanelController::setWindow(ofAppBaseWindow* window)
@@ -53,7 +55,7 @@ void TracksPanelController::generateView()
 		
 		generateChildrenViews(this);
 
-		_panel->setup();
+		_panel->_setup();
 		
 	}
 	
@@ -176,21 +178,7 @@ void TracksPanelController::fromJson(const ofJson& j)
 {
 	
 	TrackGroupController::fromJson(j);
-	
-//		j["class"] = "TracksPanelController";
-	
-	
-//			if(_panel)
-//			{
-	//			j["_panel"] = _panel->toJson();
-//			}
-			
-			
-	//		ofAppBaseWindow* _currentWindow = nullptr;
-			
 
-			
-			
 			
 			if(_uniqueTimeControl)
 			{
@@ -240,6 +228,17 @@ ofJson TracksPanelController::toJson()
 		j["bAutoDrawEnabled"] = bAutoDrawEnabled;
 	
 	return j;
+}
+
+void TracksPanelController::setTotalTime(const uint64_t& totalTime )
+{
+	 _uniqueTimeControl->setTotalTime(totalTime);
+}
+
+
+const uint64_t& TracksPanelController::getTotalTime() const
+{
+	return _uniqueTimeControl->getTotalTime();
 }
 
 

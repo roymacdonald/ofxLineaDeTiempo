@@ -25,7 +25,7 @@ class TracksPanelController
 
 {
 public:
-
+	TracksPanelController();
 	TracksPanelController(const std::string& name);
 	
 	virtual ~TracksPanelController() = default;
@@ -41,13 +41,13 @@ public:
 	void setWindow(ofAppBaseWindow* window);
 	
 	///\brief Enable automatic drawing of timeline(no need to call its draw() function.
-	/// it will draw on top of everything else.
-	/// Enabled by default
+	/// Be aware that it will draw on top of everything else.
 	void enableAutoDraw();
 
 	
 	///\brief Disable automatic drawing of timeline.
 	/// you need to call its draw() function for it to draw.
+	/// Disabled by default
 	void disableAutoDraw();
 	
 	///\brief get if the auto draw feature is enabled or not.
@@ -68,6 +68,16 @@ public:
 	///
 	///\returns true if loaded corectly. If the file is malformed or if the parser finds any inconsistency it will return false.
 	bool load(const std::filesystem::path& filepath);
+	
+	
+	///\brief Sets the timeline's total time or length.
+	///\param totalTime the total time in milliseconds
+	void setTotalTime(const uint64_t& totalTime );
+	
+	
+	///\brief Gets the timeline's total time or length.
+	///\returns the total time in milliseconds
+	const uint64_t& getTotalTime() const;
 	
 	
 protected:
