@@ -65,6 +65,11 @@ bool TrackGroupController::removeGroup(TrackGroupController* group)
 	return CollectionHelper::_remove<TrackGroupController, TrackGroupController>( group,this,   _groupsCollection);
 }
 
+TrackGroupController* TrackGroupController::add(ofxGuiGroup& guiGroup)
+{
+	return add(guiGroup.getParameter().castGroup());
+}
+
 TrackGroupController* TrackGroupController::add(ofParameterGroup& _parameters)
 {
 	auto group = addGroup<TrackGroupController>(_parameters.getName());
@@ -125,59 +130,56 @@ TrackGroupController* TrackGroupController::add(ofParameterGroup& _parameters)
 			auto p = _parameters.getFloat(i);
 			group->add(p);
 		}
-		// else if(type == typeid(ofParameter <double> ).name()){
-		// 	auto p = _parameters.get<double>(i);
-		// 	group->add(p);
-		// }
-		// else if(type == typeid(ofParameter <bool> ).name()){
-		// 	auto p = _parameters.getBool(i);
-		// 	group->add(p);
-		// }
-		// else if(type == typeid(ofParameter <void> ).name()){
-		//			auto p = _parameters.getVoid(i);
-		//			group->add(p);
-		// }
-		// else if(type == typeid(ofParameter <ofVec2f> ).name()){
-		// 	auto p = _parameters.get<ofVec2f>(i);
-		// 	group->add(p);
-		// }
-		// else if(type == typeid(ofParameter <ofVec3f> ).name()){
-		// 	auto p = _parameters.get<ofVec3f>(i);
-		// 	group->add(p);
-		// }
-		// else if(type == typeid(ofParameter <ofVec4f> ).name()){
-		// 	auto p = _parameters.get<ofVec4f>(i);
-		// 	group->add(p);
-		// }
-		// else if(type == typeid(ofParameter <glm::vec2> ).name()){
-		// 	auto p = _parameters.get<glm::vec2>(i);
-		// 	group->add(p);
-		// }
-		// else if(type == typeid(ofParameter <glm::vec3> ).name()){
-		// 	auto p = _parameters.get<glm::vec3>(i);
-		// 	group->add(p);
-		// }
-		// else if(type == typeid(ofParameter <glm::vec4> ).name()){
-		// 	auto p = _parameters.get<glm::vec4>(i);
-		// 	group->add(p);
-		// }
-		// else if(type == typeid(ofParameter <ofColor> ).name()){
-		// 	auto p = _parameters.getColor(i);
-		// 	group->add(p);
-		// }
-		// else if(type == typeid(ofParameter <ofShortColor> ).name()){
-		// 	auto p = _parameters.getShortColor(i);
-		// 	group->add(p);
-		// }
-		// else if(type == typeid(ofParameter <ofFloatColor> ).name()){
-		// 	auto p = _parameters.getFloatColor(i);
-		// 	group->add(p);
-		// }
+		 else if(type == typeid(ofParameter <double> ).name()){
+		 	auto p = _parameters.get<double>(i);
+		 	group->add(p);
+		 }
+//		 else if(type == typeid(ofParameter <bool> ).name()){
+//		 	auto p = _parameters.getBool(i);
+//		 	group->add(p);
+//		 }
+//		 else if(type == typeid(ofParameter <void> ).name()){
+//			auto p = _parameters.getVoid(i);
+//			group->add(p);
+//		 }
+//		 else if(type == typeid(ofParameter <ofVec2f> ).name()){
+//		 	auto p = _parameters.get<ofVec2f>(i);
+//		 	group->add(p);
+//		 }
+//		 else if(type == typeid(ofParameter <ofVec3f> ).name()){
+//		 	auto p = _parameters.get<ofVec3f>(i);
+//		 	group->add(p);
+//		 }
+//		 else if(type == typeid(ofParameter <ofVec4f> ).name()){
+//		 	auto p = _parameters.get<ofVec4f>(i);
+//		 	group->add(p);
+//		 }
+		 else if(type == typeid(ofParameter <glm::vec2> ).name()){
+		 	auto p = _parameters.get<glm::vec2>(i);
+		 	group->add(p);
+		 }
+		 else if(type == typeid(ofParameter <glm::vec3> ).name()){
+		 	auto p = _parameters.get<glm::vec3>(i);
+		 	group->add(p);
+		 }
+		 else if(type == typeid(ofParameter <glm::vec4> ).name()){
+		 	auto p = _parameters.get<glm::vec4>(i);
+		 	group->add(p);
+		 }
+		 else if(type == typeid(ofParameter <ofColor> ).name()){
+		 	auto p = _parameters.getColor(i);
+		 	group->add(p);
+		 }
+		 else if(type == typeid(ofParameter <ofShortColor> ).name()){
+		 	auto p = _parameters.getShortColor(i);
+		 	group->add(p);
+		 }
+		 else if(type == typeid(ofParameter <ofFloatColor> ).name()){
+		 	auto p = _parameters.getFloatColor(i);
+		 	group->add(p);
+		 }
 		else if(_parameters[i].valueType() == typeid(string).name()){
 			ofLogVerbose("TracksPanelController::add") << "Not adding string parameter \""<< _parameters[i].getName() << "\" as it does not make much sense adding to the timeline";
-			//			auto p = _parameters.getString(i);
-			//			group->add(p);
-			
 		}
 		else if(type == typeid(ofParameterGroup).name()){
 			auto p = _parameters.getGroup(i);
@@ -263,7 +265,7 @@ void TrackGroupController::_makeFromJson(const ofJson& json)
 					}
 					else
 					{
-						_addTrack(name, clss, dataTypeName)->fromJson(j);
+						_addTrack(name, dataTypeName)->fromJson(j);
 					}
 				}
 			}
@@ -285,185 +287,46 @@ TrackGroupController * TrackGroupController:: _addGroup( const std::string& grou
 }
 
 
-TrackController* TrackGroupController:: _addTrack(const std::string& trackName, const std::string& typeName, const std::string& paramType)
+TrackController* TrackGroupController:: _addTrack(const std::string& trackName, const std::string& paramType)
 {
-	if("KeyframeTrackController_" == typeName)
-	{
-// 		if(typeid(ofRectangle).name() == paramType)
-// 		{
-// 			return addKeyframeTrack<ofRectangle>(trackName);
-// 		}
-// 		else 
-// 		if(typeid(ofColor_<char>).name() == paramType)
-// 		{
-// 			return addKeyframeTrack<ofColor_<char>>(trackName);
-// 		}
-// 		else 
-// 		if(typeid(ofColor_<unsigned char>).name() == paramType)
-// 		{
-// 			return addKeyframeTrack<ofColor_<unsigned char>>(trackName);
-// 		}
-// 		else 
-// 		if(typeid(ofColor_<short>).name() == paramType)
-// 		{
-// 			return addKeyframeTrack<ofColor_<short>>(trackName);
-// 		}
-// 		else 
-// 		if(typeid(ofColor_<unsigned short>).name() == paramType)
-// 		{
-// 			return addKeyframeTrack<ofColor_<unsigned short>>(trackName);
-// 		}
-// 		else 
-// 		if(typeid(ofColor_<int>).name() == paramType)
-// 		{
-// 			return addKeyframeTrack<ofColor_<int>>(trackName);
-// 		}
-// 		else 
-// 		if(typeid(ofColor_<unsigned int>).name() == paramType)
-// 		{
-// 			return addKeyframeTrack<ofColor_<unsigned int>>(trackName);
-// 		}
-// 		else 
-// 		if(typeid(ofColor_<long>).name() == paramType)
-// 		{
-// 			return addKeyframeTrack<ofColor_<long>>(trackName);
-// 		}
-// 		else 
-// 		if(typeid(ofColor_<unsigned long>).name() == paramType)
-// 		{
-// 			return addKeyframeTrack<ofColor_<unsigned long>>(trackName);
-// 		}
-// 		else 
-// 		if(typeid(ofColor_<float>).name() == paramType)
-// 		{
-// 			return addKeyframeTrack<ofColor_<float>>(trackName);
-// 		}
-// 		else 
-// 		if(typeid(ofColor_<double>).name() == paramType)
-// 		{
-// 			return addKeyframeTrack<ofColor_<double>>(trackName);
-// 		}
-// 		else 
-// 		if(typeid(glm::vec2).name() == paramType)
-// 		{
-// 			return addKeyframeTrack<glm::vec2>(trackName);
-// 		}
-// 		else 
-// 		if(typeid(glm::vec3).name() == paramType)
-// 		{
-// 			return addKeyframeTrack<glm::vec3>(trackName);
-// 		}
-// 		else 
-// 		if(typeid(glm::vec4).name() == paramType)
-// 		{
-// 			return addKeyframeTrack<glm::vec4>(trackName);
-// 		}
-// 		else 
-// 		if(typeid(glm::quat).name() == paramType)
-// 		{
-// 			return addKeyframeTrack<glm::quat>(trackName);
-// 		}
-// 		else 
-// 		if(typeid(glm::mat4).name() == paramType)
-// 		{
-// 			return addKeyframeTrack<glm::mat4>(trackName);
-// 		}
-// 		else 
-// 		if(typeid(ofVec2f).name() == paramType)
-// 		{
-// 			return addKeyframeTrack<ofVec2f>(trackName);
-// 		}
-// 		else 
-// 		if(typeid(ofVec3f).name() == paramType)
-// 		{
-// 			return addKeyframeTrack<ofVec3f>(trackName);
-// 		}
-// 		else 
-// 		if(typeid(ofVec4f).name() == paramType)
-// 		{
-// 			return addKeyframeTrack<ofVec4f>(trackName);
-// 		}
-// 		else 
-// 		if(typeid(bool).name() == paramType)
-// 		{
-// 			return addKeyframeTrack<bool>(trackName);
-// 		}
-// 		else 
-// 		if(typeid(void).name() == paramType)
-// 		{
-//			return addKeyframeTrack<void>(trackName);
-// 		}
-// 		else 
-//		if(typeid(char).name() == paramType)
-//		{
-//			return addKeyframeTrack<char>(trackName);
-//		}
+	
+//		     if(typeid(              ofRectangle).name() == paramType){ return addKeyframeTrack<              ofRectangle> (trackName); }
 //		else
-//		if(typeid(unsigned char).name() == paramType)
-//		{
-//			return addKeyframeTrack<unsigned char>(trackName);
-//		}
-//		else
-//		if(typeid(signed char).name() == paramType)
-//		{
-//			return addKeyframeTrack<signed char>(trackName);
-//		}
-//		else
-//		if(typeid(short).name() == paramType)
-//		{
-//			return addKeyframeTrack<short>(trackName);
-//		}
-//		else
-//		if(typeid(unsigned short).name() == paramType)
-//		{
-//			return addKeyframeTrack<unsigned short>(trackName);
-//		}
-//		else
-		if(typeid(int).name() == paramType)
-		{
-			return addKeyframeTrack<int>(trackName);
-		}
-		else 
-//		if(typeid(unsigned int).name() == paramType)
-//		{
-//			return addKeyframeTrack<unsigned int>(trackName);
-//		}
-//		else
-//		if(typeid(long).name() == paramType)
-//		{
-//			return addKeyframeTrack<long>(trackName);
-//		}
-//		else
-//		if(typeid(unsigned long).name() == paramType)
-//		{
-//			return addKeyframeTrack<unsigned long>(trackName);
-//		}
-//		else
-//		if(typeid(long long).name() == paramType)
-//		{
-//			return addKeyframeTrack<long long>(trackName);
-//		}
-//		else
-//		if(typeid(unsigned long long).name() == paramType)
-//		{
-//			return addKeyframeTrack<unsigned long long>(trackName);
-//		}
-//		else
-		if(typeid(float).name() == paramType)
-		{
-			return addKeyframeTrack<float>(trackName);
-		}
-//		else
-//		if(typeid(double).name() == paramType)
-//		{
-//			return addKeyframeTrack<double>(trackName);
-//		}
-//		else
-//		if(typeid(long double).name() == paramType)
-//		{
-//			return addKeyframeTrack<long double>(trackName);
-//		}
-	}
+			if(typeid(           ofColor_<char>).name() == paramType){ return addKeyframeTrack<           ofColor_<char>> (trackName); }
+		else if(typeid(  ofColor_<unsigned char>).name() == paramType){ return addKeyframeTrack<  ofColor_<unsigned char>> (trackName); }
+		else if(typeid(          ofColor_<short>).name() == paramType){ return addKeyframeTrack<          ofColor_<short>> (trackName); }
+		else if(typeid( ofColor_<unsigned short>).name() == paramType){ return addKeyframeTrack< ofColor_<unsigned short>> (trackName); }
+		else if(typeid(            ofColor_<int>).name() == paramType){ return addKeyframeTrack<            ofColor_<int>> (trackName); }
+		else if(typeid(   ofColor_<unsigned int>).name() == paramType){ return addKeyframeTrack<   ofColor_<unsigned int>> (trackName); }
+		else if(typeid(           ofColor_<long>).name() == paramType){ return addKeyframeTrack<           ofColor_<long>> (trackName); }
+		else if(typeid(  ofColor_<unsigned long>).name() == paramType){ return addKeyframeTrack<  ofColor_<unsigned long>> (trackName); }
+		else if(typeid(          ofColor_<float>).name() == paramType){ return addKeyframeTrack<          ofColor_<float>> (trackName); }
+//		else if(typeid(         ofColor_<double>).name() == paramType){ return addKeyframeTrack<         ofColor_<double>> (trackName); }
+		else if(typeid(                glm::vec2).name() == paramType){ return addKeyframeTrack<                glm::vec2> (trackName); }
+		else if(typeid(                glm::vec3).name() == paramType){ return addKeyframeTrack<                glm::vec3> (trackName); }
+		else if(typeid(                glm::vec4).name() == paramType){ return addKeyframeTrack<                glm::vec4> (trackName); }
+//		else if(typeid(                glm::quat).name() == paramType){ return addKeyframeTrack<                glm::quat> (trackName); }
+//		else if(typeid(                glm::mat4).name() == paramType){ return addKeyframeTrack<                glm::mat4> (trackName); }
+//		else if(typeid(                  ofVec2f).name() == paramType){ return addKeyframeTrack<                  ofVec2f> (trackName); }
+//		else if(typeid(                  ofVec3f).name() == paramType){ return addKeyframeTrack<                  ofVec3f> (trackName); }
+//		else if(typeid(                  ofVec4f).name() == paramType){ return addKeyframeTrack<                  ofVec4f> (trackName); }
+//		else if(typeid(                     bool).name() == paramType){ return addKeyframeTrack<                     bool> (trackName); }
+//		else if(typeid(                     void).name() == paramType){ return addKeyframeTrack<                     void> (trackName); }
+		else if(typeid(                     char).name() == paramType){ return addKeyframeTrack<                     char> (trackName); }
+		else if(typeid(            unsigned char).name() == paramType){ return addKeyframeTrack<            unsigned char> (trackName); }
+		else if(typeid(              signed char).name() == paramType){ return addKeyframeTrack<              signed char> (trackName); }
+		else if(typeid(                    short).name() == paramType){ return addKeyframeTrack<                    short> (trackName); }
+		else if(typeid(           unsigned short).name() == paramType){ return addKeyframeTrack<           unsigned short> (trackName); }
+		else if(typeid(                      int).name() == paramType){ return addKeyframeTrack<                      int> (trackName); }
+		else if(typeid(             unsigned int).name() == paramType){ return addKeyframeTrack<             unsigned int> (trackName); }
+		else if(typeid(                     long).name() == paramType){ return addKeyframeTrack<                     long> (trackName); }
+		else if(typeid(            unsigned long).name() == paramType){ return addKeyframeTrack<            unsigned long> (trackName); }
+		else if(typeid(                long long).name() == paramType){ return addKeyframeTrack<                long long> (trackName); }
+		else if(typeid(       unsigned long long).name() == paramType){ return addKeyframeTrack<       unsigned long long> (trackName); }
+		else if(typeid(                    float).name() == paramType){ return addKeyframeTrack<                    float> (trackName); }
+		else if(typeid(                   double).name() == paramType){ return addKeyframeTrack<                   double> (trackName); }
+		else if(typeid(              long double).name() == paramType){ return addKeyframeTrack<              long double> (trackName); }
+	
 	
 	
 	return nullptr;

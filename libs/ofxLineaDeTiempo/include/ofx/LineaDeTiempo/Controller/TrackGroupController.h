@@ -19,6 +19,7 @@
 #include "ofParameter.h"
 #include "LineaDeTiempo/Controller/KeyframeTrackController.h"
 #include "LineaDeTiempo/BaseTypes/AbstractSerializable.h"
+#include "ofxGuiGroup.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -38,6 +39,8 @@ public:
 	virtual void destroyView() override;
 	
 	virtual ~TrackGroupController() = default;
+	
+	TrackGroupController* add(ofxGuiGroup& guiGroup);
 	
 	TrackGroupController* add(ofParameterGroup& paramGroup);
 	
@@ -117,7 +120,7 @@ public:
 protected:
 	void _makeFromJson(const ofJson& j);
 	
-	TrackController* _addTrack(const std::string& trackName, const std::string& typeName, const std::string& paramType);
+	TrackController* _addTrack(const std::string& trackName, const std::string& paramType);
 	
 	TrackGroupController * _addGroup( const std::string& groupName);
 	
@@ -151,10 +154,16 @@ KeyframeTrackController_<DataType> * TrackGroupController::addTrack( ofParameter
 		parameter.setName(uniqueName);
 	}
 	
-	return CollectionHelper::
+	auto t = CollectionHelper::
 	_add< KeyframeTrackController_<DataType>, TrackGroupController, TrackController>
 	
 	( _tracksCollection, this, parameter, this, getTimeControl());
+	
+	t->addRegion(uniqueName);
+	
+	
+	return t;
+	
 	
 }
 
