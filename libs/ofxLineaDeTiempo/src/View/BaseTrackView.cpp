@@ -46,7 +46,7 @@ void BaseTrackView::setColor(const ofColor& color)
 {
 	_color = color;
 	
-	_textColor =  (color.getBrightness()>180)?ofColor::black:ofColor::white;
+	_textColor =  (color.getBrightness()>127)?ofColor::black:ofColor::white;
 	
 	
 	auto c = color;
