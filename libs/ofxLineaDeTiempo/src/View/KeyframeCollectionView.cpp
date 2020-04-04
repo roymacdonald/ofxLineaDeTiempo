@@ -201,9 +201,9 @@ void KeyframeCollectionView::onDraw() const{
 //	Widget::onDraw();
 	
 	ofPushStyle();
-//	ofSetColor(10, 200);
-//	ofNoFill();
-//	ofDrawRectangle(getShape());
+	ofSetColor(ofColor::black, 200);
+	ofDrawLine(0, 0, getWidth(), 0);
+	
 	ofSetColor(ofColor::white, 100);
 	_inLine.draw();
 	_outLine.draw();
@@ -236,7 +236,6 @@ void KeyframeCollectionView::updateKeyframeSort(){
 
 KeyframeView* KeyframeCollectionView::addKeyframe(float value, uint64_t time)
 {
-//	std::cout << "new keyframe val: "<< value << " time: " << time << std::endl;
 	auto c = this->addChild<KeyframeView>("_k"+ofToString(keyFrames.size()), value, time , this);
 	keyFrames.push_back(c);
 	updateKeyframeSort();

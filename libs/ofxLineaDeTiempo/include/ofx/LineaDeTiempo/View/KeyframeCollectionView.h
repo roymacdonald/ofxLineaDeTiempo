@@ -100,9 +100,6 @@ public:
 	virtual void removeElements(std::vector<KeyframeView*> & elementsToRemove) override;
 
 	
-//	static std::string debugString;
-	
-	
 	
 protected:
 	
