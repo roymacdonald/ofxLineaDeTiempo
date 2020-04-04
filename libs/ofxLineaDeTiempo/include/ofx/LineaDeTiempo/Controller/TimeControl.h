@@ -99,8 +99,8 @@ public:
 	
 	
 	
-	uint64_t getTotalTime() const;
-	void setTotalTime(uint64_t t);
+	const uint64_t&  getTotalTime() const;
+	void setTotalTime(const uint64_t&  t);
 
 
 	TimeControlState getState() const;
@@ -112,7 +112,7 @@ public:
 	
 	virtual void fromJson(const ofJson& j) override;
 	virtual ofJson toJson() override;
-	
+		
 protected:
 	
 	

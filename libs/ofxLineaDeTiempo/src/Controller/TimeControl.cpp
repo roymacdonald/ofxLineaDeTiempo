@@ -219,12 +219,12 @@ void TimeControl::_setState(TimeControlState state)
 }
 
 //---------------------------------------------------------------------
-uint64_t TimeControl::getTotalTime() const
+const uint64_t&  TimeControl::getTotalTime() const
 {
 	return _totalTime;
 }
 //---------------------------------------------------------------------
-void TimeControl::setTotalTime(uint64_t t)
+void TimeControl::setTotalTime(const uint64_t&  t)
 {
 	_totalTime = t;
 
