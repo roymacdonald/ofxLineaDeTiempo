@@ -29,7 +29,7 @@ public:
         X
     };
 
-    MUI(ofAppBaseWindow* window = ofGetWindowPtr());
+    MUI(const DOM::DocumentSettings& settings);
     virtual ~MUI();
 
 

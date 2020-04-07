@@ -13,7 +13,7 @@ namespace ofx {
 namespace MUI {
 
 
-MUI::MUI(ofAppBaseWindow* window): DOM::Document(window)
+MUI::MUI(const DOM::DocumentSettings& settings): DOM::Document(settings)
 {
 }
 
