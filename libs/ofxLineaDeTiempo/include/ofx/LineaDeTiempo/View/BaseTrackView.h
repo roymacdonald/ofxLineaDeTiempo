@@ -12,7 +12,7 @@
 //#include "LineaDeTiempo/BaseTypes/BaseHasHeader.h"
 
 #include "LineaDeTiempo/View/TrackHeader.h"
-
+#include "LineaDeTiempo/View/TimeRuler.h"
 #include "DOM/Element.h"
 #include "MUI/Styles.h"
 
@@ -31,7 +31,7 @@ class BaseTrackView
 public:
 
 	
-	BaseTrackView(const std::string& id, DOM::Element* parentView);
+	BaseTrackView(const std::string& id, DOM::Element* parentView, TimeRuler* timeRuler);
 	
 	virtual ~BaseTrackView() = default;
 	
@@ -57,6 +57,11 @@ public:
 	TrackGroupView* getParentGroupView();
 	
 	TracksPanel* getParentPanel();
+	
+	
+	TimeRuler * getTimeRuler();
+	
+	const TimeRuler * getTimeRuler() const;
 	
 	
     using DOM::Element::isEnabled;
@@ -97,6 +102,7 @@ public:
 	
 	
 protected:
+	TimeRuler* _timeRuler = nullptr;
 	
 	TrackHeader* _header = nullptr;
 	

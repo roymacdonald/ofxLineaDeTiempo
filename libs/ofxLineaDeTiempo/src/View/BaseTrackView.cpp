@@ -17,13 +17,10 @@ namespace LineaDeTiempo {
 
 
 
-//ofColor BaseTrackView::backgroundColor = ofColor(80);
-//ofColor BaseTrackView::edgeColor = ofColor(120);
-//const float BaseTrackView::initialHeight = 150;
-
-BaseTrackView::BaseTrackView(const std::string& id, DOM::Element* parentGroupView)
+BaseTrackView::BaseTrackView(const std::string& id, DOM::Element* parentGroupView, TimeRuler* timeRuler)
 :DOM::Element(id, 0, 0, parentGroupView->getWidth(), 150)
 , _parentGroupView(dynamic_cast<TrackGroupView*>(parentGroupView))
+, _timeRuler(timeRuler)
 {
 	setParent(parentGroupView);
 
@@ -109,5 +106,15 @@ TrackGroupView* BaseTrackView::getParentGroupView()
 	return _parentGroupView;
 }
 
+TimeRuler * BaseTrackView::getTimeRuler()
+{
+	return _timeRuler;
+}
+
+
+const TimeRuler * BaseTrackView::getTimeRuler() const
+{
+	return _timeRuler;
+}
 
 }} //ofx::LineaDeTiempo
