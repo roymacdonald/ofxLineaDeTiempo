@@ -23,9 +23,31 @@ enum DocumentEvent{
 	WINDOW_RESIZED_EVENT,
 	FILE_DROPPED_EVENT,
 	KEY_PRESSED_EVENT,
-	KEY_RELEASED_EVENT,
-	NUM_EVENTS
+	KEY_RELEASED_EVENT
 };
+
+struct DocumentSettings
+{
+	/// \brief The event source window.
+	ofAppBaseWindow* window = ofGetWindowPtr();
+		
+	int pointerEventPriority = std::numeric_limits<int>::lowest();
+		
+	
+	std::vector<bool> enabledListeners =
+	{
+		true, //SETUP_EVENT
+		true, //UPDATE_EVENT
+		true, //DRAW_EVENT
+		true, //EXIT_EVENT
+		true, //WINDOW_RESIZED_EVENT _autoFillScreen
+		true, //FILE_DROPPED_EVENT
+		true, //KEY_PRESSED_EVENT
+		true, //KEY_RELEASED_EVEN
+	};
+	
+};
+
 
 
 /// \brief The Document represents the root DOM Element in an DOM tree.
@@ -38,7 +60,7 @@ public:
     /// the entire screen.
     ///
     /// \param window The window that is the source of the UI events.
-    Document(ofAppBaseWindow* window = ofGetWindowPtr());
+    Document(const DocumentSettings& settings);
 
     /// \brief Destroy the Document.
     virtual ~Document();
@@ -104,12 +126,19 @@ public:
     bool isListeningEvent(DocumentEvent event);
 	
 	
+	
+	///\brief Set the window in which this Document isntances will be drawn.
+	/// Besides drawing in such window it will also listen to the events of it (key, mouse, pointer, etc)
+	///\param window A pointer to the window where to draw this Document
+	void setWindow(ofAppBaseWindow* window);
+	
+	
 protected:
     /// \brief Map pointer ids to Elements.
     typedef std::unordered_map<std::size_t, Element*> PointerElementMap;
 
     /// \brief True if the Document size should always match the screen size.
-    bool _autoFillScreen = true;
+//    bool _autoFillScreen = true;
 
     /// \brief Captured pointer and their capture target.
     PointerElementMap _capturedPointerIdToElementMap;
@@ -167,8 +196,13 @@ private:
                                        Element* relatedTarget);
 
 
-    std::vector<bool> _enabledListeners;
 
+	DocumentSettings _settings;
+	
+	void _setupListeners();
+	void _disableAllListeners();
+	
+	
     /// \brief Setup event listener.
     ofEventListener _setupListener;
 
@@ -196,8 +230,8 @@ private:
     /// \brief Pointer down event listener.
     ofEventListener _pointerEventListener;
 
-    /// \brief The event source window.
-    ofAppBaseWindow* _window = nullptr;
+    
+    
 };
 
 
