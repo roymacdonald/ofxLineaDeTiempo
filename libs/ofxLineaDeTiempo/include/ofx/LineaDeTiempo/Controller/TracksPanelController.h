@@ -25,7 +25,7 @@ class TracksPanelController
 
 {
 public:
-	TracksPanelController();
+
 	TracksPanelController(const std::string& name);
 	
 	virtual ~TracksPanelController() = default;
@@ -39,21 +39,7 @@ public:
 	
 	
 	void setWindow(ofAppBaseWindow* window);
-	
-	///\brief Enable automatic drawing of timeline(no need to call its draw() function.
-	/// Be aware that it will draw on top of everything else.
-	void enableAutoDraw();
 
-	
-	///\brief Disable automatic drawing of timeline.
-	/// you need to call its draw() function for it to draw.
-	/// Disabled by default
-	void disableAutoDraw();
-	
-	///\brief get if the auto draw feature is enabled or not.
-	///\returns true if it is enabled, false if not.
-	bool isAutoDrawEnabled();
-	
 	
 	void draw();
 	
@@ -95,18 +81,12 @@ protected:
 	
 	std::unique_ptr<MUI::MUI> _mainView = nullptr;
 	
-	
-	ofEventListeners _mainViewListeners;
-	
-	void _mainViewMoved(DOM::MoveEventArgs&);
-	void _mainViewResized(DOM::ResizeEventArgs&);
 
 	std::unique_ptr<TimeControl> _uniqueTimeControl = nullptr;
 	
 	
 private:
 	
-	bool bAutoDrawEnabled = true;
 	
 };
 
