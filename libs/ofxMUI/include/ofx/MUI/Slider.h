@@ -194,7 +194,7 @@ protected:
 
     /// \brief A callback for any resize events.
     /// \param value The DOM::ResizeEvent arguments.
-    void _onResize(DOM::ResizeEventArgs&);
+    void _onShapeChanged(DOM::ShapeChangeEventArgs&);
 
     /// \brief A callback for the ParameterWidget's value.
     /// \param value The the updated value.
@@ -268,7 +268,7 @@ Slider<Type>::Slider(const std::string& id,
     addEventListener(gotPointerCapture, &Slider<Type>::onPointerCaptureEvent);
     addEventListener(lostPointerCapture, &Slider<Type>::onPointerCaptureEvent);
 
-    ofAddListener(Widget::resize, this, &Slider<Type>::_onResize, std::numeric_limits<int>::lowest());
+    ofAddListener(Widget::shapeChanged, this, &Slider<Type>::_onShapeChanged, std::numeric_limits<int>::lowest());
 
 	setImplicitPointerCapture(true);
 }
@@ -297,7 +297,7 @@ Slider<Type>::~Slider()
     removeEventListener(gotPointerCapture, &Slider<Type>::onPointerCaptureEvent);
     removeEventListener(lostPointerCapture, &Slider<Type>::onPointerCaptureEvent);
 
-    ofRemoveListener(resize, this, &Slider<Type>::_onResize, std::numeric_limits<int>::lowest());
+    ofRemoveListener(shapeChanged, this, &Slider<Type>::_onShapeChanged, std::numeric_limits<int>::lowest());
 }
 
 
@@ -509,7 +509,7 @@ std::size_t Slider<Type>::_getActiveAxisIndex() const
 
 
 template <typename Type>
-void Slider<Type>::_onResize(DOM::ResizeEventArgs&)
+void Slider<Type>::_onShapeChanged(DOM::ShapeChangeEventArgs&)
 {
     _effectiveOrientationInvalid = true;
 }
