@@ -198,9 +198,10 @@ public:
     ofEvent<ElementEventArgs> childRemoved;
     ofEvent<ElementOrderEventArgs> childReordered;
 
-    ofEvent<MoveEventArgs> move;
-    ofEvent<ResizeEventArgs> resize;
-
+	ofEvent<ShapeChangeEventArgs> shapeChanged;
+	
+	
+	
     ofEvent<AttributeEventArgs> attributeSet;
     ofEvent<AttributeEventArgs> attributeCleared;
 

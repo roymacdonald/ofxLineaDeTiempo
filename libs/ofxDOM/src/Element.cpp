@@ -14,6 +14,8 @@
 namespace ofx {
 namespace DOM {
 
+
+
 Element::Element(const ofRectangle& rect):
 Element("", rect.x, rect.y, rect.width, rect.height)
 {
@@ -35,6 +37,7 @@ Element::Element(const std::string& id,
                  float y,
                  float width,
                  float height):
+	NodeBase(id),
     _id(id),
     _shape(x, y, width, height)
 {
@@ -82,8 +85,9 @@ std::unique_ptr<Element> Element::removeChild(Element* element)
         }
 
         // Detatch child listeners.
-        ofRemoveListener(detachedChild.get()->move, this, &Element::_onChildMoved);
-        ofRemoveListener(detachedChild.get()->resize, this, &Element::_onChildResized);
+		  ofRemoveListener(detachedChild.get()->shapeChanged, this, &Element::_onChildShapeChanged);
+//        ofRemoveListener(detachedChild.get()->move, this, &Element::_onChildMoved);
+//        ofRemoveListener(detachedChild.get()->resize, this, &Element::_onChildResized);
 
         // Return the detached child.
         // If the return value is ignored, it will be deleted.
@@ -491,11 +495,85 @@ Position Element::screenToParent(const Position& screenPosition) const
 }
 
 
+float Element::localToScreenX(const float& localX) const
+{
+    return localX + getScreenX();
+}
+
+
+float Element::localToScreenY(const float& localY) const
+{
+    return localY + getScreenY();
+}
+
+
+float Element::screenToLocalX(const float& screenX) const
+{
+    return screenX - getScreenX();   
+}
+
+
+float Element::screenToLocalY(const float& screenY) const
+{
+    return screenY - getScreenY();
+}
+
+
+float Element::parentToScreenX(const float& parentX) const
+{
+    if (_parent)
+    {
+        return parentX + _parent->getScreenX();
+    }
+
+    return parentX;
+}
+
+
+float Element::parentToScreenY(const float& parentY) const
+{
+if (_parent)
+    {
+        return parentY + _parent->getScreenY();
+    }
+
+    return parentY;
+}
+
+
+float Element::screenToParentX(const float& screenX) const
+{
+    if (_parent)
+    {
+        return screenX - _parent->getScreenX();
+    }
+
+    return screenX;
+}
+
+
+float Element::screenToParentY(const float& screenY) const
+{
+    if (_parent)
+    {
+        return screenY - _parent->getScreenY();
+    }
+
+    return screenY;
+}
+
+
 void Element::setPosition(float x, float y)
 {
+	
+	ShapeChangeEventArgs e;
+	e.prevShape = _shape;
     _shape.setPosition(x, y);
-    MoveEventArgs e(getPosition());
-    ofNotifyEvent(move, e, this);
+	
+	e.shape = _shape;
+	
+	ofNotifyEvent(shapeChanged, e, this);
+	
 }
 
 
@@ -559,13 +637,23 @@ Shape Element::getScreenShape() const{
 
 float Element::getScreenX() const
 {
-    return getScreenPosition().x;
+    if (_parent)
+    {
+        return getX() + _parent->getScreenX();
+    }
+
+    return getX();
 }
 
 
 float Element::getScreenY() const
 {
-    return getScreenPosition().y;
+    if (_parent)
+    {
+        return getY() + _parent->getScreenY();
+    }
+
+    return getY();
 }
 
 
@@ -582,11 +670,18 @@ Position Element::getScreenCenterPosition() const
 
 void Element::setSize(float width, float height)
 {
+	ShapeChangeEventArgs e;
+	e.prevShape = _shape;
+	
     _shape.setWidth(width);
     _shape.setHeight(height);
     _shape.standardize();
-    ResizeEventArgs e(_shape);
-    ofNotifyEvent(resize, e, this);
+
+	e.shape = _shape;
+	
+	ofNotifyEvent(shapeChanged, e, this);
+	
+	
 }
 
 
@@ -605,6 +700,18 @@ float Element::getWidth() const
 float Element::getHeight() const
 {
     return _shape.getHeight();
+}
+
+
+void Element::setWidth(float width)
+{
+    setSize(width, _shape.height);
+}
+
+
+void Element::setHeight(float height)
+{
+    setSize(_shape.width, height);
 }
 
 
@@ -984,16 +1091,23 @@ bool Element::getImplicitPointerCapture() const
     return _implicitPointerCapture;
 }
 
-void Element::_onChildMoved(MoveEventArgs&)
+
+void Element::_onChildShapeChanged(ShapeChangeEventArgs&)
 {
     invalidateChildShape();
 }
 
 
-void Element::_onChildResized(ResizeEventArgs&)
-{
-    invalidateChildShape();
-}
+//void Element::_onChildMoved(MoveEventArgs&)
+//{
+//    invalidateChildShape();
+//}
+//
+//
+//void Element::_onChildResized(ResizeEventArgs&)
+//{
+//    invalidateChildShape();
+//}
 
 void Element::setDrawAsViewport(bool bViewport)
 {

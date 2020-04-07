@@ -16,7 +16,7 @@
 #include "ofx/DOM/Exceptions.h"
 #include "ofx/DOM/Layout.h"
 #include "ofx/DOM/Types.h"
-
+#include "ofx/DOM/Node.h"
 
 namespace ofx {
 namespace DOM {
@@ -43,7 +43,7 @@ class AbstractLayout;
 /// in terms of the global screen coordiantes where (0, 0) is the upper left
 /// corner of the screen / window, and (ofGetWidth(), ofGetHeight()) are the
 /// coordiantes of the lower right corner.
-class Element: public EventTarget<Element>
+class Element: public EventTarget<Element>, public NodeBase<Element>
 {
 public:
     /// \brief Construct a new Element with the given parameters.
@@ -219,11 +219,11 @@ public:
 
     /// \brief Get a pointer to the parent.
     /// \returns a pointer to the parent or a nullptr.
-    Element* parent();
+    virtual Element* parent() override;
 
     /// \brief Get a pointer to the parent.
     /// \returns a pointer to the parent or a nullptr.
-    const Element* parent() const;
+    virtual const Element* parent() const  override;
 
 	void setParent(Element* parent);
 	
@@ -322,6 +322,51 @@ public:
     /// \returns the position converted from screen to parent coordinates.
     Position screenToParent(const Position& screenPosition) const;
 
+	
+	/// \brief Convert a X-axis value from local to screen coordinates.
+	/// \param localX The local X coordinates to convert.
+	/// \returns the X coordinate value converted from local to screen coordinates.
+    float localToScreenX(const float& localX) const;
+
+	
+	/// \brief Convert a y-axis value from local to screen coordinates.
+	/// \param localY The local y coordinates to convert.
+	/// \returns the y coordinate value converted from local to screen coordinates.
+    float localToScreenY(const float& localY) const;
+
+	
+    /// \brief Convert a X-axis value from screen to local coordinates.
+	/// \param screenX The screen X coordinates to convert.
+	/// \returns the X coordinate value converted from screen to local coordinates.
+    float screenToLocalX(const float& screenX) const;
+
+	/// \brief Convert a y-axis value from screen to local coordinates.
+	/// \param screenY The screen y coordinates to convert.
+	/// \returns the y coordinate value converted from screen to local coordinates.
+    float screenToLocalY(const float& screenY) const;
+	
+    /// \brief Convert a X-axis value from parent to screen coordinates.
+    /// \param parentX The parent X coordinates to convert.
+    /// \returns the X-axis coordinate converted from parent to screen .
+    float parentToScreenX(const float& parentX) const;
+
+    /// \brief Convert a Y-axis value from parent to screen coordinates.
+    /// \param parentY The parent Y coordinates to convert.
+    /// \returns the Y-axis coordinate converted from parent to screen .
+    float parentToScreenY(const float& parentY) const;
+
+
+    /// \brief Convert a X-axis value from screen to parent coordinates.
+    /// \param screenX The screen X coordinates to convert.
+    /// \returns the X-axis coordinate converted from screen to parent .
+    float screenToParentX(const float& screenX) const;
+
+	/// \brief Convert a Y-axis value from screen to parent coordinates.
+    /// \param screenY The screen Y coordinates to convert.
+    /// \returns the Y-axis coordinate converted from screen to parent .
+    float screenToParentY(const float& screenY) const;
+	
+	
     /// \brief Set the position of the Element in its parent coordinates.
     /// \param x The new x position.
     /// \param y The new y position.
@@ -406,6 +451,15 @@ public:
     /// \returns The height of the Element.
     float getHeight() const;
 
+    /// \brief Set the width of the Element.
+    void setWidth(float width);
+
+    /// \brief Set the height of the Element.
+    void setHeight(float height);
+
+	
+	
+	
     /// \brief Get the shape of the Element in its parent coordinates.
     /// \returns the shape of the Element in its parent coordinates.
     Shape getShape() const;
@@ -626,18 +680,16 @@ private:
     /// \brief Non copyable.
     Element& operator = (const Element&) = delete;
 
-    /// \brief A callback for child Elements to notify their parent of movement.
-    void _onChildMoved(MoveEventArgs&);
-
+    
     /// \brief A callback for child Elements to notify their parent size changes.
-    void _onChildResized(ResizeEventArgs&);
+    void _onChildShapeChanged(ShapeChangeEventArgs&);
 
     /// \brief The id for this element.
     std::string _id;
 
     /// \brief The basic shape of this element.
     Shape _shape;
-
+	
     /// \brief The union of all child bounding boxes.
     mutable Shape _childShape;
 
@@ -734,8 +786,8 @@ ElementType* Element::addChild(std::unique_ptr<ElementType> element)
         ofNotifyEvent(childAdded, childAddedEvent, this);
 
         // Attach child listeners.
-        ofAddListener(pNode->move, this, &Element::_onChildMoved);
-        ofAddListener(pNode->resize, this, &Element::_onChildResized);
+		ofAddListener(pNode->shapeChanged, this, &Element::_onChildShapeChanged);
+
 
         /// Alert the node's siblings that they have a new sibling.
         for (auto& child : _children)
