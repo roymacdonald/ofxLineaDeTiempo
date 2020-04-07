@@ -7,7 +7,7 @@
 
 #include "ofx/DOM/Events.h"
 #include "ofx/DOM/Element.h"
-
+#include "ofMath.h"
 
 namespace ofx {
 namespace DOM {
@@ -384,38 +384,95 @@ FocusEventArgs::~FocusEventArgs()
 }
 
 
-MoveEventArgs::MoveEventArgs(const Position& position):
-    _position(position)
+bool ShapeChangeEventArgs::moved() const
 {
+	return _xChanged || _yChanged;
 }
 
 
-MoveEventArgs::~MoveEventArgs()
+bool ShapeChangeEventArgs::resized() const
 {
+	return _wChanged || _hChanged;
 }
 
 
-const Position& MoveEventArgs::position() const
+bool ShapeChangeEventArgs::xChanged() const
 {
-    return _position;
+	return _xChanged;
 }
 
 
-ResizeEventArgs::ResizeEventArgs(const Shape& shape):
-    _shape(shape)
+bool ShapeChangeEventArgs::yChanged() const
 {
+	return _yChanged;
 }
 
 
-ResizeEventArgs::~ResizeEventArgs()
+bool ShapeChangeEventArgs::widthChanged() const
 {
+	return _wChanged;
 }
 
 
-const Shape& ResizeEventArgs::shape() const
+bool ShapeChangeEventArgs::heightChanged() const
 {
-    return _shape;
+	return _hChanged;
 }
+
+
+bool ShapeChangeEventArgs::changedHorizontally() const
+{
+	return _xChanged || _wChanged;
+}
+
+
+bool ShapeChangeEventArgs::changedVertically() const
+{
+	return _yChanged || _hChanged;
+}
+
+
+bool ShapeChangeEventArgs::findChanges()
+{
+	_xChanged = ! ofIsFloatEqual(shape.x, prevShape.x);
+	_yChanged = ! ofIsFloatEqual(shape.y, prevShape.y);
+	_wChanged = ! ofIsFloatEqual(shape.width, prevShape.width);
+	_hChanged = ! ofIsFloatEqual(shape.height, prevShape.height);
+}
+
+//
+//MoveEventArgs::MoveEventArgs(const Position& position):
+//    _position(position)
+//{
+//}
+//
+//
+//MoveEventArgs::~MoveEventArgs()
+//{
+//}
+//
+//
+//const Position& MoveEventArgs::position() const
+//{
+//    return _position;
+//}
+//
+//
+//ResizeEventArgs::ResizeEventArgs(const Shape& shape):
+//    _shape(shape)
+//{
+//}
+//
+//
+//ResizeEventArgs::~ResizeEventArgs()
+//{
+//}
+//
+//
+//const Shape& ResizeEventArgs::shape() const
+//{
+//    return _shape;
+//}
 
 
 AttributeEventArgs::AttributeEventArgs(const std::string& key,

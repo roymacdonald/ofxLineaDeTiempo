@@ -417,35 +417,60 @@ private:
 };
 
 
-class MoveEventArgs
+class ShapeChangeEventArgs
 {
 public:
-    MoveEventArgs(const Position& position);
-    virtual ~MoveEventArgs();
-
-    const Position& position() const;
-
-protected:
-    Position _position;
-
-};
-
-
-class ResizeEventArgs
-{
-public:
-    /// \brief Construct a ResizeEventArgs with the given shape.
-    /// \param shape The new shape.
-    ResizeEventArgs(const Shape& shape);
 
     /// \brief Destroy the ResizeEventArgs.
-    virtual ~ResizeEventArgs();
+	virtual ~ShapeChangeEventArgs() = default;
 
-    const Shape& shape() const;
+    /// \brief The current shape
+	Shape shape;
+	
+	/// \brief The previous shape. Useful for comparing
+	Shape prevShape;
+	
+	///\brief get if shape moved.
+	///\returns true if x or y changed, false otherwise
+	bool moved() const;
+	
+	///\brief get if shape resized.
+	///\returns true if width or height changed, false otherwise
+	bool resized() const;
+	
+	///\brief get if x changed.
+	///\returns true if x changed, false otherwise
+	bool xChanged() const;
+	
+	///\brief get if y changed.
+	///\returns true if y changed, false otherwise
+	bool yChanged() const;
+	
+	///\brief get if width changed.
+	///\returns true if width changed, false otherwise
+	bool widthChanged() const;
+	
+	///\brief get if height changed.
+	///\returns true if height changed, false otherwise
+	bool heightChanged() const;
+	
+	///\brief get if changed horizontally; either x or width changed.
+	///\returns true if x or width changed, false otherwise
+	bool changedHorizontally() const;
+	
+	///\brief get if changed vertically; either y or height changed.
+	///\returns true if y or height changed, false otherwise
+	bool changedVertically() const;
 
-protected:
-    Shape _shape;
-
+	bool findChanges();
+	
+private:
+	
+	bool _xChanged = false;
+	bool _yChanged = false;
+	bool _wChanged = false;
+	bool _hChanged = false;
+	
 };
 
 
