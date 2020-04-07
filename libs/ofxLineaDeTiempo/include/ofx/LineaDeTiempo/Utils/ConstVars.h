@@ -27,14 +27,14 @@ static const ofColor RegionBackgroundColor = ofColor(80);
 
 //HeaderView
 
-static float HeaderViewIndent = 25.f;
+static float HeaderViewIndent = 4.f;
 
 
 //TimeRuler
 
 static float TimeRulerInitialHeight = 30.f;
 
-static float PlayheadTriangleSize = 5.f;
+static float PlayheadTriangleSize = 15.f;
 
 static float PlayheadWidth = 3.f;
 
