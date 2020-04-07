@@ -37,14 +37,6 @@ struct TimeBound
 };
 
 
-class Debug{
-public:
-	
-	
-	static std::string str;
-	
-};
-
 
 class TimeControl
 : public AbstractSerializable
@@ -112,7 +104,7 @@ public:
 	
 	virtual void fromJson(const ofJson& j) override;
 	virtual ofJson toJson() override;
-		
+	
 protected:
 	
 	

@@ -10,13 +10,12 @@
 namespace ofx {
 namespace LineaDeTiempo {
 
-std::string Debug::str = "";
 
 
 //---------------------------------------------------------------------
 TimeControl::TimeControl()
 {
-//	std::cout << "New TimeControl\n";
+	std::cout << "New TimeControl\n";
 	_updateListener = ofEvents().update.newListener(this, &TimeControl::_update);
 }
 //---------------------------------------------------------------------
@@ -176,7 +175,7 @@ void TimeControl::_update(ofEventArgs&)
 //---------------------------------------------------------------------
 void TimeControl::_notifyCurrentTime()
 {
-	Debug::str = "";
+	
 	_currentTimeCopy = _currentTime;
 	ofNotifyEvent(currentTimeUpdateEvent, _currentTimeCopy, this);
 }
