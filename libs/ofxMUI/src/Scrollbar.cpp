@@ -36,8 +36,8 @@ Widget(id, 0, 0, SCROLL_BAR_SIZE,SCROLL_BAR_SIZE)
 	
 	scrollListener = ofEvents().mouseScrolled.newListener(this, &Scrollbar_<HandleType, ScrollData>::_onScrollEvent,std::numeric_limits<int>::lowest());
 
-	shapeChangeListeners.push(Widget::move.newListener(this, &Scrollbar_<HandleType, ScrollData>::_onMove, std::numeric_limits<int>::lowest()));
-	shapeChangeListeners.push(Widget::resize.newListener(this, &Scrollbar_<HandleType, ScrollData>::_onResize, std::numeric_limits<int>::lowest()));
+	shapeChangeListener = Widget::shapeChanged.newListener(this, &Scrollbar_<HandleType, ScrollData>::_onRectChange, std::numeric_limits<int>::lowest());
+	
 	
 	setHighlightOnOver(false);
 	
@@ -80,18 +80,10 @@ void Scrollbar_<HandleType, ScrollData>::setOrientation(DOM::Orientation orienta
 		_handle->setOrientation(orientation);
 	}
 }
-//---------------------------------------------------------------------------------------------------
+
 template<typename HandleType, typename ScrollData>
-void Scrollbar_<HandleType, ScrollData>::_onResize(DOM::ResizeEventArgs&){
-//	FUNC_NAME_TO_DEBUG_STRING
-	if(_handle){
-		_handle->updateLayout();
-	}
-}
-//---------------------------------------------------------------------------------------------------
-template<typename HandleType, typename ScrollData>
-void Scrollbar_<HandleType, ScrollData>::_onMove(DOM::MoveEventArgs&){
-//	FUNC_NAME_TO_DEBUG_STRING
+void Scrollbar_<HandleType, ScrollData>::_onRectChange(DOM::ShapeChangeEventArgs&)
+{
 	if(_handle){
 		_handle->updateLayout();
 	}

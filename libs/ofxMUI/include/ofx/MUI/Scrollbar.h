@@ -71,14 +71,14 @@ protected:
 	
 	bool _onScrollEvent(ofMouseEventArgs & e);
 	
+
+	void _onRectChange(DOM::ShapeChangeEventArgs&);
 	
-	void _onResize(DOM::ResizeEventArgs&);
-	void _onMove(DOM::MoveEventArgs&);
 	
 	HandleType* _handle = nullptr;
 
 private:
-	ofEventListeners shapeChangeListeners;
+	ofEventListener shapeChangeListener;
 	ofEventListener scrollListener;
 
 	ScrollData currentScrollData;
