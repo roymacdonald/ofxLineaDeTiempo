@@ -45,11 +45,10 @@ protected:
 	void _setInHandleConstraint();
 	void _setOutHandleConstraint();
 	
-	virtual void _onMainHandleMoved(DOM::MoveEventArgs& m);
-	virtual void _onMainHandleResize(DOM::ResizeEventArgs& m);
-	void _onInHandleMoved(DOM::MoveEventArgs& m);
-	void _onOutHandleMoved(DOM::MoveEventArgs& m);
-
+	virtual void _onMainHandleShapeChanged(DOM::ShapeChangeEventArgs&);
+	void _onInHandleShapeChanged(DOM::ShapeChangeEventArgs&);
+	void _onOutHandleShapeChanged(DOM::ShapeChangeEventArgs&);
+	
 	bool _updateInHandle();
 	bool _updateOutHandle();
 

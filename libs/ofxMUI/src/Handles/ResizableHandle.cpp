@@ -14,7 +14,8 @@
 namespace ofx {
 namespace MUI {
 
-//---------------------------------------------------------------------------------------------------------------------
+
+
 ResizableHandle::ResizableHandle(const std::string& id, DOM::Orientation orientation, const ofRectangle& rect):
 	Widget(id, rect),
 	DOM::OrientedElement(orientation)
@@ -43,10 +44,10 @@ ResizableHandle::ResizableHandle(const std::string& id, DOM::Orientation orienta
 	
 	mainHandle->setConstrainedToParent(true);
 	
-	handlesListeners.push(inHandle->move.newListener(this, &ResizableHandle::_onInHandleMoved,std::numeric_limits<int>::lowest()));
-	handlesListeners.push(outHandle->move.newListener(this, &ResizableHandle::_onOutHandleMoved,std::numeric_limits<int>::lowest()));
-	handlesListeners.push(mainHandle->move.newListener(this, &ResizableHandle::_onMainHandleMoved,std::numeric_limits<int>::lowest()));
-	handlesListeners.push(mainHandle->resize.newListener(this, &ResizableHandle::_onMainHandleResize,std::numeric_limits<int>::lowest()));
+	handlesListeners.push(inHandle->shapeChanged.newListener(this, &ResizableHandle::_onInHandleShapeChanged,std::numeric_limits<int>::lowest()));
+	handlesListeners.push(outHandle->shapeChanged.newListener(this, &ResizableHandle::_onOutHandleShapeChanged,std::numeric_limits<int>::lowest()));
+	
+	handlesListeners.push(mainHandle->shapeChanged.newListener(this, &ResizableHandle::_onMainHandleShapeChanged,std::numeric_limits<int>::lowest()));
 	
 	
 	mainHandle->moveToBack();
@@ -54,7 +55,8 @@ ResizableHandle::ResizableHandle(const std::string& id, DOM::Orientation orienta
 	_updateOutHandle();
 }
 
-//---------------------------------------------------------------------------------------------------------------------
+
+
 void ResizableHandle::updateLayout(){
 	if(!hasParent() || mainHandle == nullptr ) return;
 	
@@ -64,7 +66,8 @@ void ResizableHandle::updateLayout(){
 	
 	
 }
-//---------------------------------------------------------------------------------------------------------------------
+
+
 void ResizableHandle::_setInHandleConstraint(){
 	glm::vec2 size (SCROLL_BAR_SIZE, SCROLL_BAR_SIZE);
 	glm::vec2 pos = getScreenPosition();//(0,0);
@@ -76,7 +79,8 @@ void ResizableHandle::_setInHandleConstraint(){
 	inHandle->constrainTo(_inHandleConstraint.get());
 	
 }
-//---------------------------------------------------------------------------------------------------------------------
+
+
 void ResizableHandle::_setOutHandleConstraint(){
 	glm::vec2 pos = getScreenPosition();//(0,0);
 	glm::vec2 size (SCROLL_BAR_SIZE, SCROLL_BAR_SIZE);
@@ -91,13 +95,15 @@ void ResizableHandle::_setOutHandleConstraint(){
 	outHandle->constrainTo(_outHandleConstraint.get());
 	
 }
-//---------------------------------------------------------------------------------------------------------------------
+
+
 bool ResizableHandle::_updateInHandle()
 {
 	if(inHandle->isDragging())return false;
 	return setPosIfNonEqual(inHandle, mainHandle->getPosition());
 }
-//---------------------------------------------------------------------------------------------------------------------
+
+
 bool ResizableHandle::_updateOutHandle()
 {
 	if(outHandle->isDragging())return false;
@@ -109,21 +115,20 @@ bool ResizableHandle::_updateOutHandle()
 	
 }
 
-//---------------------------------------------------------------------------------------------------------------------
-void ResizableHandle::_onMainHandleMoved(DOM::MoveEventArgs& m)
+void ResizableHandle::_onMainHandleShapeChanged(DOM::ShapeChangeEventArgs& e)
 {
-	_updateInHandle();
-	_updateOutHandle();
-	_setInHandleConstraint();
-	_setOutHandleConstraint();
+
+	if(!e.resized()){
+		_updateInHandle();//move
+		_updateOutHandle();//move
+	}
+	
+	_setInHandleConstraint();//move,resize
+	_setOutHandleConstraint();//move,resize
 }
-//---------------------------------------------------------------------------------------------------------------------
-void ResizableHandle::_onMainHandleResize(DOM::ResizeEventArgs& m){
-	_setInHandleConstraint();
-	_setOutHandleConstraint();
-}
-//---------------------------------------------------------------------------------------------------------------------
-void ResizableHandle::_onInHandleMoved(DOM::MoveEventArgs& m)
+
+
+void ResizableHandle::_onInHandleShapeChanged(DOM::ShapeChangeEventArgs&)
 {
 	if(inHandle->isDragging()){
 		auto hs = mainHandle->getSize();
@@ -138,9 +143,11 @@ void ResizableHandle::_onInHandleMoved(DOM::MoveEventArgs& m)
 		}
 	}
 }
-//---------------------------------------------------------------------------------------------------------------------
 
-void ResizableHandle::_onOutHandleMoved(DOM::MoveEventArgs& m)
+
+
+
+void ResizableHandle::_onOutHandleShapeChanged(DOM::ShapeChangeEventArgs&)
 {
 	if(outHandle->isDragging()){
 		auto hs = mainHandle->getSize();
@@ -151,16 +158,19 @@ void ResizableHandle::_onOutHandleMoved(DOM::MoveEventArgs& m)
 		setShapeIfNonEqual(mainHandle, {hp, hs.x, hs.y});
 	}
 }
-//---------------------------------------------------------------------------------------------------------------------
+
+
 
 float ResizableHandle::minPosToNormalizedValue(){
 	return ofMap(mainHandle->getPosition()[dimIndex()], 0, getSize()[dimIndex()] - HANDLE_MIN_SIZE , 0,1, true);
 }
-//---------------------------------------------------------------------------------------------------------------------
+
+
 float ResizableHandle::maxPosToNormalizedValue(){
 	return ofMap(mainHandle->getShape().getMax()[dimIndex()], HANDLE_MIN_SIZE, getSize()[dimIndex()] , 0,1, true);
 }
-//---------------------------------------------------------------------------------------------------------------------
+
+
 bool ResizableHandle::normalizedValueToMinPos(float val){
 	auto p = mainHandle->getPosition();
 	p[dimIndex()] = ofMap(val, 0, 1, 0, getSize()[dimIndex()] - HANDLE_MIN_SIZE ,  true);
@@ -170,7 +180,8 @@ bool ResizableHandle::normalizedValueToMinPos(float val){
 	}
 	return false;
 }
-//---------------------------------------------------------------------------------------------------------------------
+
+
 bool ResizableHandle::normalizedValueToMaxPos(float val){
 	
 	auto p = mainHandle->getShape().getMax();

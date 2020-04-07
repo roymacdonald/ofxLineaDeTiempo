@@ -20,30 +20,16 @@ _target(target),
 _edge(edge)
 {
 	setConstrainedToParent(false);
-	_targetListeners.push( target->move.newListener(this, &EdgeHandle::_targetMoved));
-	_targetListeners.push( target->resize.newListener(this, &EdgeHandle::_targetResized));
+	_targetListener = target->shapeChanged.newListener(this, &EdgeHandle::_targetShapeChanged);
 	setHidden(true);
 }
 
-//---------------------------------------------------------------------------------------
-void EdgeHandle::targetChanged()
+
+void EdgeHandle::_targetShapeChanged(DOM::ShapeChangeEventArgs&)
 {
 	if(isDragging()) return;
 	if(_target) setShape(getEdgeRect(_target, _edge));
 }
-
-//---------------------------------------------------------------------------------------
-void EdgeHandle::_targetMoved(DOM::MoveEventArgs& e)
-{
-	targetChanged();
-}
-
-//---------------------------------------------------------------------------------------
-void EdgeHandle::_targetResized(DOM::ResizeEventArgs& e)
-{
-	targetChanged();
-}
-
 //---------------------------------------------------------------------------------------
 void EdgeHandle::_onDragging(const DOM::CapturedPointer& pointer)
 {

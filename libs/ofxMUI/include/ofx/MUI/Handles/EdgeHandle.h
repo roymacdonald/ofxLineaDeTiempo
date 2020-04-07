@@ -38,13 +38,10 @@ protected:
 	
 	DOM::RectEdge _edge;
 	
-	ofEventListeners _targetListeners;
+	ofEventListener _targetListener;
 	
 	
-	void targetChanged();
-	
-	void _targetMoved(DOM::MoveEventArgs& e);
-	void _targetResized(DOM::ResizeEventArgs& e);
+	void _targetShapeChanged(DOM::ShapeChangeEventArgs&);
 	
 	virtual void _onDragging(const DOM::CapturedPointer& pointer) override;
 	

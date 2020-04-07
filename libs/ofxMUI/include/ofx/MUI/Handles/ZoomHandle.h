@@ -23,24 +23,14 @@ public:
 	virtual ~ZoomHandle(){}
 
 
-
-//	const ofRange& getZoom()const;
 	virtual bool setValue(const ofRange& val ) override;
-//	void setZoomMin(float mn);
-//	void setZoomMax(float mx);
+
 
 protected:
 
-//	float _minPosToValue();
-//	float _maxPosToValue();
-//	bool _valueToMinPos(float val);
-//	bool _valueToMaxPos(float val);
+	
+	virtual void _onMainHandleShapeChanged(DOM::ShapeChangeEventArgs&) override;
 
-	
-	virtual void _onMainHandleMoved(DOM::MoveEventArgs& m) override;
-	virtual void _onMainHandleResize(DOM::ResizeEventArgs& m)override;
-	
-	void _mainHandleChanged();
 	
 };
 
