@@ -112,7 +112,6 @@ void KeyframedData_<T>::clear()
 template<typename T>
 bool KeyframedData_<T>::update(const uint64_t& time)
 {
-	Debug::str += "Index: " + ofToString(_currentIndex)+"\n";
 	
 	auto prev = _currentValue;
 	_currentValue = getValueAtTime(time);
