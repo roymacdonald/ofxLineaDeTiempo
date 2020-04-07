@@ -11,6 +11,7 @@
 #include "ofx/MUI/Widget.h"
 #include "ofx/DOM/Layout.h"
 #include "Utils.h"
+#include "ofMath.h"
 
 namespace ofx {
 namespace MUI {
@@ -41,7 +42,8 @@ public:
 	
 	void setOffset(const glm::vec2& offset)
 	{
-		if(container){
+		if(container && (!ofIsFloatEqual(offset.x, container->getX())
+					  || !ofIsFloatEqual(offset.y, container->getY()))){
 			container->setPosition(offset);
 		}
 	}
