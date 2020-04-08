@@ -60,10 +60,19 @@ ResizableHandle::ResizableHandle(const std::string& id, DOM::Orientation orienta
 void ResizableHandle::updateLayout(){
 	if(!hasParent() || mainHandle == nullptr ) return;
 	
+	auto mn = minPosToNormalizedValue();
+	auto mx = maxPosToNormalizedValue();
+	
 	this->setShape({0,0, parent()->getWidth(), parent()->getHeight()});
 		
 	mainHandle->moveToBack();
 	
+	if(!mainHandle->isDragging() && !inHandle->isDragging() && !outHandle->isDragging())
+	{
+	
+		normalizedValueToMinPos(mn);
+		normalizedValueToMaxPos(mx);
+	}
 	
 }
 

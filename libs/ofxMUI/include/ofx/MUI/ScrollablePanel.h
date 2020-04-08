@@ -34,7 +34,7 @@ public:
 	ClippedViewType* getClippingView();
 	
 	ClippedContainerType*  getContainer();
-	void updateLayout();
+	virtual void updateLayout();
 	
 	
 	
@@ -53,7 +53,7 @@ public:
 	///\brief sets the margins back to zero
 	void resetScrollbarMargins();
 
-	void updateContainerLayout();
+//	void updateContainerLayout();
 	
 protected:
 	
@@ -71,12 +71,12 @@ protected:
 		
 	
 	
-public:
-	std::vector<ScrollerData> _scrollData;
+//public:
+//	std::vector<ScrollerData> _scrollData;
 	
 	ScrollBarType<HandleType, ScrollerData> * _scrollbarH = nullptr;
 	ScrollBarType<HandleType, ScrollerData> * _scrollbarV = nullptr;
-protected:
+//protected:
 	
 	bool _bInitScrollData = true;
 	ofEventListeners _scrollListeners;
@@ -88,22 +88,22 @@ private:
 };
 //------------------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------------------
-template<typename PanelType>
-class ScrollablePanelLayout: public DOM::Layout
-{
-public:
-    ScrollablePanelLayout(PanelType* parent);
+//template<typename PanelType>
+//class ScrollablePanelLayout: public DOM::Layout
+//{
+//public:
+//    ScrollablePanelLayout(PanelType* parent);
+//
+//	virtual ~ScrollablePanelLayout(){}
+//
+//    virtual void doLayout() override;
+//	
+//protected:
+//	PanelType* parentPanel;
+//};
 
-	virtual ~ScrollablePanelLayout(){}
-
-    virtual void doLayout() override;
-	
-protected:
-	PanelType* parentPanel;
-};
-
-typedef ScrollablePanel_<ScrollHandle, float, Scrollbar_, ClippedView, DOM::Element> ScrollablePanel;
-typedef ScrollablePanel_<ZoomHandle, ofRange, Scrollbar_, ScaledView, ScaledContainer> ScalablePanel;
+//typedef ScrollablePanel_<ScrollHandle, float, Scrollbar_, ClippedView, DOM::Element> ScrollablePanel;
+//typedef ScrollablePanel_<ZoomHandle, ofRange, Scrollbar_, ScaledView, ScaledContainer> ScalablePanel;
 typedef ScrollablePanel_<ZoomHandle, ofRange, Scrollbar_, LineaDeTiempo::TracksClippedView, DOM::Element> TracksScrollPanel;
 //typedef ScrollablePanel_<ZoomHandle, ofRange, Scrollbar_, TracksClippedView, ZoomableContainer> ZoomablePanel;
 

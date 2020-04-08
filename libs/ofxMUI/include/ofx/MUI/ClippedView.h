@@ -31,7 +31,7 @@ public:
 
 		setDrawAsViewport(true);
 		setFocusable(false);
-		container = addChild<ContainerType>(id+"_Container", rect, std::forward<Args>(args)...);
+		container = addChild<ContainerType>(id+"_Container", ofRectangle(0,0,rect.width, rect.height), std::forward<Args>(args)...);
 		container->setFocusable(false);
 		container->setDrawChildrenOnly(true);
 	//	createLayout<ClippedViewLayout>(this);
