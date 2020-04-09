@@ -55,6 +55,8 @@ public:
 
 //	void updateContainerLayout();
 	
+	void updateVerticalScrollFromContainersHeight();
+	
 protected:
 	
 	ClippedViewType* _clippingPanel = nullptr;

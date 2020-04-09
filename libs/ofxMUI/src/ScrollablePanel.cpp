@@ -16,7 +16,6 @@ template<typename H, typename D,  template <typename, typename> class B, typenam
 ScrollablePanel_<H, D, B, C, CT>::ScrollablePanel_(const std::string& id, const ofRectangle& rect):
 Widget(id, rect.x,rect.y,rect.width,rect.height)
 {
-	printDepth("ScrollablePanel_<H, D, B, C, CT>::ScrollablePanel_ | ");
 	this->setFocusable(false);
 	
 	_scrollbarH = this->addChild<B<H, D>>("H_Scrollbar", DOM::Orientation::HORIZONTAL);
@@ -42,7 +41,6 @@ Widget(id, rect.x,rect.y,rect.width,rect.height)
 //template<>
 //void ScrollablePanel_<ZoomHandle, ofRange_<float>, Scrollbar_, LineaDeTiempo::TracksClippedView, DOM::Element>::updateContainerLayout()
 //{
-//	printDepth("void ScrollablePanel_<ZoomHandle, ofRange_<float>, Scrollbar_, LineaDeTiempo::TracksClippedView, DOM::Element>::updateContainerLayout() | ");
 //	if(_bInitScrollData)
 //	{
 //		_bInitScrollData = false;
@@ -56,7 +54,6 @@ Widget(id, rect.x,rect.y,rect.width,rect.height)
 //template<>
 //void ScrollablePanel_<ZoomHandle, ofRange_<float>, Scrollbar_, ScaledView, ScaledContainer>::updateContainerLayout()
 //{
-//	printDepth("void ScrollablePanel_<ZoomHandle, ofRange_<float>, Scrollbar_, ScaledView, ScaledContainer>::updateContainerLayout() | ");
 //	auto c = getContainer();
 //	if(c){
 //
@@ -92,7 +89,6 @@ Widget(id, rect.x,rect.y,rect.width,rect.height)
 //template<>
 //void ScrollablePanel_<ScrollHandle, float, Scrollbar_, ClippedView_<Widget>, Widget>::updateContainerLayout()
 //{
-//	printDepth("void ScrollablePanel_<ScrollHandle, float, Scrollbar_, ClippedView_<Widget>, Widget>::updateContainerLayout() | ");
 //	auto c = getContainer();
 //	if(c){
 //		glm::vec2 offset(0,0);
@@ -111,14 +107,12 @@ Widget(id, rect.x,rect.y,rect.width,rect.height)
 //template<typename H, typename D,  template <typename, typename> class B, typename C, typename CT>
 //void ScrollablePanel_<H, D, B, C, CT>::updateContainerLayout()
 //{
-//	printDepth("void ScrollablePanel_<H, D, B, C, CT>::updateContainerLayout() | ");
 //	ofLogError(__PRETTY_FUNCTION__) << "This function template specialization is not implemented";
 //}
 //---------------------------------------------------------------------------------------------------
 template<typename H, typename D,  template <typename, typename> class B, typename C, typename CT>
 void ScrollablePanel_<H, D, B, C, CT>::_scrollVChanged(D& s)
 {
-	printDepth("void ScrollablePanel_<H, D, B, C, CT>::_scrollVChanged(D& s) | ");
 
 //	if(s != _clippingPanel->getZoom(DOM::VERTICAL)) return;
 	
@@ -129,7 +123,6 @@ void ScrollablePanel_<H, D, B, C, CT>::_scrollVChanged(D& s)
 template<typename H, typename D,  template <typename, typename> class B, typename C, typename CT>
 void ScrollablePanel_<H, D, B, C, CT>::_scrollHChanged(D& s)
 {
-	printDepth("void ScrollablePanel_<H, D, B, C, CT>::_scrollHChanged(D& s) | ");
 //	this->_scrollData[0] =s;
 //	if(s == _clippingPanel->getZoom(DOM::HORIZONTAL)) return;
 	
@@ -141,7 +134,6 @@ void ScrollablePanel_<H, D, B, C, CT>::_scrollHChanged(D& s)
 template<typename H, typename D,  template <typename, typename> class B, typename C, typename CT>
 void ScrollablePanel_<H, D, B, C, CT>::_updateScrollbar(B<H, D> * scrollbar)
 {
-	printDepth("void ScrollablePanel_<H, D, B, C, CT>::_updateScrollbar(B<H, D> * scrollbar) | ");
 	
 	if(scrollbar){
 		auto orientation = scrollbar->getOrientation();
@@ -173,7 +165,6 @@ void ScrollablePanel_<H, D, B, C, CT>::_updateScrollbar(B<H, D> * scrollbar)
 template<typename H, typename D,  template <typename, typename> class B, typename C, typename CT>
 void ScrollablePanel_<H, D, B, C, CT>::updateLayout()
 {
-	printDepth("void ScrollablePanel_<H, D, B, C, CT>::updateLayout() | ");
 	//TODO: There seems to be an excesive and unnecesary amount of calls to this function
 	_updateScrollbar(_scrollbarH);
 	_updateScrollbar(_scrollbarV);
@@ -192,7 +183,6 @@ void ScrollablePanel_<H, D, B, C, CT>::updateLayout()
 template<typename H, typename D,  template <typename, typename> class B, typename C, typename CT>
 bool ScrollablePanel_<H, D, B, C, CT>::_onMouseScrollEvent(ofMouseEventArgs & e)
 {
-	printDepth("bool ScrollablePanel_<H, D, B, C, CT>::_onMouseScrollEvent(ofMouseEventArgs & e) | ")	;
 	if(_scrollbarH && _scrollbarH->isEnabled())_scrollbarH->scroll(e.scrollX);
 	if(_scrollbarV && _scrollbarV->isEnabled())_scrollbarV->scroll(e.scrollY);
 }
@@ -200,14 +190,12 @@ bool ScrollablePanel_<H, D, B, C, CT>::_onMouseScrollEvent(ofMouseEventArgs & e)
 template<typename H, typename D,  template <typename, typename> class B, typename C, typename CT>
 void ScrollablePanel_<H, D, B, C, CT>::setForceShowScrollbars(bool show)
 {
-	printDepth("void ScrollablePanel_<H, D, B, C, CT>::setForceShowScrollbars(bool show) | ");
 	_forceShowScrollbars = show;
 }
 //---------------------------------------------------------------------------------------------------
 template<typename H, typename D,  template <typename, typename> class B, typename C, typename CT>
 bool ScrollablePanel_<H, D, B, C, CT>::isForceShowScrollbars()
 {
-	printDepth("bool ScrollablePanel_<H, D, B, C, CT>::isForceShowScrollbars() | ");
 	return _forceShowScrollbars;
 }
 
@@ -216,7 +204,6 @@ bool ScrollablePanel_<H, D, B, C, CT>::isForceShowScrollbars()
 template<typename H, typename D,  template <typename, typename> class B, typename C, typename CT>
 void ScrollablePanel_<H, D, B, C, CT>::setVScrollMargin(float top, float bottom)
 {
-	printDepth("void ScrollablePanel_<H, D, B, C, CT>::setVScrollMargin(float top, float bottom) | ");
 	_scrollMargins.top = top;
 	_scrollMargins.bottom = bottom;
 	_updateScrollbar(_scrollbarV);
@@ -225,7 +212,6 @@ void ScrollablePanel_<H, D, B, C, CT>::setVScrollMargin(float top, float bottom)
 template<typename H, typename D,  template <typename, typename> class B, typename C, typename CT>
 void ScrollablePanel_<H, D, B, C, CT>::setHScrollMargin(float left, float right)
 {
-	printDepth("void ScrollablePanel_<H, D, B, C, CT>::setHScrollMargin(float left, float right) | ");
 	_scrollMargins.left = left;
 	_scrollMargins.right = right;
 	_updateScrollbar(_scrollbarH);
@@ -235,7 +221,6 @@ void ScrollablePanel_<H, D, B, C, CT>::setHScrollMargin(float left, float right)
 template<typename H, typename D,  template <typename, typename> class B, typename C, typename CT>
 const Margins& ScrollablePanel_<H, D, B, C, CT>::getScrollMargins()
 {
-	printDepth("const Margins& ScrollablePanel_<H, D, B, C, CT>::getScrollMargins() | ");
 	return _scrollMargins;
 }
 
@@ -243,7 +228,6 @@ const Margins& ScrollablePanel_<H, D, B, C, CT>::getScrollMargins()
 template<typename H, typename D,  template <typename, typename> class B, typename C, typename CT>
 void ScrollablePanel_<H, D, B, C, CT>::resetScrollbarMargins()
 {
-	printDepth("void ScrollablePanel_<H, D, B, C, CT>::resetScrollbarMargins() | ");
 	_scrollMargins.reset();
 }
 
@@ -252,7 +236,6 @@ void ScrollablePanel_<H, D, B, C, CT>::resetScrollbarMargins()
 template<typename H, typename D,  template <typename, typename> class B, typename C, typename CT>
 void ScrollablePanel_<H, D, B, C, CT>::setScrollH(D d)
 {
-	printDepth("void ScrollablePanel_<H, D, B, C, CT>::setScrollH(D d) | ");
 	if(_scrollbarH){
 		_scrollbarH->setValue(d);
 	}else{
@@ -263,7 +246,6 @@ void ScrollablePanel_<H, D, B, C, CT>::setScrollH(D d)
 template<typename H, typename D,  template <typename, typename> class B, typename C, typename CT>
 void ScrollablePanel_<H, D, B, C, CT>::setScrollV(D d)
 {
-	printDepth("void ScrollablePanel_<H, D, B, C, CT>::setScrollV(D d) | ");
 	std::cout << "--------------------------------------------------------------------------------\n";
 	if(_scrollbarV){
 		
@@ -277,7 +259,6 @@ void ScrollablePanel_<H, D, B, C, CT>::setScrollV(D d)
 template<typename H, typename D,  template <typename, typename> class B, typename C, typename CT>
 CT* ScrollablePanel_<H, D, B, C, CT>::getContainer()
 {
-	printDepth("CT* ScrollablePanel_<H, D, B, C, CT>::getContainer() | ");
 	if(_clippingPanel)return _clippingPanel->container;
 	return nullptr;
 }
@@ -285,7 +266,6 @@ CT* ScrollablePanel_<H, D, B, C, CT>::getContainer()
 template<typename H, typename D,  template <typename, typename> class B, typename C, typename CT>
 bool ScrollablePanel_<H, D, B, C, CT>::isScrollbarActive(DOM::Orientation scrollbarOrientation)
 {
-	printDepth("bool ScrollablePanel_<H, D, B, C, CT>::isScrollbarActive(DOM::Orientation scrollbarOrientation) | ");
 	if(_forceShowScrollbars)return true;
 	if(_clippingPanel){
 		auto c = getContainer();
@@ -300,7 +280,6 @@ bool ScrollablePanel_<H, D, B, C, CT>::isScrollbarActive(DOM::Orientation scroll
 template<typename H, typename D,  template <typename, typename> class B, typename C, typename CT>
 float ScrollablePanel_<H, D, B, C, CT>::getScrollbarSize(DOM::Orientation scrollbarOrientation)
 {
-	printDepth("float ScrollablePanel_<H, D, B, C, CT>::getScrollbarSize(DOM::Orientation scrollbarOrientation) | ");
 	if(isScrollbarActive(scrollbarOrientation)){
 		return SCROLL_BAR_SIZE;
 	}else{
@@ -311,7 +290,6 @@ float ScrollablePanel_<H, D, B, C, CT>::getScrollbarSize(DOM::Orientation scroll
 template<typename H, typename D,  template <typename, typename> class B, typename C, typename CT>
 C*  ScrollablePanel_<H, D, B, C, CT>::getClippingView()
 {
-	printDepth("C*  ScrollablePanel_<H, D, B, C, CT>::getClippingView() | ");
 	return _clippingPanel;
 }
 
@@ -341,7 +319,15 @@ C*  ScrollablePanel_<H, D, B, C, CT>::getClippingView()
 //        _isDoingLayout = false;
 //    }
 //}
-
+template<typename H, typename D,  template <typename, typename> class B, typename C, typename CT>
+void ScrollablePanel_<H, D, B, C, CT>::updateVerticalScrollFromContainersHeight()
+{
+	
+	auto z = _clippingPanel->getVerticalZoomFromContainerHeight();
+		
+	setScrollV(z);
+	
+}
 
 //---------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------
