@@ -18,26 +18,138 @@ namespace DOM {
 /// \brief A class representing a node object,
 /// which can have children that inherit from Node
 
+//#define ENABLE_NODE_BASE
 
+#ifdef ENABLE_NODE_BASE
+static bool bEnablePrintDepth = true;;
 
-
+template<typename DerivedClass>
+class NodeBase
+{
+public:
+	~NodeBase() = default;
+	
+	NodeBase(const std::string& _name)
+	:name(_name)
+	{
+		_uniqueNum = getUniqueNum();
+		std::cout << "New NodeBase " << _name << " unique num: " << _uniqueNum << "\n";
+	}
+	
+	virtual DerivedClass* parent() = 0;
+	
+	virtual const DerivedClass* parent() const = 0 ;
+	
+	void _getDepth(size_t & d)  const
+	{
+			if(parent())
+		{
+			++d;
+			parent()->_getDepth(d);
+		}
+	}
+	
+	size_t getDepth() const
+	{
+		size_t d = 0;
+		_getDepth(d);
+		return d;
+	}
+	
+	static const size_t& getUniqueNum()
+	{
+		static std::unique_ptr<size_t> i = nullptr;
+		if(!i){
+			i =  std::make_unique<size_t>(0);//iniciar con valores predeterminados.
+		}else{
+			(*i.get()) = (*i.get()) + 1;
+		}
+		return *i;
+	}
+	
+	
+	
+	
+	
+	void //printDepth(const std::string& callerFunc) const
+	{
+		if(bEnablePrintDepth && bPrintDepth){
+			if(!bSetPrintIndent){
+				auto d= getDepth();
+				printIndent = "";
+				for(int i = 0; i<d; ++i){
+					printIndent += "    ";
+				}
+				
+//				auto pprint = callerFunc;
+//
+//				std::string ldt = "ofx::LineaDeTiempo::";
+//
+//				auto p = pprint.find(ldt);
+//
+//				if(p != std::string::npos)
+//				{
+//					printIndent += pprint.substr(0, p);
+//					pprint = pprint.substr(p + ldt.length());
+//					p = pprint.find("::");
+//					if(p != std::string::npos)
+//					{
+//						printIndent += pprint.substr(0, p);
+//					}
+//
+//					printIndent += " - " + func;
+//
+//				}
+//
+//				bSetPrintIndent = true;
+				std::cout << printIndent << callerFunc << "  "<< _uniqueNum << "  " << name << "\n";
+			}
+		}
+	}
+	std::string name = "";
+	
+	mutable std::string printIndent = "";
+	mutable bool bSetPrintIndent = false;
+	bool bPrintDepth = true;
+	size_t _uniqueNum = 0;
+};
+class Node:
+public NodeBase<Node>
+{
+public:
+		
+	Node(const std::string& id, Node* parent)
+	: NodeBase(id)
+	, _id(id)
+	, _parent(parent)
+	{
+		bPrintDepth = false;
+	}
+	
+	Node(const std::string& id)
+	:NodeBase(id),
+	_id(id)
+	{
+		
+	}
+#else
 class Node
+
 {
 public:
 	
 	Node(const std::string& id, Node* parent)
-	:_id(id)
-	,_parent(parent)
+	: _id(id)
+	, _parent(parent)
 	{
-		
 	}
 	
     Node(const std::string& id)
 	:_id(id)
 	{
-		
 	}
-    /// \brief Destroy the Node.
+#endif
+	/// \brief Destroy the Node.
 	virtual ~Node() = default;
 
     /// \brief Take ownership of the passed std::unique_ptr<Node>.
@@ -232,15 +344,18 @@ public:
     /// \param id The id of the child Nodes to find.
     /// \returns a vector of pointers to child nodes or an empty vector if none exist.
     std::vector<const Node*> findChildrenById(const std::string& id) const;
-
-    /// \brief Get a pointer to the parent.
+#ifdef ENABLE_NODE_BASE
+    virtual Node* parent() override;
+    virtual const Node* parent() const override;
+#else
+	/// \brief Get a pointer to the parent.
     /// \returns a pointer to the parent or a nullptr.
-    Node* parent();
+    virtual Node* parent();
 
     /// \brief Get a pointer to the parent.
     /// \returns a pointer to the parent or a nullptr.
     const Node* parent() const;
-
+#endif
     /// \brief Get this Node's child by its index position.
     /// \param index The index of the child Node to get.
     /// \returns a pointer to the child at index or nullptr if no such child exists.
@@ -288,7 +403,7 @@ public:
 	}
 	
 	
-
+	
 	void printStructure(std::string prefix = "");
 	
 protected:

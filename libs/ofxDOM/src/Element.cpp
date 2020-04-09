@@ -37,7 +37,9 @@ Element::Element(const std::string& id,
                  float y,
                  float width,
                  float height):
+#ifdef ENABLE_NODE_BASE
 	NodeBase(id),
+#endif
     _id(id),
     _shape(x, y, width, height)
 {
@@ -572,6 +574,9 @@ void Element::setPosition(float x, float y)
 	
 	e.shape = _shape;
 	
+	e.findChanges();
+	_onShapeChange(e);
+	
 	ofNotifyEvent(shapeChanged, e, this);
 	
 }
@@ -679,6 +684,9 @@ void Element::setSize(float width, float height)
 
 	e.shape = _shape;
 	
+	e.findChanges();
+	_onShapeChange(e);
+	
 	ofNotifyEvent(shapeChanged, e, this);
 	
 	
@@ -723,8 +731,24 @@ Shape Element::getShape() const
 
 void Element::setShape(const Shape& shape)
 {
-    setPosition(shape.x, shape.y);
-    setSize(shape.width, shape.height);
+	
+	ShapeChangeEventArgs e;
+	e.prevShape = _shape;
+	
+	_shape = shape;
+    _shape.standardize();
+
+	e.shape = _shape;
+	
+	e.findChanges();
+	_onShapeChange(e);
+	
+	ofNotifyEvent(shapeChanged, e, this);
+	
+	
+	//this triggers two event which ends up being redundat.
+//    setPosition(shape.x, shape.y);
+//    setSize(shape.width, shape.height);
 }
 
 
@@ -1131,7 +1155,7 @@ bool Element::isDrawingChildrenOnly() const
 
 void Element::printStructure(std::string prefix)
 {
-	std::cout << prefix << getId() << "  " <<  getShape() <<"\n";
+	std::cout << prefix << getId() << "  " <<  getShape() << "\n";
 	prefix += "   ";
 	
 	for(auto c: children())

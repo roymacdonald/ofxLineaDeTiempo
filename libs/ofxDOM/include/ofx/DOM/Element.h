@@ -43,7 +43,10 @@ class AbstractLayout;
 /// in terms of the global screen coordiantes where (0, 0) is the upper left
 /// corner of the screen / window, and (ofGetWidth(), ofGetHeight()) are the
 /// coordiantes of the lower right corner.
-class Element: public EventTarget<Element>, public NodeBase<Element>
+class Element: public EventTarget<Element>
+#ifdef ENABLE_NODE_BASE
+, public NodeBase<Element>
+#endif
 {
 public:
     /// \brief Construct a new Element with the given parameters.
@@ -216,15 +219,18 @@ public:
     /// \param id The id of the child Elements to find.
     /// \returns a vector of pointers to child elements or an empty vector if none exist.
     std::vector<Element*> findChildrenById(const std::string& id);
-
-    /// \brief Get a pointer to the parent.
-    /// \returns a pointer to the parent or a nullptr.
+#ifdef ENABLE_NODE_BASE
     virtual Element* parent() override;
+    virtual const Element* parent() const  override;
+#else
+	/// \brief Get a pointer to the parent.
+    /// \returns a pointer to the parent or a nullptr.
+	Element* parent();
 
     /// \brief Get a pointer to the parent.
     /// \returns a pointer to the parent or a nullptr.
-    virtual const Element* parent() const  override;
-
+	const Element* parent() const;
+#endif
 	void setParent(Element* parent);
 	
 	
@@ -671,6 +677,11 @@ protected:
 	/// override if you have overriden _applytransform
 	virtual void _restoreTransform();
 	
+	
+	virtual void _onShapeChange(const ShapeChangeEventArgs& )
+	{
+		
+	}
 	
 
 private:
