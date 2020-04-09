@@ -47,11 +47,11 @@ public:
 	
 	template<typename DataType>
 	KeyframeTrackController_<DataType>* add(ofParameter<DataType>& parameter);
-
+	
 	
 	template<typename DataType>
 	KeyframeTrackController_<DataType> * addTrack( ofParameter<DataType>& parameter);
-
+	
 	
 	template<typename NewTrackControllerType>
 	NewTrackControllerType * addTrack( const std::string& trackName = "");
@@ -113,9 +113,9 @@ public:
 	
 	
 	virtual void fromJson(const ofJson& j) override;
-
+	
 	virtual ofJson toJson() override;
-
+	
 	
 protected:
 	void _makeFromJson(const ofJson& j);

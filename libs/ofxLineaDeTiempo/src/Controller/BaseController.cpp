@@ -45,7 +45,8 @@ bool BaseController<T>::hasView() const
 	return (_view != nullptr);
 }
 template<typename T>
-void BaseController<T>::destroyChildrenViews(DOM::Node * parent){
+void BaseController<T>::destroyChildrenViews(DOM::Node * parent)
+{
 	if(!parent) return;
 	for(auto child : parent->children())
 	{
@@ -54,7 +55,8 @@ void BaseController<T>::destroyChildrenViews(DOM::Node * parent){
 	}
 }
 template<typename T>
-void BaseController<T>::generateChildrenViews(DOM::Node * parent){
+void BaseController<T>::generateChildrenViews(DOM::Node * parent)
+{
 	if(!parent) return;
 	for(auto child : parent->children())
 	{

@@ -11,16 +11,10 @@
 namespace ofx {
 namespace LineaDeTiempo {
 
-//RegionController::RegionController(const std::string& name, TrackController* parentTrack, TimeControl* timeControl)
-//:BaseController<RegionView>(name, parentTrack, timeControl)
-//, _parentTrack(parentTrack)
-//{
-//
-//}
-
 RegionController::RegionController(const std::string& name, const ofRange64u& timeRange, TrackController* parentTrack, TimeControl* timeControl)
 :BaseController<RegionView>(name, parentTrack, timeControl)
 {
+	
 	setTimeRange(timeRange, false);
 	
 }
@@ -33,7 +27,8 @@ const ofRange64u& RegionController::getTimeRange() const
  }
 
 
-void RegionController::setTimeRange(const ofRange64u& t, bool updateView ){
+void RegionController::setTimeRange(const ofRange64u& t, bool updateView )
+{
  	if(_timeRange != t){
  		_timeRange = t;
 		if(updateView && getView())

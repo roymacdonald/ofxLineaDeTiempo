@@ -16,7 +16,6 @@ namespace LineaDeTiempo {
 TracksPanelController::TracksPanelController(const std::string& name)
 : TrackGroupController(name, nullptr, nullptr)
 {
-	printDepth("TracksPanelController::TracksPanelController | ");
 	_uniqueTimeControl = make_unique<TimeControl>();
 	_setTimeControl(  _uniqueTimeControl.get());
 	
@@ -24,7 +23,6 @@ TracksPanelController::TracksPanelController(const std::string& name)
 
 void TracksPanelController::setWindow(ofAppBaseWindow* window)
 {
-	printDepth("void TracksPanelController::setWindow(ofAppBaseWindow* window) | ");
 	if(_currentWindow != window)
 	{
 		_currentWindow = window;
@@ -33,7 +31,6 @@ void TracksPanelController::setWindow(ofAppBaseWindow* window)
 
 void TracksPanelController::generateView()
 {
-	printDepth("void TracksPanelController::generateView() | ");
 	
 	if(!_panel){
 		if(_currentWindow == nullptr)
@@ -49,15 +46,18 @@ void TracksPanelController::generateView()
 			
 			_mainView = std::make_unique<MUI::MUI>(docSettings);
 			
+			
+//			_mainView->setAutoFillScreen(false);
+			
 		}
 		
 		_panel = _mainView->addChild<TracksPanel>( this->getId(), _mainView.get(), ofRectangle(0, 0, ofGetWidth(), ofGetHeight()), this);
 		
-		setView(_panel);
+			setView(_panel);
 		
-		generateChildrenViews(this);
+			generateChildrenViews(this);
 		
-		_panel->_setup();
+			_panel->_setup();
 		
 	}
 	
@@ -65,7 +65,6 @@ void TracksPanelController::generateView()
 
 void TracksPanelController::destroyView()
 {
-	printDepth("void TracksPanelController::destroyView() | ");
 	if(_mainView && _panel)
 	{
 		
@@ -97,21 +96,18 @@ void TracksPanelController::draw()
 
 bool TracksPanelController::save(const std::filesystem::path& filepath)
 {
-	printDepth("bool TracksPanelController::save(const std::filesystem::path& filepath) | ");
 	
 	ofSaveJson(filepath, toJson());
 }
 
 bool TracksPanelController::load(const std::filesystem::path& filepath)
 {
-	printDepth("bool TracksPanelController::load(const std::filesystem::path& filepath) | ");
 	fromJson(ofLoadJson(filepath));
 }
 
 
 void TracksPanelController::fromJson(const ofJson& j)
 {
-	printDepth("void TracksPanelController::fromJson(const ofJson& j) | ");
 	
 	TrackGroupController::fromJson(j);
 	
@@ -121,7 +117,7 @@ void TracksPanelController::fromJson(const ofJson& j)
 		_uniqueTimeControl->fromJson(j["timeControl"]);
 	}
 	
-	if(j["_mainView"].get<bool>())// = (_mainView != nullptr);
+	if(j["_panel"].get<bool>())
 	{
 		generateView();
 	}
@@ -129,17 +125,10 @@ void TracksPanelController::fromJson(const ofJson& j)
 
 ofJson TracksPanelController::toJson()
 {
-	printDepth("ofJson TracksPanelController::toJson() | ");
 	ofJson j = TrackGroupController::toJson();
 	j["class"] = "TracksPanelController";
-	if(_panel)
-	{
-		//			j["_panel"] = _panel->toJson();
-	}
-	
-	
-	j["_mainView"] = (_mainView != nullptr);
-	
+		
+	j["_panel"] = (_panel != nullptr);
 	
 	
 	if(_uniqueTimeControl)
@@ -153,16 +142,25 @@ ofJson TracksPanelController::toJson()
 
 void TracksPanelController::setTotalTime(const uint64_t& totalTime )
 {
-	printDepth("void TracksPanelController::setTotalTime(const uint64_t& totalTime ) | ");
 	_uniqueTimeControl->setTotalTime(totalTime);
 }
 
 
 const uint64_t& TracksPanelController::getTotalTime() const
 {
-	printDepth("const uint64_t& TracksPanelController::getTotalTime() const | ");
 	return _uniqueTimeControl->getTotalTime();
 }
+
+TracksPanel * TracksPanelController::getPanel()
+{
+	return _panel;
+}
+
+const TracksPanel * TracksPanelController::getPanel() const
+{
+	return _panel;
+}
+
 
 
 } } // ofx::LineaDeTiempo

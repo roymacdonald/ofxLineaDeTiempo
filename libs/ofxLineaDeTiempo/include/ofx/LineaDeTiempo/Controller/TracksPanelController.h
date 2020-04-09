@@ -65,7 +65,9 @@ public:
 	///\returns the total time in milliseconds
 	const uint64_t& getTotalTime() const;
 	
-	TracksPanel* _panel = nullptr;
+
+	TracksPanel * getPanel();
+	const TracksPanel * getPanel() const;
 	
 protected:
 	
@@ -74,11 +76,12 @@ protected:
 
 	virtual ofJson toJson() override;
 	
-	
+
+	TracksPanel* _panel = nullptr;
 	
 	
 	ofAppBaseWindow* _currentWindow = nullptr;
-	
+
 	std::unique_ptr<MUI::MUI> _mainView = nullptr;
 	
 

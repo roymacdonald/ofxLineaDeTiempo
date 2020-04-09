@@ -20,7 +20,6 @@ template <typename T>
 KeyframeTrackController_<T>::KeyframeTrackController_(ofParameter<T>& parameter,TrackGroupController* parent, TimeControl* timeControl)
 : TrackController(parameter.getName(), parent, timeControl)
 {
-	
 	_parameter.makeReferenceTo(parameter);
 	_setup();
 }
@@ -74,8 +73,8 @@ const ofParameter<T>& KeyframeTrackController_<T>::getParameter() const
 
 
 template <typename T>
-void KeyframeTrackController_<T>::_paramChanged(T& ){
-	
+void KeyframeTrackController_<T>::_paramChanged(T& )
+{	
 	//TODO: implement listener so changes done externaly to a param can get recorded
 	//	if(!_bModifyingParam)
 	//	{

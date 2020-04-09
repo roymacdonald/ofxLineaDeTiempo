@@ -33,9 +33,7 @@ public:
 	,_parentController(parentController)
 	,_data(data)
 	{
-	
-//		std::cout << "KeyframeController constructor  " << data->value << " - " << data->time << endl;
-		
+			
 	}
 
 	

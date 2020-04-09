@@ -27,7 +27,7 @@ KeyframeCollectionController<D>::KeyframeCollectionController( KeyframeRegionCon
 {
 	
 	_dataTypeName = typeid(D).name();
-	
+
 	
 }
 
