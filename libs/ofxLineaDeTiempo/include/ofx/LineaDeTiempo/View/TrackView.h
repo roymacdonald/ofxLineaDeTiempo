@@ -11,6 +11,7 @@
 
 #include "LineaDeTiempo/View/BaseTrackView.h"
 #include "LineaDeTiempo/View/RegionView.h"
+#include "LineaDeTiempo/View/TimeRuler.h"
 //#include "LineaDeTiempo/BaseTypes/BaseHasController.h"
 
 namespace ofx {
@@ -26,7 +27,7 @@ class TrackView
 {
 public:
 
-	TrackView(DOM::Element* parentView, TrackController* controller);
+	TrackView(DOM::Element* parentView, TrackController* controller, TimeRuler * timeRuler );
 	virtual ~TrackView() = default;
 	
 	float getHeightFactor() const;
@@ -43,10 +44,8 @@ public:
 	
 	uint64_t localPositionToTime(float x) const;
 	
-	float timeToScreenPosition(uint64_t time) const;
 	
-	uint64_t  screenPositionToTime(float x) const;
-
+	
 	virtual void updateLayout() override;
 	
 	
@@ -60,6 +59,7 @@ public:
 					  "TrackView:: RegionControllerType must be of type ofx::LineaDeTiempo::RegionController or derived from it");
 		
 		auto r = addChild<RegionViewType>(this,controller, _regionsHeaderStyle);
+		_regions.push_back(r);
 		return r;
 
 	}
@@ -67,21 +67,30 @@ public:
 	
 	bool removeRegion(RegionController * controller);
 	
-	virtual float getUnscaledHeight() override;
-	virtual float updateScaledShape(float y, float yScale, float width) override;
+	virtual float getUnscaledHeight(size_t & numGroups) override;
+	virtual float updateYScaled(float y, float yScale) override;
 
 	
 	const TrackController * getController() const;
 	
 	TrackController * getController();
 
+	
+	
+	
 protected:
 
+	
+	virtual void _onShapeChange(const DOM::ShapeChangeEventArgs& ) override;
+	
+	
+	
 	float _heightFactor = 1;
 	float _unscaledHeight;
 	
 	shared_ptr<MUI::Styles> _regionsHeaderStyle = nullptr;
 	
+	std::vector<RegionView*> _regions;
 	
 	void colorChanged(ofColor& color);
 	
@@ -89,6 +98,10 @@ protected:
 	
 	TrackController* _controller = nullptr;
 	
+	
+	void _updateRegionsHeight();
+	
+	void _updateRegionsWidth();
 };
 
 

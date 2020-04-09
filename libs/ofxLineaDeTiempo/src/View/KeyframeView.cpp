@@ -38,7 +38,8 @@ KeyframeView::KeyframeView(const std::string& id, float value, uint64_t time, Ke
 
 
 //---------------------------------------------------------------------------------------------------------------------
-void KeyframeView::onDraw() const {
+void KeyframeView::onDraw() const 
+{
 	Widget::onDraw();
 	if(isSelected()){
 		ofPushStyle();
@@ -53,8 +54,8 @@ void KeyframeView::onDraw() const {
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void KeyframeView::setSelected(bool select){
-
+void KeyframeView::setSelected(bool select)
+{
     if(_parentView){
         if(!_isSelected && select){
 			_isSelected = true;
@@ -93,7 +94,8 @@ float KeyframeView::getValue() const
 	return _value;
 }
 //---------------------------------------------------------------------------------------------------------------------
-uint64_t KeyframeView::getTime() const{
+uint64_t KeyframeView::getTime() const
+{
 	return _time;
 }
 //---------------------------------------------------------------------------------------------------------------------
@@ -102,11 +104,11 @@ void KeyframeView::_updatePosition()
 	glm::vec2 pos;
 	auto p = _parentView;
 	
-    if(p && p->parentTrack()){
-		auto m = (DefaultKeyframeSize*0.5);
+    if(p && p->parentTrack() && p->parentTrack()->getTimeRuler()){
+//		auto m = (DefaultKeyframeSize*0.5);
 		pos.y = p->keyframeValueToPosition(_value);
 		
-		auto s = p->parentTrack()->timeToScreenPosition(_time);
+		auto s = p->parentTrack()->getTimeRuler()->timeToScreenPosition(_time);
 		
 		pos.x = p->screenToParent({s,0}).x;
 		
@@ -123,12 +125,12 @@ bool KeyframeView::isSelected() const
 
 
 //---------------------------------------------------------------------------------------------------------------------
-void KeyframeView::_updateValue(){
-	
+void KeyframeView::_updateValue()
+{
 	auto p = _parentView;
-    if(p && p->parentTrack()){
+    if(p && p->parentTrack() && p->parentTrack()->getTimeRuler()){
 	
-		auto t = p->parentTrack()->screenPositionToTime(getScreenCenterPosition().x);
+		auto t = p->parentTrack()->getTimeRuler()->screenPositionToTime(getScreenCenterPosition().x);
 		auto v = p->keyframePositionToValue(getCenterPosition().y);
 		
 		if(t != _time)

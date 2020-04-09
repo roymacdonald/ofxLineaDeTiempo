@@ -31,10 +31,10 @@ public:
 	
 	virtual ~RegionView() = default;
 	
-		
+	void updateRectFromTimeRange();
 	void updateRectFromTimeRange(const ofRange64u& timeRange);
 	void updateTimeRangeFromRect();
-	virtual void updateLayout() override;
+
 
 	const TrackView* parentTrack() const;
 	TrackView* parentTrack();
@@ -44,15 +44,15 @@ public:
 	
 protected:
 	
-	ofEventListeners _shapeListeners;
+	
 
 	ofEventListener _timeRangeChangeListener;
 	bool bIgnoreTimeRangeChange = false;
+	bool bIgnoreShapeChange = false;
 	void _timeRangeChanged(ofRange64u& );
 	
-	
-	void moved (DOM::MoveEventArgs&);
-	void resized (DOM::ResizeEventArgs&);
+	ofEventListener _shapeListener;
+	void _shapeChanged(DOM::ShapeChangeEventArgs&);
 
 	virtual void _onTimeRangeChange()
 	{
@@ -64,6 +64,7 @@ protected:
 
 	MUI::EdgeHandle* _leftHandle = nullptr;
 	MUI::EdgeHandle* _rightHandle = nullptr;
+	
 	TrackView* _parentTrack = nullptr;
 	
 	RegionHeaderView* _header = nullptr;

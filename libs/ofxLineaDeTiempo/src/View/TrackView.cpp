@@ -14,10 +14,11 @@ namespace LineaDeTiempo {
 
 
 
-TrackView::TrackView(DOM::Element* parentView, TrackController* controller)
-: BaseTrackView(controller->getId(), parentView)
+TrackView::TrackView(DOM::Element* parentView, TrackController* controller,TimeRuler * timeRuler )
+: BaseTrackView(controller->getId(), parentView, timeRuler)
 , _unscaledHeight(TrackInitialHeight)
 , _controller(controller)
+
 {
 	_regionsHeaderStyle = make_shared<MUI::Styles>();
 	colorListener = BaseTrackView::colorChangeEvent.newListener(this, &TrackView::colorChanged);
@@ -60,15 +61,15 @@ uint64_t TrackView::localPositionToTime(float x) const
 	return MUI::Math::lerp(x, 0, getWidth(), 0, _controller->getTimeControl()->getTotalTime());
 }
 
-float TrackView::timeToScreenPosition(uint64_t time) const
-{
-	return DOM::Element::localToScreen({timeToLocalPosition(time),0}).x;
-}
-
-uint64_t  TrackView::screenPositionToTime(float x) const
-{
-	return localPositionToTime(DOM::Element::screenToLocal({x,0}).x);
-}
+//float TrackView::timeToScreenPosition(uint64_t time) const
+//{
+//	return DOM::Element::localToScreen({timeToLocalPosition(time),0}).x;
+//}
+//
+//uint64_t  TrackView::screenPositionToTime(float x) const
+//{
+//	return localPositionToTime(DOM::Element::screenToLocal({x,0}).x);
+//}
 
 float TrackView::getHeightFactor() const
 {
@@ -91,44 +92,90 @@ bool TrackView::removeRegion(RegionController * controller)
 
 	auto region = controller->getView();
 	if(region){
-
-		if(removeChild(region) == nullptr)
+		auto removed = removeChild(region);
+		if(removed == nullptr)
 		{
 			ofLogError("TrackView::removeRegion") << "failed. removeChild returned a  nullptr";
 			return false;
 		}
+		
+		ofRemove( _regions, [&](RegionView* r){ return r == removed.get();});
+		
+		
 		return true;
 		
 	}
 	return false;
 }
 
-float TrackView::getUnscaledHeight()
+float TrackView::getUnscaledHeight(size_t & numGroups)
 {
+	//std::cout << "TrackGroupView::getUnscaledHeight()   " << getId()  << " h: " << _unscaledHeight << "\n";
 	return _unscaledHeight;
 }
 
-float TrackView::updateScaledShape(float y, float yScale, float width)
+float TrackView::updateYScaled(float y, float yScale)
 {
 	auto h = TrackInitialHeight * _heightFactor * yScale;
-	setShape({0, y, width, h});
-	updateLayout();
+//	if(!ofIsFloatEqual(h, getHeight()) || !ofIsFloatEqual(y, getY()))
+//	{
+		setShape({0, y, getWidth(), h});
+		_updateRegionsHeight();
+//	}
+//	else
+//	{
+//		ofLogWarning("TrackView::updateYScaled") << " Not updating";
+//	}
 	return h;
 }
 
-void TrackView::updateLayout()
+void TrackView::_onShapeChange(const DOM::ShapeChangeEventArgs& e)
 {
-	for(auto c: children())
+	if(e.widthChanged())
 	{
-		if(c) c->updateLayout();
+		_updateRegionsWidth();
 	}
 }
 
-//
+
+void TrackView::_updateRegionsHeight()
+{
+	for(auto r: _regions)
+	{
+		if(r)
+			r->setHeight(getHeight());
+			r->updateLayout();
+	}
+
+}
+
+void TrackView::_updateRegionsWidth()
+{
+	for(auto r: _regions)
+	{
+		if(r)
+			r->updateRectFromTimeRange();
+	}
+}
+
+
+void TrackView::updateLayout()
+{
+	
+	
+//	for(auto c: children())
+//	{
+//		if(c) c->updateLayout();
+//	}
+}
+
+
 const TrackController * TrackView::getController() const
 {
 	return _controller;
 }
+
+
 TrackController * TrackView::getController()
 {
 	return _controller;

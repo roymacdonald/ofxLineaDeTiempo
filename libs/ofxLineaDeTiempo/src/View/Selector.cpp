@@ -16,7 +16,7 @@ template<typename T>
 Selector<T>::Selector()
 : _rect(0,0,0,0)
 {
-	_drawListener = ofEvents().draw.newListener(this, &Selector<T>::_draw,  std::numeric_limits<int>::max());
+//	_drawListener = ofEvents().draw.newListener(this, &Selector<T>::_draw,  std::numeric_limits<int>::max());
 }
 
 template<typename T>
@@ -43,8 +43,6 @@ void Selector<T>::onPointerDown(const glm::vec2& screenPosition, DOM::Element* c
 	_selectionRectStart =  screenPosition;
 	_rect.set(_selectionRectStart, 0, 0);
 	
-	
-//	std::cout << "Selector<T>::onPointerDown  " << std::boolalpha << _bAddToCurrentSelection << std::endl;
 	if(!_bAddToCurrentSelection){
 		_bHadSelectedElements = unselectAllElements();
 	}
@@ -61,9 +59,6 @@ bool Selector<T>::onPointerUp(const glm::vec2& screenPosition, DOM::Element* cal
 			if(!_bAddToCurrentSelection){
 			auto u = unselectAllElements();
 	
-//			std::cout << "Selector<T>::onPointerUp  add: " << std::boolalpha << _bAddToCurrentSelection
-//				<< "  unsel: " << u << "  hadSel: " << _bHadSelectedElements << std::endl;
-				
 			u |= _bHadSelectedElements;
 		
 			_bHadSelectedElements = false;
@@ -147,7 +142,8 @@ void Selector<T>::_setSelectedElementsFromRect(const ofRectangle& r)
 }
 
 template<typename T>
-void Selector<T>::draw() const{
+void Selector<T>::draw() const
+{
 	_bNeedsDraw = true;
 }
 
@@ -323,8 +319,6 @@ void Selector<T>::onKeyboardEvent(DOM::KeyboardUIEventArgs& evt, DOM::Element* c
 	{
 		_bAddToCurrentSelection = false;
 	}
-	
-//	std::cout << "Selector<T>::onKeyboardEvent  " << std::boolalpha << _bAddToCurrentSelection << std::endl;
 	
 }
 

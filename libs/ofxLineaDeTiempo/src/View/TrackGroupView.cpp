@@ -13,46 +13,46 @@
 namespace ofx {
 namespace LineaDeTiempo {
 
-TrackGroupView::TrackGroupView(DOM::Element* parentView, TrackGroupController * controller)
-: BaseTrackView(controller->getId(), parentView)
+TrackGroupView::TrackGroupView(DOM::Element* parentView, TrackGroupController * controller, TimeRuler * timeRuler)
+: BaseTrackView(controller->getId(), parentView, timeRuler)
 , _controller(controller)
 {
 
 	_tracksContainer = this;
 	
 	
-	_enableParentShapeListener();
+//	_enableParentShapeListener();
 }
 
-void TrackGroupView::_parentMoved(DOM::MoveEventArgs& e)
-{
-	_updateContainers();
-}
+//void TrackGroupView::_parentMoved(DOM::MoveEventArgs& e)
+//{
+//	_updateContainers();
+//}
+//
+//void TrackGroupView::_parentResized(DOM::ResizeEventArgs& e)
+//{
+//	_updateContainers();
+//}
 
-void TrackGroupView::_parentResized(DOM::ResizeEventArgs& e)
-{
-	_updateContainers();
-}
+//void TrackGroupView::_enableParentShapeListener()
+//{
+//	_parentListeners.push(parent()->move.newListener(this, &TrackGroupView::_parentMoved ));
+//	_parentListeners.push(parent()->resize.newListener(this, &TrackGroupView::_parentResized));
+//
+//}
 
-void TrackGroupView::_enableParentShapeListener()
-{
-	_parentListeners.push(parent()->move.newListener(this, &TrackGroupView::_parentMoved ));
-	_parentListeners.push(parent()->resize.newListener(this, &TrackGroupView::_parentResized));
-	
-}
+//void TrackGroupView::_disableParentShapeListener()
+//{
+//	_parentListeners.unsubscribeAll();
+//}
 
-void TrackGroupView::_disableParentShapeListener()
-{
-	_parentListeners.unsubscribeAll();
-}
-
-void TrackGroupView::_updateContainers()
-{
-	
-	if(_tracksContainer) _tracksContainer->updateLayout();
-	if(_tracksContainer != this)updateLayout();
-	
-}
+//void TrackGroupView::_updateContainers()
+//{
+//	
+//	if(_tracksContainer) _tracksContainer->updateLayout();
+////	if(_tracksContainer != this)updateLayout();
+//	
+//}
 bool TrackGroupView::_containersCheck(const std::string & callerName)
 {
 	if(!_tracksContainer)
@@ -105,7 +105,7 @@ bool TrackGroupView::removeTrack(TrackController* controller)
 	auto tr = _tracksContainer->removeChild(track);
 	auto h = _header->removeChild(track->getHeader());
 
-	_updateContainers();
+//	_updateContainers();
 	return true;
 	
 }
@@ -145,7 +145,7 @@ bool TrackGroupView::removeGroup(TrackGroupController * controller)
 	auto tr = _tracksContainer->removeChild(track);
 	auto h = _header->removeChild(track->getHeader());
 
-	_updateContainers();
+//	_updateContainers();
 	return true;
 	
 }
@@ -189,22 +189,22 @@ float TrackGroupView::_getInitialYpos()
 	return ViewTopHeaderHeight;
 }
 
-float TrackGroupView::getUnscaledHeight()
+float TrackGroupView::getUnscaledHeight(size_t & numGroups)
 {
-	float h = _getInitialYpos();
-		
+	numGroups++;
+	
+	float h = 0;//_getInitialYpos();
 	for(auto c: children())
 	{
 		auto t = dynamic_cast<BaseTrackView*>(c);
 		if(t)
 		{
-			h+= t->getUnscaledHeight();
+			h+= t->getUnscaledHeight(numGroups);
 		}
 	}
-	
 	return h;
 }
-float TrackGroupView::updateScaledShape(float y, float yScale, float width)
+float TrackGroupView::updateYScaled(float y, float yScale)
 {
 	float h = _getInitialYpos();
 	
@@ -213,12 +213,12 @@ float TrackGroupView::updateScaledShape(float y, float yScale, float width)
 		auto t = dynamic_cast<BaseTrackView*>(c);
 		if(t)
 		{
-			h+= t->updateScaledShape(h,  yScale, width);
+			h+= t->updateYScaled(h,  yScale);
 		}
 	}
 	
-	setShape({0, y, width, h});
-	updateLayout();
+	setShape({0, y, getWidth(), h});
+//	updateLayout();
 	return h;
 }
 

@@ -27,23 +27,22 @@ TrackHeader::TrackHeader(const std::string& id, const ofRectangle& rect, BaseTra
 		auto t = dynamic_cast<TrackView*>(track);
 		_bGroupHeader = ! bool(t);
 		
-		_trackListeners.push(_track->move.newListener(this, &TrackHeader::_trackMoved));
-		_trackListeners.push(_track->resize.newListener(this, &TrackHeader::_trackResized));
+		_trackListener = _track->shapeChanged.newListener(this, &TrackHeader::_trackShapeChanged);
+		_updateShape();
 	}
 	
 }
-//---------------------------------------------------------------------
-void TrackHeader::_trackMoved(DOM::MoveEventArgs& e)
+void TrackHeader::_trackShapeChanged(DOM::ShapeChangeEventArgs& e)
 {
-	_updateFromTrack();
+	
+	if(e.changedVertically())
+	{
+		_updateShape();
+	}
 }
-//---------------------------------------------------------------------
-void TrackHeader::_trackResized(DOM::ResizeEventArgs& e)
-{
-	_updateFromTrack();
-}
-//---------------------------------------------------------------------
-void TrackHeader::_updateFromTrack()
+
+
+void TrackHeader::_updateShape()
 {
 	if(_track && _group){
 		

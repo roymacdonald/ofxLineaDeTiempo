@@ -39,12 +39,16 @@ protected:
 	TrackGroupView* _group = nullptr;
 	
 	
-	ofEventListeners _trackListeners;
+	ofEventListener _trackListener;
 	
-	void _trackMoved(DOM::MoveEventArgs& e);
-	void _trackResized(DOM::ResizeEventArgs& e);
+	void _updateShape();
 	
-	void _updateFromTrack();
+	
+	void _trackShapeChanged(DOM::ShapeChangeEventArgs& e);
+//	void _trackMoved(DOM::MoveEventArgs& e);
+//	void _trackResized(DOM::ResizeEventArgs& e);
+	
+//	void _updateFromTrack();
 	
 	bool _bGroupHeader = false;
 	

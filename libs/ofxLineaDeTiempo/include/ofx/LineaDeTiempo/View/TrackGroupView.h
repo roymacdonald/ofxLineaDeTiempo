@@ -10,6 +10,7 @@
 #include "LineaDeTiempo/View/TrackView.h"
 #include "LineaDeTiempo/Utils/ConstVars.h"
 
+
 namespace ofx {
 namespace LineaDeTiempo {
 
@@ -22,7 +23,7 @@ class TrackGroupView
 public:
 	
 	
-	TrackGroupView(DOM::Element* parentView, TrackGroupController * controller);
+	TrackGroupView(DOM::Element* parentView, TrackGroupController * controller, TimeRuler * timeRuler);
 	
 	
 	virtual ~TrackGroupView() = default;
@@ -44,11 +45,11 @@ public:
 	float getTracksHeaderWidth();
 	
 	
-	virtual float getUnscaledHeight() override;
-	virtual float updateScaledShape(float y, float yScale, float width) override;
+	virtual float getUnscaledHeight(size_t & numGroups) override;
+	virtual float updateYScaled(float y, float yScale) override;
 	
 	
-	virtual void _updateContainers();
+//	virtual void _updateContainers();
 	
 	
 protected:
@@ -58,12 +59,12 @@ protected:
 	
 	DOM::Element* _tracksContainer = nullptr;
 	
-	void _enableParentShapeListener();
-	void _disableParentShapeListener();
-	void _parentMoved(DOM::MoveEventArgs& e);
-	void _parentResized(DOM::ResizeEventArgs& e);
+//	void _enableParentShapeListener();
+//	void _disableParentShapeListener();
+//	void _parentMoved(DOM::MoveEventArgs& e);
+//	void _parentResized(DOM::ResizeEventArgs& e);
 	
-	ofEventListeners _parentListeners;
+//	ofEventListeners _parentListeners;
 	
 	
 	
@@ -97,8 +98,7 @@ TrackViewType* TrackGroupView::addTrack(TrackController * controller)
 		return nullptr;
 	}
 	
-	
-	auto t = _tracksContainer->addChild<TrackViewType>(this, controller);
+	auto t = _tracksContainer->addChild<TrackViewType>(this, controller, _timeRuler);
 	auto h = _header->addChild<TrackHeader>( "_header", ofRectangle(0, 0, _trackHeaderWidth, TrackInitialHeight), t , this, _isPanel);
 	
 	ofColor color;
@@ -107,7 +107,7 @@ TrackViewType* TrackGroupView::addTrack(TrackController * controller)
 	t->setColor(color);
 	
 	
-	_updateContainers();
+//	_updateContainers();
 	
 	return t;
 }
@@ -130,10 +130,11 @@ GroupViewType* TrackGroupView::addGroup(TrackGroupController * controller )
 		return nullptr;
 	}
 	
-	auto t = _tracksContainer->addChild<GroupViewType>(this, controller);
+	
+	auto t = _tracksContainer->addChild<GroupViewType>(this, controller, _timeRuler);
 	auto h = _header->addChild<TrackHeader>( "_header", ofRectangle(0, 0, _trackHeaderWidth, TrackInitialHeight), t , this, _isPanel);
 	
-	_updateContainers();
+//	_updateContainers();
 	
 	return t;
 	

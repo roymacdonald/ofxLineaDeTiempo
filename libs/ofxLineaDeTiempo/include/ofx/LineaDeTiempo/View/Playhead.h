@@ -15,7 +15,7 @@ namespace ofx {
 namespace LineaDeTiempo {
 
 
-class TracksPanel;
+class TimeRuler;
 
 
 class Playhead
@@ -23,7 +23,7 @@ class Playhead
 {
 public:
 	
-	Playhead(TracksPanel* tracksPanel, TimeControl* timeControl);
+	Playhead(TimeRuler* timeRuler, TimeControl* timeControl);
 	virtual ~Playhead(){}
 	
 	virtual void onDraw() const override;
@@ -38,7 +38,7 @@ protected:
 	ofEventListener _draggingStateListener;
 	void _draggingStateChanged(bool & bDragging);
 		
-	void _tracksViewShapeChanged(DOM::ResizeEventArgs &);
+	
 	
 	ofEventListeners _tracksListeners;
 	
@@ -49,7 +49,7 @@ protected:
 	
 	TimeControl* _timeControl = nullptr;
 
-	TracksPanel* _tracksPanel = nullptr;
+	TimeRuler* _timeRuler = nullptr;
 	
 private:
 	

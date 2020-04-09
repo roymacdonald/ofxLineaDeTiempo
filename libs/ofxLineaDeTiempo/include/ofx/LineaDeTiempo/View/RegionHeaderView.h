@@ -32,12 +32,12 @@ protected:
 	virtual void _onDragging(const DOM::CapturedPointer& pointer)override;
 	
 	
-	void _parentResized(DOM::ResizeEventArgs &);
+	void _parentShapeChanged(DOM::ShapeChangeEventArgs &);
 	
 	RegionView* _parentRegion = nullptr;
                                                             
 
-	ofEventListeners _parentListeners;
+	ofEventListener _parentListener;
 	
 private:
 	

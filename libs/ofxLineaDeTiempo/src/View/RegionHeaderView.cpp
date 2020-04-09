@@ -22,17 +22,19 @@ RegionHeaderView::RegionHeaderView(RegionView* parentRegion)
 	this->constrainTo(_parentRegion->parentTrack());
 	
 	
-	_parentListeners.push(_parentRegion->resize.newListener(this, &RegionHeaderView::_parentResized));
+	_parentListener = _parentRegion->shapeChanged.newListener(this, &RegionHeaderView::_parentShapeChanged);
 	
 
 	setShapeDrawMode(MUI::ShapeDrawMode::TOP_ROUNDED_RECTANGLE);
 
 	
 }
-
-void RegionHeaderView::_parentResized(DOM::ResizeEventArgs &)
+void RegionHeaderView::_parentShapeChanged(DOM::ShapeChangeEventArgs & e)
+//void RegionHeaderView::_parentResized(DOM::ResizeEventArgs &)
 {
+	if(e.widthChanged()){
 	this->setSize(_parentRegion->getWidth(), ViewTopHeaderHeight);
+	}
 }
 
 void RegionHeaderView::_onDragging(const DOM::CapturedPointer& pointer)

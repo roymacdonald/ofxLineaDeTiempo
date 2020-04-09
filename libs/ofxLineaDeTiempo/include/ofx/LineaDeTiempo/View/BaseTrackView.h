@@ -31,7 +31,7 @@ class BaseTrackView
 public:
 
 	
-	BaseTrackView(const std::string& id, DOM::Element* parentView, TimeRuler* timeRuler);
+	BaseTrackView(const std::string& id, DOM::Element* parentView, TimeRuler * timeRuler);
 	
 	virtual ~BaseTrackView() = default;
 	
@@ -44,7 +44,7 @@ public:
 	
 	virtual void onDraw() const override;
 	
-	virtual void updateLayout() override;
+//	virtual void updateLayout() override;
 	
 
 	void setHeader(TrackHeader* header);
@@ -63,6 +63,7 @@ public:
 	
 	const TimeRuler * getTimeRuler() const;
 	
+	void updateWidth(const float& w);
 	
     using DOM::Element::isEnabled;
     using DOM::Element::isFocusable;
@@ -97,8 +98,8 @@ public:
     using DOM::Element::setShape;
     using DOM::Element::setSize;
 	
-	virtual float getUnscaledHeight() = 0;
-	virtual float updateScaledShape(float y, float yScale, float width) = 0;
+	virtual float getUnscaledHeight(size_t & numGroups) = 0;
+	virtual float updateYScaled(float y, float yScale) = 0;
 	
 	
 protected:

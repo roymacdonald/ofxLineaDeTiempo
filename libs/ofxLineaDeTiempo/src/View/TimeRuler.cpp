@@ -5,7 +5,7 @@
 //  Created by Roy Macdonald on 4/2/20.
 //
 
-#include "TimeRuler.h"
+#include "LineaDeTiempo/View/TimeRuler.h"
 #include "LineaDeTiempo/View/TracksPanel.h"
 #include "LineaDeTiempo/Utils/ConstVars.h"
 #include <chrono>
@@ -14,265 +14,115 @@ namespace ofx {
 namespace LineaDeTiempo {
 
 //==========================================================================================================
-TimeRuler::TimeRuler(TracksPanel* panel, TimeControl* timeControl)
-: DOM::Element("timeRuler", 0, 0, panel->getWidth(), TimeRulerInitialHeight)
+TimeRuler::TimeRuler(TracksPanel* panel, TimeControl* timeControl, const ofRectangle& rect)
+: DOM::Element("timeRuler", rect)
 , _panel(panel)
+, _timeControl(timeControl)
 {
 	
 	_header = addChild<TimeRulerHeader>(timeControl);
-	_bar = addChild<TimeRulerBar>( panel, timeControl);
+	_bar = addChild<TimeRulerBar>( this, timeControl);
 	
 	updateLayout();
 	
 	
-	_panelListeners.push(panel->resize.newListener(this, &TimeRuler::_panelResized));
-	_panelListeners.push(panel->getContainer()->move.newListener(this, &TimeRuler::  _tracksContainerMoved));
-	_panelListeners.push(panel->getContainer()->resize.newListener(this, &TimeRuler::_tracksContainerResized));
+//	_panelListeners.push(panel->shapeChanged.newListener(this, &TimeRuler::_panelShapeChanged));
+//	_panelListeners.push(panel->getContainer()->shapeChanged.newListener(this, &TimeRuler::_tracksContainerShapeChanged));
 	
+//	_panelListeners.push(panel->resize.newListener(this, &TimeRuler::_panelResized));
+//	_panelListeners.push(panel->getContainer()->move.newListener(this, &TimeRuler::  _tracksContainerMoved));
+//	_panelListeners.push(panel->getContainer()->resize.newListener(this, &TimeRuler::_tracksContainerResized));
 	
+	if(panel->getTracksView() && panel->getTracksView()->getContainer())
+	{
+	_trackContainerListener = panel->getTracksView()->getContainer()->shapeChanged.newListener(this, &TimeRuler::_tracksContainerShapeChanged);
+	}
+	else
+	{
+		ofLogError("TimeRuler::TimeRuler") << "Panel's track view or its container are null. Cant set listeners for those";
+	}
 	setDrawChildrenOnly(true);
 	moveToFront();
 	
 	
 }
 
-
-void TimeRuler::_tracksContainerMoved(DOM::MoveEventArgs& e)
+void TimeRuler::_tracksContainerShapeChanged(DOM::ShapeChangeEventArgs& e)
 {
-	updateLayout();
+	if(e.changedHorizontally()){
+		if(_bar && _panel->getTracksView() && _panel->getTracksView()->getContainer())
+		{
+			auto r = _panel->getTracksView()->getContainer()->getScreenShape();
+			if(r.width < 0.0f) r.standardize();
+			
+			if(! ofIsFloatEqual(_trackScreenHorizontal.min, r.x) ||
+			   ! ofIsFloatEqual(_trackScreenHorizontal.max, r.x + r.width))
+			{
+				_trackScreenHorizontal.min = r.x;
+				_trackScreenHorizontal.max = r.x + r.width;
+			}
+			if(e.widthChanged())
+			{
+				_setBarShape(true);
+			}
+			else
+			if(e.xChanged())
+			{
+				_bar->makeRulerLines();
+			}
+		}
+	}
 }
 
-void TimeRuler::_tracksContainerResized(DOM::ResizeEventArgs& e)
+void TimeRuler::_setBarShape(bool dontCheck)
 {
-	updateLayout();
+	if(_panel && _panel->getTracksView())
+	{
+		auto cv = _panel->getTracksView()->getClippingView();
+		if(cv){
+			float x = cv->getX() + _header->getWidth();
+			if( dontCheck || !ofIsFloatEqual(x, _bar->getX()) || !ofIsFloatEqual(cv->getWidth(), _bar->getWidth()))
+			{
+				_bar->setShape({x, 0, cv->getWidth(), TimeRulerInitialHeight});
+				_bar->makeRulerLines();
+			}
+		}
+	}
 }
 
-void TimeRuler::_panelResized(DOM::ResizeEventArgs& e)
-{
-	setShape({0.f, 0.f, _panel->getWidth(), getHeight()});
-	updateLayout();
-}
 
 void TimeRuler::updateLayout()
 {
-	if(_panel && _header && _bar && _panel->getClippingView())
+	if(_panel && _header && _bar)// && _panel->getClippingView())
 	{
-		auto cv = _panel->getClippingView();
 		
 		auto w = _panel->getTracksHeaderWidth();
-		_header->setShape({0, 0, w, TimeRulerInitialHeight});
-		
-		auto x = screenToLocal(cv->localToScreen({0,0})).x;
-		
-		auto x2 = screenToLocal(cv->localToScreen({cv->getWidth(),0})).x;
-		
-		_bar->setShape({x, 0, x2 -x, TimeRulerInitialHeight});
-		
-		_header->updateLayout();
-		_bar->updateLayout();
-	}
-}
-
-//==========================================================================================================
-
-ofBitmapFont TimeRulerHeader::bf = ofBitmapFont();
-
-
-TimeRulerHeader::TimeRulerHeader( TimeControl* timeControl)
-:  DOM::Element("TimeRulerHeader", 0,0,100,100)
-, _timeControl(timeControl)
-{
-	
-	
-	
-	
-}
-
-
-void TimeRulerHeader::updateLayout()
-{
-	
-	
-}
-
-void TimeRulerHeader::onDraw() const
-{
-	DOM::Element::onDraw();
-	stringstream ss;
-	
-	auto t =_timeControl->getCurrentTime();
-	
-	ss        << (t/(1000*60*60))%60;
-	
-	ss << ":" << (t/(1000*60))%60;
-	
-	ss << ":" << (t/1000)%60;
-	
-	ss << ":" << t%1000;
-	
-	
-	
-	auto bb = bf.getBoundingBox(ss.str(), 0, 0);
-	
-	auto y = bb.y;
-	
-	bb.alignTo(getShape());
-	
-	ofPushStyle();
-	
-	ofSetColor(DefaultTextColor);
-	ofDrawBitmapString( ss.str(), bb.x, bb.y - y);
-	
-	ofNoFill();
-	ofSetColor(TrackEdgeColor);
-	ofDrawRectangle(getShape());
-	
-	ofPopStyle();
-	
-}
-
-//==========================================================================================================
-
-TimeRulerBar::TimeRulerBar( TracksPanel* panel, TimeControl* timeControl)
-: MUI::Widget("TimeRulerBar", 0,0,100,100)
-, _timeControl(timeControl)
-, _panel(panel)
-{
-	
-	distances.resize(_NUM_SUBDIVISIONS);
-	bDraw.resize(_NUM_SUBDIVISIONS);
-	multipliers.resize(_NUM_SUBDIVISIONS);
-	
-	
-	multipliers[_MILLIS] = 	1;//std::chrono::milliseconds(1).count();
-	multipliers[_CENTS] = 10;
-	multipliers[_TENS] = 100;
-	multipliers[_SECONDS] = std::chrono::duration_cast<std::chrono::milliseconds> (std::chrono::seconds(1)).count();
-	multipliers[_MINUTES] = std::chrono::duration_cast<std::chrono::milliseconds> (std::chrono::minutes(1)).count();
-	multipliers[_HOURS]   = std::chrono::duration_cast<std::chrono::milliseconds> (std::chrono::hours(1)).count();
-	
-	
-	_makeRulerLines();
-	
-	setDraggable(true);
-	setHighlightOnOver(false);
-	
-	_playhead = addChild<Playhead>(panel, timeControl);//,
-	
-	_panelResizeListener = _panel->resize.newListener(this, &TimeRulerBar::_onPanelResize);
-	moveToFront();
-	_updatePlayheadSize();
-}
-
-void TimeRulerBar::_onDragging(const DOM::CapturedPointer& pointer)
-{
-
-	
-	_timeControl->setCurrentTime(_panel->screenPositionToTime(pointer.position().x));
-	
-	
-}
-
-void TimeRulerBar::_onPointerEvent(DOM::PointerUIEventArgs& e)
-{
-	Widget::_onPointerEvent(e);
-	
-    if (e.type() == PointerEventArgs::POINTER_DOWN)
-    {
-		_timeControl->setCurrentTime(_panel->screenPositionToTime(e.screenPosition().x));
-    }
-}
-
-
-void TimeRulerBar::_makeRulerLines()
-{
-	if(_panel){
-		
-		
-		_rulerLines.clear();
-		
-		_rulerLines.setMode(OF_PRIMITIVE_LINES);
-		
-		auto d = std::abs( _panel->timeToScreenPosition(0) - _panel->timeToScreenPosition(1));
-		
-		auto w = getWidth();
-		
-		int startIndex = distances.size();
-		int endIndex = 0;
-		for(int i = 0; i < distances.size(); ++i)
-		{
-			distances[i] = d* multipliers[i];
-			
-			
-			if(distances[i] > _minLineDist && distances[i] < getWidth())
-			{
-				startIndex = min(i, startIndex);
-				endIndex = max(i, endIndex);
-			}
+		if(! ofIsFloatEqual(w, _header->getWidth()) ||
+		   ! ofIsFloatEqual(TimeRulerInitialHeight, _header->getHeight())
+		   ){
+			_header->setShape({0, 0, w, TimeRulerInitialHeight});
+			_header->updateLayout();
 		}
 		
+		_setBarShape();
 		
-		for(int i = startIndex; i < endIndex + 1; ++i)
+		if(_panel->getTracksView() && _panel->getTracksView()->getClippingView())
 		{
-			uint64_t startTime = (uint64_t) floor(_currentRange.min/multipliers[i]) * multipliers[i] ;
-			if(_currentRange.max > (startTime))
-			{
-				float h = ofMap(i, startIndex, endIndex, getHeight()*0.3, getHeight(), true);
-				float x = screenToLocal({_panel->timeToScreenPosition(startTime),0}).x;
-				for(size_t j = 0; x < w; ++j ){
-					
-					x += distances[i];
-					
-					if(x < getWidth())
-					{
-						_rulerLines.addVertex({x, 0, 0});
-						_rulerLines.addVertex({x, h, 0});
-					}
-				}
-			}
+			float h = _panel->getTracksView()->getClippingView()->getScreenShape().getMaxY() - getScreenY();
+			_bar->setPlayheadHeight(h);
 		}
-	}
-}
-void TimeRulerBar::_updatePlayheadSize()
-{
-	if(_playhead){
-		float h =  _panel->getClippingView()->getScreenShape().getMaxY() - getScreenY();
-		_playhead->setSize(_playhead->getWidth(), h);
-		_playhead->moveToFront();
+
 	}
 }
 
-void TimeRulerBar::_onPanelResize(DOM::ResizeEventArgs& e)
+float TimeRuler::timeToScreenPosition(uint64_t time) const
 {
-	_updatePlayheadSize();
+		return MUI::Math::lerp(time, 0, _timeControl->getTotalTime(),  _trackScreenHorizontal.min, _trackScreenHorizontal.max);
 }
 
-void TimeRulerBar::onDraw() const
+uint64_t  TimeRuler::screenPositionToTime(float x) const
 {
-	ofSetColor(TrackBackgroundColor);
-	ofFill();
-	ofDrawRectangle(0, 0, getWidth(), getHeight());
-
-	ofSetColor(TrackEdgeColor);
-	ofNoFill();
-	ofDrawRectangle(0, 0, getWidth(), getHeight());
-
-
-	ofSetColor(200);
-	_rulerLines.draw();
-		
-	
-}
-
-void TimeRulerBar::updateLayout()
-{
-	if(_panel)
-	{
-		_currentRange.min = _panel->screenPositionToTime(localToScreen({0,0}).x);
-		_currentRange.max = _panel->screenPositionToTime(localToScreen({getWidth(),0}).x);
-		
-		_makeRulerLines();
-	}
+	return MUI::Math::lerp(x, _trackScreenHorizontal.min, _trackScreenHorizontal.max, 0, _timeControl->getTotalTime(), true);
 }
 
 

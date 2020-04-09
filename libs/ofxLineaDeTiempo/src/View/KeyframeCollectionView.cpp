@@ -119,7 +119,7 @@ void KeyframeCollectionView::_onPointerEvent(DOM::PointerUIEventArgs& e)
 //		
 //		
 		
-		if(_parentRegion && parentTrack()){
+		if(_parentRegion && parentTrack() && parentTrack()->getTimeRuler()){
 			auto wasSelecting =  _selector->onPointerUp(e.screenPosition(), this);
 			if(!wasSelecting)
 			{
@@ -136,7 +136,7 @@ void KeyframeCollectionView::_onPointerEvent(DOM::PointerUIEventArgs& e)
 //				std::cout << "  y value: " << v << "\n";
 				
 				AddKeyframeEventArgs args(v,
-										 parentTrack()->screenPositionToTime(e.screenPosition().x),
+										 parentTrack()->getTimeRuler()->screenPositionToTime(e.screenPosition().x),
 										  this);
 
 				
@@ -174,7 +174,8 @@ bool KeyframeCollectionView::isKeyframeSelected(KeyframeView* k)
 	return false;
 }
 //---------------------------------------------------------------------------------------------------------------------
-void KeyframeCollectionView::_makeInterpolationLine(){
+void KeyframeCollectionView::_makeInterpolationLine()
+{
 	glm::vec2 cp;
 	_interpolationLine.clear();
 	_inLine.clear();
@@ -197,7 +198,8 @@ void KeyframeCollectionView::_makeInterpolationLine(){
 	}
 }
 //---------------------------------------------------------------------------------------------------------------------
-void KeyframeCollectionView::onDraw() const{
+void KeyframeCollectionView::onDraw() const
+{
 //	Widget::onDraw();
 	
 	ofPushStyle();
@@ -219,7 +221,8 @@ bool compareKeyframeView(KeyframeView* a, KeyframeView* b)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void KeyframeCollectionView::updateKeyframeSort(){
+void KeyframeCollectionView::updateKeyframeSort()
+{
 	if(numChildren() > 1){
 		std::sort(keyFrames.begin(), keyFrames.end(), compareKeyframeView);
 	}
@@ -243,7 +246,8 @@ KeyframeView* KeyframeCollectionView::addKeyframe(float value, uint64_t time)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool KeyframeCollectionView::removeKeyframe(KeyframeView* k){
+bool KeyframeCollectionView::removeKeyframe(KeyframeView* k)
+{
 	if(k == nullptr) return false;
 	
 	auto c = removeChild(k);
@@ -260,6 +264,14 @@ bool KeyframeCollectionView::removeKeyframe(KeyframeView* k){
 	}
 	return false;
 }
+
+
+void KeyframeCollectionView::_onShapeChange(const DOM::ShapeChangeEventArgs& )
+{
+	updateLayout();
+}
+
+
 //---------------------------------------------------------------------------------------------------------------------
 void KeyframeCollectionView::updateLayout()
 {

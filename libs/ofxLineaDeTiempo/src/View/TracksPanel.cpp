@@ -6,8 +6,6 @@
 //
 
 #include "LineaDeTiempo/View/TracksPanel.h"
-#include "MUI/Styles.h"
-
 
 #include "LineaDeTiempo/Controller/TimeControl.h"
 
@@ -23,140 +21,103 @@ namespace LineaDeTiempo {
 
 TracksPanel::TracksPanel(const std::string& id, DOM::Element* parentView, const ofRectangle& rect, TracksPanelController* controller)
 
-: TrackGroupView(parentView, controller)
-
+: TrackGroupView(parentView, controller, nullptr )
 {
 	setShape(rect);
-	tracksView = addChild<MUI::TracksScrollPanel>(id + "_tracksView", _makeTracksViewRect());
-	
-	tracksView->setForceShowScrollbars(true);
-	tracksView->setMoveToFrontOnCapture(false);
 
-	headersView = addChild<MUI::ClippedView_<TrackHeader>>(id + "headersView", _makeHeadersViewRect(), nullptr, nullptr, true);
-	
-	_tracksContainerListeners.push(tracksView->getContainer()->move.newListener(this, &TracksPanel::_tracksMoved));
-	_tracksContainerListeners.push(tracksView->getContainer()->resize.newListener(this, &TracksPanel::_tracksResized));
-
-	
-
-	
-	_timeRuler = addChild<TimeRuler>(this, controller->getTimeControl());
-	
-	
-	_tracksContainer = tracksView->getContainer();
-	_header = headersView->container;
-	
-	
-	_parentListener = parentView->resize.newListener(this, &TracksPanel::_parentViewResized);
-	
-
-	_regionsStyle = make_shared<MUI::Styles>();
-	_regionsStyle->setColor(RegionBackgroundColor, MUI::Styles::ROLE_BACKGROUND);
-	
 	_isPanel = true;
 	
+	_tracksView = addChild<TracksView>(id + "_tracksView", _makeTracksViewRect());
+	_tracksView->setForceShowScrollbars(true);
+	_tracksView->setMoveToFrontOnCapture(false);
+	_tracksContainer = _tracksView->getContainer();
+	
+	
+	_headersView = addChild<HeadersView>(id + "headersView", _makeHeadersViewRect(), nullptr, nullptr, true);
+	_header = _headersView->container;
+
+
+	_viewListener =  parentView->shapeChanged.newListener(this, &TracksPanel::_viewShapeChanged);
+
+	_tracksViewListener = _tracksContainer->shapeChanged.newListener(this, &TracksPanel::_tracksViewShapeChanged);
+	
+
+	_regionsStyle = make_shared<ofx::MUI::Styles>();
+	_regionsStyle->setColor(RegionBackgroundColor,ofx::MUI::Styles::ROLE_BACKGROUND);
+	
+
+	_timeRuler = addChild<TimeRuler>(this, controller->getTimeControl(), _makeTimeRulerViewRect());
 	_timeRuler->moveToFront();
+	
+	updateLayout();
+	
 	
 }
 
 void TracksPanel::_setup()
 {
-	if(tracksView)
+	if(_tracksView)
 	{
-		tracksView->setScrollH({0,1});
-		tracksView->setScrollV({0,1});
+		_tracksView->setScrollH({0,1});
+		_tracksView->setScrollV({0,1});
 		_setTracksHeaderWidth(getTracksHeaderWidth());
+		updateLayout();
 	}
 }
 
-
 void TracksPanel::setTracksHeaderWidth(float w)
 {
-	_setTracksHeaderWidth(w);
 	
-}
-
-shared_ptr<MUI::Styles> TracksPanel::getRegionsStyle()
-{
-	return _regionsStyle;
-}
-
-
-void TracksPanel::_parentViewResized(DOM::ResizeEventArgs&)
-{
+	_setTracksHeaderWidth(w);
 	updateLayout();
 }
-
-TracksClippedView* TracksPanel::getClippingView()
+void TracksPanel::_tracksViewShapeChanged(DOM::ShapeChangeEventArgs& e)
 {
-	return tracksView->getClippingView();
-}
-
-const TracksClippedView* TracksPanel::getClippingView()const
-{
-	return tracksView->getClippingView();
-}
-
-DOM::Element* TracksPanel::getContainer()
-{
-	return tracksView->getContainer();
-}
-
-const DOM::Element* TracksPanel::getContainer() const
-{
-	return tracksView->getContainer();
-}
-
-//---------------------------------------------------------------------
-void TracksPanel::_tracksMoved(DOM::MoveEventArgs& e)
-{
-	_updateHeadersFromTracks();
-}
-
-//---------------------------------------------------------------------
-void TracksPanel::_tracksResized(DOM::ResizeEventArgs& e)
-{
-	_updateHeadersFromTracks();
-}
-
-//---------------------------------------------------------------------
-void TracksPanel::_updateHeadersFromTracks()
-{
-	headersView->setOffset({0, tracksView->getClippingView()->getOffset().y });
+	if(e.yChanged())
+	{
+		_headersView->setOffset(_tracksView->getClippingView()->getOffset());
+	}
 	
 }
-//---------------------------------------------------------------------
-void TracksPanel::_updateContainers(){
-	tracksView->updateLayout();
-	tracksView->updateContainerLayout();
+
+void TracksPanel::_viewShapeChanged(DOM::ShapeChangeEventArgs& e)
+{
+
+	if(e.resized()){
+		setSize(e.shape.width, e.shape.height);
+		updateLayout();
+	}
 }
 //---------------------------------------------------------------------
 void TracksPanel::onDraw() const
 {
-	BaseTrackView::onDraw();
+	Element::onDraw();
 	ofSetDrawBitmapMode(OF_BITMAPMODE_SIMPLE);
 }
 
 //---------------------------------------------------------------------
 void TracksPanel::updateLayout()
 {
-	if(headersView) headersView->setShape(_makeHeadersViewRect());
-	
-	for(auto& t: children()){
-		
-		if(t){
-			auto tt = dynamic_cast<TrackView*>(t);
-			if(tt){
-				tt->getHeader()->setSize(_trackHeaderWidth, tt->getHeader()->getHeight());
-			}
-		}
+	if(_headersView)
+	{
+		_headersView->setShape(_makeHeadersViewRect());
+		_headersView->updateLayout();
 	}
-	
-	if(tracksView)  tracksView->setShape(_makeTracksViewRect());
-
-	if(_timeRuler)_timeRuler->updateLayout();
+	if(_tracksView)
+	{
+		_tracksView->setShape(_makeTracksViewRect());
+		_tracksView->updateLayout();
+	}
+	if(_timeRuler){
+		_timeRuler->setShape(_makeTimeRulerViewRect());
+		_timeRuler->updateLayout();
+	}
 }
-
+//---------------------------------------------------------------------
+ofRectangle TracksPanel::_makeTimeRulerViewRect()
+{
+	return ofRectangle(0, 0, getWidth(), TimeRulerInitialHeight);
+}
 //---------------------------------------------------------------------
 ofRectangle TracksPanel::_makeHeadersViewRect()
 {
@@ -169,53 +130,49 @@ ofRectangle TracksPanel::_makeTracksViewRect()
 {
 	return ofRectangle(_trackHeaderWidth, TimeRulerInitialHeight , getWidth() - _trackHeaderWidth, getHeight() - TimeRulerInitialHeight );
 }
-	
 
-//---------------------------------------------------------------------
-float TracksPanel::timeToScreenPosition(uint64_t time) const
+
+TracksPanelController* TracksPanel::getController()
 {
-	if(tracksView){
-		auto container = tracksView->getContainer();
-		auto clippingView = tracksView->getClippingView();
-		if(container && clippingView)
-		{
-			return container->localToScreen( {MUI::Math::lerp(time, 0, _controller->getTimeControl()->getTotalTime(), 0, clippingView->getTracksWidth()), 0}).x ;
-		}
-	}
-	
-	ofLogError("TracksPanel::timeToScreenPosition") << "nullptr. returning 0";
-
-	return 0;
-		
-	
+	return _controller;
 }
-
-//---------------------------------------------------------------------
-uint64_t  TracksPanel::screenPositionToTime(float x) const
+const TracksPanelController* TracksPanel::getController() const
 {
-
-	
-	//TODO: get rid of this functions
-	if(tracksView)
-	{
-		auto container = tracksView->getContainer();
-		auto clippingView = tracksView->getClippingView();
-		if(container && clippingView)
-		{
-			
-			return  MUI::Math::lerp(container->screenToLocal({x, 0}).x, 0, clippingView->getTracksWidth(), 0, _controller->getTimeControl()->getTotalTime()) ;
-		}
-	}
-	
-	ofLogError("TracksPanel::screenPositionToTime") << "nullptr. returning 0";
-
-	return 0;
-
-	
+	return _controller;
 }
 
- 
 
-
+ofx::MUI::TracksScrollPanel* TracksPanel::getTracksView()
+{
+	return _tracksView;
 }
-} // ofx::LineaDeTiempo
+const ofx::MUI::TracksScrollPanel* TracksPanel::getTracksView() const
+{
+	return _tracksView;
+}
+
+
+ofx::MUI::ClippedView_<TrackHeader> * TracksPanel::getHeadersView()
+{
+	return _headersView;
+}
+const ofx::MUI::ClippedView_<TrackHeader> * TracksPanel::getHeadersView() const
+{
+	return _headersView;
+}
+
+shared_ptr<MUI::Styles> TracksPanel::getRegionsStyle()
+{
+	return _regionsStyle;
+}
+
+
+const shared_ptr<MUI::Styles> TracksPanel::getRegionsStyle() const
+{
+	return _regionsStyle;
+}
+
+
+
+
+}} // ofx::LineaDeTiempo

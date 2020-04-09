@@ -103,6 +103,11 @@ public:
 	
 protected:
 	
+	
+	virtual void _onShapeChange(const DOM::ShapeChangeEventArgs& ) override;
+	
+	
+	
 	virtual void _onDragging(const DOM::CapturedPointer& pointer) override;
 	virtual void _onPointerEvent(DOM::PointerUIEventArgs& e) override;
 

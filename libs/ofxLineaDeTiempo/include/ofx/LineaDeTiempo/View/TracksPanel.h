@@ -12,6 +12,7 @@
 
 #include "LineaDeTiempo/View/TrackGroupView.h"
 #include "LineaDeTiempo/View/TimeRuler.h"
+#include "MUI/MUI.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -32,60 +33,61 @@ public:
 	
 	virtual ~TracksPanel() = default;
 
-
 	virtual void updateLayout() override;
 	
 	virtual void onDraw() const override;
+		
+	typedef ofx::MUI::ClippedView_<TrackHeader> HeadersView;
+	typedef ofx::MUI::TracksScrollPanel TracksView;
 	
-	float timeToScreenPosition(uint64_t time) const;
-	uint64_t  screenPositionToTime(float x) const;
-	
-	
-	TracksClippedView* getClippingView();
-	const TracksClippedView* getClippingView()const;
-	
-	DOM::Element* getContainer();
-	const DOM::Element* getContainer() const;
-	
-	
-	virtual void _updateContainers() override;
-	
-	shared_ptr<MUI::Styles> getRegionsStyle();
-	
+//	virtual void _updateContainers() override;
 	
 	void setTracksHeaderWidth(float w);
 	
-	TimeRuler * _timeRuler = nullptr;
+	
+	shared_ptr<ofx::MUI::Styles> getRegionsStyle();
+	const shared_ptr<ofx::MUI::Styles> getRegionsStyle() const;
+	
+	TracksPanelController* getController();
+	const TracksPanelController* getController() const;
+
+	TracksView* getTracksView();
+	const TracksView* getTracksView() const;
+	
+	HeadersView * getHeadersView();
+	const HeadersView * getHeadersView() const;
+
+	
 	
 protected:
+	
 	friend class TracksPanelController;
 	
 	void _setup();
 	
-	MUI::TracksScrollPanel* tracksView;
-	MUI::ClippedView_<TrackHeader> * headersView;
-
-	ofEventListeners _tracksContainerListeners;
-	
-	
-	void _updateHeadersFromTracks();
-
-	
-	void _tracksMoved(DOM::MoveEventArgs& e);
-	void _tracksResized(DOM::ResizeEventArgs& e);
-	
-	
-	shared_ptr<MUI::Styles> _regionsStyle = nullptr;
 	
 	ofRectangle _makeHeadersViewRect();
 	ofRectangle _makeTracksViewRect();
-
-	ofEventListener _parentListener;
-	void _parentViewResized(DOM::ResizeEventArgs&);
+	ofRectangle _makeTimeRulerViewRect();
+	
+	ofEventListener _viewListener;
+	void _viewShapeChanged(DOM::ShapeChangeEventArgs&);
 	
 private:
+
 	
+	ofEventListener _tracksViewListener;
+	void _tracksViewShapeChanged(DOM::ShapeChangeEventArgs&);
 	
+	TracksPanelController* _controller = nullptr;
+
+//	TimeRuler * _timeRuler = nullptr;
+	
+	TracksView * _tracksView = nullptr;
+	
+	HeadersView * _headersView = nullptr;
+
+	shared_ptr<ofx::MUI::Styles> _regionsStyle = nullptr;
 	
 	
 };

@@ -23,19 +23,29 @@ public:
 	virtual ~TracksClippedView(){}
 	
 
-	virtual void updateLayout() override;
 	
-	void setZoom(const std::vector<ofRange>& zooms);
 	
-	void setZoom(int index, const ofRange& zoom);
+//	void setZoom(const std::vector<ofRange>& zooms);
 	
-	ofRange getZoom(int index) const;
+	void setZoom(DOM::Orientation orientation, const ofRange& zoom);
+	
+	void setZoomV(ofRange& v);
+	void setZoomH(ofRange& v);
+	
+	
+	ofRange getZoom(DOM::Orientation orientation) const;
 		
 	
 	float getTracksWidth() const;
 	
+	
+	ofRange getVerticalZoomFromContainerHeight();
+	
+	
 protected:
 
+
+	
 		
 	glm::vec2 _minZoom = {
 		0.0001, //std::numeric_limits<float>::epsilon(),
@@ -46,24 +56,22 @@ protected:
 	
 	float _tracksWidth = 0;
 	void _updateTracksWidth();
-};
+	
+	void _updateVerticalLayout();
+	
+	float _unscaledHeight = 0;
+	void _updateTracksUnscaledHeight();
+	
+	
+	ofEventListeners _listeners;
+	
+	void _onResize(DOM::ShapeChangeEventArgs& e);
+	void _onTrackAdded(DOM::ElementEventArgs&);
+	void _onTrackRemoved(DOM::ElementEventArgs&);
+	
 
-
-
-class TracksClippedViewLayout: public DOM::Layout
-{
-public:
-    /// If the Orientation::DEFAULT is chosen, the default will be set to
-    /// Orientation::HORIZONTAL.
-    TracksClippedViewLayout(TracksClippedView* parent);
-
-	virtual ~TracksClippedViewLayout(){}
-
-    virtual void doLayout() override;
-
-protected:
-
-	TracksClippedView* _tracks = nullptr;
+	size_t _numGroups = 0;
+	
 };
 
 

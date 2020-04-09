@@ -17,13 +17,15 @@ namespace LineaDeTiempo {
 
 
 
-BaseTrackView::BaseTrackView(const std::string& id, DOM::Element* parentGroupView, TimeRuler* timeRuler)
+BaseTrackView::BaseTrackView(const std::string& id, DOM::Element* parentGroupView, TimeRuler * timeRuler)
 :DOM::Element(id, 0, 0, parentGroupView->getWidth(), 150)
 , _parentGroupView(dynamic_cast<TrackGroupView*>(parentGroupView))
 , _timeRuler(timeRuler)
 {
 	setParent(parentGroupView);
 
+	
+	
 	_color = TrackBackgroundColor;
 	_textColor = ofColor::white;
 	
@@ -71,20 +73,27 @@ void BaseTrackView::onDraw() const
 }
 
 
-
-void BaseTrackView::updateLayout()
+//
+//void BaseTrackView::updateLayout()
+//{
+//	for(auto r: children())
+//	{
+//
+//		if(r)
+//		{
+//			r->updateLayout();
+//
+//		}
+//	}
+//}
+void BaseTrackView::updateWidth(const float& w)
 {
-	for(auto r: children())
+	setWidth(w);
+	for(auto& c: children<BaseTrackView>())
 	{
-		
-		if(r)
-		{
-			r->updateLayout();
-			
-		}
+		c->updateWidth(w);
 	}
 }
-
 
 void BaseTrackView::setHeader(TrackHeader* header)
 {

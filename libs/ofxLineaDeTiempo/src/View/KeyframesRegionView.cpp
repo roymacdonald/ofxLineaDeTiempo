@@ -48,7 +48,7 @@ KeyframesRegionView::KeyframesRegionView(TrackView* parentTrack, RegionControlle
 void KeyframesRegionView::updateLayout()
 {
 	
-	RegionView::updateLayout();
+//	RegionView::updateLayout();
 	
 	ofRectangle rect(0, ViewTopHeaderHeight, getWidth(), _getCollectionViewHeight());
 	
@@ -67,7 +67,8 @@ void KeyframesRegionView::updateLayout()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void KeyframesRegionView::onDraw() const{
+void KeyframesRegionView::onDraw() const
+{
 	Widget::onDraw();
 	_selector.draw();
 	
@@ -82,7 +83,8 @@ KeyframeView* KeyframesRegionView::addKeyframe(float value, uint64_t time, size_
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool KeyframesRegionView::removeKeyframe(KeyframeView* k, size_t viewIndex){
+bool KeyframesRegionView::removeKeyframe(KeyframeView* k, size_t viewIndex)
+{
 	if(viewIndex < _views.size()){
 		return _views[viewIndex]->removeKeyframe(k);
 	}
@@ -105,6 +107,7 @@ float KeyframesRegionView::_getCollectionViewHeight() const
 	{
 		return(getHeight() - ViewTopHeaderHeight)/ float(_controller->getNumDimensions());
 	}
+	ofLogWarning("KeyframesRegionView::_getCollectionViewHeight") << "Region view has no controller. This should never happen.";
 	return getHeight() - ViewTopHeaderHeight;
 }
 

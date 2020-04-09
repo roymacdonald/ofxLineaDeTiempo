@@ -8,111 +8,35 @@
 #pragma once
 
 
-#include "ofx/MUI/Widget.h"
-#include "ofMesh.h"
+#include "ofx/DOM/Element.h"
 #include "LineaDeTiempo/Controller/TimeControl.h"
 #include "ofRange.h"
-#include "LineaDeTiempo/View/Playhead.h"
-
+#include "LineaDeTiempo/View/TimeRulerHeader.h"
+#include "LineaDeTiempo/View/TimeRulerBar.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
 
 class TracksPanel;
 
-
-class TimeRulerHeader
-: public DOM::Element
-{
-public:
-	TimeRulerHeader( TimeControl* timeControl);
-	
-	virtual ~TimeRulerHeader() = default;
-	
-	virtual void onDraw() const override;
-	
-	virtual void updateLayout() override;
-protected:
-	TimeControl* _timeControl = nullptr;
-	
-	static ofBitmapFont bf;
-	
-};
-
-
-class TimeRulerBar
-: public MUI::Widget
-
-{
-public:
-	TimeRulerBar( TracksPanel* panel, TimeControl* timeControl);
-	
-	virtual ~TimeRulerBar() = default;
-
-	
-	virtual void onDraw() const override;
-
-	virtual void updateLayout() override;
-	
-protected:
-	
-	virtual void _onDragging(const DOM::CapturedPointer& pointer) override;
-	
-    virtual void _onPointerEvent(DOM::PointerUIEventArgs& e) override;
-	
-	
-	
-	TracksPanel* _panel = nullptr;
-	
-	void _makeRulerLines();
-	ofMesh _rulerLines;
-	
-
-	TimeControl* _timeControl = nullptr;
-	
-	ofRange64u _currentRange;
-
-	float _minLineDist = 4;
-
-	
-	enum {
-		_MILLIS =0,
-		_CENTS,
-		_TENS,
-		_SECONDS,
-		_MINUTES,
-		_HOURS,
-		_NUM_SUBDIVISIONS
-	};
-	
-	std::vector<float> distances ;
-	std::vector<bool> bDraw ;
-	std::vector<float> multipliers ;// = {1.f, 1000.f, (1000.f *60 ),  (1000.f *60 *60 ) };
-	
-	ofVboMesh textMesh;
-	Playhead * _playhead = nullptr;
-	void _updatePlayheadSize();
-	
-	ofEventListener _panelResizeListener;
-	void _onPanelResize(DOM::ResizeEventArgs& e);
-	
-	
-	
-};
-
 class TimeRuler
 : public DOM::Element
 {
 public:
-	TimeRuler( TracksPanel* panel, TimeControl* timeControl);
+	TimeRuler( TracksPanel* panel, TimeControl* timeControl, const ofRectangle& rect);
 	
 	virtual ~TimeRuler() = default;
 	
 	virtual void updateLayout() override;
 	
-
+	
+	float timeToScreenPosition(uint64_t time) const;
+	
+	uint64_t  screenPositionToTime(float x) const;
+	
 
 protected:
+	friend class TimeRulerBar;
 	TimeRulerHeader* _header = nullptr;
 
 	TimeRulerBar* _bar = nullptr;
@@ -121,15 +45,23 @@ protected:
 	TracksPanel* _panel = nullptr;
 	
 	
-	ofEventListeners _panelListeners;
+	void _setBarShape(bool dontCheck = false);
 	
 	
+	TimeControl * _timeControl = nullptr;
 	
+	ofRange _trackScreenHorizontal;
 	
-	void _tracksContainerMoved(DOM::MoveEventArgs& e);
-	void _tracksContainerResized(DOM::ResizeEventArgs& e);
-	void _panelResized(DOM::ResizeEventArgs& e);
+//	void _tracksContainerShapeChanged(DOM::ShapeChangeEventArgs& e);
+//	void _panelShapeChanged(DOM::ShapeChangeEventArgs& e);
 	
+	ofEventListener _trackContainerListener;
+	void _tracksContainerShapeChanged(DOM::ShapeChangeEventArgs& e);
+	
+//	void _tracksContainerMoved(DOM::MoveEventArgs& e);
+//	void _tracksContainerResized(DOM::ResizeEventArgs& e);
+//	void _panelResized(DOM::ResizeEventArgs& e);
+//
 	
 	
 	
