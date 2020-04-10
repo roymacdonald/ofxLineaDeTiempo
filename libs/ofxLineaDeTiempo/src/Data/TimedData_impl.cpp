@@ -12,6 +12,8 @@ namespace ofx {
 namespace LineaDeTiempo {
 
 
+template class TimedData_<bool>;
+
 
 template class TimedData_<char>;
 template class TimedData_<unsigned char>;
