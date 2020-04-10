@@ -20,11 +20,12 @@ namespace LineaDeTiempo {
 //---------------------------------------------------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------------------------------------------------
-KeyframeView::KeyframeView(const std::string& id, float value, uint64_t time, KeyframeCollectionView * parentView)
-: Widget(id,0,0, DefaultKeyframeSize, DefaultKeyframeSize)
+KeyframeView::KeyframeView(const std::string& id, float value, uint64_t time, KeyframeCollectionView * parentView, bool paramTypeIsVoid)
+: Widget(id,0,0, ConstVars::DefaultKeyframeSize, ConstVars::DefaultKeyframeSize)
 , _parentView(parentView)
 , _time(time)
 , _value(value)
+, _bParamTypeIsVoid(paramTypeIsVoid)
 {
 	if(!_parentView)
 	{
@@ -32,7 +33,9 @@ KeyframeView::KeyframeView(const std::string& id, float value, uint64_t time, Ke
 	}
 	
 	setDraggable(true);
-	setShapeDrawMode(MUI::ShapeDrawMode::ELLIPSE);
+	if(!_bParamTypeIsVoid){
+		setShapeDrawMode(MUI::ShapeDrawMode::ELLIPSE);
+	}
 	_updatePosition();
 }
 
@@ -43,12 +46,19 @@ void KeyframeView::onDraw() const
 	Widget::onDraw();
 	if(isSelected()){
 		ofPushStyle();
-		ofPushMatrix();
 		ofFill();
-		ofSetColor(ofColor::yellow);
-		ofTranslate(getWidth() / 2, getHeight() / 2);
-		ofDrawEllipse(0, 0, getWidth()-2, getHeight()-2);
-		ofPopMatrix();
+		ofSetColor(ConstVars::SelectedColor);
+		if(_bParamTypeIsVoid)
+		{
+			ofDrawRectangle(1, 1, getWidth()-2, getHeight()-2);
+		}
+		else
+		{
+			ofPushMatrix();
+			ofTranslate(getWidth() / 2, getHeight() / 2);
+			ofDrawEllipse(0, 0, getWidth()-2, getHeight()-2);
+			ofPopMatrix();
+		}
 		ofPopStyle();
 	}
 }
@@ -105,7 +115,7 @@ void KeyframeView::_updatePosition()
 	auto p = _parentView;
 	
     if(p && p->parentTrack() && p->parentTrack()->getTimeRuler()){
-//		auto m = (DefaultKeyframeSize*0.5);
+//		auto m = (ConstVars::DefaultKeyframeSize*0.5);
 		pos.y = p->keyframeValueToPosition(_value);
 		
 		auto s = p->parentTrack()->getTimeRuler()->timeToScreenPosition(_time);
@@ -138,7 +148,7 @@ void KeyframeView::_updateValue()
 			_time = t;
 			ofNotifyEvent(timeChangedEvent, t, this);
 		}
-		if(v != _value)
+		if(!_bParamTypeIsVoid && v != _value)
 		{
 			_value = v;
 			ofNotifyEvent(valueChangedEvent, v, this);
@@ -190,5 +200,9 @@ void KeyframeView::_onPointerEvent(DOM::PointerUIEventArgs& e)
         // unhandled.
     }
 }
-
+//---------------------------------------------------------------------------------------------------------------------
+bool KeyframeView:: isParamTypeVoid() const
+{
+	return _bParamTypeIsVoid;
+}
 } } // ofx::LineaDeTiempo

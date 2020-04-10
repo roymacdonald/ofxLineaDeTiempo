@@ -69,7 +69,7 @@ public:
     void selectAllKeyframes();
 
 	
-
+	
 	KeyframeView* addKeyframe(float value, uint64_t time);
 	
 	bool removeKeyframe(KeyframeView* k);
@@ -102,6 +102,10 @@ public:
 	
 	
 protected:
+	
+	
+	bool _bParamTypeIsVoid = false;
+	
 	
 	
 	virtual void _onShapeChange(const DOM::ShapeChangeEventArgs& ) override;

@@ -37,22 +37,17 @@ KeyframeCollectionView::KeyframeCollectionView (const std::string & name, const 
 					 false,
 					 std::numeric_limits<int>::lowest());
 	
-//	_parentListener = _parentRegion->resize.newListener(this, &KeyframeCollectionView::_parentResized);
-	
+
 	setDraggable(true);
 	setFocusable(true);
 //	setDrawChildrenOnly(true);
 	setMoveToFrontOnCapture(false);
 	setHighlightOnOver(true);
+	
+	
+	_bParamTypeIsVoid = controller->getDataTypeName() == string(typeid(void).name());
+	
 }
-
-//void KeyframeCollectionView::_parentResized(DOM::ResizeEventArgs &args)
-//{
-//	if(_parentRegion)
-//		setShape({0, ViewTopHeaderHeight, _parentRegion->getWidth(), _parentRegion->getCollectionViewHeight()});
-//	
-//
-//}
 
 //---------------------------------------------------------------------------------------------------------------------
 void KeyframeCollectionView::onKeyframeDrag(KeyframeView* k, const glm::vec2& delta)
@@ -65,8 +60,9 @@ void KeyframeCollectionView::onKeyframeDrag(KeyframeView* k, const glm::vec2& de
 					
 					auto r = s->getShape();
 					r.x = s->getX() - delta.x;
-					r.y = s->getY() - delta.y;
-					
+					if(!_bParamTypeIsVoid){
+						r.y = s->getY() - delta.y;
+					}
 					DOM::ofRectangleHelper::keepInside(r, ofRectangle(0,0, getWidth(), getHeight()));
 					
 					s->setPosition(r.getPosition());
@@ -90,9 +86,6 @@ const std::vector<KeyframeView*> & KeyframeCollectionView::getCollection() const
 ////---------------------------------------------------------------------------------------------------------------------
 void KeyframeCollectionView::_onDragging(const DOM::CapturedPointer& pointer)
 {
-//	auto local = screenToLocal(pointer.position());
-	//	updateSelectionRect(local);
-//	std::cout << "KeyframesRegionView::_onDragging " << local << "\n";
 	if(_parentRegion) _selector->onPointerDrag(pointer.position(), this);
 	
 }
@@ -110,30 +103,11 @@ void KeyframeCollectionView::_onPointerEvent(DOM::PointerUIEventArgs& e)
 	}
 	else if (e.type() == PointerEventArgs::POINTER_UP)
 	{
-	
-//		debugString  = "screenPosition: " + ofToString(e.screenPosition().y) + "\n";
-//		debugString += "localPosition : " + ofToString(e.localPosition().y) + "\n";
-//		debugString += "localToScreen : " + ofToString(localToScreen(e.localPosition()).y) + "\n";
-//		debugString += "screenToLocal : " + ofToString(screenToLocal(e.screenPosition()).y) + "\n";
-//		debugString += "pos to value  : " + ofToString(keyframePositionToValue(screenToLocal(e.screenPosition()).y)) + "\n";
-//		
-//		
-		
 		if(_parentRegion && parentTrack() && parentTrack()->getTimeRuler()){
 			auto wasSelecting =  _selector->onPointerUp(e.screenPosition(), this);
 			if(!wasSelecting)
 			{
-				
-				
-				
-				
-				
 				auto v = keyframePositionToValue(screenToLocal(e.screenPosition()).y);
-	
-//				std::cout << "\nKeyframeCollectionView::_onPointerEvent  local y: " << e.localPosition().y;
-//				std::cout << "  screen y: "  << e.screenPosition().y;
-//				std::cout << "  l2c:  " << localToScreen(e.localPosition()).y;
-//				std::cout << "  y value: " << v << "\n";
 				
 				AddKeyframeEventArgs args(v,
 										 parentTrack()->getTimeRuler()->screenPositionToTime(e.screenPosition().x),
@@ -141,7 +115,6 @@ void KeyframeCollectionView::_onPointerEvent(DOM::PointerUIEventArgs& e)
 
 				
 				ofNotifyEvent(addKeyframeEvent, args, this);
-
 				
 			}
 		}
@@ -176,43 +149,43 @@ bool KeyframeCollectionView::isKeyframeSelected(KeyframeView* k)
 //---------------------------------------------------------------------------------------------------------------------
 void KeyframeCollectionView::_makeInterpolationLine()
 {
-	glm::vec2 cp;
-	_interpolationLine.clear();
-	_inLine.clear();
-	_outLine.clear();
-	if(keyFrames.size())
-	{
-		//		_inLine.addVertex(getShape().getMinX(), keyFrames[0]->getCenterPosition().y);
-		_inLine.addVertex(0, keyFrames[0]->getCenterPosition().y);
-		_inLine.addVertex(glm::vec3(keyFrames[0]->getCenterPosition(),0));
-		
-		
-		
-		_outLine.addVertex(glm::vec3(keyFrames.back()->getCenterPosition(),0));
-		_outLine.addVertex(getWidth(), keyFrames.back()->getCenterPosition().y);
-		
-	}
-	for(auto& k: keyFrames){
-		cp = k->getCenterPosition();
-		_interpolationLine.addVertex(cp.x, cp.y);
+	if(!_bParamTypeIsVoid){
+		glm::vec2 cp;
+		_interpolationLine.clear();
+		_inLine.clear();
+		_outLine.clear();
+		if(keyFrames.size())
+		{
+			_inLine.addVertex(0, keyFrames[0]->getCenterPosition().y);
+			_inLine.addVertex(glm::vec3(keyFrames[0]->getCenterPosition(),0));
+			
+			
+			
+			_outLine.addVertex(glm::vec3(keyFrames.back()->getCenterPosition(),0));
+			_outLine.addVertex(getWidth(), keyFrames.back()->getCenterPosition().y);
+			
+		}
+		for(auto& k: keyFrames){
+			cp = k->getCenterPosition();
+			_interpolationLine.addVertex(cp.x, cp.y);
+		}
 	}
 }
 //---------------------------------------------------------------------------------------------------------------------
 void KeyframeCollectionView::onDraw() const
 {
-//	Widget::onDraw();
-	
-	ofPushStyle();
-	ofSetColor(ofColor::black, 200);
-	ofDrawLine(0, 0, getWidth(), 0);
-	
-	ofSetColor(ofColor::white, 100);
-	_inLine.draw();
-	_outLine.draw();
-	ofSetColor(ofColor::yellow);
-	_interpolationLine.draw();
-	ofPopStyle();
-	
+	if(!_bParamTypeIsVoid){
+		ofPushStyle();
+		ofSetColor(ofColor::black, 200);
+		ofDrawLine(0, 0, getWidth(), 0);
+		
+		ofSetColor(ofColor::white, 100);
+		_inLine.draw();
+		_outLine.draw();
+		ofSetColor(ofColor::yellow);
+		_interpolationLine.draw();
+		ofPopStyle();
+	}
 }
 
 bool compareKeyframeView(KeyframeView* a, KeyframeView* b)
@@ -239,7 +212,7 @@ void KeyframeCollectionView::updateKeyframeSort()
 
 KeyframeView* KeyframeCollectionView::addKeyframe(float value, uint64_t time)
 {
-	auto c = this->addChild<KeyframeView>("_k"+ofToString(keyFrames.size()), value, time , this);
+	auto c = this->addChild<KeyframeView>("_k"+ofToString(keyFrames.size()), value, time , this, _bParamTypeIsVoid);
 	keyFrames.push_back(c);
 	updateKeyframeSort();
 	return c;
@@ -318,13 +291,11 @@ void KeyframeCollectionView::onKeyboardEvent(DOM::KeyboardUIEventArgs& evt)
 
 float KeyframeCollectionView::keyframePositionToValue(float pos)
 {
+	if(_bParamTypeIsVoid) return 0;
 	
-	auto h2 = DefaultKeyframeSize *0.5;
+	auto h2 = ConstVars::DefaultKeyframeSize *0.5;
 	
 	auto val =  ofMap(pos, h2 , getHeight() - h2, 1, 0, true);
-	
-//	 std::cout <<  "KeyframeCollectionView::keyframePositionToValue  pos: "  << pos << "  h: " << getHeight() << "  val: " << val << "\n";
-	
 	
 	return val;
 	
@@ -332,8 +303,9 @@ float KeyframeCollectionView::keyframePositionToValue(float pos)
 
 float KeyframeCollectionView::keyframeValueToPosition(float value)
 {
+	if(_bParamTypeIsVoid) return 0;
 	
-	auto h2 = DefaultKeyframeSize *0.5;
+	auto h2 = ConstVars::DefaultKeyframeSize *0.5;
 	return ofMap(value, 1, 0, h2 , getHeight() - h2, true);
 	
 }

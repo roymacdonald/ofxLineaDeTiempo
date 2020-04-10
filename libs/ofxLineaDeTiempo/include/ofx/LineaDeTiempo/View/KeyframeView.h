@@ -28,7 +28,7 @@ public:
 	friend class KeyframeCollectionView;
 
 	
-	KeyframeView(const std::string& id, float value, uint64_t time,  KeyframeCollectionView * parentView);
+	KeyframeView(const std::string& id, float value, uint64_t time,  KeyframeCollectionView * parentView, bool paramTypeIsVoid);
 	
 	
 	virtual ~KeyframeView(){}
@@ -56,9 +56,13 @@ public:
 	
 	ofEvent<float> valueChangedEvent;
 	ofEvent<uint64_t> timeChangedEvent;
+	
+	bool isParamTypeVoid() const;
 protected:
 	KeyframeCollectionView * _parentView = nullptr;
 
+	bool _bParamTypeIsVoid = false;
+	
 	uint64_t _time = 0;
 	float _value =0; //normalized
 
