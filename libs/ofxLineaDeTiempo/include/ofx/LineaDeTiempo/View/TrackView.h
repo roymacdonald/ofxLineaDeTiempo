@@ -12,7 +12,6 @@
 #include "LineaDeTiempo/View/BaseTrackView.h"
 #include "LineaDeTiempo/View/RegionView.h"
 #include "LineaDeTiempo/View/TimeRuler.h"
-//#include "LineaDeTiempo/BaseTypes/BaseHasController.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -22,8 +21,6 @@ class TrackController;
 
 class TrackView
 : public BaseTrackView
-//, public BaseHasController<TrackController>
-
 {
 public:
 
@@ -44,9 +41,6 @@ public:
 	
 	uint64_t localPositionToTime(float x) const;
 	
-	
-	
-	virtual void updateLayout() override;
 	
 	
 	

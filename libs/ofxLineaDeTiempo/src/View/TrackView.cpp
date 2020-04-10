@@ -16,11 +16,11 @@ namespace LineaDeTiempo {
 
 TrackView::TrackView(DOM::Element* parentView, TrackController* controller,TimeRuler * timeRuler )
 : BaseTrackView(controller->getId(), parentView, timeRuler)
-, _unscaledHeight(TrackInitialHeight)
+, _unscaledHeight(ConstVars::TrackInitialHeight)
 , _controller(controller)
 
 {
-	_regionsHeaderStyle = make_shared<MUI::Styles>();
+	_regionsHeaderStyle = make_shared<MUI::Styles>("regionsHeaderStyle");
 	colorListener = BaseTrackView::colorChangeEvent.newListener(this, &TrackView::colorChanged);
 }
 
@@ -61,16 +61,6 @@ uint64_t TrackView::localPositionToTime(float x) const
 	return MUI::Math::lerp(x, 0, getWidth(), 0, _controller->getTimeControl()->getTotalTime());
 }
 
-//float TrackView::timeToScreenPosition(uint64_t time) const
-//{
-//	return DOM::Element::localToScreen({timeToLocalPosition(time),0}).x;
-//}
-//
-//uint64_t  TrackView::screenPositionToTime(float x) const
-//{
-//	return localPositionToTime(DOM::Element::screenToLocal({x,0}).x);
-//}
-
 float TrackView::getHeightFactor() const
 {
 	return _heightFactor;
@@ -79,7 +69,7 @@ float TrackView::getHeightFactor() const
 void TrackView::setHeightFactor(float factor)
 {
 	_heightFactor = factor;
-	_unscaledHeight = TrackInitialHeight * _heightFactor;
+	_unscaledHeight = ConstVars::TrackInitialHeight * _heightFactor;
 }
 
 bool TrackView::removeRegion(RegionController * controller)
@@ -110,13 +100,12 @@ bool TrackView::removeRegion(RegionController * controller)
 
 float TrackView::getUnscaledHeight(size_t & numGroups)
 {
-	//std::cout << "TrackGroupView::getUnscaledHeight()   " << getId()  << " h: " << _unscaledHeight << "\n";
 	return _unscaledHeight;
 }
 
 float TrackView::updateYScaled(float y, float yScale)
 {
-	auto h = TrackInitialHeight * _heightFactor * yScale;
+	auto h = ConstVars::TrackInitialHeight * _heightFactor * yScale;
 //	if(!ofIsFloatEqual(h, getHeight()) || !ofIsFloatEqual(y, getY()))
 //	{
 		setShape({0, y, getWidth(), h});
@@ -158,16 +147,6 @@ void TrackView::_updateRegionsWidth()
 	}
 }
 
-
-void TrackView::updateLayout()
-{
-	
-	
-//	for(auto c: children())
-//	{
-//		if(c) c->updateLayout();
-//	}
-}
 
 
 const TrackController * TrackView::getController() const
