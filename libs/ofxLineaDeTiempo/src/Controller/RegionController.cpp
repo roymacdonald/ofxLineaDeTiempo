@@ -48,13 +48,7 @@ const TrackController * RegionController::getParentTrack() const
 {
 	return _parentTrack;
 }
-
-const std::string&  RegionController::getDataTypeName() const
-{
-	return _dataTypeName;
-}
 				
-
 	
 	
 

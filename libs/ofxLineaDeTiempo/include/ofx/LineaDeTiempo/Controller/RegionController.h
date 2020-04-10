@@ -48,9 +48,7 @@ public:
 	virtual bool update(uint64_t& t) = 0;
 	
 	virtual void fromJson(const ofJson& j) override;
-	virtual ofJson toJson() override;
-	
-	const std::string&  getDataTypeName() const;
+	virtual ofJson toJson() override;	
 	
 	
 	virtual size_t getNumDimensions() const = 0;
