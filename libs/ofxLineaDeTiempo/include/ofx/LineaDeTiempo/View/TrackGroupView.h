@@ -47,10 +47,7 @@ public:
 	
 	virtual float getUnscaledHeight(size_t & numGroups) override;
 	virtual float updateYScaled(float y, float yScale) override;
-	
-	
-//	virtual void _updateContainers();
-	
+		
 	
 protected:
 	void _setTracksHeaderWidth(float w);
@@ -58,16 +55,7 @@ protected:
 	TrackGroupController* _controller = nullptr;
 	
 	DOM::Element* _tracksContainer = nullptr;
-	
-//	void _enableParentShapeListener();
-//	void _disableParentShapeListener();
-//	void _parentMoved(DOM::MoveEventArgs& e);
-//	void _parentResized(DOM::ResizeEventArgs& e);
-	
-//	ofEventListeners _parentListeners;
-	
-	
-	
+		
 	float _trackHeaderWidth = 200;
 	
 	bool _containersCheck(const std::string & callerName);
@@ -99,15 +87,12 @@ TrackViewType* TrackGroupView::addTrack(TrackController * controller)
 	}
 	
 	auto t = _tracksContainer->addChild<TrackViewType>(this, controller, _timeRuler);
-	auto h = _header->addChild<TrackHeader>( "_header", ofRectangle(0, 0, _trackHeaderWidth, TrackInitialHeight), t , this, _isPanel);
+	auto h = _header->addChild<TrackHeader>( "_header", ofRectangle(0, 0, _trackHeaderWidth, ConstVars::TrackInitialHeight), t , this, _isPanel);
 	
 	ofColor color;
 	color.setHsb(ofRandom(255), ofRandom(200, 255), ofRandom(150,255));
 	
 	t->setColor(color);
-	
-	
-//	_updateContainers();
 	
 	return t;
 }
@@ -132,9 +117,8 @@ GroupViewType* TrackGroupView::addGroup(TrackGroupController * controller )
 	
 	
 	auto t = _tracksContainer->addChild<GroupViewType>(this, controller, _timeRuler);
-	auto h = _header->addChild<TrackHeader>( "_header", ofRectangle(0, 0, _trackHeaderWidth, TrackInitialHeight), t , this, _isPanel);
+	auto h = _header->addChild<TrackHeader>( "_header", ofRectangle(0, 0, _trackHeaderWidth, ConstVars::TrackInitialHeight), t , this, _isPanel);
 	
-//	_updateContainers();
 	
 	return t;
 	
