@@ -41,9 +41,6 @@ TracksPanel::TracksPanel(const std::string& id, DOM::Element* parentView, const 
 
 	_tracksViewListener = _tracksContainer->shapeChanged.newListener(this, &TracksPanel::_tracksViewShapeChanged);
 	
-
-	_regionsStyle = make_shared<ofx::MUI::Styles>();
-	_regionsStyle->setColor(RegionBackgroundColor,ofx::MUI::Styles::ROLE_BACKGROUND);
 	
 
 	_timeRuler = addChild<TimeRuler>(this, controller->getTimeControl(), _makeTimeRulerViewRect());
@@ -116,19 +113,19 @@ void TracksPanel::updateLayout()
 //---------------------------------------------------------------------
 ofRectangle TracksPanel::_makeTimeRulerViewRect()
 {
-	return ofRectangle(0, 0, getWidth(), TimeRulerInitialHeight);
+	return ofRectangle(0, 0, getWidth(), ConstVars::TimeRulerInitialHeight);
 }
 //---------------------------------------------------------------------
 ofRectangle TracksPanel::_makeHeadersViewRect()
 {
 	
-	return ofRectangle(0, TimeRulerInitialHeight + CONTAINER_MARGIN, _trackHeaderWidth, getHeight() - (CONTAINER_MARGIN * 2) - SCROLL_BAR_SIZE - TimeRulerInitialHeight);
+	return ofRectangle(0, ConstVars::TimeRulerInitialHeight + CONTAINER_MARGIN, _trackHeaderWidth, getHeight() - (CONTAINER_MARGIN * 2) - SCROLL_BAR_SIZE - ConstVars::TimeRulerInitialHeight);
 }
 
 //---------------------------------------------------------------------
 ofRectangle TracksPanel::_makeTracksViewRect()
 {
-	return ofRectangle(_trackHeaderWidth, TimeRulerInitialHeight , getWidth() - _trackHeaderWidth, getHeight() - TimeRulerInitialHeight );
+	return ofRectangle(_trackHeaderWidth, ConstVars::TimeRulerInitialHeight , getWidth() - _trackHeaderWidth, getHeight() - ConstVars::TimeRulerInitialHeight );
 }
 
 
@@ -160,19 +157,5 @@ const ofx::MUI::ClippedView_<TrackHeader> * TracksPanel::getHeadersView() const
 {
 	return _headersView;
 }
-
-shared_ptr<MUI::Styles> TracksPanel::getRegionsStyle()
-{
-	return _regionsStyle;
-}
-
-
-const shared_ptr<MUI::Styles> TracksPanel::getRegionsStyle() const
-{
-	return _regionsStyle;
-}
-
-
-
 
 }} // ofx::LineaDeTiempo

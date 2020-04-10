@@ -40,13 +40,8 @@ public:
 	typedef ofx::MUI::ClippedView_<TrackHeader> HeadersView;
 	typedef ofx::MUI::TracksScrollPanel TracksView;
 	
-//	virtual void _updateContainers() override;
 	
 	void setTracksHeaderWidth(float w);
-	
-	
-	shared_ptr<ofx::MUI::Styles> getRegionsStyle();
-	const shared_ptr<ofx::MUI::Styles> getRegionsStyle() const;
 	
 	TracksPanelController* getController();
 	const TracksPanelController* getController() const;
@@ -81,13 +76,10 @@ private:
 	
 	TracksPanelController* _controller = nullptr;
 
-//	TimeRuler * _timeRuler = nullptr;
 	
 	TracksView * _tracksView = nullptr;
 	
 	HeadersView * _headersView = nullptr;
-
-	shared_ptr<ofx::MUI::Styles> _regionsStyle = nullptr;
 	
 	
 };
