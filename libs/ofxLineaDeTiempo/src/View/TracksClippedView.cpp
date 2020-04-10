@@ -138,7 +138,7 @@ void TracksClippedView::_updateTracksUnscaledHeight()
 		_numGroups -= 1;
 	}
 	
-	_unscaledHeight = std::max((getHeight() - (_numGroups * ViewTopHeaderHeight)), _unscaledHeight);
+	_unscaledHeight = std::max((getHeight() - (_numGroups * ConstVars::ViewTopHeaderHeight)), _unscaledHeight);
 	
 }
 
@@ -146,20 +146,16 @@ ofRange TracksClippedView::getVerticalZoomFromContainerHeight()
 {
 	auto cs = getChildShape();
 	
-	
-	
-//	float span = getHeight()/cs.height;
 	float span;
+	
 	if(cs.height < getHeight())
 	{
 		span = 1;
 	}
 	else
 	{
-		span = getHeight()/cs.height;
+		span  = (getHeight() -(_numGroups * ConstVars::ViewTopHeaderHeight))/ cs.height;
 	}
-	
-	
 	
 	auto zoom = _zoom[1];
 	
@@ -172,34 +168,16 @@ ofRange TracksClippedView::getVerticalZoomFromContainerHeight()
 	std::cout << " children height: " << cs.height << " viewHeight: " << getHeight()  << " span: " << span << "  zoom: " << zoom << "\n";
 	return zoom;
 	
-//float yScale = getHeight() / (_unscaledHeight * _zoom[1].span());
-
-//float totalHeight = yScale*_unscaledHeight;
 }
 //---------------------------------------------------------------------
 void TracksClippedView::_updateVerticalLayout()
 {
 
+	_updateTracksUnscaledHeight();
 	
-//	if(ofIsFloatEqual(_unscaledHeight,0.f))
-		_updateTracksUnscaledHeight();
+	float yScale = (getHeight() -(_numGroups * ConstVars::ViewTopHeaderHeight))/ (_unscaledHeight * _zoom[1].span());
 	
-	float yScale = (getHeight() -(_numGroups * ViewTopHeaderHeight))/ (_unscaledHeight * _zoom[1].span());
-	
-//	float totalHeight = getChildShape().height;//yScale*_unscaledHeight;
 	float totalHeight = yScale*_unscaledHeight;
-	
-//	std::cout << "TracksClippedView::_updateVerticalLayout() \n";
-//
-//	std::cout << "     yScale : "  << yScale << "\n";
-//	std::cout << "     _unscaledHeight : "  << _unscaledHeight << "\n";
-//	std::cout << "     getHeight() : "  << getHeight() << "\n";
-//	std::cout << "     totalHeight : "  << totalHeight << "\n";
-//	std::cout << "     yScale*_unscaledHeight : " << yScale*_unscaledHeight << "\n";
-//	std::cout << "     getChildShape() : " << getChildShape() << "\n";
-//	std::cout << "     _zoom[1] : "  << _zoom[1]  << "\n";
-//	std::cout << "     _zoom[1].span() : "  << _zoom[1].span() << "\n";
-//
 	
 	float currentY = 0;
 	for (auto c : container->children()){
