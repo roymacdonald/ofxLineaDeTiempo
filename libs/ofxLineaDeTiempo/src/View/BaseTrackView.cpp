@@ -26,7 +26,7 @@ BaseTrackView::BaseTrackView(const std::string& id, DOM::Element* parentGroupVie
 
 	
 	
-	_color = TrackBackgroundColor;
+	_color = ConstVars::TrackBackgroundColor;
 	_textColor = ofColor::white;
 	
 }
@@ -64,11 +64,11 @@ const ofColor& BaseTrackView::getTextColor() const
 void BaseTrackView::onDraw() const
 {
 	ofFill();
-	ofSetColor(TrackBackgroundColor);
+	ofSetColor(ConstVars::TrackBackgroundColor);
 	ofDrawRectangle(0, 0, getWidth(), getHeight());
 	
 	ofNoFill();
-	ofSetColor(TrackEdgeColor);
+	ofSetColor(ConstVars::TrackEdgeColor);
 	ofDrawRectangle(0, 0, getWidth(), getHeight());
 }
 

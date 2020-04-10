@@ -9,6 +9,7 @@
 #include "LineaDeTiempo/View/TracksPanel.h"
 #include "LineaDeTiempo/Utils/ConstVars.h"
 #include <chrono>
+#include "ofMath.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -24,14 +25,6 @@ TimeRuler::TimeRuler(TracksPanel* panel, TimeControl* timeControl, const ofRecta
 	_bar = addChild<TimeRulerBar>( this, timeControl);
 	
 	updateLayout();
-	
-	
-//	_panelListeners.push(panel->shapeChanged.newListener(this, &TimeRuler::_panelShapeChanged));
-//	_panelListeners.push(panel->getContainer()->shapeChanged.newListener(this, &TimeRuler::_tracksContainerShapeChanged));
-	
-//	_panelListeners.push(panel->resize.newListener(this, &TimeRuler::_panelResized));
-//	_panelListeners.push(panel->getContainer()->move.newListener(this, &TimeRuler::  _tracksContainerMoved));
-//	_panelListeners.push(panel->getContainer()->resize.newListener(this, &TimeRuler::_tracksContainerResized));
 	
 	if(panel->getTracksView() && panel->getTracksView()->getContainer())
 	{
@@ -83,7 +76,7 @@ void TimeRuler::_setBarShape(bool dontCheck)
 			float x = cv->getX() + _header->getWidth();
 			if( dontCheck || !ofIsFloatEqual(x, _bar->getX()) || !ofIsFloatEqual(cv->getWidth(), _bar->getWidth()))
 			{
-				_bar->setShape({x, 0, cv->getWidth(), TimeRulerInitialHeight});
+				_bar->setShape({x, 0, cv->getWidth(), ConstVars::TimeRulerInitialHeight});
 				_bar->makeRulerLines();
 			}
 		}
@@ -98,9 +91,9 @@ void TimeRuler::updateLayout()
 		
 		auto w = _panel->getTracksHeaderWidth();
 		if(! ofIsFloatEqual(w, _header->getWidth()) ||
-		   ! ofIsFloatEqual(TimeRulerInitialHeight, _header->getHeight())
+		   ! ofIsFloatEqual(ConstVars::TimeRulerInitialHeight.get(), _header->getHeight())
 		   ){
-			_header->setShape({0, 0, w, TimeRulerInitialHeight});
+			_header->setShape({0, 0, w, ConstVars::TimeRulerInitialHeight});
 			_header->updateLayout();
 		}
 		

@@ -50,7 +50,7 @@ void TrackHeader::_updateShape()
 		if(!_belongsToPanel){
 			if(!isGroupHeader())
 			{
-				indent = HeaderViewIndent;
+				indent = ConstVars::HeaderViewIndent;
 			}
 		}
 		setShape({ indent, _track->getY(), _group->getTracksHeaderWidth() - indent, _track->getHeight() });
@@ -81,21 +81,21 @@ void TrackHeader::onDraw() const
 			
 			ofFill();
 
-			ofSetColor(TrackBackgroundColor);
+			ofSetColor(ConstVars::TrackBackgroundColor);
 			ofDrawRectangle(0, 0, getWidth(), getHeight());
 			
 			ofSetColor(_track->getColor());
-			ofDrawRectangle(0, 0, getWidth(), ViewTopHeaderHeight);
+			ofDrawRectangle(0, 0, getWidth(), ConstVars::ViewTopHeaderHeight);
 			
 			ofNoFill();
-			ofSetColor(TrackEdgeColor);
+			ofSetColor(ConstVars::TrackEdgeColor);
 			ofDrawRectangle(0, 0, getWidth(), getHeight());
 			
 			
 			ofSetColor(_track->getTextColor());
 			
 			
-			ofDrawBitmapString( (isGroupHeader()?"group ":"track ") + getTrack()->getId() , 20, (ViewTopHeaderHeight * 0.5 - 7 + 11));
+			ofDrawBitmapString( getTrack()->getId() , 20, (ConstVars::ViewTopHeaderHeight * 0.5 - 7 + 11));
 		}
 	}
 }

@@ -15,7 +15,7 @@ namespace LineaDeTiempo {
 
 //---------------------------------------------------------------------
 Playhead::Playhead(TimeRuler* timeRuler, TimeControl* timeControl)
-: ConstrainedGrabHandle("Playhead",DOM::HORIZONTAL, {0,0, PlayheadWidth, 100})
+: ConstrainedGrabHandle("Playhead",DOM::HORIZONTAL, {0,0, ConstVars::PlayheadWidth, 100})
 , _timeRuler(timeRuler)
 , _timeControl(timeControl)
 {
@@ -37,9 +37,9 @@ Playhead::Playhead(TimeRuler* timeRuler, TimeControl* timeControl)
 	
 	
 	
-	_playheadTriangle.addVertex({ (PlayheadWidth - PlayheadTriangleSize) *0.5 , 0, 0});
-	_playheadTriangle.addVertex({ (PlayheadWidth + PlayheadTriangleSize) *0.5 , 0, 0});
-	_playheadTriangle.addVertex({ PlayheadWidth*0.5 , PlayheadTriangleSize * sin(ofDegToRad(60)), 0});
+	_playheadTriangle.addVertex({ (ConstVars::PlayheadWidth - ConstVars::PlayheadTriangleSize) *0.5 , 0, 0});
+	_playheadTriangle.addVertex({ (ConstVars::PlayheadWidth + ConstVars::PlayheadTriangleSize) *0.5 , 0, 0});
+	_playheadTriangle.addVertex({ ConstVars::PlayheadWidth*0.5 , ConstVars::PlayheadTriangleSize * sin(ofDegToRad(60)), 0});
 	
 	
 	

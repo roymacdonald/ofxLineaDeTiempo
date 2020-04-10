@@ -18,7 +18,7 @@ namespace LineaDeTiempo {
 
 
 RegionView::RegionView (TrackView* parentTrack, RegionController *controller, std::shared_ptr<MUI::Styles> headerStyles)
-: Widget(controller->getId(), 0,0, TrackInitialHeight, TrackInitialHeight)
+: Widget(controller->getId(), 0,0, ConstVars::TrackInitialHeight, ConstVars::TrackInitialHeight)
 , _parentTrack(parentTrack)
 , _controller(controller)
 {

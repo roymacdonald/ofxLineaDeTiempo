@@ -117,6 +117,7 @@ void TimeRulerBar::makeRulerLines()
 			}
 		}
 	}
+	if(_playhead) _playhead->updatePosition();
 }
 
  void TimeRulerBar::setPlayheadHeight(float height)
@@ -129,11 +130,11 @@ void TimeRulerBar::makeRulerLines()
 
 void TimeRulerBar::onDraw() const
 {
-	ofSetColor(TrackBackgroundColor);
+	ofSetColor(ConstVars::TrackBackgroundColor);
 	ofFill();
 	ofDrawRectangle(0, 0, getWidth(), getHeight());
 
-	ofSetColor(TrackEdgeColor);
+	ofSetColor(ConstVars::TrackEdgeColor);
 	ofNoFill();
 	ofDrawRectangle(0, 0, getWidth(), getHeight());
 

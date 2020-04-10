@@ -23,11 +23,11 @@ KeyframesRegionView::KeyframesRegionView(TrackView* parentTrack, RegionControlle
 : RegionView(parentTrack, controller, regionStyles)
 , _controller(controller)
 {
-	
+	//TODO: make use of this class only when using a multi dimensional parameter. Otherwise just use the KeyframeCollectionView
 	auto numDims = _controller->getNumDimensions();
 
 
-	ofRectangle rect(0, ViewTopHeaderHeight, getWidth(), _getCollectionViewHeight());
+	ofRectangle rect(0, ConstVars::ViewTopHeaderHeight, getWidth(), _getCollectionViewHeight());
 	
 	for(size_t i = 0; i < numDims; ++i)
 	{
@@ -41,6 +41,10 @@ KeyframesRegionView::KeyframesRegionView(TrackView* parentTrack, RegionControlle
 	}
 			
 	setDraggable(false);
+	if(controller->getDataTypeName() == string(typeid(void).name()))
+	{
+		_selector.setIntersectionMode(SELECTOR_USE_RECTANGLE);
+	}
 	
 }
 
@@ -50,7 +54,7 @@ void KeyframesRegionView::updateLayout()
 	
 //	RegionView::updateLayout();
 	
-	ofRectangle rect(0, ViewTopHeaderHeight, getWidth(), _getCollectionViewHeight());
+	ofRectangle rect(0, ConstVars::ViewTopHeaderHeight, getWidth(), _getCollectionViewHeight());
 	
 	for(auto v: _views)
 	{
@@ -60,7 +64,7 @@ void KeyframesRegionView::updateLayout()
 		
 	}
 	
-	_allViewsRect.set( localToScreen({0, ViewTopHeaderHeight}) , getWidth(), getHeight() - ViewTopHeaderHeight);
+	_allViewsRect.set( localToScreen({0, ConstVars::ViewTopHeaderHeight}) , getWidth(), getHeight() - ConstVars::ViewTopHeaderHeight);
 	
 	
 	_selector.setLimitingRect(_allViewsRect);
@@ -105,10 +109,10 @@ float KeyframesRegionView::_getCollectionViewHeight() const
 {
 	if(_controller)
 	{
-		return(getHeight() - ViewTopHeaderHeight)/ float(_controller->getNumDimensions());
+		return(getHeight() - ConstVars::ViewTopHeaderHeight)/ float(_controller->getNumDimensions());
 	}
 	ofLogWarning("KeyframesRegionView::_getCollectionViewHeight") << "Region view has no controller. This should never happen.";
-	return getHeight() - ViewTopHeaderHeight;
+	return getHeight() - ConstVars::ViewTopHeaderHeight;
 }
 
 const std::vector<KeyframeCollectionView *>& KeyframesRegionView::getViews()

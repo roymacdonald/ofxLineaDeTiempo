@@ -58,11 +58,11 @@ void TimeRulerHeader::onDraw() const
 		
 	ofPushStyle();
 	
-	ofSetColor(DefaultTextColor);
+	ofSetColor(ConstVars::DefaultTextColor);
 	ofDrawBitmapString( _timeText, _textPos);
 	
 	ofNoFill();
-	ofSetColor(TrackEdgeColor);
+	ofSetColor(ConstVars::TrackEdgeColor);
 	ofDrawRectangle(getShape());
 	
 	ofPopStyle();
