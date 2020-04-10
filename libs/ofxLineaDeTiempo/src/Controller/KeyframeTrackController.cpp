@@ -10,7 +10,7 @@
 #include "LineaDeTiempo/Controller/TrackGroupController.h"
 
 #include "LineaDeTiempo/Utils/ofxTypeTraits.h"
-//#include "LineaDeTiempo/View/MultiDimTrackView.h"
+
 
 
 namespace ofx {
@@ -72,16 +72,16 @@ const ofParameter<T>& KeyframeTrackController_<T>::getParameter() const
 }
 
 
-template <typename T>
-void KeyframeTrackController_<T>::_paramChanged(T& )
-{	
-	//TODO: implement listener so changes done externaly to a param can get recorded
-	//	if(!_bModifyingParam)
-	//	{
-	//		_keyframedData.setValue(_parameter, getTimeControl()->getCurrentTime(), _keyframedData.isKeyFramingEnabled() );
-	//	}
-}
-
+//template <typename T>
+//void KeyframeTrackController_<T>::_paramChanged(T& )
+//{
+//	//TODO: implement listener so changes done externaly to a param can get recorded
+//	//	if(!_bModifyingParam)
+//	//	{
+//	//		_keyframedData.setValue(_parameter, getTimeControl()->getCurrentTime(), _keyframedData.isKeyFramingEnabled() );
+//	//	}
+//}
+//
 
 template <typename T>
 void KeyframeTrackController_<T>::_addRegionFromJson(const std::string& name, ofJson j)
@@ -155,8 +155,8 @@ template class ofx::LineaDeTiempo::KeyframeTrackController_<glm::vec4>;
 //template class ofx::LineaDeTiempo::KeyframeTrackController_<glm::mat4>;
 //
 
-//template class ofx::LineaDeTiempo::KeyframeTrackController_<bool>;
-//template class ofx::LineaDeTiempo::KeyframeTrackController_<void>;
+template class ofx::LineaDeTiempo::KeyframeTrackController_<bool>;
+template class ofx::LineaDeTiempo::KeyframeTrackController_<void>;
 
 template class ofx::LineaDeTiempo::KeyframeTrackController_<char>;
 template class ofx::LineaDeTiempo::KeyframeTrackController_<unsigned char>;
