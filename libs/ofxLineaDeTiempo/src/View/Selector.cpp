@@ -16,7 +16,7 @@ template<typename T>
 Selector<T>::Selector()
 : _rect(0,0,0,0)
 {
-//	_drawListener = ofEvents().draw.newListener(this, &Selector<T>::_draw,  std::numeric_limits<int>::max());
+
 }
 
 template<typename T>
@@ -43,6 +43,8 @@ void Selector<T>::onPointerDown(const glm::vec2& screenPosition, DOM::Element* c
 	_selectionRectStart =  screenPosition;
 	_rect.set(_selectionRectStart, 0, 0);
 	
+	_drawListener = ofEvents().draw.newListener(this, &Selector<T>::_draw,  std::numeric_limits<int>::max());
+	
 	if(!_bAddToCurrentSelection){
 		_bHadSelectedElements = unselectAllElements();
 	}
@@ -54,17 +56,20 @@ bool Selector<T>::onPointerUp(const glm::vec2& screenPosition, DOM::Element* cal
 	if(isSelectingRect()){
 		_updateSelectionRect( screenPosition, caller);
 		_rect.set(0, 0, 0, 0);
+		_drawListener.unsubscribe();
 		return true;
 	}else {
-			if(!_bAddToCurrentSelection){
+		if(!_bAddToCurrentSelection){
 			auto u = unselectAllElements();
-	
+			
 			u |= _bHadSelectedElements;
-		
+			
 			_bHadSelectedElements = false;
+			
+			_drawListener.unsubscribe();
+			
 			return u;
 		}
-		
 	}
 }
 
@@ -122,7 +127,6 @@ void Selector<T>::_setSelectedElementsFromRect(const ofRectangle& r)
 				if(!k)continue;
 				bool _isSelected = isElementSelected(k, t.first) ;
 				if(_checkIntersection(r, k))
-					//				if(r.inside(k->getScreenCenterPosition()))
 				{
 					if(!k->isSelected() && !_isSelected )
 					{
