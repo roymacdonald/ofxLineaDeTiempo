@@ -13,6 +13,10 @@
 #include "ofTrueTypeFont.h"
 
 
+//#define LINEA_DE_TIEMPO_USE_OF_PARAMETER
+#ifdef LINEA_DE_TIEMPO_USE_OF_PARAMETER
+#include "ofParameter.h"
+#endif
 namespace ofx {
 namespace MUI {
 
@@ -186,11 +190,19 @@ public:
 	///\brief get the name
 	///\returns std::string with the name
 	const std::string& getName() const;
+#ifdef LINEA_DE_TIEMPO_USE_OF_PARAMETER
+	ofParameterGroup parameters;
+#endif
 	
 protected:
     /// \brief A collection of colors for this Style.
-    std::vector<std::vector<ofColor>> _colors;
+#ifdef LINEA_DE_TIEMPO_USE_OF_PARAMETER
+	std::vector<std::vector<ofParameter<ofColor>>> _colors;
 	
+	std::vector<ofParameterGroup> _paramGroups;
+#else
+	std::vector<std::vector<ofColor>> _colors;
+#endif
     /// \brief A font cache for this Style.
     mutable std::vector<std::shared_ptr<ofTrueTypeFont>> _fonts;
 

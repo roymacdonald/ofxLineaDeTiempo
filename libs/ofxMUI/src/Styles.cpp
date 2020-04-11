@@ -99,6 +99,30 @@ TrueTypeFontSettings TrueTypeFontSettings::defaultFontSettings(FontSize size)
 {
     return TrueTypeFontSettings(DEFAULT_FONT, defaultFontSize(size));
 }
+#ifdef LINEA_DE_TIEMPO_USE_OF_PARAMETER
+std::string toString(Styles::Role role)
+{
+    
+    if(role == Styles::ROLE_FOREGROUND) return "FOREGROUND";
+    if(role == Styles::ROLE_BACKGROUND) return "BACKGROUND";
+    if(role == Styles::ROLE_ACCENT) return "ACCENT";
+    if(role == Styles::ROLE_BORDER) return "BORDER";
+    if(role == Styles::ROLE_TEXT) return "TEXT";
+    
+    return "";
+
+}
+ std::string toString(Styles::State state)
+ {
+    
+    if(state == Styles::STATE_NORMAL) return "NORMAL";
+    if(state == Styles::STATE_OVER) return "OVER";
+    if(state == Styles::STATE_DOWN) return "DOWN";
+    if(state == Styles::STATE_DISABLED) return "DISABLED";
+    
+    return "";
+}
+#endif
 
 
 Styles::Styles(const std::string& name)
@@ -113,8 +137,30 @@ Styles::Styles(const std::string& name)
     ofColor foreground = ofColor::fromHex(0x3E606F); // foreground
     ofColor background = ofColor::fromHex(0x193441); // background
 
-	_colors.assign(ROLE_TEXT + 1, std::vector<ofColor>(STATE_DISABLED + 1, ofColor()));
+#ifdef LINEA_DE_TIEMPO_USE_OF_PARAMETER
 
+	parameters.setName(_name);
+	_colors.resize(ROLE_TEXT + 1);
+	_paramGroups.resize(_colors.size());
+	
+	for(int r = 0; r < _colors.size(); r++)
+	{
+		_colors[r].resize(STATE_DISABLED + 1);
+		
+		auto roleStr = toString(Role(r));
+		
+		_paramGroups[r].setName(roleStr);
+		
+		for(int s = 0; s < _colors[r].size(); s++)
+		{
+			_colors[r][s].set(roleStr + "_" + toString(State(s)), ofColor(255), ofColor(0,0,0,0), ofColor(255,255,255,255));
+			_paramGroups[r].add(_colors[r][s]);
+		}
+		parameters.add(_paramGroups[r]);
+	}
+#else
+	_colors.assign(ROLE_TEXT + 1, std::vector<ofColor>(STATE_DISABLED + 1, ofColor()));
+#endif
     setColors(foreground, background, accent, border, text);
 	
 	
@@ -132,7 +178,11 @@ const std::string& Styles::getName() const
 
 const ofColor& Styles::getColor(Role role, State state) const
 {
+#ifdef LINEA_DE_TIEMPO_USE_OF_PARAMETER
+    return _colors[role][state].get();
+#else
     return _colors[role][state];
+#endif
 }
 
 void Styles::setColor(const ofColor& color, Role role, State state)
