@@ -54,6 +54,9 @@ bool KeyframeCollectionController<D>::removeKeyframe(KeyframeController<D>* keyf
 {
 	
 	_keyframedData.remove(keyframe->getData());
+	ofRemove(_keyframes, [&](KeyframeController<D>* k){
+		return k == keyframe;
+	});
 	
 	if(keyframe->getView())
 	{
@@ -81,17 +84,6 @@ template<typename D>
 const size_t& KeyframeCollectionController<D>::getDimensionIndex()const
 {
 	return _dimensionIndex;
-}
-
-template<typename D>
-bool KeyframeCollectionController<D>::update(const uint64_t& t, D& param)
-{
-
-	if(_keyframedData.update(t))
-	{
-		return _paramNeedsUpdate(param);
-	}
-	return false;
 }
 
 template<typename D>
@@ -166,6 +158,20 @@ void KeyframeCollectionController<D>::_addKeyframeEventCB(AddKeyframeEventArgs& 
 	}
 }
 
+
+template<typename D>
+void KeyframeCollectionController<D>::sortData()
+{
+	ofSort(_keyframes, [](KeyframeController<D>*a, KeyframeController<D>*b){
+		return a->getData()->time < a->getData()->time ;
+	});
+	
+	_keyframedData.sortData();
+	
+	if(getView()) getView()->updateKeyframeSort();
+	
+}
+
 template<typename D>
 void KeyframeCollectionController<D>::_removeKeyframeEventCB(RemoveKeyframesEventArgs& args)
 {
@@ -181,6 +187,53 @@ void KeyframeCollectionController<D>::_removeKeyframeEventCB(RemoveKeyframesEven
 		}
 	}
 }
+template<typename D>
+typename KeyframeCollectionController<D>::innerDataType KeyframeCollectionController<D>::unnormalizeValue(float val)
+{
+	return ParamHelper::getUnnormalized<D>(val,
+											_dimensionIndex,
+											_parentRegion->getParentKeyframeTrack()->getParameter());
+}
+
+template<typename D>
+float KeyframeCollectionController<D>::normalizeValue(KeyframeCollectionController<D>::innerDataType val)
+{
+	return ParamHelper::getNormalized<D>(val,
+										_dimensionIndex,
+										_parentRegion->getParentKeyframeTrack()->getParameter());
+}
+
+template<>
+bool KeyframeCollectionController<bool>::unnormalizeValue(float val)
+{
+	return round(val);
+}
+
+template<>
+float KeyframeCollectionController<bool>::normalizeValue(bool val)
+{
+	return (val?1.0f:0.0f );
+}
+
+
+
+//
+
+
+
+//template<>
+//float KeyframeCollectionController<void>::unnormalizeValue(float val)
+//{
+//	return val;
+//}
+//
+//template<>
+//float KeyframeCollectionController<void>::normalizeValue(float val)
+//{
+//	return 0;
+//}
+//
+
 
 
 template<typename D>
@@ -258,6 +311,9 @@ ofJson KeyframeCollectionController<D>::toJson()
 template class KeyframeCollectionController<glm::vec2>;
 template class KeyframeCollectionController<glm::vec3>;
 template class KeyframeCollectionController<glm::vec4>;
+
+template class KeyframeCollectionController<bool>;
+//template class KeyframeCollectionController<void>;
 
 template class KeyframeCollectionController<         char>;
 template class KeyframeCollectionController<unsigned char>;

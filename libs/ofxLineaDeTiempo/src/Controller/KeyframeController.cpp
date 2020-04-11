@@ -74,6 +74,7 @@ void KeyframeController<T>::_timeChanged(uint64_t& t)
 {
 	if(_data){
 		_data->time = t;
+		_parentController->sortData();
 	}
 }
 
@@ -81,6 +82,8 @@ void KeyframeController<T>::_timeChanged(uint64_t& t)
 template class KeyframeController<glm::vec2>;
 template class KeyframeController<glm::vec3>;
 template class KeyframeController<glm::vec4>;
+
+template class KeyframeController<bool>;
 
 template class KeyframeController<         char>;
 template class KeyframeController<unsigned char>;

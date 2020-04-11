@@ -105,6 +105,21 @@ bool KeyframeRegionController_<T>::_update(const uint64_t& t, ofParameter<T>& pa
 	
 	return bUpdated;
 }
+//
+//template<>
+//bool KeyframeRegionController_<void>::_update(const uint64_t& t, ofParameter<void>& param)
+//{
+//	bool bUpdated = false;
+//
+//	for(auto c : _collections)
+//	{
+//		bUpdated |= c->update(t, param);
+//	}
+//
+//
+//	return bUpdated;
+//}
+
 
 
 template<typename T>
@@ -193,6 +208,9 @@ ofJson KeyframeRegionController_<T>::toJson()
 template class KeyframeRegionController_<glm::vec2>;
 template class KeyframeRegionController_<glm::vec3>;
 template class KeyframeRegionController_<glm::vec4>;
+
+template class KeyframeRegionController_<bool>;
+//template class KeyframeRegionController_<void>;
 
 template class KeyframeRegionController_<         char>;
 template class KeyframeRegionController_<unsigned char>;

@@ -14,6 +14,7 @@
 #include "LineaDeTiempo/View/KeyframeCollectionView.h"
 
 #include "LineaDeTiempo/Data/KeyframedData.h"
+//#include "LineaDeTiempo/Data/Keyframed.h"
 #include <unordered_map>
 
 
@@ -41,8 +42,10 @@ class KeyframeCollectionController
 {
 public:
 	
-	typedef  typename std::conditional<is_multi_dim_param<RegionDataType>::value, float, RegionDataType>::type innerDataType;
+	typedef  typename std::conditional<is_multi_dim_param<RegionDataType>::value , float, RegionDataType>::type innerDataType;
+//	typedef  typename std::conditional<std::is_void<RegionDataType>::value, Keyframed<uint64_t> , KeyframedData_<innerDataType>>::type KeyframedDataType;
 	
+	typedef KeyframedData_<innerDataType> KeyframedDataType;
 	
 	KeyframeCollectionController( KeyframeRegionController_<RegionDataType> * parentRegion, size_t dimensionIndex );
 	
@@ -58,45 +61,56 @@ public:
 		auto k = addChild<KeyframeController<RegionDataType>>( "k_"+ofToString(_dimensionIndex)+"_"+ofToString(_keyframedData.size()), d, this );
 		
 		_keyframes.push_back(k);
+
 		
 		if(getView())
 		{
 			k->generateView();
 			_keyframesViewMap[k->getView()] = k;
 		}
-		
+		sortData();
 		return k;
 	}
 	
 	
-	
+	void sortData();
 	
 	bool removeKeyframe(KeyframeController<RegionDataType>* keyframe);
 	
 	void removeAllKeyframes();
 	
-	innerDataType unnormalizeValue(float val)
-	{
-		return ParamHelper::getUnnormalized<RegionDataType>(val,
-															_dimensionIndex,
-															_parentRegion->getParentKeyframeTrack()->getParameter());
-	}
-	float normalizeValue(innerDataType val)
-	{
-		return ParamHelper::getNormalized<RegionDataType>(val,
-														  _dimensionIndex,
-														  _parentRegion->getParentKeyframeTrack()->getParameter());
-		
-	}
+	innerDataType unnormalizeValue(float val);
 	
-	const KeyframedData_<innerDataType>& getKeyframedData() const
+	float normalizeValue(innerDataType val);
+	
+	const KeyframedDataType& getKeyframedData() const
 	{
 		return _keyframedData;
 	}
 	
 	
+	template<typename T>
 	///\brief Returns true if the value was updated
-	bool update(const uint64_t& t, RegionDataType& param);
+	typename std::enable_if<not std::is_void<T>::value, bool>::type
+	update(const uint64_t& t, T& param)
+	{
+		if(_keyframedData.update(t))
+		{
+			return _paramNeedsUpdate(param);
+		}
+		return false;
+	}
+	
+	template<typename T>
+	typename std::enable_if< std::is_void<T>::value, bool>::type
+	update(const uint64_t& t, ofParameter<T>& param)
+	{
+		if(_keyframedData.update(t))
+		{
+			return param.trigger();
+		}
+		return false;
+	}
 	
 	
 	virtual void fromJson(const ofJson& j) override;
@@ -127,7 +141,7 @@ protected:
 	ofEventListener removeKeyframeListener;
 	void _removeKeyframeEventCB(RemoveKeyframesEventArgs& args);
 	
-	KeyframedData_<innerDataType> _keyframedData;
+	KeyframedDataType _keyframedData;
 	
 	std::vector<KeyframeController<RegionDataType>* > _keyframes;
 	

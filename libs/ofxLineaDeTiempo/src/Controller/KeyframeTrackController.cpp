@@ -156,7 +156,7 @@ template class ofx::LineaDeTiempo::KeyframeTrackController_<glm::vec4>;
 //
 
 template class ofx::LineaDeTiempo::KeyframeTrackController_<bool>;
-template class ofx::LineaDeTiempo::KeyframeTrackController_<void>;
+//template class ofx::LineaDeTiempo::KeyframeTrackController_<void>;
 
 template class ofx::LineaDeTiempo::KeyframeTrackController_<char>;
 template class ofx::LineaDeTiempo::KeyframeTrackController_<unsigned char>;

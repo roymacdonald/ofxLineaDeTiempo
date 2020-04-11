@@ -55,13 +55,10 @@ public:
 	void removeAllKeyframes();
 	
 	
-	
-	
 	KeyframeTrackController_<DataType>* getParentKeyframeTrack();
 	const KeyframeTrackController_<DataType>* getParentKeyframeTrack()const;
 	
 	
-//TODO: Terminar de implementar esta clase para que funque con los parametros multidimensionales
 	
 protected:
 	bool _update(const uint64_t& t, ofParameter<DataType>& param);
