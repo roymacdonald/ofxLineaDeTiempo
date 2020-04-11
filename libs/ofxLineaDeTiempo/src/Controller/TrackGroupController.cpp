@@ -102,8 +102,8 @@ TrackGroupController* TrackGroupController::add(ofParameterGroup& _parameters)
 		else if(type == typeid(ofParameter <size_t> ).name())       { auto p = _parameters.get<size_t>(i);group->add(p);}
 		else if(type == typeid(ofParameter <float> ).name())        { auto p = _parameters.getFloat(i);group->add(p);}
 		else if(type == typeid(ofParameter <double> ).name())       { auto p = _parameters.get<double>(i);group->add(p);}
-//		else if(type == typeid(ofParameter <bool> ).name())         { auto p = _parameters.getBool(i);group->add(p);}
-//		else if(type == typeid(ofParameter <void> ).name())         { auto p = _parameters.getVoid(i);group->add(p);}
+		else if(type == typeid(ofParameter <bool> ).name())         { auto p = _parameters.getBool(i);group->add(p);}
+		else if(type == typeid(ofParameter <void> ).name())         { auto p = _parameters.getVoid(i);group->add(p);}
 //		else if(type == typeid(ofParameter <ofVec2f> ).name())      { auto p = _parameters.get<ofVec2f>(i);group->add(p);}
 //		else if(type == typeid(ofParameter <ofVec3f> ).name())      { auto p = _parameters.get<ofVec3f>(i);group->add(p);}
 //		else if(type == typeid(ofParameter <ofVec4f> ).name())      { auto p = _parameters.get<ofVec4f>(i);group->add(p);}
@@ -245,8 +245,8 @@ TrackController* TrackGroupController:: _addTrack(const std::string& trackName, 
 //		else if(typeid(                  ofVec2f).name() == paramType){ return addKeyframeTrack<                  ofVec2f> (trackName); }
 //		else if(typeid(                  ofVec3f).name() == paramType){ return addKeyframeTrack<                  ofVec3f> (trackName); }
 //		else if(typeid(                  ofVec4f).name() == paramType){ return addKeyframeTrack<                  ofVec4f> (trackName); }
-//		else if(typeid(                     bool).name() == paramType){ return addKeyframeTrack<                     bool> (trackName); }
-//		else if(typeid(                     void).name() == paramType){ return addKeyframeTrack<                     void> (trackName); }
+		else if(typeid(                     bool).name() == paramType){ return addKeyframeTrack<                     bool> (trackName); }
+		else if(typeid(                     void).name() == paramType){ return addKeyframeTrack<                     void> (trackName); }
 		else if(typeid(                     char).name() == paramType){ return addKeyframeTrack<                     char> (trackName); }
 		else if(typeid(            unsigned char).name() == paramType){ return addKeyframeTrack<            unsigned char> (trackName); }
 		else if(typeid(              signed char).name() == paramType){ return addKeyframeTrack<              signed char> (trackName); }
