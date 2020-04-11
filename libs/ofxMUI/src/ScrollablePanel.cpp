@@ -246,14 +246,14 @@ void ScrollablePanel_<H, D, B, C, CT>::setScrollH(D d)
 template<typename H, typename D,  template <typename, typename> class B, typename C, typename CT>
 void ScrollablePanel_<H, D, B, C, CT>::setScrollV(D d)
 {
-	std::cout << "--------------------------------------------------------------------------------\n";
+//	std::cout << "--------------------------------------------------------------------------------\n";
 	if(_scrollbarV){
 		
 		_scrollbarV->setValue(d);
 	}else{
 		ofLogError("ScrollablePanel_::setScrollV") << "scrollbar null";
 	}
-	std::cout << "================================================================================\n";
+//	std::cout << "================================================================================\n";
 }
 //---------------------------------------------------------------------------------------------------
 template<typename H, typename D,  template <typename, typename> class B, typename C, typename CT>

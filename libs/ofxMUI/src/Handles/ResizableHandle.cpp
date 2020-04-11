@@ -30,6 +30,10 @@ ResizableHandle::ResizableHandle(const std::string& id, DOM::Orientation orienta
 	outHandle = this->addChild<ConstrainedGrabHandle>(id+"_Z_out_handle_", orientation, r);
 	mainHandle =  this->addChild<ConstrainedGrabHandle>(id+"_Z_scroll_handle_", orientation, rect);
 	
+//	inHandle->setShapeDrawMode( (orientation == DOM::HORIZONTAL)? ShapeDrawMode::LEFT_ROUNDED_RECTANGLE : ShapeDrawMode::TOP_ROUNDED_RECTANGLE);
+//	outHandle->setShapeDrawMode( (orientation == DOM::HORIZONTAL)? ShapeDrawMode::RIGHT_ROUNDED_RECTANGLE : ShapeDrawMode::BOTTOM_ROUNDED_RECTANGLE);
+	
+	
 	inHandle->setMoveToFrontOnCapture(false);
 	outHandle->setMoveToFrontOnCapture(false);
 	mainHandle->setMoveToFrontOnCapture(false);
