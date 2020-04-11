@@ -196,7 +196,7 @@ std::shared_ptr<Styles> Widget::getStyles() const
         else
         {
             ofLogWarning("Widget::getStyles") << "No root document, using default styles.";
-            _styles = std::make_shared<Styles>();
+            _styles = std::make_shared<Styles>(getId() +"_Styles");
         }
     }
 

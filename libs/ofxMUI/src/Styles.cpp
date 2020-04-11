@@ -101,7 +101,8 @@ TrueTypeFontSettings TrueTypeFontSettings::defaultFontSettings(FontSize size)
 }
 
 
-Styles::Styles()
+Styles::Styles(const std::string& name)
+:_name(name)
 {
     _fonts.assign(EXTRA_LARGE + 1, nullptr);
 
@@ -124,6 +125,10 @@ Styles::~Styles()
 {
 }
 
+const std::string& Styles::getName() const
+{
+	return _name;
+}
 
 const ofColor& Styles::getColor(Role role, State state) const
 {
@@ -162,43 +167,6 @@ void Styles::setColors(const ofColor& foreground,
                        const ofColor& border,
                        const ofColor& text)
 {
-//    std::vector<ofColor> _foreground(STATE_DISABLED + 1, ofColor());
-//
-//    _foreground[STATE_NORMAL] = ofColor(foreground, 127);
-//    _foreground[STATE_OVER] = ofColor(foreground, 180);
-//    _foreground[STATE_DOWN] = ofColor(foreground, 255);
-//    _foreground[STATE_DISABLED] = ofColor(foreground, 20);
-//
-//    std::vector<ofColor> _background(STATE_DISABLED + 1, ofColor());
-//
-//    _background[STATE_NORMAL] = ofColor(background, 127);
-//    _background[STATE_OVER] = ofColor(background, 180);
-//    _background[STATE_DOWN] = ofColor(background, 255);
-//    _background[STATE_DISABLED] = ofColor(background, 20);
-//
-//    std::vector<ofColor> _accent(STATE_DISABLED + 1, ofColor());
-//
-//    _accent[STATE_NORMAL] = accent;
-//    _accent[STATE_OVER] = accent;
-//    _accent[STATE_DOWN] = accent;
-//    _accent[STATE_DISABLED] = ofColor(accent, 20);
-//
-//    std::vector<ofColor> _border(STATE_DISABLED + 1, ofColor());
-//
-//    _border[STATE_NORMAL] = border;
-//    _border[STATE_OVER] = border;
-//    _border[STATE_DOWN] = border;
-//    _border[STATE_DISABLED] = ofColor(border, 20);
-//
-//    std::vector<ofColor> _text(STATE_DISABLED + 1, ofColor());
-//
-//    _text[STATE_NORMAL] = text;
-//    _text[STATE_OVER] = text;
-//    _text[STATE_DOWN] = text;
-//    _text[STATE_DISABLED] = ofColor(text, 20);
-//
-//    _colors.assign(ROLE_TEXT + 1, std::vector<ofColor>());
-
     setColor(foreground, ROLE_FOREGROUND);
     setColor(background, ROLE_BACKGROUND);
     setColor(accent, ROLE_ACCENT);

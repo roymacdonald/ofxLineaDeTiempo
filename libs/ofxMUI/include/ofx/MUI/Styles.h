@@ -134,8 +134,8 @@ public:
     };
 
     /// \brief Create a default styles.
-    Styles();
-
+    Styles(const std::string& name);
+	
     /// \brief Destroy these styles.
     virtual ~Styles();
 
@@ -182,13 +182,19 @@ public:
     /// \param font The cached font to use.
     void setFont(FontSize size, std::shared_ptr<ofTrueTypeFont> font);
 
+	
+	///\brief get the name
+	///\returns std::string with the name
+	const std::string& getName() const;
+	
 protected:
     /// \brief A collection of colors for this Style.
     std::vector<std::vector<ofColor>> _colors;
-
+	
     /// \brief A font cache for this Style.
     mutable std::vector<std::shared_ptr<ofTrueTypeFont>> _fonts;
 
+	std::string _name = "";
 };
 
 

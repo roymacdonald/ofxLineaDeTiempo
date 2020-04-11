@@ -27,7 +27,7 @@ std::shared_ptr<Styles> MUI::getDocumentStyles() const
 {
     if (_documentStyles == nullptr)
     {
-        _documentStyles = std::make_shared<Styles>();
+        _documentStyles = std::make_shared<Styles>("Document Styles");
     }
 
     return _documentStyles;
