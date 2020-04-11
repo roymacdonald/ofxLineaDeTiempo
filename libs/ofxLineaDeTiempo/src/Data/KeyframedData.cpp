@@ -381,5 +381,24 @@ std::string KeyframedData_<T>::toString() const
 	return ss.str();
 }
 
+
+
+
+template class KeyframedData_<bool>;
+template class KeyframedData_<char>;
+template class KeyframedData_<unsigned char>;
+template class KeyframedData_<signed char>;
+template class KeyframedData_<short>;
+template class KeyframedData_<unsigned short>;
+template class KeyframedData_<int>;
+template class KeyframedData_<unsigned int>;
+template class KeyframedData_<long>;
+template class KeyframedData_<unsigned long>;
+template class KeyframedData_<long long>;
+template class KeyframedData_<unsigned long long>;
+template class KeyframedData_<float>;
+template class KeyframedData_<double>;
+template class KeyframedData_<long double>;
+
 } } // ofx::LineaDeTiempo
 

@@ -30,6 +30,21 @@ ofJson TimedData_<DataType>::toJson()
 	return j;
 }
 
+template class TimedData_<bool>;
+template class TimedData_<char>;
+template class TimedData_<unsigned char>;
+template class TimedData_<signed char>;
+template class TimedData_<short>;
+template class TimedData_<unsigned short>;
+template class TimedData_<int>;
+template class TimedData_<unsigned int>;
+template class TimedData_<long>;
+template class TimedData_<unsigned long>;
+template class TimedData_<long long>;
+template class TimedData_<unsigned long long>;
+template class TimedData_<float>;
+template class TimedData_<double>;
+template class TimedData_<long double>;
 
 
 } } // ofx::LineaDeTiempo
