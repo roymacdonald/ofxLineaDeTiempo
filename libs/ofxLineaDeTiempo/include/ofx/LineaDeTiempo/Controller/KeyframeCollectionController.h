@@ -57,7 +57,7 @@ public:
 		
 		auto d = _keyframedData.add(value, time);
 		
-		
+		if(d){
 		auto k = addChild<KeyframeController<RegionDataType>>( "k_"+ofToString(_dimensionIndex)+"_"+ofToString(_keyframedData.size()), d, this );
 		
 		_keyframes.push_back(k);
@@ -70,6 +70,8 @@ public:
 		}
 		sortData();
 		return k;
+		}
+		return nullptr;
 	}
 	
 	
@@ -94,10 +96,11 @@ public:
 	typename std::enable_if<not std::is_void<T>::value, bool>::type
 	update(const uint64_t& t, T& param)
 	{
-		if(_keyframedData.update(t))
-		{
+//		if(
+		_keyframedData.update(t);//)
+//		{
 			return _paramNeedsUpdate(param);
-		}
+//		}
 		return false;
 	}
 	

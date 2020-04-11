@@ -168,6 +168,8 @@ void KeyframeCollectionView::_makeInterpolationLine()
 		if(_bParamTypeIsBool && keyFrames.size())
 		{
 			glm::vec2 prev =keyFrames[0]->getCenterPosition();
+			_interpolationLine.addVertex(prev.x, prev.y);
+			
 			for(size_t i = 1; i < keyFrames.size(); ++i){
 				cp = keyFrames[i]->getCenterPosition();
 					

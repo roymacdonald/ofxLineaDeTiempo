@@ -35,6 +35,7 @@ T KeyframedData_<T>::getValueAtTime(const uint64_t& time)
 	if(_data.size() < 2)
 	{
 		ofLogError("KeyframedData_<T>::getValueAtTime") << "it should never get to this point. _data.size is less than 2.";
+		return val;
 	}
 	
 	auto i = _findNextIndex(time);
@@ -63,7 +64,7 @@ TimedData_<T>* KeyframedData_<T>::add(const T& value, const uint64_t& time)
 	
 	if(_timedMap.count(time))
 	{
-		ofLogNotice("KeyframeTrackDataManager_<T>::add") << "there is already data at this point. Updating to new value. Returning nullptr";
+		ofLogNotice("KeyframedData_<T>::add") << "there is already data at this point. Updating to new value. Returning nullptr";
 		_timedMap[time]->value = value;
 		return nullptr;
 	}
