@@ -100,12 +100,14 @@ public:
 	virtual void removeElements(std::vector<KeyframeView*> & elementsToRemove) override;
 
 	
+	bool isParamTypeIsBool();
+	bool isParamTypeIsVoid();
 	
 protected:
 	
 	
 	bool _bParamTypeIsVoid = false;
-	
+	bool _bParamTypeIsBool = false;
 	
 	
 	virtual void _onShapeChange(const DOM::ShapeChangeEventArgs& ) override;

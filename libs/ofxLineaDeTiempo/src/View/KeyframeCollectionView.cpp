@@ -46,7 +46,7 @@ KeyframeCollectionView::KeyframeCollectionView (const std::string & name, const 
 	
 	
 	_bParamTypeIsVoid = controller->getDataTypeName() == string(typeid(void).name());
-	
+	_bParamTypeIsBool = controller->getDataTypeName() == string(typeid(bool).name());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -60,7 +60,7 @@ void KeyframeCollectionView::onKeyframeDrag(KeyframeView* k, const glm::vec2& de
 					
 					auto r = s->getShape();
 					r.x = s->getX() - delta.x;
-					if(!_bParamTypeIsVoid){
+					if(!_bParamTypeIsVoid && !_bParamTypeIsBool){
 						r.y = s->getY() - delta.y;
 					}
 					DOM::ofRectangleHelper::keepInside(r, ofRectangle(0,0, getWidth(), getHeight()));
@@ -165,9 +165,28 @@ void KeyframeCollectionView::_makeInterpolationLine()
 			_outLine.addVertex(getWidth(), keyFrames.back()->getCenterPosition().y);
 			
 		}
+		if(_bParamTypeIsBool && keyFrames.size())
+		{
+			glm::vec2 prev =keyFrames[0]->getCenterPosition();
+			for(size_t i = 1; i < keyFrames.size(); ++i){
+				cp = keyFrames[i]->getCenterPosition();
+					
+				_interpolationLine.addVertex(cp.x, prev.y);
+				
+				if(!ofIsFloatEqual(cp.y, prev.y)){
+					_interpolationLine.addVertex(cp.x, cp.y);
+				}
+				
+				prev = cp;
+				
+			}
+		}
+		else
+		{
 		for(auto& k: keyFrames){
 			cp = k->getCenterPosition();
 			_interpolationLine.addVertex(cp.x, cp.y);
+		}
 		}
 	}
 }
@@ -292,6 +311,15 @@ void KeyframeCollectionView::onKeyboardEvent(DOM::KeyboardUIEventArgs& evt)
 float KeyframeCollectionView::keyframePositionToValue(float pos)
 {
 	if(_bParamTypeIsVoid) return 0;
+	if(_bParamTypeIsBool)
+	{
+		if(pos < getHeight()/2)
+		{
+			return 1;
+		}
+		return 0;
+	}
+	
 	
 	auto h2 = ConstVars::DefaultKeyframeSize *0.5;
 	
@@ -304,12 +332,33 @@ float KeyframeCollectionView::keyframePositionToValue(float pos)
 float KeyframeCollectionView::keyframeValueToPosition(float value)
 {
 	if(_bParamTypeIsVoid) return 0;
-	
 	auto h2 = ConstVars::DefaultKeyframeSize *0.5;
+	
+	if(_bParamTypeIsBool)
+	{
+		if(value < 0.5f)
+		{
+			return getHeight() -h2;
+		}
+		return h2;
+	}
+	
+	
+	
 	return ofMap(value, 1, 0, h2 , getHeight() - h2, true);
 	
 }
 
+bool KeyframeCollectionView::isParamTypeIsBool()
+{
+	return _bParamTypeIsBool;
+}
+
+
+bool KeyframeCollectionView::isParamTypeIsVoid()
+{
+	return _bParamTypeIsVoid;
+}
 
 
 } } // ofx::LineaDeTiempo

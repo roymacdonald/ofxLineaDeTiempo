@@ -47,7 +47,8 @@ void KeyframeView::onDraw() const
 	if(isSelected()){
 		ofPushStyle();
 		ofFill();
-		ofSetColor(ConstVars::SelectedColor);
+//		ofSetColor(ConstVars::SelectedColor);
+		ofSetColor(ofColor::yellow);
 		if(_bParamTypeIsVoid)
 		{
 			ofDrawRectangle(1, 1, getWidth()-2, getHeight()-2);
@@ -90,10 +91,20 @@ void KeyframeView::_onDragging(const DOM::CapturedPointer& pointer)
     if(_parentView){
 		
 		DOM::ofRectangleHelper::keepInside(this, ofRectangle(0,0, _parentView->getWidth(), _parentView->getHeight()));
-			
+		
+		
+		if(_parentView->isParamTypeIsBool() )
+		{
+			auto v = _parentView->keyframePositionToValue(screenToParentY(pointer.position().y));
+			 ///TODO: This could probably be more efficient
+			setCenterPosition({getX(), _parentView->keyframeValueToPosition(v)});
+		}
+		
 		_updateValue();
 		
 		delta = delta - getPosition();
+		
+		
 		
 		_parentView->onKeyframeDrag(this, delta);
 	}
