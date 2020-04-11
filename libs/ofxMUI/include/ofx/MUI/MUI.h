@@ -38,7 +38,7 @@ public:
     void setDocumentStyles(std::shared_ptr<Styles> documentStyles);
 
 protected:
-    mutable std::shared_ptr<Styles> _documentStyles;
+    mutable std::shared_ptr<Styles> _documentStyles = nullptr;
 
 };
 
