@@ -65,13 +65,6 @@ struct ConstVars
 	
 	
 };
-	
-static std::shared_ptr<ofx::MUI::Styles>& getMainStyles()
-{
-	static std::shared_ptr<ofx::MUI::Styles> i =  std::make_shared<ofx::MUI::Styles>("Regions Styles");
-	return i;
-}
-
 
 
 //Names
