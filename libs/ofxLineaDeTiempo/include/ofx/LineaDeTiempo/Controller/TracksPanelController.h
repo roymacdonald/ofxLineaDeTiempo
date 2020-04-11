@@ -69,6 +69,11 @@ public:
 	TracksPanel * getPanel();
 	const TracksPanel * getPanel() const;
 	
+	
+	
+	std::shared_ptr<ofx::MUI::Styles> getStyles();
+	
+	
 protected:
 	
 	

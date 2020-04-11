@@ -45,7 +45,6 @@ void TracksPanelController::generateView()
 			docSettings.enabledListeners[DOM::DRAW_EVENT] = false;
 			
 			_mainView = std::make_unique<MUI::MUI>(docSettings);
-			_mainView->setDocumentStyles(getMainStyles());
 			
 			_mainView->setAutoFillScreen(false);
 			
@@ -62,6 +61,17 @@ void TracksPanelController::generateView()
 	}
 	
 }
+
+
+std::shared_ptr<ofx::MUI::Styles> TracksPanelController::getStyles()
+{
+	if(_mainView)
+	{
+		return _mainView->getDocumentStyles();
+	}
+	return nullptr;
+}
+
 
 void TracksPanelController::destroyView()
 {
