@@ -52,19 +52,9 @@ protected:
 	
 	ofRange _trackScreenHorizontal;
 	
-//	void _tracksContainerShapeChanged(DOM::ShapeChangeEventArgs& e);
-//	void _panelShapeChanged(DOM::ShapeChangeEventArgs& e);
 	
 	ofEventListener _trackContainerListener;
 	void _tracksContainerShapeChanged(DOM::ShapeChangeEventArgs& e);
-	
-//	void _tracksContainerMoved(DOM::MoveEventArgs& e);
-//	void _tracksContainerResized(DOM::ResizeEventArgs& e);
-//	void _panelResized(DOM::ResizeEventArgs& e);
-//
-	
-	
-	
 	
 };
 
