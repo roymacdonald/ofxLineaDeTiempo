@@ -10,6 +10,8 @@
 #include "ofGraphics.h"
 #include <algorithm>
 
+#include "ofx/MUI/MUI.h"
+
 
 namespace ofx {
 namespace DOM {
@@ -1164,6 +1166,34 @@ void Element::printStructure(std::string prefix)
 	}
 	
 }
+
+
+std::shared_ptr<MUI::Styles> Element::getStyles() const
+{
+    if (_styles == nullptr)
+    {
+        const MUI::MUI* mui = dynamic_cast<const MUI::MUI*>(document());
+
+        if (mui != nullptr)
+        {
+            _styles = mui->getDocumentStyles();
+        }
+        else
+        {
+            ofLogWarning("Widget::getStyles") << "No root document, using default styles.";
+            _styles = std::make_shared<MUI::Styles>(getId() +"_Styles");
+        }
+    }
+
+    return _styles;
+}
+
+
+void Element::setStyles(std::shared_ptr<MUI::Styles> styles)
+{
+    _styles = styles;
+}
+
 
 
 } } // namespace ofx::DOM

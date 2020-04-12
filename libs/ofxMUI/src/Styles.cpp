@@ -12,7 +12,7 @@ namespace ofx {
 namespace MUI {
 
 
-const std::string TrueTypeFontSettings::DEFAULT_FONT = OF_TTF_SANS;
+std::string TrueTypeFontSettings::DEFAULT_FONT = OF_TTF_SANS;
 
 
 TrueTypeFontSettings::TrueTypeFontSettings(const std::string& filename,
@@ -94,6 +94,10 @@ int TrueTypeFontSettings::defaultFontSize(FontSize size)
     }
 }
 
+void TrueTypeFontSettings::setDefaultFont(const std::string& filepath)
+{
+	DEFAULT_FONT = filepath;
+}
 
 TrueTypeFontSettings TrueTypeFontSettings::defaultFontSettings(FontSize size)
 {
@@ -139,7 +143,7 @@ Styles::Styles(const std::string& name)
 
 #ifdef LINEA_DE_TIEMPO_USE_OF_PARAMETER
 
-	parameters.setName(_name + "__" + ofToString(id));
+	parameters.setName(_name );
 	_colors.resize(ROLE_TEXT + 1);
 	_paramGroups.resize(_colors.size());
 	

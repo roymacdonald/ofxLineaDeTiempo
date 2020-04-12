@@ -13,7 +13,7 @@
 #include "ofTrueTypeFont.h"
 
 
-//#define LINEA_DE_TIEMPO_USE_OF_PARAMETER
+#define LINEA_DE_TIEMPO_USE_OF_PARAMETER
 #ifdef LINEA_DE_TIEMPO_USE_OF_PARAMETER
 #include "ofParameter.h"
 #endif
@@ -60,8 +60,12 @@ public:
     int dpi() const;
 
     /// \brief The default font name.
-    static const std::string DEFAULT_FONT;
+    static std::string DEFAULT_FONT;
 
+	
+	static void setDefaultFont(const std::string& filepath);
+	
+	
     /// \brief Get the font size in pixels for the given FontSize.
     /// \param size The named FontSize.
     /// \returns the size in pixels.

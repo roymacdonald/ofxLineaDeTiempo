@@ -18,6 +18,10 @@
 #include "ofx/DOM/Types.h"
 #include "ofx/DOM/Node.h"
 
+#include "ofx/MUI/Styles.h"
+
+
+
 namespace ofx {
 namespace DOM {
 
@@ -595,7 +599,19 @@ public:
 	///\brief get if is drawing children by translating  or applying a viewport.
 	bool isDrawingAsViewport() const;
 	
+    /// \brief Get the Styles for this Element.
+    /// \returns the Elements's styles.
+    std::shared_ptr<MUI::Styles> getStyles() const;
+
+    /// \brief Set the Styles for this Element.
+    ///
+    /// If the style is set to nullptr, it will automatically adopt the root
+    /// document style.
+    ///
+    /// \param style The style to set.
+    void setStyles(std::shared_ptr<MUI::Styles> styles);
 	
+
 	
 	virtual void printStructure(std::string prefix = "");
 	
@@ -759,6 +775,12 @@ private:
 
     /// \brief The Document class has access to all private variables.
     friend class Document;
+	
+    /// \brief The shared Styles.
+    mutable std::shared_ptr<MUI::Styles> _styles = nullptr;
+
+
+	
 
 };
 

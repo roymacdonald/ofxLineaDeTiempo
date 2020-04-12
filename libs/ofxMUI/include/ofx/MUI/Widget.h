@@ -69,18 +69,6 @@ public:
     /// \returns the elevation in pixels.
     float getElevation() const;
     
-    /// \brief Get the Styles for this Widget.
-    /// \returns the Widget's styles.
-    std::shared_ptr<Styles> getStyles() const;
-
-    /// \brief Set the Styles for this Widget.
-    ///
-    /// If the style is set to nullptr, it will automatically adopt the root
-    /// document style.
-    ///
-    /// \param style The style to set.
-    void setStyles(std::shared_ptr<Styles> styles);
-	
 	
 	/// \brief sets the way this widget's shape is going to be drawn
 	/// \param drawMode  the draw mode to set (ELLIPSE, RECTANGLE, ROUNDED_RECTANGLE, TOP_ROUNDED_RECTANGLE, BOTTOM_ROUNDED_RECTANGLE, LEFT_ROUNDED_RECTANGLE or RIGHT_ROUNDED_RECTANGLE). RECTANGLE by default
@@ -160,10 +148,6 @@ protected:
 	bool _highlightOnOver = true;
 
 	
-private:
-    /// \brief The shared Styles.
-    mutable std::shared_ptr<Styles> _styles = nullptr;
-
 	
 };
 
