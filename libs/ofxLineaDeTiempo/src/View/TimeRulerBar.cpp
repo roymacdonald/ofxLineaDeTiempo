@@ -37,10 +37,10 @@ TimeRulerBar::TimeRulerBar(  TimeRuler* timeRuler, TimeControl* timeControl)
 	
 	setDraggable(true);
 	setHighlightOnOver(false);
+	setMoveToFrontOnCapture(false);
 	
-	_playhead = addChild<Playhead>(timeRuler, timeControl);
 	
-	moveToFront();
+//	moveToFront();
 //	_updatePlayheadSize();
 }
 
@@ -117,16 +117,8 @@ void TimeRulerBar::makeRulerLines()
 			}
 		}
 	}
-	if(_playhead) _playhead->updatePosition();
 }
 
- void TimeRulerBar::setPlayheadHeight(float height)
-{
-	if(_playhead){
-		_playhead->setHeight(height);
-		_playhead->moveToFront();
-	}
-}
 
 void TimeRulerBar::onDraw() const
 {

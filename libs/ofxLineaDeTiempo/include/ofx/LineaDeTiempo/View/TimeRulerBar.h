@@ -45,7 +45,6 @@ public:
 	
 	void makeRulerLines();
 	
-	void setPlayheadHeight(float height);
 	
 protected:
 	
@@ -83,7 +82,7 @@ protected:
 	std::vector<float> multipliers ;// = {1.f, 1000.f, (1000.f *60 ),  (1000.f *60 *60 ) };
 	
 	ofVboMesh textMesh;
-	Playhead * _playhead = nullptr;
+	
 	
 	
 //	ofEventListener _panelShapeChangeListener;

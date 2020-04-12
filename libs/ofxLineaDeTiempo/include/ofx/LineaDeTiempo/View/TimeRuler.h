@@ -35,6 +35,9 @@ public:
 	uint64_t  screenPositionToTime(float x) const;
 	
 
+	void setPlayheadHeight(float height);
+
+	
 protected:
 	friend class TimeRulerBar;
 	TimeRulerHeader* _header = nullptr;
@@ -55,6 +58,10 @@ protected:
 	
 	ofEventListener _trackContainerListener;
 	void _tracksContainerShapeChanged(DOM::ShapeChangeEventArgs& e);
+	
+	Playhead * _playhead = nullptr;
+	
+	
 	
 };
 

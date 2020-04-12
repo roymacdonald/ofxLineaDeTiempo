@@ -23,7 +23,7 @@ class Playhead
 {
 public:
 	
-	Playhead(TimeRuler* timeRuler, TimeControl* timeControl);
+	Playhead(TimeRuler* timeRuler, TimeControl* timeControl, DOM::Element * constraint);
 	virtual ~Playhead(){}
 	
 	virtual void onDraw() const override;
@@ -53,6 +53,7 @@ protected:
 	
 private:
 	
+	DOM::Element * _constraint = nullptr;
 	
 	
 	ofMesh _playheadTriangle;

@@ -34,9 +34,12 @@ TimeRuler::TimeRuler(TracksPanel* panel, TimeControl* timeControl, const ofRecta
 	{
 		ofLogError("TimeRuler::TimeRuler") << "Panel's track view or its container are null. Cant set listeners for those";
 	}
+	_playhead = addChild<Playhead>(this, timeControl, _bar);
+	_playhead->updatePosition();
+	
 	setDrawChildrenOnly(true);
 	moveToFront();
-	
+	_playhead->moveToFront();
 	
 }
 
@@ -62,6 +65,7 @@ void TimeRuler::_tracksContainerShapeChanged(DOM::ShapeChangeEventArgs& e)
 			if(e.xChanged())
 			{
 				_bar->makeRulerLines();
+				if(_playhead) _playhead->updatePosition();
 			}
 		}
 	}
@@ -78,6 +82,7 @@ void TimeRuler::_setBarShape(bool dontCheck)
 			{
 				_bar->setShape({x, 0, cv->getWidth(), ConstVars::TimeRulerInitialHeight});
 				_bar->makeRulerLines();
+				if(_playhead) _playhead->updatePosition();
 			}
 		}
 	}
@@ -102,7 +107,7 @@ void TimeRuler::updateLayout()
 		if(_panel->getTracksView() && _panel->getTracksView()->getClippingView())
 		{
 			float h = _panel->getTracksView()->getClippingView()->getScreenShape().getMaxY() - getScreenY();
-			_bar->setPlayheadHeight(h);
+			setPlayheadHeight(h);
 		}
 
 	}
@@ -118,6 +123,13 @@ uint64_t  TimeRuler::screenPositionToTime(float x) const
 	return MUI::Math::lerp(x, _trackScreenHorizontal.min, _trackScreenHorizontal.max, 0, _timeControl->getTotalTime(), true);
 }
 
+void TimeRuler::setPlayheadHeight(float height)
+{
+	if(_playhead){
+		_playhead->setHeight(height);
+		_playhead->moveToFront();
+	}
+}
 
 
 } } // ofx::LineaDeTiempo

@@ -14,10 +14,11 @@ namespace ofx {
 namespace LineaDeTiempo {
 
 //---------------------------------------------------------------------
-Playhead::Playhead(TimeRuler* timeRuler, TimeControl* timeControl)
+Playhead::Playhead(TimeRuler* timeRuler, TimeControl* timeControl, DOM::Element * constraint)
 : ConstrainedGrabHandle("Playhead",DOM::HORIZONTAL, {0,0, ConstVars::PlayheadWidth, 100})
 , _timeRuler(timeRuler)
 , _timeControl(timeControl)
+, _constraint(constraint)
 {
 	
 	_currentTimeListener = timeControl->currentTimeUpdateEvent.newListener(this, &Playhead::_currentTimeChanged);
@@ -30,7 +31,8 @@ Playhead::Playhead(TimeRuler* timeRuler, TimeControl* timeControl)
 //		this->constrainTo(_tracksPanel->getClippingView());
 //	}
 
-	this->setConstrainedToParent(true);
+	this->constrainTo(constraint);
+//	this->setConstrainedToParent(false);
 	
 	
 	_playheadTriangle.setMode(OF_PRIMITIVE_TRIANGLES);
