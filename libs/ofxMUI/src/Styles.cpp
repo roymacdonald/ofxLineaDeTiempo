@@ -139,7 +139,7 @@ Styles::Styles(const std::string& name)
 
 #ifdef LINEA_DE_TIEMPO_USE_OF_PARAMETER
 
-	parameters.setName(_name);
+	parameters.setName(_name + "__" + ofToString(id));
 	_colors.resize(ROLE_TEXT + 1);
 	_paramGroups.resize(_colors.size());
 	
