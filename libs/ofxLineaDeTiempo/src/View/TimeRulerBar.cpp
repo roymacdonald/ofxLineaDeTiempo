@@ -109,49 +109,50 @@ void TimeRulerBar::makeRulerLines()
 		auto screenX = getScreenX();
 		float currentLabelPos = 0;
 		_labels.clear();
+
+		float& mn_widht = _timecodeTextRect.width;
+		
+		int stride = ceil(_timecodeTextRect.width/distances[endIndex]);
+
+		float h = 0;
+		float y = 0;
+		uint64_t startTime;
 		for(int i = startIndex; i < endIndex + 1; ++i)
 		{
-			uint64_t startTime = (uint64_t) floor(_currentRange.min/multipliers[i]) * multipliers[i] ;
+			startTime = (uint64_t) floor(_currentRange.min/multipliers[i]) * multipliers[i] ;
 			if(_currentRange.max > (startTime))
 			{
-				
-				float h = ofMap(i, startIndex, endIndex, (getHeight() - _timecodeTextRect.height)*0.5, getHeight() - _timecodeTextRect.height, true);
-				float y = _timecodeTextRect.height;
-				
+				h = ofMap(i, startIndex, endIndex, (getHeight() - _timecodeTextRect.height)*0.5, getHeight() - _timecodeTextRect.height, true);
+				y = _timecodeTextRect.height;
+
 				
 				float x = _timeRuler->timeToScreenPosition(startTime) - screenX;
 				
-				float mn_widht = _timecodeTextRect.width;
 				
-				float t_h, t_y;
 				
 				for(size_t j = 0; x < w; ++j ){
 					
-
-//
-//					if(x < getWidth())
-					
-//					{
-					
-					t_h = h;
-					t_y = y;
-					
-						if(i == endIndex && (j == 0 || (x - currentLabelPos) >  mn_widht))
-						{
-							
-							_labels[x + _textMargin] = ofxTimecode::timecodeForMillis(startTime + j*multipliers[i]);
-							currentLabelPos = x;
-							t_h = getHeight();
-							t_y = 0;
-						}
-						
-						
-						_rulerLines.addVertex({x, t_y, 0});
-						_rulerLines.addVertex({x, t_h + t_y, 0});
+					_rulerLines.addVertex({x, y, 0});
+					_rulerLines.addVertex({x, h + y, 0});
 					x += distances[i];
-//					}
+					
 				}
 			}
+		}
+		startTime = (uint64_t) floor(_currentRange.min/(multipliers[endIndex]*stride)) * multipliers[endIndex]*stride ;
+		float x = _timeRuler->timeToScreenPosition(startTime) - screenX;
+		
+		size_t n = ceil(_currentRange.max - startTime)/(multipliers[endIndex]*stride);
+		n += 1;
+		
+		for(size_t j = 0; j < n && x < w; ++j )
+		{
+			_labels[x + _textMargin] = ofxTimecode::timecodeForMillis(startTime );
+
+			startTime += multipliers[endIndex] * stride;
+			x += distances[endIndex] * stride;
+			_rulerLines.addVertex({x, 0, 0});
+			_rulerLines.addVertex({x, _timecodeTextRect.height, 0});
 		}
 	}
 }
