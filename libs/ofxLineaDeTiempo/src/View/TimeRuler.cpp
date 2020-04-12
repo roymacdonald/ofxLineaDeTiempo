@@ -23,7 +23,10 @@ TimeRuler::TimeRuler(TracksPanel* panel, TimeControl* timeControl, const ofRecta
 	
 	_header = addChild<TimeRulerHeader>(timeControl);
 	_bar = addChild<TimeRulerBar>( this, timeControl);
-	
+
+	_playhead = addChild<Playhead>(this, timeControl, _bar);
+	_playhead->updatePosition();
+
 	updateLayout();
 	
 	if(panel->getTracksView() && panel->getTracksView()->getContainer())
@@ -34,8 +37,6 @@ TimeRuler::TimeRuler(TracksPanel* panel, TimeControl* timeControl, const ofRecta
 	{
 		ofLogError("TimeRuler::TimeRuler") << "Panel's track view or its container are null. Cant set listeners for those";
 	}
-	_playhead = addChild<Playhead>(this, timeControl, _bar);
-	_playhead->updatePosition();
 	
 	setDrawChildrenOnly(true);
 	moveToFront();

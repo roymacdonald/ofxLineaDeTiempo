@@ -23,16 +23,13 @@ Playhead::Playhead(TimeRuler* timeRuler, TimeControl* timeControl, DOM::Element 
 	
 	_currentTimeListener = timeControl->currentTimeUpdateEvent.newListener(this, &Playhead::_currentTimeChanged);
 	
+	_constraintShapeListener = _constraint->shapeChanged.newListener(this, &Playhead::_constraintShapeChanged);
+	
 	
 	_draggingStateListener = isDraggingEvent.newListener(this, &Playhead::_draggingStateChanged);
 	
-//	if(timeRuler)
-//	{
-//		this->constrainTo(_tracksPanel->getClippingView());
-//	}
 
 	this->constrainTo(constraint);
-//	this->setConstrainedToParent(false);
 	
 	
 	_playheadTriangle.setMode(OF_PRIMITIVE_TRIANGLES);
@@ -45,64 +42,81 @@ Playhead::Playhead(TimeRuler* timeRuler, TimeControl* timeControl, DOM::Element 
 	
 	
 	
+	
 	moveToFront();
+	
+	
+	
+	
 }
 
+void Playhead::_onShapeChange(const DOM::ShapeChangeEventArgs& e)
+{
+	if(e.changedVertically())
+	{
+		_constraintRect.y = getY();
+		_constraintRect.height = getHeight();
+	}
+	
+}
+
+void Playhead::_constraintShapeChanged(DOM::ShapeChangeEventArgs& e)
+{
+	if(_constraint && e.changedHorizontally()){
+		_constraintRect = _constraint->getScreenShape();
+		auto x = screenToParentX(_constraintRect.x);
+		_constraintRect.setPosition( x, 0);
+		_constraintRect.height = getHeight();
+	}
+}
 //---------------------------------------------------------------------
 void Playhead::onDraw() const
 {
-	ofRectangle r (0,0,getWidth(), getHeight());
 	
-	auto x = getX();
+	ofRectangle r = _constraintRect.getIntersection(getShape());
+
+	r.x = 0;
+	r.y = 0;
 	
-	if(x < 0.0f)
-	{
-		r.x -= x;
-		r.width += x;
-		
-	}
-	else
-		if (x + getWidth() > parent()->getWidth())
-		{
-			r.width = parent()->getWidth() - x;
-		}
 	
-	if(r.width > 0.0f && r.getMaxX() > 0.f ){
-		
-		ofPushStyle();
-		ofFill();
-		
-		
-		if(isDragging()){
-			ofSetColor(255, 200);
-		}
-		else
-		{
-			ofSetColor(ofColor::red);
-		}
-		
-		
-		ofSetColor(200);
-		
-		_playheadTriangle.draw();
-		ofDrawRectangle(r);
-		
-		ofNoFill();
-		
-		if (isPointerDown())
-		{
-			ofSetColor(255, 120);
+	
+		if(r.width > 0.0f ){
+			
+			ofPushStyle();
+			ofFill();
+			
+			
+			if(isDragging()){
+				ofSetColor(255, 200);
+			}
+			else
+			{
+				ofSetColor(ofColor::red);
+			}
+			
+			
+			ofSetColor(200);
+			
+			_playheadTriangle.draw();
 			ofDrawRectangle(r);
+			
+			ofNoFill();
+			
+			if (isPointerDown())
+			{
+				ofSetColor(255, 120);
+				ofDrawRectangle(r);
+			}
+			else if (isPointerOver() && _highlightOnOver)
+			{
+				ofSetColor(30, 120);
+				ofDrawRectangle(r);
+			}
+			_playheadTriangle.drawWireframe();
+			
+			ofPopStyle();
 		}
-		else if (isPointerOver() && _highlightOnOver)
-		{
-			ofSetColor(30, 120);
-			ofDrawRectangle(r);
-		}
-		_playheadTriangle.drawWireframe();
-		
-		ofPopStyle();
-	}
+	
 }
 //---------------------------------------------------------------------
 void Playhead::_draggingStateChanged(bool & bDragging)
