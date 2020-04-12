@@ -19,7 +19,7 @@
 #include "LineaDeTiempo/Controller/TimeControl.h"
 #include "ofRange.h"
 #include "LineaDeTiempo/View/Playhead.h"
-
+#include "ofxTimecode.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -81,9 +81,13 @@ protected:
 	std::vector<bool> bDraw ;
 	std::vector<float> multipliers ;// = {1.f, 1000.f, (1000.f *60 ),  (1000.f *60 *60 ) };
 	
-	ofVboMesh textMesh;
+//	ofVboMesh textMesh;
 	
+	ofRectangle _timecodeTextRect;
 	
+	std::map<float, std::string> _labels;
+	
+	float _textMargin = 3;
 	
 //	ofEventListener _panelShapeChangeListener;
 //	void _onPanelShapeChanged(DOM::ShapeChangeEventArgs& e);

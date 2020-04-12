@@ -10,6 +10,7 @@
 #include "LineaDeTiempo/View/TrackGroupView.h"
 #include "LineaDeTiempo/View/TrackView.h"
 #include "LineaDeTiempo/Utils/ConstVars.h"
+#include "LineaDeTiempo/Utils/FontUtils.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -92,10 +93,17 @@ void TrackHeader::onDraw() const
 			ofDrawRectangle(0, 0, getWidth(), getHeight());
 			
 			
-			ofSetColor(_track->getTextColor());
+			ofSetColor(getStyles()->getColor(MUI::Styles::ROLE_TEXT, MUI::Styles::STATE_NORMAL));
+			
+			auto & font = getStyles()->getFont();
+
+			font.drawString(getTrack()->getId() , 20, getTextVCenteredPos({0,0,0, ConstVars::ViewTopHeaderHeight} , font));
+
+			
+//			ofSetColor(_track->getTextColor());
 			
 			
-			ofDrawBitmapString( getTrack()->getId() , 20, (ConstVars::ViewTopHeaderHeight * 0.5 - 7 + 11));
+//			ofDrawBitmapString( getTrack()->getId() , 20, (ConstVars::ViewTopHeaderHeight * 0.5 - 7 + 11));
 		}
 	}
 }

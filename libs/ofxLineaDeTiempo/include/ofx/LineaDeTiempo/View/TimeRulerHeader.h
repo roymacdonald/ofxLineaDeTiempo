@@ -33,7 +33,7 @@ public:
 protected:
 	TimeControl* _timeControl = nullptr;
 	
-	static ofBitmapFont _bf;
+//	static ofBitmapFont _bf;
 
 	mutable std::string _timeText;
 

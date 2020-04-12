@@ -32,6 +32,13 @@ TimeRulerBar::TimeRulerBar(  TimeRuler* timeRuler, TimeControl* timeControl)
 	multipliers[_MINUTES] = std::chrono::duration_cast<std::chrono::milliseconds> (std::chrono::minutes(1)).count();
 	multipliers[_HOURS]   = std::chrono::duration_cast<std::chrono::milliseconds> (std::chrono::hours(1)).count();
 	
+	ofBitmapFont bf;
+	_timecodeTextRect = bf.getBoundingBox(ofxTimecode::timecodeForMillis(0), 0, 0);
+	_timecodeTextRect.y *= -1;
+	_timecodeTextRect.y += _textMargin;
+
+	_timecodeTextRect.width += _textMargin*2;
+	_timecodeTextRect.height += _textMargin *2;
 	
 	makeRulerLines();
 	
@@ -39,6 +46,8 @@ TimeRulerBar::TimeRulerBar(  TimeRuler* timeRuler, TimeControl* timeControl)
 	setHighlightOnOver(false);
 	setMoveToFrontOnCapture(false);
 	
+	
+	setDrawAsViewport(true);
 	
 //	moveToFront();
 //	_updatePlayheadSize();
@@ -93,26 +102,54 @@ void TimeRulerBar::makeRulerLines()
 				endIndex = max(i, endIndex);
 			}
 		}
+		_rulerLines.addVertex({0, _timecodeTextRect.height, 0});
+		_rulerLines.addVertex({getWidth(), _timecodeTextRect.height, 0});
 		
 		
 		auto screenX = getScreenX();
-		
+		float currentLabelPos = 0;
+		_labels.clear();
 		for(int i = startIndex; i < endIndex + 1; ++i)
 		{
 			uint64_t startTime = (uint64_t) floor(_currentRange.min/multipliers[i]) * multipliers[i] ;
 			if(_currentRange.max > (startTime))
 			{
-				float h = ofMap(i, startIndex, endIndex, getHeight()*0.3, getHeight(), true);
+				
+				float h = ofMap(i, startIndex, endIndex, (getHeight() - _timecodeTextRect.height)*0.5, getHeight() - _timecodeTextRect.height, true);
+				float y = _timecodeTextRect.height;
+				
+				
 				float x = _timeRuler->timeToScreenPosition(startTime) - screenX;
+				
+				float mn_widht = _timecodeTextRect.width;
+				
+				float t_h, t_y;
+				
 				for(size_t j = 0; x < w; ++j ){
 					
-					x += distances[i];
+
+//
+//					if(x < getWidth())
 					
-					if(x < getWidth())
-					{
-						_rulerLines.addVertex({x, 0, 0});
-						_rulerLines.addVertex({x, h, 0});
-					}
+//					{
+					
+					t_h = h;
+					t_y = y;
+					
+						if(i == endIndex && (j == 0 || (x - currentLabelPos) >  mn_widht))
+						{
+							
+							_labels[x + _textMargin] = ofxTimecode::timecodeForMillis(startTime + j*multipliers[i]);
+							currentLabelPos = x;
+							t_h = getHeight();
+							t_y = 0;
+						}
+						
+						
+						_rulerLines.addVertex({x, t_y, 0});
+						_rulerLines.addVertex({x, t_h + t_y, 0});
+					x += distances[i];
+//					}
 				}
 			}
 		}
@@ -130,10 +167,22 @@ void TimeRulerBar::onDraw() const
 	ofNoFill();
 	ofDrawRectangle(0, 0, getWidth(), getHeight());
 
+	ofSetColor(getStyles()->getColor(MUI::Styles::ROLE_TEXT, MUI::Styles::STATE_NORMAL));
+	
+	for(auto& l : _labels)
+	{
+		ofDrawBitmapString(l.second, l.first, _timecodeTextRect.y);
+		
+	}
 
 	ofSetColor(200);
 	_rulerLines.draw();
 		
+	
+	auto str = ofxTimecode::timecodeForMillis( _timeRuler->screenPositionToTime(ofGetMouseX()));
+	
+	ofDrawBitmapStringHighlight(str, ofGetMouseX()-getScreenX()+6, ofGetMouseY()-getScreenY() + 14);
+	
 	
 }
 

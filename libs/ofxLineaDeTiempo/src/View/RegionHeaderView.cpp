@@ -10,7 +10,7 @@
 #include "LineaDeTiempo/View/RegionView.h"
 #include "LineaDeTiempo/View/TrackView.h"
 #include "LineaDeTiempo/Utils/ConstVars.h"
-
+#include "LineaDeTiempo/Utils/FontUtils.h"
 namespace ofx {
 namespace LineaDeTiempo {
 
@@ -54,8 +54,14 @@ void RegionHeaderView::onDraw() const
     MUI::Widget::onDraw();
 	if(_parentRegion && _parentRegion->parentTrack())
 	{
-		ofSetColor(_parentRegion->parentTrack()->getTextColor());
-		ofDrawBitmapString(_parentRegion->getId() , 20, (ConstVars::ViewTopHeaderHeight * 0.5 - 7 + 11));
+		
+		ofSetColor(getStyles()->getColor(MUI::Styles::ROLE_TEXT, MUI::Styles::STATE_NORMAL));
+		auto & font = getStyles()->getFont();
+		
+		font.drawString(_parentRegion->getId(), 20, getTextVCenteredPos({0,0,0, ConstVars::ViewTopHeaderHeight} , font));
+		
+		
+//		
 	}
 }
 
