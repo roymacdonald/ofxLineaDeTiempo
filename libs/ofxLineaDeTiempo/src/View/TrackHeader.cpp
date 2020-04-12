@@ -95,7 +95,7 @@ void TrackHeader::onDraw() const
 			
 			ofSetColor(getStyles()->getColor(MUI::Styles::ROLE_TEXT, MUI::Styles::STATE_NORMAL));
 			
-			auto & font = getStyles()->getFont();
+			auto & font = getStyles()->getFont(MUI::SMALL);
 
 			font.drawString(getTrack()->getId() , 20, getTextVCenteredPos({0,0,0, ConstVars::ViewTopHeaderHeight} , font));
 

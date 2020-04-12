@@ -14,7 +14,6 @@ namespace ofx {
 namespace LineaDeTiempo {
 
 
-ofBitmapFont TimeRulerHeader::_bf = ofBitmapFont();
 
 
 TimeRulerHeader::TimeRulerHeader( TimeControl* timeControl)
