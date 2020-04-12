@@ -15,7 +15,8 @@ ofParameter<ofColor> ConstVars::DefaultTextColor = ofParameter<ofColor>("Default
 ofParameter<ofColor> ConstVars::TrackBackgroundColor = ofParameter<ofColor>("TrackBackgroundColor", ofColor(40), ofColor(0,0,0,0), ofColor(255,255,255,255));
 ofParameter<ofColor> ConstVars::TrackEdgeColor = ofParameter<ofColor>("TrackEdgeColor", ofColor(120), ofColor(0,0,0,0), ofColor(255,255,255,255));
 ofParameter<ofColor> ConstVars::RegionBackgroundColor = ofParameter<ofColor>("RegionBackgroundColor", ofColor(80), ofColor(0,0,0,0), ofColor(255,255,255,255));
-ofParameter<ofColor> ConstVars::SelectedColor = ofParameter<ofColor>("SelectedColor", ofColor::yellow, ofColor(0,0,0,0), ofColor(255,255,255,255));
+//ofParameter<ofColor> ConstVars::SelectedColor = ofParameter<ofColor>("SelectedColor", ofColor::yellow, ofColor(0,0,0,0), ofColor(255,255,255,255));
+ ofColor ConstVars::SelectedColor = ofColor::yellow;
 
 
 ofParameter<float> ConstVars::TrackInitialHeight = ofParameter<float>("TrackInitialHeight", 150.0, 0.f, 400.f);

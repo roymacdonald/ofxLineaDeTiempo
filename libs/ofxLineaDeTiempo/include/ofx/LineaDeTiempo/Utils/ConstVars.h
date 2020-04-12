@@ -50,8 +50,8 @@ struct ConstVars
 	static ofParameter<ofColor> TrackBackgroundColor  ;//= {"TrackBackgroundColor", ofColor(40), ofColor::black, ofColor::white};
 	static ofParameter<ofColor> TrackEdgeColor        ;//= {"TrackEdgeColor", ofColor(120), ofColor::black, ofColor::white};
 	static ofParameter<ofColor> RegionBackgroundColor ;//= {"RegionBackgroundColor", ofColor(80), ofColor::black, ofColor::white};
-	static ofParameter<ofColor> SelectedColor; //ofColor::yellow
-	
+//	static ofParameter<ofColor> SelectedColor; //ofColor::yellow
+	static ofColor SelectedColor;
 	
 	static ofParameter<float> TrackInitialHeight      ;//= {"TrackInitialHeight", 150.0, 0.f, 400.f};
 	static ofParameter<float> DefaultKeyframeSize     ;//= {"DefaultKeyframeSize", 5.0, 0.f, 20.f};
