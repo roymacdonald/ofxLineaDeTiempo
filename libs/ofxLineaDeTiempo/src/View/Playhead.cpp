@@ -57,7 +57,10 @@ void Playhead::_onShapeChange(const DOM::ShapeChangeEventArgs& e)
 		_constraintRect.y = getY();
 		_constraintRect.height = getHeight();
 	}
-	
+	if(e.xChanged())
+	{
+		bIgnorePointer = !_constraintRect.intersects(getShape());
+	}
 }
 
 void Playhead::_constraintShapeChanged(DOM::ShapeChangeEventArgs& e)
@@ -154,14 +157,33 @@ void Playhead::updatePosition()
 //---------------------------------------------------------------------
 void Playhead::_onDragging(const DOM::CapturedPointer& pointer)
 {
-	ConstrainedGrabHandle::_onDragging(pointer);
-	
-	if(_timeRuler && _timeControl)
+	if(!bIgnorePointer)
 	{
+		ConstrainedGrabHandle::_onDragging(pointer);
 		
-		_timeControl->setCurrentTime(_timeRuler->screenPositionToTime(parentToScreenX(getX() + getWidth() / 2)));
+		if(_timeRuler && _timeControl)
+		{
+			
+			_timeControl->setCurrentTime(_timeRuler->screenPositionToTime(parentToScreenX(getX() + getWidth() / 2)));
+		}
 	}
-	
 }
 
+
+void Playhead::_onPointerEvent(DOM::PointerUIEventArgs& e)
+{
+	if(!bIgnorePointer)	
+	{
+		MUI::ConstrainedGrabHandle::_onPointerEvent(e);
+	}
+}
+
+
+void Playhead::_onPointerCaptureEvent(DOM::PointerCaptureUIEventArgs& e)
+{
+	if(!bIgnorePointer || isDragging())
+	{
+		MUI::ConstrainedGrabHandle::_onPointerCaptureEvent(e);
+	}
+}
 } } // ofx::LineaDeTiempo

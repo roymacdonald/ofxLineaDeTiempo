@@ -32,24 +32,26 @@ public:
 	
 protected:
 	
+	bool bIgnorePointer = false;
+	
+	virtual void _onDragging(const DOM::CapturedPointer& pointer) override;
+	
+    virtual void _onPointerEvent(DOM::PointerUIEventArgs& e) override;
+
+    virtual void _onPointerCaptureEvent(DOM::PointerCaptureUIEventArgs& e) override;
+	
 	ofEventListener _currentTimeListener;
 	void _currentTimeChanged(uint64_t& t);
 
 	ofEventListener _draggingStateListener;
 	void _draggingStateChanged(bool & bDragging);
 		
-	
-	
-	ofEventListeners _tracksListeners;
-	
-	void _trackNumChanged(DOM::ElementEventArgs& );
-	void _tracksOrderChanged(DOM::ElementOrderEventArgs& );
 
-	virtual void _onDragging(const DOM::CapturedPointer& pointer)override;
-	
 	TimeControl* _timeControl = nullptr;
 
 	TimeRuler* _timeRuler = nullptr;
+	
+	virtual void _onShapeChange(const DOM::ShapeChangeEventArgs& ) override;
 	
 private:
 	
@@ -59,6 +61,10 @@ private:
 	ofMesh _playheadTriangle;
 	
 	bool _wasPlaying = false;
+	
+	ofEventListener _constraintShapeListener;
+	void _constraintShapeChanged(DOM::ShapeChangeEventArgs&);
+	ofRectangle _constraintRect;
 	
 };
 
