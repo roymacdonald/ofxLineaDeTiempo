@@ -46,7 +46,7 @@ void TracksPanelController::generateView()
 			
 			_mainView = std::make_unique<MUI::MUI>(docSettings);
 			
-			ofx::MUI::TrueTypeFontSettings::defaultFontSize(ofx::MUI::FontSize::SMALL);
+			
 			ofx::MUI::TrueTypeFontSettings::setDefaultFont(ofToDataPath("assets/fonts/OpenSans-Regular.ttf"));
 			_mainView->setAutoFillScreen(false);
 			
