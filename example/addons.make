@@ -1,4 +1,2 @@
 ofxGui
 ofxLineaDeTiempo
-ofxPointer
-ofxRange
