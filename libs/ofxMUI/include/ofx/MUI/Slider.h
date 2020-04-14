@@ -30,7 +30,7 @@ public:
     /// \param mode The DragMode of the Slider.
     Slider(const std::string& id,
            DOM::Orientation orientation,
-           DragMode mode = DragMode::ABSOLUTE);
+           DragMode mode = DragMode::DRAG_ABSOLUTE);
 
     /// \brief Create a Slider with the given parameters.
     /// \param id The Widget's id string.
@@ -46,7 +46,7 @@ public:
            float width = DEFAULT_WIDTH,
            float height = DEFAULT_HEIGHT,
            DOM::Orientation orientation = DOM::Orientation::DEFAULT,
-           DragMode mode = DragMode::ABSOLUTE);
+           DragMode mode = DragMode::DRAG_ABSOLUTE);
 	
 	/// \brief Create a Slider with the given parameters.
     /// \param id The Widget's id string.
@@ -56,7 +56,7 @@ public:
     Slider(const std::string& id,
            const ofRectangle& rect,
            DOM::Orientation orientation = DOM::Orientation::DEFAULT,
-           DragMode mode = DragMode::ABSOLUTE);
+           DragMode mode = DragMode::DRAG_ABSOLUTE);
 
     /// \brief Destroy the Slider.
     virtual ~Slider();
@@ -204,7 +204,7 @@ protected:
     DOM::Orientation _orientation = DOM::Orientation::HORIZONTAL;
 
     /// \brief The drag mode.
-    DragMode _dragMode = DragMode::RELATIVE;
+    DragMode _dragMode = DragMode::DRAG_RELATIVE;
 
     /// \brief The "primary" pointer id.
     ///
@@ -338,7 +338,7 @@ void Slider<Type>::onPointerEvent(DOM::PointerUIEventArgs& e)
                                            valueMax);
 
 
-            if (DragMode::RELATIVE == _dragMode)
+            if (DragMode::DRAG_RELATIVE == _dragMode)
             {
                 if (PointerEventArgs::POINTER_DOWN == e.type())
                 {
