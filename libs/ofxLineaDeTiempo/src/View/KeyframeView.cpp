@@ -90,7 +90,7 @@ void KeyframeView::_onDragging(const DOM::CapturedPointer& pointer)
 	Widget::_onDragging(pointer);
     if(_parentView){
 		
-		DOM::ofRectangleHelper::keepInside(this, ofRectangle(0,0, _parentView->getWidth(), _parentView->getHeight()));
+		DOM::ofRectangleHelper::keepInside(this, { 0,0, _parentView->getWidth(), _parentView->getHeight() });
 		
 		
 		if(_parentView->isParamTypeIsBool() )

@@ -183,8 +183,18 @@ void ScrollablePanel_<H, D, B, C, CT>::updateLayout()
 template<typename H, typename D,  template <typename, typename> class B, typename C, typename CT>
 bool ScrollablePanel_<H, D, B, C, CT>::_onMouseScrollEvent(ofMouseEventArgs & e)
 {
-	if(_scrollbarH && _scrollbarH->isEnabled())_scrollbarH->scroll(e.scrollX);
-	if(_scrollbarV && _scrollbarV->isEnabled())_scrollbarV->scroll(e.scrollY);
+	bool ret = false;
+	if (_scrollbarH && _scrollbarH->isEnabled())
+	{
+		_scrollbarH->scroll(e.scrollX);
+		ret = true;
+	}
+	if (_scrollbarV && _scrollbarV->isEnabled())
+	{
+		_scrollbarV->scroll(e.scrollY);
+		ret = true;
+	}
+	return ret;
 }
 //---------------------------------------------------------------------------------------------------
 template<typename H, typename D,  template <typename, typename> class B, typename C, typename CT>

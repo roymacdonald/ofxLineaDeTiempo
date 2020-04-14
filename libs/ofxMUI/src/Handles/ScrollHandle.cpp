@@ -22,7 +22,7 @@ void ScrollHandle::_onDragging(const DOM::CapturedPointer& pointer){
 }
 //---------------------------------------------------------------------------------------------------------------------
 bool ScrollHandle::_updateValueFromScroll(){
-	if(!hasParent())return;
+	if(!hasParent())return false;
 	auto p_size = parent()->getSize();
 	if(setFloatIfNonEqual(handleValue, ofMap(getPosition()[dimIndex()], 0, p_size[dimIndex()] - getSize()[dimIndex()], 0, 1, true ))){
 		ofNotifyEvent(handleChangeEvent, handleValue, this);
@@ -32,7 +32,7 @@ bool ScrollHandle::_updateValueFromScroll(){
 }
 //---------------------------------------------------------------------------------------------------------------------
 bool ScrollHandle::_updateScrollFromValue(){
-	if(!hasParent())return;
+	if(!hasParent())return  false;
 	auto p_size = parent()->getSize();
 	
 	glm::vec2 pos(0,0);

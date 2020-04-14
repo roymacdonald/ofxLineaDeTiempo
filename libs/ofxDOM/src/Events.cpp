@@ -432,7 +432,7 @@ bool ShapeChangeEventArgs::changedVertically() const
 }
 
 
-bool ShapeChangeEventArgs::findChanges()
+void ShapeChangeEventArgs::findChanges()
 {
 	_xChanged = ! ofIsFloatEqual(shape.x, prevShape.x);
 	_yChanged = ! ofIsFloatEqual(shape.y, prevShape.y);

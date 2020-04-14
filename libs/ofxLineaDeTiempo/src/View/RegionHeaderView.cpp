@@ -16,7 +16,7 @@ namespace LineaDeTiempo {
 
 
 RegionHeaderView::RegionHeaderView(RegionView* parentRegion)
-: MUI::ConstrainedGrabHandle("GrabHandle", DOM::HORIZONTAL, ofRectangle(0,0,parentRegion->getWidth(), ConstVars::ViewTopHeaderHeight))
+	: MUI::ConstrainedGrabHandle("GrabHandle", DOM::HORIZONTAL, { 0,0,parentRegion->getWidth(), ConstVars::ViewTopHeaderHeight })
 , _parentRegion(parentRegion)
 {
 	this->constrainTo(_parentRegion->parentTrack());

@@ -47,9 +47,9 @@ enum class Scale
 enum class DragMode
 {
 	/// \brief Sets the position by the absolute position of the dragged pointer.
-	ABSOLUTE,
+	DRAG_ABSOLUTE,
 	/// \brief Sets the position by the relative offset of the dragged pointer.
-	RELATIVE
+	DRAG_RELATIVE
 };
 
 

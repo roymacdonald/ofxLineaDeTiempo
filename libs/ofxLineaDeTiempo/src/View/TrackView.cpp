@@ -83,7 +83,7 @@ bool TrackView::removeRegion(RegionController * controller)
 	auto region = controller->getView();
 	if(region){
 		auto removed = removeChild(region);
-		if(removed == nullptr)
+		if(removed.get() == nullptr)
 		{
 			ofLogError("TrackView::removeRegion") << "failed. removeChild returned a  nullptr";
 			return false;

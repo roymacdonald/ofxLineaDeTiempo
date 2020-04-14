@@ -462,7 +462,7 @@ public:
 	///\returns true if y or height changed, false otherwise
 	bool changedVertically() const;
 
-	bool findChanges();
+	void findChanges();
 	
 private:
 	

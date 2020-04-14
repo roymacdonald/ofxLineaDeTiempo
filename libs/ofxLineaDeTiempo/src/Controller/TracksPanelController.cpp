@@ -109,12 +109,14 @@ void TracksPanelController::draw()
 bool TracksPanelController::save(const std::filesystem::path& filepath)
 {
 	
-	ofSaveJson(filepath, toJson());
+	return ofSaveJson(filepath, toJson());
 }
 
 bool TracksPanelController::load(const std::filesystem::path& filepath)
 {
+	//TODO: return the proper value
 	fromJson(ofLoadJson(filepath));
+	return true;
 }
 
 
@@ -129,7 +131,7 @@ void TracksPanelController::fromJson(const ofJson& j)
 		_uniqueTimeControl->fromJson(j["timeControl"]);
 	}
 	
-	if(j["_panel"].get<bool>())
+	if(j["_panel"].get<bool>() && !getView())
 	{
 		generateView();
 	}
