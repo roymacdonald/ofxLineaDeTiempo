@@ -44,7 +44,7 @@ template class TimedData_<long long>;
 template class TimedData_<unsigned long long>;
 template class TimedData_<float>;
 template class TimedData_<double>;
-template class TimedData_<long double>;
+//template class TimedData_<long double>;
 
 
 } } // ofx::LineaDeTiempo

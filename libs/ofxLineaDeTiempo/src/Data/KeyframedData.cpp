@@ -399,7 +399,7 @@ template class KeyframedData_<long long>;
 template class KeyframedData_<unsigned long long>;
 template class KeyframedData_<float>;
 template class KeyframedData_<double>;
-template class KeyframedData_<long double>;
+//template class KeyframedData_<long double>;
 
 } } // ofx::LineaDeTiempo
 
