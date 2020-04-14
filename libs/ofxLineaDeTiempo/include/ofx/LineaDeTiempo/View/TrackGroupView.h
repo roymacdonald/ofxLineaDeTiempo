@@ -7,7 +7,8 @@
 
 #pragma once
 
-#include "LineaDeTiempo/View/TrackView.h"
+
+#include "LineaDeTiempo/View/KeyframeTrackView.h"
 #include "LineaDeTiempo/Utils/ConstVars.h"
 
 
@@ -16,6 +17,8 @@ namespace LineaDeTiempo {
 
 class TrackGroupController;
 class TrackController;
+template <typename DataType>
+class KeyframeTrackController_;
 
 class TrackGroupView
 : public BaseTrackView
@@ -29,15 +32,14 @@ public:
 	virtual ~TrackGroupView() = default;
 	
 	
-	template< typename TrackViewType>
-	TrackViewType* addTrack(TrackController * controller );
+	template< typename DataType>
+	KeyframeTrackView<DataType>* addTrack(TrackController * controller );
 	
 	
 	bool removeTrack(TrackController * controller);
 	
 	
-	template< typename GroupViewType>
-	GroupViewType* addGroup(TrackGroupController * controller );
+	TrackGroupView* addGroup(TrackGroupController * controller );
 	
 	
 	bool removeGroup(TrackGroupController * controller);
@@ -68,13 +70,10 @@ private:
 	float _getInitialYpos();
 	
 };
-
-
-template< typename TrackViewType>
-TrackViewType* TrackGroupView::addTrack(TrackController * controller)
+template< typename DataType>
+KeyframeTrackView<DataType>* TrackGroupView::addTrack(TrackController * controller )
 {
-	static_assert(std::is_base_of<TrackView, TrackViewType>::value,
-				  "TrackViewType must inherit from ofx::LineaDeTiempo::TrackView");
+
 	if(!controller)
 	{
 		ofLogError("TrackGroupView::addTrack") << "controller is invalid. " << getId();
@@ -86,8 +85,7 @@ TrackViewType* TrackGroupView::addTrack(TrackController * controller)
 		return nullptr;
 	}
 	
-	auto t = _tracksContainer->addChild<TrackViewType>(this, controller, _timeRuler);
-	auto h = _header->addChild<TrackHeader>( "_header", ofRectangle(0, 0, _trackHeaderWidth, ConstVars::TrackInitialHeight), t , this, _isPanel);
+	auto t = _tracksContainer->addChild<KeyframeTrackView<DataType>>(this, controller, _timeRuler, _header,_isPanel);
 	
 	ofColor color;
 	color.setHsb(ofRandom(255), ofRandom(200, 255), ofRandom(150,255));
@@ -97,32 +95,6 @@ TrackViewType* TrackGroupView::addTrack(TrackController * controller)
 	return t;
 }
 
-
-template< typename GroupViewType>
-GroupViewType* TrackGroupView::addGroup(TrackGroupController * controller )
-{
-	static_assert(std::is_base_of<TrackGroupView, GroupViewType>::value,
-				  "TrackViewType must inherit from ofx::LineaDeTiempo::TrackView");
-	
-	if(!controller)
-	{
-		ofLogError("TrackGroupView::addGroup") << "controller is invalid. " << getId();
-		return nullptr;
-	}
-	
-	if(_containersCheck("addGroup") == false)
-	{
-		return nullptr;
-	}
-	
-	
-	auto t = _tracksContainer->addChild<GroupViewType>(this, controller, _timeRuler);
-	auto h = _header->addChild<TrackHeader>( "_header", ofRectangle(0, 0, _trackHeaderWidth, ConstVars::TrackInitialHeight), t , this, _isPanel);
-	
-	
-	return t;
-	
-}
 
 
 

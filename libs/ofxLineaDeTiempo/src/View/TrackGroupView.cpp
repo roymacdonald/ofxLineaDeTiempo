@@ -65,6 +65,31 @@ bool TrackGroupView::removeTrack(TrackController* controller)
 	
 }
 
+
+TrackGroupView* TrackGroupView::addGroup(TrackGroupController * controller )
+{	
+	if(!controller)
+	{
+		ofLogError("TrackGroupView::addGroup") << "controller is invalid. " << getId();
+		return nullptr;
+	}
+	
+	if(_containersCheck("addGroup") == false)
+	{
+		return nullptr;
+	}
+	
+	
+	auto t = _tracksContainer->addChild<TrackGroupView>(this, controller, _timeRuler);
+	auto h = _header->addChild<TrackHeader>( "_header", ofRectangle(0, 0, _trackHeaderWidth, ConstVars::TrackInitialHeight), t , this, _isPanel);
+	
+	
+	return t;
+	
+}
+
+
+
 bool TrackGroupView::removeGroup(TrackGroupController * controller)
 {
 	if(controller == nullptr)
