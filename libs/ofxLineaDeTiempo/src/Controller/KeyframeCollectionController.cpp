@@ -30,24 +30,30 @@ KeyframeCollectionController<D>::KeyframeCollectionController( KeyframeRegionCon
 
 	
 }
+template<typename D>
 
-//template<typename D>
-//KeyframeController<D>* KeyframeCollectionController<D>::addKeyframe(innerDataType value, uint64_t time)
-//{
-//	auto d = _keyframedData.add(value, time);
-//
-//	auto k = addChild<KeyframeController<D>>( "k_"+ofToString(_dimensionIndex)+"_"+ofToString(_keyframedData.size()), d, this );
-//
-//	_keyframes.push_back(k);
-//
-//	if(getView())
-//	{
-//		k->generateView();
-//		_keyframesViewMap[k->getView()] = k;
-//	}
-//
-//	return k;
-//}
+KeyframeController<D>* KeyframeCollectionController<D>::addKeyframe(KeyframeCollectionController<D>::innerDataType value, uint64_t time)
+{
+	
+	
+	auto d = _keyframedData.add(value, time);
+	
+	if(d){
+		auto k = addChild<KeyframeController<D>>( "k_"+ofToString(_dimensionIndex)+"_"+ofToString(_keyframedData.size()), d, this );
+		
+		_keyframes.push_back(k);
+		
+		
+		if(getView())
+		{
+			k->generateView();
+			_keyframesViewMap[k->getView()] = k;
+		}
+		sortData();
+		return k;
+	}
+	return nullptr;
+}
 
 template<typename D>
 bool KeyframeCollectionController<D>::removeKeyframe(KeyframeController<D>* keyframe)
@@ -73,10 +79,10 @@ bool KeyframeCollectionController<D>::removeKeyframe(KeyframeController<D>* keyf
 template<typename D>
 void KeyframeCollectionController<D>::removeAllKeyframes()
 {
+	DOM::Node::removeAllChildren();
 	_keyframedData.clear();
 	_keyframesViewMap.clear();
-	DOM::Node::removeAllChildren();
-	
+	_keyframes.clear();
 }
 
 
@@ -158,13 +164,15 @@ void KeyframeCollectionController<D>::_addKeyframeEventCB(AddKeyframeEventArgs& 
 	}
 }
 
-
+template<typename D>
+bool KeyframeCollectionController<D>::compareKeyframeControlers(KeyframeController<D>*a, KeyframeController<D>*b)
+{
+	return a->getData()->time < a->getData()->time ;
+}
 template<typename D>
 void KeyframeCollectionController<D>::sortData()
 {
-	ofSort(_keyframes, [](KeyframeController<D>*a, KeyframeController<D>*b){
-		return a->getData()->time < a->getData()->time ;
-	});
+	ofSort(_keyframes, KeyframeCollectionController<D>::compareKeyframeControlers);
 	
 	_keyframedData.sortData();
 	
@@ -315,31 +323,23 @@ template class KeyframeCollectionController<glm::vec4>;
 template class KeyframeCollectionController<bool>;
 //template class KeyframeCollectionController<void>;
 
-template class KeyframeCollectionController<         char>;
-template class KeyframeCollectionController<unsigned char>;
-template class KeyframeCollectionController<  signed char>;
-template class KeyframeCollectionController<         short>;
-template class KeyframeCollectionController<unsigned short>;
-template class KeyframeCollectionController<         int>;
-template class KeyframeCollectionController<unsigned int>;
-template class KeyframeCollectionController<         long>;
-template class KeyframeCollectionController<unsigned long>;
-template class KeyframeCollectionController<         long long>;
-template class KeyframeCollectionController<unsigned long long>;
+
+template class KeyframeCollectionController<ofColor>;
+template class KeyframeCollectionController<ofShortColor>;
+template class KeyframeCollectionController<ofFloatColor>;
+
+
+template class KeyframeCollectionController<int8_t>;
+template class KeyframeCollectionController<uint8_t>;
+template class KeyframeCollectionController<int16_t>;
+template class KeyframeCollectionController<uint16_t>;
+template class KeyframeCollectionController<int32_t>;
+template class KeyframeCollectionController<uint32_t>;
+template class KeyframeCollectionController<int64_t>;
+template class KeyframeCollectionController<uint64_t>;
 template class KeyframeCollectionController<float>;
 template class KeyframeCollectionController<double>;
-template class KeyframeCollectionController<long double>;
-
-template class KeyframeCollectionController<ofColor_<char>>;
-template class KeyframeCollectionController<ofColor_<unsigned char>>;
-template class KeyframeCollectionController<ofColor_<short>>;
-template class KeyframeCollectionController<ofColor_<unsigned short>>;
-template class KeyframeCollectionController<ofColor_<int>>;
-template class KeyframeCollectionController<ofColor_<unsigned int>>;
-template class KeyframeCollectionController<ofColor_<long>>;
-template class KeyframeCollectionController<ofColor_<unsigned long>>;
-template class KeyframeCollectionController<ofColor_<float>>;
-//template class KeyframeCollectionController<ofColor_<double>>;
+template class KeyframeCollectionController<typename std::conditional<std::is_same<uint32_t, size_t>::value || std::is_same<uint64_t, size_t>::value, bool, size_t>::type>;
 
 
 

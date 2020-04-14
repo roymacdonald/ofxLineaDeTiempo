@@ -49,31 +49,13 @@ public:
 	
 	KeyframeCollectionController( KeyframeRegionController_<RegionDataType> * parentRegion, size_t dimensionIndex );
 	
-	virtual ~KeyframeCollectionController() = default;
-	
-	KeyframeController<RegionDataType>* addKeyframe(innerDataType value, uint64_t time)
+	virtual ~KeyframeCollectionController()
 	{
-		
-		
-		auto d = _keyframedData.add(value, time);
-		
-		if(d){
-		auto k = addChild<KeyframeController<RegionDataType>>( "k_"+ofToString(_dimensionIndex)+"_"+ofToString(_keyframedData.size()), d, this );
-		
-		_keyframes.push_back(k);
-
-		
-		if(getView())
-		{
-			k->generateView();
-			_keyframesViewMap[k->getView()] = k;
-		}
-		sortData();
-		return k;
-		}
-		return nullptr;
+		destroyView();
 	}
+
 	
+	KeyframeController<RegionDataType>* addKeyframe(innerDataType value, uint64_t time);
 	
 	void sortData();
 	
@@ -177,6 +159,8 @@ protected:
 		return false;
 	}
 	
+	
+	static bool compareKeyframeControlers(KeyframeController<RegionDataType>*a, KeyframeController<RegionDataType>*b);
 	
 	
 	template<typename D>
