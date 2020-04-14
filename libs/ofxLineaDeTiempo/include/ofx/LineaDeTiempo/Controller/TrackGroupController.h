@@ -38,13 +38,15 @@ public:
 	virtual void generateView() override;
 	virtual void destroyView() override;
 	
-	virtual ~TrackGroupController() = default;
+	virtual ~TrackGroupController()
+	{
+		destroyView();
+	}
 	
 	TrackGroupController* add(ofxGuiGroup& guiGroup);
 	
 	TrackGroupController* add(ofParameterGroup& paramGroup);
-	
-	
+		
 	template<typename DataType>
 	KeyframeTrackController_<DataType>* add(ofParameter<DataType>& parameter);
 	
@@ -53,19 +55,15 @@ public:
 	KeyframeTrackController_<DataType> * addTrack( ofParameter<DataType>& parameter);
 	
 	
-	template<typename NewTrackControllerType>
-	NewTrackControllerType * addTrack( const std::string& trackName = "");
-	
-	
 	template<typename DataType>
-	KeyframeTrackController_<DataType>* addKeyframeTrack(const std::string& name);
+	KeyframeTrackController_<DataType>* addTrack(const std::string& name = "");
 	
 	
 	bool removeTrack(TrackController* track);
 	
 	
-	template<typename NewTrackControllerType>
-	NewTrackControllerType * addGroup( const std::string& groupName = "");
+	
+	TrackGroupController * addGroup( const std::string& groupName = "");
 	
 	
 	
@@ -122,9 +120,7 @@ protected:
 	
 	TrackController* _addTrack(const std::string& trackName, const std::string& paramType);
 	
-	TrackGroupController * _addGroup( const std::string& groupName);
-	
-	
+
 	NamedConstPointerCollection<TrackGroupController> _groupsCollection;
 	NamedConstPointerCollection<TrackController> _tracksCollection;
 	
@@ -141,6 +137,19 @@ KeyframeTrackController_<DataType>* TrackGroupController::add(ofParameter<DataTy
 	return addTrack<DataType> (parameter);
 }
 
+
+template<typename DataType>
+KeyframeTrackController_<DataType>* TrackGroupController::addTrack(const std::string& trackName)
+{
+	
+	auto uniqueName = _tracksCollection.makeUniqueName(trackName, "Track");
+	
+	return CollectionHelper::
+	_add< KeyframeTrackController_<DataType>, TrackGroupController, TrackController>
+	
+	( _tracksCollection, this, uniqueName, this, getTimeControl());
+	
+}
 
 template<typename DataType>
 KeyframeTrackController_<DataType> * TrackGroupController::addTrack( ofParameter<DataType>& parameter)
@@ -164,38 +173,6 @@ KeyframeTrackController_<DataType> * TrackGroupController::addTrack( ofParameter
 	
 	return t;
 	
-	
-}
-
-
-template<typename NewTrackControllerType>
-NewTrackControllerType * TrackGroupController::addTrack( const std::string& trackName)
-{
-	
-	auto uniqueName = _tracksCollection.makeUniqueName(trackName, "Track");
-	
-	return CollectionHelper::
-	_add< NewTrackControllerType, TrackGroupController, TrackController>
-	
-	( _tracksCollection, this, uniqueName, this, getTimeControl());
-	
-}
-
-template<typename DataType>
-KeyframeTrackController_<DataType>* TrackGroupController::addKeyframeTrack(const std::string& name)
-{
-	return addTrack<KeyframeTrackController_<DataType>> (name);
-}
-
-template<typename NewTrackControllerType>
-NewTrackControllerType * TrackGroupController::addGroup( const std::string& groupName )
-{
-	auto uniqueName = _groupsCollection.makeUniqueName(groupName, "Group");
-	
-	return CollectionHelper::
-	_add< NewTrackControllerType, TrackGroupController, TrackGroupController >
-	
-	( _groupsCollection,  this, uniqueName, this, getTimeControl());
 	
 }
 
