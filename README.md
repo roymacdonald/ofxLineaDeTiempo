@@ -19,6 +19,9 @@ As I could not use ofxTimeline as the name of this addon, ofxTimeline2 sounded b
 * Behave in a similar usage to `ofxPanel` so the code for it can be directly swapped with an instance of this addon.
 * The renderer is a different class which will allow to customize its visual appearance as well as having specialized timeline tracks (ie. video and audio)
 * Have an optimized rendering, redrawing only when needed. 
+* It can run with or without rendering the timeline. 
+* Thread-safe, the updating of it can be carried out by any thread. (I need to test and verify this)
+* Each ofxLineaDeTiempo instance has its own clock, which allows to have more than a single instance running simultaneously. 
 
 ## License
 
