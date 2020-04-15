@@ -38,10 +38,8 @@ public:
 	virtual void generateView() override;
 	virtual void destroyView() override;
 	
-	virtual ~TrackGroupController()
-	{
-		destroyView();
-	}
+	virtual ~TrackGroupController();
+	
 	
 	TrackGroupController* add(ofxGuiGroup& guiGroup);
 	

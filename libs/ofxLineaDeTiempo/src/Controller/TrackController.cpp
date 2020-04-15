@@ -22,6 +22,13 @@ TrackController::TrackController(const std::string& name, TrackGroupController* 
 
 }
 
+
+TrackController::~TrackController()
+{
+	destroyView();
+}
+
+
 void TrackController::_resetCurrentRegion()
 {
  _currentRegion = 0;
@@ -84,11 +91,6 @@ TrackGroupView* TrackController::_getTrackGroupView()
 	if(p) return p->getView();
 	return nullptr;
 	
-}
-
-void TrackController::generateView()
-{
-	_generateView<TrackView>();
 }
 
 void TrackController::destroyView()

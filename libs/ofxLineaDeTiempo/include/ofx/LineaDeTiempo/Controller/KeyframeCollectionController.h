@@ -49,10 +49,7 @@ public:
 	
 	KeyframeCollectionController( KeyframeRegionController_<RegionDataType> * parentRegion, size_t dimensionIndex );
 	
-	virtual ~KeyframeCollectionController()
-	{
-		destroyView();
-	}
+	virtual ~KeyframeCollectionController();
 
 	
 	KeyframeController<RegionDataType>* addKeyframe(innerDataType value, uint64_t time);

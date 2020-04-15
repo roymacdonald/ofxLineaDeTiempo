@@ -30,6 +30,14 @@ KeyframeRegionController_<T>::KeyframeRegionController_(const std::string& name,
 	}
 }
 
+
+template<typename T>
+KeyframeRegionController_<T>::~KeyframeRegionController_()
+{
+	destroyView();
+}
+
+
 template<typename T>
 size_t  KeyframeRegionController_<T>::getNumDimensions() const
 {
@@ -212,31 +220,25 @@ template class KeyframeRegionController_<glm::vec4>;
 template class KeyframeRegionController_<bool>;
 //template class KeyframeRegionController_<void>;
 
-template class KeyframeRegionController_<         char>;
-template class KeyframeRegionController_<unsigned char>;
-template class KeyframeRegionController_<  signed char>;
-template class KeyframeRegionController_<         short>;
-template class KeyframeRegionController_<unsigned short>;
-template class KeyframeRegionController_<         int>;
-template class KeyframeRegionController_<unsigned int>;
-template class KeyframeRegionController_<         long>;
-template class KeyframeRegionController_<unsigned long>;
-template class KeyframeRegionController_<         long long>;
-template class KeyframeRegionController_<unsigned long long>;
+
+template class KeyframeRegionController_<ofColor>;
+template class KeyframeRegionController_<ofShortColor>;
+template class KeyframeRegionController_<ofFloatColor>;
+
+
+
+template class KeyframeRegionController_<int8_t>;
+template class KeyframeRegionController_<uint8_t>;
+template class KeyframeRegionController_<int16_t>;
+template class KeyframeRegionController_<uint16_t>;
+template class KeyframeRegionController_<int32_t>;
+template class KeyframeRegionController_<uint32_t>;
+template class KeyframeRegionController_<int64_t>;
+template class KeyframeRegionController_<uint64_t>;
 template class KeyframeRegionController_<float>;
 template class KeyframeRegionController_<double>;
-template class KeyframeRegionController_<long double>;
+template class KeyframeRegionController_<typename std::conditional<std::is_same<uint32_t, size_t>::value || std::is_same<uint64_t, size_t>::value, bool, size_t>::type>;
 
-template class KeyframeRegionController_<ofColor_<char>>;
-template class KeyframeRegionController_<ofColor_<unsigned char>>;
-template class KeyframeRegionController_<ofColor_<short>>;
-template class KeyframeRegionController_<ofColor_<unsigned short>>;
-template class KeyframeRegionController_<ofColor_<int>>;
-template class KeyframeRegionController_<ofColor_<unsigned int>>;
-template class KeyframeRegionController_<ofColor_<long>>;
-template class KeyframeRegionController_<ofColor_<unsigned long>>;
-template class KeyframeRegionController_<ofColor_<float>>;
-//template class KeyframeRegionController_<ofColor_<double>>;
 
 
 } } // ofx::LineaDeTiempo

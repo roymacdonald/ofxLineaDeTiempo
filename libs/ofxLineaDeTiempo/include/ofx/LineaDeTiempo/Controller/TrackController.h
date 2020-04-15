@@ -38,11 +38,8 @@ public:
 	
 	TrackController(const std::string& name, TrackGroupController* parent, TimeControl* timeControl);
 	
-	virtual ~TrackController() = default;
+	virtual ~TrackController();
 	
-	
-	
-	virtual void generateView() override;
 	virtual void destroyView() override;
 	
 
@@ -138,22 +135,7 @@ protected:
 	//	TrackGroupController * _parentGroup = nullptr;
 	
 	TrackGroupView* _getTrackGroupView();
-	//
-	template<typename ViewType>
-	void _generateView()
-	{
-		static_assert(std::is_base_of<TrackView, ViewType>::value, "TrackController::_generateView: template type ViewType must be equal to ofx::LineaDeTiempo::TrackView or derived from it");
-		if(getView()) return;
-		auto view = _getTrackGroupView();
-		if(view)
-		{
-			setView(view->addTrack<ViewType>(this));
-			
-		}
-		
-		generateChildrenViews(this);
-	}
-	
+
 	
 	void _findCurrentRegion();
 	void _resetCurrentRegion();

@@ -71,10 +71,6 @@ private:
 	
 };
 
-template<typename ParamDataType>
-KeyframeController<ParamDataType>::~KeyframeController(){
-	destroyView();
-}
 
 
 

@@ -21,6 +21,13 @@ TracksPanelController::TracksPanelController(const std::string& name)
 	
 }
 
+
+TracksPanelController::~TracksPanelController()
+{
+	destroyView();
+}
+
+
 void TracksPanelController::setWindow(ofAppBaseWindow* window)
 {
 	if(_currentWindow != window)

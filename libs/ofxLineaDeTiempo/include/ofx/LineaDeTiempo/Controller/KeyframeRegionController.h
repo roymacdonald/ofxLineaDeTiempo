@@ -33,7 +33,7 @@ public:
 
 	KeyframeRegionController_( const std::string& name, const ofRange64u& timeRange, TrackController* parentTrack, TimeControl* timeControl);
 	
-	virtual ~KeyframeRegionController_() = default;
+	virtual ~KeyframeRegionController_();
 	
 	virtual void generateView() override;
 	virtual void destroyView() override;

@@ -30,8 +30,16 @@ KeyframeCollectionController<D>::KeyframeCollectionController( KeyframeRegionCon
 
 	
 }
-template<typename D>
 
+
+template<typename D>
+KeyframeCollectionController<D>::~KeyframeCollectionController()
+{
+	destroyView();
+}
+
+
+template<typename D>
 KeyframeController<D>* KeyframeCollectionController<D>::addKeyframe(KeyframeCollectionController<D>::innerDataType value, uint64_t time)
 {
 	

@@ -28,8 +28,7 @@ public:
 
 	TracksPanelController(const std::string& name);
 	
-	virtual ~TracksPanelController() = default;
-	
+	virtual ~TracksPanelController();
 	
 
 	

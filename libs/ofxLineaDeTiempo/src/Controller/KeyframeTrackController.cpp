@@ -10,7 +10,7 @@
 #include "LineaDeTiempo/Controller/TrackGroupController.h"
 
 #include "LineaDeTiempo/Utils/ofxTypeTraits.h"
-
+#include "LineaDeTiempo/View/KeyframeTrackView.h"
 
 
 namespace ofx {
@@ -23,6 +23,14 @@ KeyframeTrackController_<T>::KeyframeTrackController_(ofParameter<T>& parameter,
 	_parameter.makeReferenceTo(parameter);
 	_setup();
 }
+
+
+template <typename T>
+KeyframeTrackController_<T>::~KeyframeTrackController_()
+{
+	destroyView();
+}
+
 
 template <typename T>
 KeyframeTrackController_<T>::KeyframeTrackController_(const std::string& name, TrackGroupController* parent, TimeControl* timeControl)
@@ -132,47 +140,51 @@ ofJson KeyframeTrackController_<T>::toJson()
 	
 	return j;
 }
+template <typename T>
+void KeyframeTrackController_<T>::generateView()
+{
+	if(getView()) return;
+	auto view = _getTrackGroupView();
+	if(view)
+	{
+		setView(view->template addTrack<T>(this));
+		
+	}
+	
+	generateChildrenViews(this);
+	
+}
 
 } } // ofx::LineaDeTiempo
 
 //template class ofx::LineaDeTiempo::KeyframeTrackController_<ofRectangle>;
 
-template class ofx::LineaDeTiempo::KeyframeTrackController_<ofColor_<char>>;
-template class ofx::LineaDeTiempo::KeyframeTrackController_<ofColor_<unsigned char>>;
-template class ofx::LineaDeTiempo::KeyframeTrackController_<ofColor_<short>>;
-template class ofx::LineaDeTiempo::KeyframeTrackController_<ofColor_<unsigned short>>;
-template class ofx::LineaDeTiempo::KeyframeTrackController_<ofColor_<int>>;
-template class ofx::LineaDeTiempo::KeyframeTrackController_<ofColor_<unsigned int>>;
-template class ofx::LineaDeTiempo::KeyframeTrackController_<ofColor_<long>>;
-template class ofx::LineaDeTiempo::KeyframeTrackController_<ofColor_<unsigned long>>;
-template class ofx::LineaDeTiempo::KeyframeTrackController_<ofColor_<float>>;
-//template class ofx::LineaDeTiempo::KeyframeTrackController_<ofColor_<double>>;
+
+template class ofx::LineaDeTiempo::KeyframeTrackController_<ofColor>;
+template class ofx::LineaDeTiempo::KeyframeTrackController_<ofShortColor>;
+template class ofx::LineaDeTiempo::KeyframeTrackController_<ofFloatColor>;
+
 
 template class ofx::LineaDeTiempo::KeyframeTrackController_<glm::vec2>;
 template class ofx::LineaDeTiempo::KeyframeTrackController_<glm::vec3>;
 template class ofx::LineaDeTiempo::KeyframeTrackController_<glm::vec4>;
-//template class ofx::LineaDeTiempo::KeyframeTrackController_<glm::quat>;
-//template class ofx::LineaDeTiempo::KeyframeTrackController_<glm::mat4>;
 //
 
 template class ofx::LineaDeTiempo::KeyframeTrackController_<bool>;
 //template class ofx::LineaDeTiempo::KeyframeTrackController_<void>;
 
-template class ofx::LineaDeTiempo::KeyframeTrackController_<char>;
-template class ofx::LineaDeTiempo::KeyframeTrackController_<unsigned char>;
-template class ofx::LineaDeTiempo::KeyframeTrackController_<signed char>;
-template class ofx::LineaDeTiempo::KeyframeTrackController_<short>;
-template class ofx::LineaDeTiempo::KeyframeTrackController_<unsigned short>;
-template class ofx::LineaDeTiempo::KeyframeTrackController_<int>;
-template class ofx::LineaDeTiempo::KeyframeTrackController_<unsigned int>;
-template class ofx::LineaDeTiempo::KeyframeTrackController_<long>;
-template class ofx::LineaDeTiempo::KeyframeTrackController_<unsigned long>;
-template class ofx::LineaDeTiempo::KeyframeTrackController_<long long>;
-template class ofx::LineaDeTiempo::KeyframeTrackController_<unsigned long long>;
+
+template class ofx::LineaDeTiempo::KeyframeTrackController_<int8_t>;
+template class ofx::LineaDeTiempo::KeyframeTrackController_<uint8_t>;
+template class ofx::LineaDeTiempo::KeyframeTrackController_<int16_t>;
+template class ofx::LineaDeTiempo::KeyframeTrackController_<uint16_t>;
+template class ofx::LineaDeTiempo::KeyframeTrackController_<int32_t>;
+template class ofx::LineaDeTiempo::KeyframeTrackController_<uint32_t>;
+template class ofx::LineaDeTiempo::KeyframeTrackController_<int64_t>;
+template class ofx::LineaDeTiempo::KeyframeTrackController_<uint64_t>;
 template class ofx::LineaDeTiempo::KeyframeTrackController_<float>;
 template class ofx::LineaDeTiempo::KeyframeTrackController_<double>;
-template class ofx::LineaDeTiempo::KeyframeTrackController_<long double>;
-
+template class ofx::LineaDeTiempo::KeyframeTrackController_<typename std::conditional<std::is_same<uint32_t, size_t>::value || std::is_same<uint64_t, size_t>::value, bool, size_t>::type>;
 
 
 

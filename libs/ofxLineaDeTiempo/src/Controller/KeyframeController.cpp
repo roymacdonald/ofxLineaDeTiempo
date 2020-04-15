@@ -16,6 +16,12 @@ namespace ofx {
 namespace LineaDeTiempo {
 
 
+template<typename ParamDataType>
+KeyframeController<ParamDataType>::~KeyframeController(){
+	destroyView();
+}
+
+
 template< typename T>
 void KeyframeController<T>::generateView()
 {
@@ -85,31 +91,23 @@ template class KeyframeController<glm::vec4>;
 
 template class KeyframeController<bool>;
 
-template class KeyframeController<         char>;
-template class KeyframeController<unsigned char>;
-template class KeyframeController<  signed char>;
-template class KeyframeController<         short>;
-template class KeyframeController<unsigned short>;
-template class KeyframeController<         int>;
-template class KeyframeController<unsigned int>;
-template class KeyframeController<         long>;
-template class KeyframeController<unsigned long>;
-template class KeyframeController<         long long>;
-template class KeyframeController<unsigned long long>;
+template class KeyframeController<ofColor>;
+template class KeyframeController<ofShortColor>;
+template class KeyframeController<ofFloatColor>;
+
+
+
+template class KeyframeController<int8_t>;
+template class KeyframeController<uint8_t>;
+template class KeyframeController<int16_t>;
+template class KeyframeController<uint16_t>;
+template class KeyframeController<int32_t>;
+template class KeyframeController<uint32_t>;
+template class KeyframeController<int64_t>;
+template class KeyframeController<uint64_t>;
 template class KeyframeController<float>;
 template class KeyframeController<double>;
-template class KeyframeController<long double>;
-
-template class KeyframeController<ofColor_<char>>;
-template class KeyframeController<ofColor_<unsigned char>>;
-template class KeyframeController<ofColor_<short>>;
-template class KeyframeController<ofColor_<unsigned short>>;
-template class KeyframeController<ofColor_<int>>;
-template class KeyframeController<ofColor_<unsigned int>>;
-template class KeyframeController<ofColor_<long>>;
-template class KeyframeController<ofColor_<unsigned long>>;
-template class KeyframeController<ofColor_<float>>;
-//template class KeyframeController<ofColor_<double>>;
+template class KeyframeController<typename std::conditional<std::is_same<uint32_t, size_t>::value || std::is_same<uint64_t, size_t>::value, bool, size_t>::type>;
 
 
 } } // ofx::LineaDeTiempo

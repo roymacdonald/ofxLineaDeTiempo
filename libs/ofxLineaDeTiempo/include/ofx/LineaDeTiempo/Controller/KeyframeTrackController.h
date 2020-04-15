@@ -33,7 +33,7 @@ public:
 	
 	KeyframeTrackController_(const std::string& name, TrackGroupController* parent, TimeControl* timeControl);
 	
-	virtual ~KeyframeTrackController_() = default;
+	virtual ~KeyframeTrackController_();
 
 	
 	virtual void fromJson(const ofJson& j) override;
@@ -51,7 +51,7 @@ public:
 	
 	const ofParameter<DataType>& getParameter() const;
 	
-
+	virtual void generateView() override;
 
 protected:
 	
