@@ -12,9 +12,11 @@ namespace LineaDeTiempo {
 
 
 ofParameter<ofColor> ConstVars::DefaultTextColor = ofParameter<ofColor>("DefaultTextColor", ofColor(220), ofColor(0,0,0,0), ofColor(255,255,255,255));
-ofParameter<ofColor> ConstVars::TrackBackgroundColor = ofParameter<ofColor>("TrackBackgroundColor", ofColor(40), ofColor(0,0,0,0), ofColor(255,255,255,255));
+ofParameter<ofColor> ConstVars::TrackBackgroundColor = ofParameter<ofColor>("TrackBackgroundColor", ofColor(60), ofColor(0,0,0,0), ofColor(255,255,255,255));
 ofParameter<ofColor> ConstVars::TrackEdgeColor = ofParameter<ofColor>("TrackEdgeColor", ofColor(120), ofColor(0,0,0,0), ofColor(255,255,255,255));
 ofParameter<ofColor> ConstVars::RegionBackgroundColor = ofParameter<ofColor>("RegionBackgroundColor", ofColor(80), ofColor(0,0,0,0), ofColor(255,255,255,255));
+ofParameter<ofColor> ConstVars::PanelBackgroundColor = ofParameter<ofColor>("PanelBackgroundColor", ofColor(40), ofColor(0,0,0,0), ofColor(255,255,255,255));
+
 //ofParameter<ofColor> ConstVars::SelectedColor = ofParameter<ofColor>("SelectedColor", ofColor::yellow, ofColor(0,0,0,0), ofColor(255,255,255,255));
  ofColor ConstVars::SelectedColor = ofColor::yellow;
 

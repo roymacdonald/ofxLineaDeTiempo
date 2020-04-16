@@ -55,21 +55,98 @@ void TracksPanelController::generateView()
 			
 			
 			ofx::MUI::TrueTypeFontSettings::setDefaultFont(ofToDataPath("assets/fonts/OpenSans-Regular.ttf"));
-			_mainView->setAutoFillScreen(false);
+			
+			
 			
 		}
 		
-		_panel = _mainView->addChild<TracksPanel>( this->getId(), _mainView.get(), ofRectangle(0, 0, ofGetWidth(), ofGetHeight()), this);
+		_panel = _mainView->addChild<TracksPanel>( this->getId(), _mainView.get(), ofRectangle(0,0, _shape.width, _shape.height), this);
 		
-			setView(_panel);
 		
-			generateChildrenViews(this);
+		setAutoFillScreen(_bAutoFill);
 		
-			_panel->_setup();
+		
+		if(!_bAutoFill)
+		{
+			_mainView->setShape(_shape);
+		}
+		else
+		{
+			_shape = _mainView->getShape();
+		}
+		
+		
+		setView(_panel);
+		
+		generateChildrenViews(this);
+		
+		_panel->_setup();
 		
 	}
 	
 }
+
+void  TracksPanelController::enableAutoFillScreen()
+{
+	setAutoFillScreen(true);
+}
+
+
+void  TracksPanelController::disableAutoFillScreen()
+{
+	setAutoFillScreen(false);
+}
+
+
+bool  TracksPanelController::isAutoFillScreenEnabled()
+{
+	return _bAutoFill ;
+}
+
+
+void TracksPanelController::setAutoFillScreen(bool autoFill)
+{
+	if(_mainView && _panel){
+		_mainView->setAutoFillScreen(autoFill);
+		_panel->useHandles(!autoFill);
+	}
+	_bAutoFill = autoFill;
+	_setPanelShapeListener();
+}
+
+
+void TracksPanelController::setShape(const ofRectangle& shape)
+{
+	disableAutoFillScreen();
+	_shape = shape;
+	if(_mainView)
+	{
+		_mainView->setShape(_shape);
+//		_panel->setShape({0,0, _shape.width, _shape.height});
+	}
+}
+
+
+const ofRectangle& TracksPanelController::getShape()
+{
+	return _shape;
+}
+
+void TracksPanelController::_setPanelShapeListener()
+{
+	if (_mainView && _bAutoFill){
+		_panelShapeListener = _mainView->shapeChanged.newListener(this, &TracksPanelController::_onPanelShapeChanged);
+	}
+	else
+	{
+		_panelShapeListener.unsubscribe();
+	}
+}
+void TracksPanelController::_onPanelShapeChanged(DOM::ShapeChangeEventArgs & e)
+{
+	_shape = e.shape;
+}
+
 
 
 std::shared_ptr<ofx::MUI::Styles> TracksPanelController::getStyles()

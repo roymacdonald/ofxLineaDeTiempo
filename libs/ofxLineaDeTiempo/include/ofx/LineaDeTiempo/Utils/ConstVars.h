@@ -46,6 +46,8 @@ namespace LineaDeTiempo {
 struct ConstVars
 {
 	
+	
+	static ofParameter<ofColor> PanelBackgroundColor;
 	static ofParameter<ofColor> DefaultTextColor      ;//= {"DefaultTextColor", ofColor(220), ofColor::black, ofColor::white};
 	static ofParameter<ofColor> TrackBackgroundColor  ;//= {"TrackBackgroundColor", ofColor(40), ofColor::black, ofColor::white};
 	static ofParameter<ofColor> TrackEdgeColor        ;//= {"TrackEdgeColor", ofColor(120), ofColor::black, ofColor::white};

@@ -70,6 +70,33 @@ public:
 	
 	
 	
+	///\brief Enable Automatic resizing it draw using the complete window. It is enabled by default.
+	void enableAutoFillScreen();
+	
+	///\brief Disable Automatic resizing.
+	void disableAutoFillScreen();
+	
+	///\brief Set the Automatic resizing.  It is enabled by default.
+	///\param autoFill if true will automatically resize to fill the whole window, if false will stay at the same size it is set to.
+	void setAutoFillScreen(bool autoFill);
+	
+	///\brief get if it is automatically resizing to fill the screen.  It is enabled by default.
+	///\returns true if it is automaticaly resizing, false otherwise.
+	bool isAutoFillScreenEnabled();
+	
+	
+	///\brief Set the shape of the ofxLineaDeTiempo instance.
+	/// If autoFillScreen is enable calling this function will disable it.
+	///\param shape A rectangle that defines the position of the top left corner, width and height.
+	void setShape(const ofRectangle& shape);
+	
+	
+	///\brief Get the shape of the ofxLineaDeTiempo instance.
+	///\returns A rectangle that defined by the position of the top left corner, width and height.
+	const ofRectangle& getShape();
+	
+	
+	
 	std::shared_ptr<ofx::MUI::Styles> getStyles();
 	
 	
@@ -90,6 +117,17 @@ protected:
 	
 
 	std::unique_ptr<TimeControl> _uniqueTimeControl = nullptr;
+
+	
+	bool _bAutoFill = true;
+	
+	ofRectangle _shape;
+	
+	void _setPanelShapeListener();
+	
+	ofEventListener _panelShapeListener;
+	
+	void _onPanelShapeChanged(DOM::ShapeChangeEventArgs &);
 	
 	
 private:

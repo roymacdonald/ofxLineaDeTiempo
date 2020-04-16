@@ -13,9 +13,9 @@ namespace MUI {
 
 
 Label::Label(const std::string& text):
-    Widget(0, 0, 0, 0),
-    _text(text)
+    Widget(0, 0, 0, 0)
 {
+	setText(text);
 }
 
 
@@ -26,7 +26,45 @@ Label::~Label()
 
 void Label::onDraw() const
 {
-    // TODO
+	Widget::onDraw();
+	
+	ofSetColor(getStyles()->getColor(MUI::Styles::ROLE_TEXT, MUI::Styles::STATE_NORMAL));
+	auto & font = getStyles()->getFont(MUI::SMALL);
+	
+	DOM::Position pos;
+	float margin  = 6;
+	switch (_alignmentHorzontal)
+	{
+		case OF_ALIGN_HORZ_IGNORE:
+		case OF_ALIGN_HORZ_LEFT: 
+			pos.x = margin;
+		break;
+		case OF_ALIGN_HORZ_RIGHT: 
+			pos.x = getWidth() - font.stringWidth(_displayText) - margin;
+		break;
+		case OF_ALIGN_HORZ_CENTER:
+			pos.x = (getWidth() - font.stringWidth(_displayText))*0.5;
+		break;
+	}
+
+	switch(_alignmentVertical)
+	{
+		case OF_ALIGN_VERT_IGNORE :
+		case OF_ALIGN_VERT_TOP :
+			pos.y = font.getAscenderHeight() + margin;
+		break;
+		case OF_ALIGN_VERT_BOTTOM :
+			pos.y = getHeight() - font.getDescenderHeight() - margin;
+		break;
+		case OF_ALIGN_VERT_CENTER :
+			pos.y = LineaDeTiempo::getTextVCenteredPos({0,0,0, getHeight()}, font);
+		break;
+	}
+	
+	
+	font.drawString(_displayText, pos.x, pos.y);
+		
+		
     
 }
 
@@ -40,6 +78,7 @@ std::string Label::getText() const
 void Label::setText(const std::string& text)
 {
     _text = text;
+	_displayText = _text;
 }
 
 

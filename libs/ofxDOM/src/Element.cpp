@@ -923,33 +923,30 @@ void Element::_exit(ofEventArgs& e)
 
 Element* Element::recursiveHitTest(const Position& parentPosition)
 {
-    if (_enabled)
-    {
-        Position childLocal = parentPosition - this->getPosition();
-
-        if (!_children.empty() && childHitTest(childLocal))
-        {
-            for (auto& child : _children)
-            {
-                Element* target = child->recursiveHitTest(childLocal);
-
-                if (target)
-                {
-                    return target;
-                }
-            }
-        }
-
-        // If there is no child target, is this a viable target?
-        if (hitTest(parentPosition))
-        {
-            return this;
-        }
-
-            return nullptr;
-        }
-
-    return nullptr;
+	if (_enabled)
+	{
+		
+	 	if (hitTest(parentPosition)) //only allow hits that are inside the parent element.
+		{
+			Position childLocal = parentPosition - this->getPosition();
+			
+			if (!_children.empty() && childHitTest(childLocal))
+			{
+				for (auto& child : _children)
+				{
+					Element* target = child->recursiveHitTest(childLocal);
+					
+					if (target)
+					{
+						return target;
+					}
+				}
+			}
+			return this;
+		}
+		return nullptr;
+	}
+	return nullptr;
 }
 
 

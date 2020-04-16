@@ -13,6 +13,7 @@
 #include "LineaDeTiempo/View/TrackGroupView.h"
 #include "LineaDeTiempo/View/TimeRuler.h"
 #include "MUI/MUI.h"
+#include "MUI/Label.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -52,7 +53,7 @@ public:
 	HeadersView * getHeadersView();
 	const HeadersView * getHeadersView() const;
 
-	
+	void useHandles(bool b);
 	
 protected:
 	
@@ -68,6 +69,11 @@ protected:
 	ofEventListener _viewListener;
 	void _viewShapeChanged(DOM::ShapeChangeEventArgs&);
 	
+	
+	
+	void _cornerHandleChanged(DOM::ShapeChangeEventArgs&);
+	void _headerHandleChanged(DOM::ShapeChangeEventArgs&);
+
 private:
 
 	
@@ -80,7 +86,20 @@ private:
 	TracksView * _tracksView = nullptr;
 	
 	HeadersView * _headersView = nullptr;
+
+	bool bUsingHandles = false;
 	
+	MUI::Widget * _cornerHandle = nullptr;
+	MUI::Label *  _headerHandle = nullptr;
+
+	ofEventListener _cornerHandleListener;
+	ofEventListener _headerHandleListener;
+	
+	bool _ignoreCornerHandleChange = false;
+	bool _ignoreHeaderHandleChange = false;
+	
+	void _setHeaderHandleShape();
+	void _setCornerHandleViewRect();
 	
 };
 } } // ofx::LineaDeTiempo

@@ -124,6 +124,14 @@ void ofxGuiView<T>::onDraw() const
 	if(parent() && parent()->getHeight() >= getHeight() + getY()){
 		_gui.draw();
 	}
+	
+	ofPushStyle();
+	ofNoFill();
+	ofSetLineWidth(3);
+	ofSetColor(ofColor::orange);
+	ofDrawRectangle(0,0,getWidth(), getHeight());
+	
+	ofPopStyle();
 }
 
 

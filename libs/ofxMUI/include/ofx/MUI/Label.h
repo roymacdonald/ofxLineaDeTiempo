@@ -15,7 +15,7 @@
 #else
 #include "ofTrueTypeFont.h"
 #endif
-
+#include "LineaDeTiempo/Utils/FontUtils.h"
 namespace ofx {
 namespace MUI {
 
