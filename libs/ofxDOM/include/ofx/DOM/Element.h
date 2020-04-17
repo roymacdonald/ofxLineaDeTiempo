@@ -699,6 +699,11 @@ protected:
 		
 	}
 	
+	virtual void _onChildShapeChanged(ShapeChangeEventArgs&)
+	{
+		
+	}
+	
 
 private:
     /// \brief Not construction-copyable.
@@ -709,7 +714,7 @@ private:
 
     
     /// \brief A callback for child Elements to notify their parent size changes.
-    void _onChildShapeChanged(ShapeChangeEventArgs&);
+    void _childShapeChange(ShapeChangeEventArgs&);
 
     /// \brief The id for this element.
     std::string _id;
@@ -819,7 +824,7 @@ ElementType* Element::addChild(std::unique_ptr<ElementType> element)
         ofNotifyEvent(childAdded, childAddedEvent, this);
 
         // Attach child listeners.
-		ofAddListener(pNode->shapeChanged, this, &Element::_onChildShapeChanged);
+		ofAddListener(pNode->shapeChanged, this, &Element::_childShapeChange);
 
 
         /// Alert the node's siblings that they have a new sibling.

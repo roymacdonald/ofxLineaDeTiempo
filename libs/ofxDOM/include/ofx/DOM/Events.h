@@ -417,10 +417,37 @@ private:
 };
 
 
-class ShapeChangeEventArgs
+class ElementEventArgs
 {
 public:
+    /// \brief Construct the ElementEventArgs.
+    /// \param element The element associated with this Element event.
+    ElementEventArgs(Element* element);
 
+    /// \brief Destroy the ElementEventArgs.
+    virtual ~ElementEventArgs();
+
+    /// \returns a pointer to the element or nullptr if not available.
+    Element* element();
+    
+    /// \returns a pointer to the element or nullptr if not available.
+    const Element* element() const;
+
+protected:
+    /// \brief A pointer to the element or nullptr if not available.
+    Element* _element = nullptr;
+
+};
+
+class ShapeChangeEventArgs
+: public ElementEventArgs
+{
+public:
+	
+	///\brief Constructor
+	///\param element is the element that changed its size
+	ShapeChangeEventArgs(Element* element);
+	
     /// \brief Destroy the ResizeEventArgs.
 	virtual ~ShapeChangeEventArgs() = default;
 
@@ -514,28 +541,6 @@ protected:
 
 };
 
-
-class ElementEventArgs
-{
-public:
-    /// \brief Construct the ElementEventArgs.
-    /// \param element The element associated with this Element event.
-    ElementEventArgs(Element* element);
-
-    /// \brief Destroy the ElementEventArgs.
-    virtual ~ElementEventArgs();
-
-    /// \returns a pointer to the element or nullptr if not available.
-    Element* element();
-    
-    /// \returns a pointer to the element or nullptr if not available.
-    const Element* element() const;
-
-protected:
-    /// \brief A pointer to the element or nullptr if not available.
-    Element* _element = nullptr;
-
-};
 
 
 class ElementOrderEventArgs: public ElementEventArgs

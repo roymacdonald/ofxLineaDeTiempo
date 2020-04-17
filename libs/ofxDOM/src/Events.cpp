@@ -384,6 +384,13 @@ FocusEventArgs::~FocusEventArgs()
 }
 
 
+ShapeChangeEventArgs::ShapeChangeEventArgs(Element* element)
+: ElementEventArgs(element)
+{
+	
+}
+
+
 bool ShapeChangeEventArgs::moved() const
 {
 	return _xChanged || _yChanged;

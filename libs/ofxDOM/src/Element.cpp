@@ -89,7 +89,7 @@ std::unique_ptr<Element> Element::removeChild(Element* element)
         }
 
         // Detatch child listeners.
-		  ofRemoveListener(detachedChild.get()->shapeChanged, this, &Element::_onChildShapeChanged);
+		  ofRemoveListener(detachedChild.get()->shapeChanged, this, &Element::_childShapeChange);
 //        ofRemoveListener(detachedChild.get()->move, this, &Element::_onChildMoved);
 //        ofRemoveListener(detachedChild.get()->resize, this, &Element::_onChildResized);
 
@@ -570,7 +570,7 @@ float Element::screenToParentY(const float& screenY) const
 void Element::setPosition(float x, float y)
 {
 	
-	ShapeChangeEventArgs e;
+	ShapeChangeEventArgs e(this);
 	e.prevShape = _shape;
     _shape.setPosition(x, y);
 	
@@ -677,7 +677,7 @@ Position Element::getScreenCenterPosition() const
 
 void Element::setSize(float width, float height)
 {
-	ShapeChangeEventArgs e;
+	ShapeChangeEventArgs e(this);
 	e.prevShape = _shape;
 	
     _shape.setWidth(width);
@@ -734,7 +734,7 @@ Shape Element::getShape() const
 void Element::setShape(const Shape& shape)
 {
 	
-	ShapeChangeEventArgs e;
+	ShapeChangeEventArgs e(this);
 	e.prevShape = _shape;
 	
 	_shape = shape;
@@ -1115,9 +1115,11 @@ bool Element::getImplicitPointerCapture() const
 }
 
 
-void Element::_onChildShapeChanged(ShapeChangeEventArgs&)
+void Element::_childShapeChange(ShapeChangeEventArgs& a)
 {
     invalidateChildShape();
+	_onChildShapeChanged(a);
+	
 }
 
 
