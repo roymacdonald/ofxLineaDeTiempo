@@ -6,29 +6,31 @@
 //
 
 #include "LineaDeTiempo/View/ofxGuiView.h"
-
+#include "LineaDeTiempo/View/TrackHeader.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
 
 template<typename T>
-ofxGuiView<T>::ofxGuiView(ofParameter<T>& param, float width)
-:MUI::Widget(param.getName(), 0,0, width, 18)
+ofxGuiView<T>::ofxGuiView(ofParameter<T>& param, float width, TrackHeader* trackHeader)
+: MUI::Widget(param.getName(), 0,0, width, 18)
+, _trackHeader(trackHeader)
 {
 	_gui.setup("ofxGuiGroup", "", 0,0);
 	_gui.setWidthElements(width);
 	_gui.add(param);
 	_gui.disableHeader();
 	_gui.unregisterMouseEvents();
-//	std::cout << "ofxGuiView:  " << param.getName() << "\n";
-	for(size_t i = 0; i < _gui.getNumControls(); ++i)
-	{
-		auto g = dynamic_cast<ofxGuiGroup*>(_gui.getControl(i));
-		if(g){
+//	for(size_t i = 0; i < _gui.getNumControls(); ++i)
+//	{
+//		auto g = dynamic_cast<ofxGuiGroup*>(_gui.getControl(i));
+//		if(g){
 //			g->disableHeader();
-		}
-	}
+//		}
+//	}
 	setShape(_gui.getShape());
+	
+	_guiShape = getShape();
 	
 	setDraggable(true);
 }
@@ -117,21 +119,31 @@ const ofxGuiGroup &  ofxGuiView<T>::getOfxGui() const
 	return _gui;
 }
 
-
+template<typename T>
+void ofxGuiView<T>::onUpdate()
+{
+	auto s = _gui.getShape();
+	
+	if(!ofIsFloatEqual(_guiShape.height, s.height) )
+	{
+		_guiShape = getShape();
+		_guiShape.height = s.height;
+		setShape(_guiShape);
+		
+		if(_trackHeader && _trackHeader->getHeight() >= getHeight() + getY()){
+			
+		}
+		
+		
+	}
+	
+}
 template<typename T>
 void ofxGuiView<T>::onDraw() const
 {
 	if(parent() && parent()->getHeight() >= getHeight() + getY()){
 		_gui.draw();
 	}
-	
-	ofPushStyle();
-	ofNoFill();
-	ofSetLineWidth(3);
-	ofSetColor(ofColor::orange);
-	ofDrawRectangle(0,0,getWidth(), getHeight());
-	
-	ofPopStyle();
 }
 
 

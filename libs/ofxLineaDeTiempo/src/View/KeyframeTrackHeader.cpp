@@ -17,11 +17,11 @@ KeyframeTrackHeader<ParamType>::KeyframeTrackHeader(ofParameter<ParamType> & par
 : TrackHeader(id, rect, track, group, belongsToPanel)
 {
 	
-	_gui = addChild<ofxGuiView<ParamType>>(param, group->getTracksHeaderWidth());
+	_gui = addChild<ofxGuiView<ParamType>>(param, group->getTracksHeaderWidth(), this);
 	_gui->setPosition(0, ConstVars::ViewTopHeaderHeight);
 	
 	
-	std::cout << "KeyframeTrackHeader  " << typeid(ParamType).name()  << "\n";
+//	std::cout << "KeyframeTrackHeader  " << typeid(ParamType).name()  << "\n";
 	
 }
 
