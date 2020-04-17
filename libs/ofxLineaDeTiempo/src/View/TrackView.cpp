@@ -132,10 +132,11 @@ void TrackView::_updateRegionsHeight()
 	for(auto r: _regions)
 	{
 		if(r)
+		{
 			r->setHeight(getHeight());
 			r->updateLayout();
+		}
 	}
-
 }
 
 void TrackView::_updateRegionsWidth()
