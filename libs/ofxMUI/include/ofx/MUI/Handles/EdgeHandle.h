@@ -31,7 +31,7 @@ public:
 	///\ brief the ammount of time, in milliseconds that will pass once the pointer is over and that the Handle starts showing.
 	static const uint64_t onOverDrawDelay;
 	
-	
+	bool isFollowingTarget();
 	
 protected:
 	virtual void onUpdate() override;
@@ -55,6 +55,8 @@ private:
 	uint64_t _pointerCaptureTime = 0;
 	
 	bool _wasPointerOver = false;
+	
+	bool _followingTarget = false;
 	
 };
 
