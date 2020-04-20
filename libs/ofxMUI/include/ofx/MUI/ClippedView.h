@@ -8,10 +8,9 @@
 #pragma once
 	
 
-#include "ofx/MUI/Widget.h"
-#include "ofx/DOM/Layout.h"
 #include "Utils.h"
 #include "ofMath.h"
+#include "ofx/MUI/AutoReziseContainer.h"
 
 namespace ofx {
 namespace MUI {
@@ -24,6 +23,8 @@ class ClippedView_
 {
 public:
 	static_assert(std::is_base_of<DOM::Element, ContainerType>(), "ContainerType must be an DOM::Element or derived from DOM::Element.");
+	
+	
 	template <typename... Args>
 	ClippedView_(const std::string& id, const ofRectangle& rect, Args&&... args)
 	: DOM::Element(id, rect.x, rect.y, rect.width, rect.height)
@@ -32,32 +33,17 @@ public:
 		setDrawAsViewport(true);
 		setFocusable(false);
 		container = addChild<ContainerType>(id+"_Container", ofRectangle(0,0,rect.width, rect.height), std::forward<Args>(args)...);
-		container->setFocusable(false);
-		container->setDrawChildrenOnly(true);
 		
 	}
 	
 	
-	virtual ~ClippedView_(){}
+	virtual ~ClippedView_() = default;
 	
-	void setOffset(const glm::vec2& offset)
-	{
-		if(container && (!ofIsFloatEqual(offset.x, container->getX())
-					  || !ofIsFloatEqual(offset.y, container->getY()))){
-			container->setPosition(offset);
-		}
-	}
-	glm::vec2 getOffset()const
-	{
-		if(container){
-			return container->getPosition();
-		}
-		return {0,0};
-	}
+	void setOffset(const glm::vec2& offset);
+	
+	glm::vec2 getOffset()const;
 	
 	ContainerType* container = nullptr;
-	
-	virtual void updateLayout() override;
 	
 protected:	
 	
@@ -68,7 +54,7 @@ protected:
 //---------------------------------------------------------------------------------------
 
 
-typedef ClippedView_<DOM::Element> ClippedView;
+typedef ClippedView_<AutoReziseContainer> ClippedView;
 
 
 

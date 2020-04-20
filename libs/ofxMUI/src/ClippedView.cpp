@@ -11,30 +11,31 @@
 
 namespace ofx {
 namespace MUI {
-//---------------------------------------------------------------------------------------
-//template<typename ContainerType>
-//ClippedView_<ContainerType>::ClippedView_(const std::string& id, const ofRectangle& rect):
-//    DOM::Element(id, rect.x, rect.y, rect.width, rect.height)
-//{
-//
-//	setDrawAsViewport(true);
-//	setFocusable(false);
-//	container = addChild<ContainerType>(id+"_Container", rect);
-//	container->setFocusable(false);
-//	container->setDrawChildrenOnly(true);
-////	createLayout<ClippedViewLayout>(this);
-//}
 
 
-//---------------------------------------------------------------------------------------
 template<typename ContainerType>
-void ClippedView_<ContainerType>::updateLayout()
+void ClippedView_<ContainerType>::setOffset(const glm::vec2& offset)
 {
-	if(container){
-		auto s = container->getChildShape();
-		container->setSize(s.width, s.height);
+	if(container && (!ofIsFloatEqual(offset.x, container->getX())
+				  || !ofIsFloatEqual(offset.y, container->getY()))){
+		container->setPosition(offset);
 	}
 }
+
+
+template<typename ContainerType>
+glm::vec2 ClippedView_<ContainerType>::getOffset()const
+{
+	if(container){
+		return container->getPosition();
+	}
+	return {0,0};
+}
+
+
 template class ClippedView_<DOM::Element>;
+template class ClippedView_<AutoReziseContainer>;
 template class ClippedView_<LineaDeTiempo::TrackHeader>;
+
+
 } } // namespace ofx::MUI
