@@ -35,7 +35,7 @@ void ZoomHandle::_onMainHandleShapeChanged(DOM::ShapeChangeEventArgs& r)
 
 
 bool ZoomHandle::setValue(const ofRange& val){
-	if(handleValue == val)return false;
+	if(handleValue == val) return false;
 	handleValue = val;
 	auto a = normalizedValueToMinPos(val.min);
 	auto b = normalizedValueToMaxPos(val.max);

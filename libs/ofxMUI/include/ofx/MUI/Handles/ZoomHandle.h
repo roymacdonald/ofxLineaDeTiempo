@@ -24,7 +24,7 @@ public:
 
 
 	virtual bool setValue(const ofRange& val ) override;
-
+	
 
 protected:
 

@@ -25,7 +25,15 @@ public:
 	
 	///\brief sets the handleValue to the passed argument. Will notify handleChangeEvent if passed value is different to handleValue
 	///returns true if value passed value was different, false otherwise
-	virtual bool setValue(const DataType& val );
+	/// possible implementation:
+	///	if(handleValue != val){
+	///		handleValue = val;
+	///		ofNotifyEvent(handleChangeEvent, handleValue, this);
+	///		return true;
+	///	}
+	///	return false;
+
+	virtual bool setValue(const DataType& val ) = 0;
 	
 	const DataType& getValue() const {
 		return handleValue;

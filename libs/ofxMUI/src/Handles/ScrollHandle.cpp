@@ -45,5 +45,12 @@ void ScrollHandle::updateLayout(){
 	if(this->isDragging())return;
 	_updateScrollFromValue();
 }
+bool ScrollHandle::setValue(const float& val ){
+	if(setFloatIfNonEqual(handleValue, val)){
+		ofNotifyEvent(handleChangeEvent, handleValue, this);
+		return true;
+	}
+	return false;
+}
 //---------------------------------------------------------------------------------------------------------------------
 } } // ofx::MUI

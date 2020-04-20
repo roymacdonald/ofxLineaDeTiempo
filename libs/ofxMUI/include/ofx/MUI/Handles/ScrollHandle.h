@@ -24,6 +24,8 @@ public:
 	virtual ~ScrollHandle(){}
 	virtual void updateLayout() override;
 
+	virtual bool setValue(const float& val ) override;
+	
 protected:
 	virtual void _onDragging(const DOM::CapturedPointer& pointer)override;
 	bool _updateValueFromScroll();// override;
