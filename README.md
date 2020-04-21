@@ -4,22 +4,22 @@ A new timeline addon for openFrameworks.
 
 ## Introduction
 
-Several years ago [ofxTimeline](https://github.com/YCAMInterlab/ofxTimeline) was created by [James George](https://github.com/obviousjim/). It was a really complete and great but it was never properly mantained and though the years it has become increasingly dificult to make it work. As such there has been an increasing need for a timeline addon within the openFrameworks community, where some have modified ofxTimeline to fit their needs but it has been alwasy something cumbersome and time consuming, on top of the fact that it was only advanced OF coders who were able to do such, making it totaly inaccessible to begginers. ofxLineaDeTiempo comes into play in order to fulfill this need, making it easy to anyone to get a functional timeline with both basic and advanced features with minimal coding.
 
-As I could not use ofxTimeline as the name of this addon, ofxTimeline2 sounded boring, and considering that I am a native Spanish speakeer it made sense to use a Spanish word instead.
-**Línea De Tiempo** is the literal translation of **Timeline** into Spanish, hence **ofxLineaDeTiempo**
+[ofxTimeline](https://github.com/YCAMInterlab/ofxTimeline) , created by [James George](https://github.com/obviousjim/),  has long been the go-to timeline tool for [openFramworks](https://openframeworks.cc/). It has been modified and tailored numerous times over the years for specific things but current versions are not as accessible as they could be to the beginner user. ofxLineaDeTiempo comes into play in order to fulfill this need, making it easy to anyone to easily utilize a functional timeline with both basic and advanced features. The key is that it requires minimal coding and is deeply connected with ofxGui.
+
+As I could not use ofxTimeline as the name of this addon, ofxTimeline2 sounded boring, and considering that I am a native Spanish speaker it made sense to use a Spanish word instead. **Línea De Tiempo** is the literal translation of **Timeline** into Spanish, hence **ofxLineaDeTiempo**
 
 
 ## Goals
 
-* Make an usable timeline from both the coding and user points of view.
+* Make an usable timeline from both the coder and user points of view.
 * Rely heavily on openFrameworks interanal classes and functionalities.
 * An `ofParameter` is held by each timeline track.
 * As a consequence, `ofxGui` will be an integral part of the addon.
 * Behave in a similar usage to `ofxPanel` so the code for it can be directly swapped with an instance of this addon.
 * The renderer is a different class which will allow to customize its visual appearance as well as having specialized timeline tracks (ie. video and audio)
 * Have an optimized rendering, redrawing only when needed. 
-* It can run with or without rendering the timeline. 
+* It can run with or without rendering the timeline, making it perfectly usable in headless contexts.
 * Thread-safe, the updating of it can be carried out by any thread. (I need to test and verify this)
 * Each ofxLineaDeTiempo instance has its own clock, which allows to have more than a single instance running simultaneously. 
 
