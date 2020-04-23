@@ -48,7 +48,11 @@ public:
 	EdgeHandleAlignment getAlignment() const;
 	
 	
-
+	void setTargetMinSize(float minSize);
+	float getTargetMinSize() const;
+	bool hasTargetMinSize() const;
+	void removeTargetMinSize();
+	
 	
 protected:
 	virtual void onUpdate() override;
@@ -82,9 +86,6 @@ protected:
 	void setAnchors();
 
 	
-
-	bool _targetIsSibling = false;
-	
 private:
 	uint64_t _pointerCaptureTime = 0;
 	
@@ -93,7 +94,11 @@ private:
 	bool _followingTarget = false;
 	
 	bool _bAutoHide = true;
-	
+
+	bool _targetMinSizeEnabled = false;
+	float _targetMinSize =0;
+
+	DOM::Element* _targetConstraint = nullptr;
 	
 };
 

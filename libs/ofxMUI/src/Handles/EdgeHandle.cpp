@@ -21,16 +21,20 @@ EdgeHandle::EdgeHandle(const std::string& id, DOM::RectEdge edge, DOM::Element* 
 , _edgeAlignment(edgeAlignment)
 {
 	
-	for(auto&s: siblings())
+//	for(auto&s: siblings())
+//	{
+//		if(s == _target)
+//		{
+//			_targetIsSibling = true;
+//			break;
+//		}
+//	}
+	
+	auto t = dynamic_cast<ConstrainedGrabHandle*>(_target);
+	if(t)
 	{
-		if(s == _target)
-		{
-			_targetIsSibling = true;
-			break;
-		}
+		_targetConstraint = t->getConstraint();
 	}
-	
-	
 	setConstrainedToParent(false);
 	_targetListener = target->shapeChanged.newListener(this, &EdgeHandle::_targetShapeChanged);
 	setAutoHide(bAutoHide);
@@ -115,7 +119,8 @@ void EdgeHandle::_targetShapeChanged(DOM::ShapeChangeEventArgs&)
 void EdgeHandle::_onDragging(const DOM::CapturedPointer& pointer)
 {
 	ConstrainedGrabHandle::_onDragging(pointer);
-	if(parent()){
+	if(_target)
+	{
 		float val = 0;
 		
 		DOM::Position p;
@@ -148,17 +153,25 @@ void EdgeHandle::_onDragging(const DOM::CapturedPointer& pointer)
 				p= s.getMax();
 			}
 		}
+		auto screenPos =  parentToScreen(p);
+
+		bool needsUpdateLayout = false;
 		
-		if(_targetIsSibling){
-			p += parent()->getPosition();
+		if(_targetConstraint){
+			auto ts = _targetConstraint->getScreenShape();
+			auto sp = ofClamp(screenPos[dimIndex()], ts.getMin()[dimIndex()], ts.getMax()[dimIndex()]);
+			if(!ofIsFloatEqual(screenPos[dimIndex()] , sp))
+			{
+				needsUpdateLayout = true;
+				screenPos[dimIndex()] = sp;
+			}
+			
 		}
-		else
-		{
-			p = _target->screenToParent( parentToScreen(p));
-		}
+		p = _target->screenToParent( screenPos);
 		
+		auto result = DOM::ofRectangleHelper::setEdge(_target, p[dimIndex()] , _edge, _targetMinSizeEnabled, _targetMinSize);
 		
-		DOM::ofRectangleHelper::setEdge(_target, p[dimIndex()] , _edge, false);
+		if(needsUpdateLayout || result == DOM::SET_EDGE_MIN) updateLayout();
 		
 	}
 }
@@ -281,6 +294,31 @@ void EdgeHandle::setAlignment( EdgeHandleAlignment edgeAlignment)
 EdgeHandleAlignment EdgeHandle::getAlignment() const
 {
 	return _edgeAlignment;
+}
+
+
+void EdgeHandle::setTargetMinSize(float minSize)
+{
+	_targetMinSizeEnabled = true;
+	_targetMinSize = minSize;
+}
+
+
+float EdgeHandle::getTargetMinSize() const
+{
+	return _targetMinSize;
+}
+
+
+bool EdgeHandle::hasTargetMinSize() const
+{
+	return _targetMinSizeEnabled;
+}
+
+
+void EdgeHandle::removeTargetMinSize()
+{
+	_targetMinSizeEnabled = false;
 }
 
 
