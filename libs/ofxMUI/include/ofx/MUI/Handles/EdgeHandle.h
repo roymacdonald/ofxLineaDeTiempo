@@ -8,30 +8,47 @@
 #pragma once
 #include "ConstrainedGrabHandle.h"
 #include "ofRectangleHelper.h"
+#include "Constants.h"
 
 namespace ofx {
 namespace MUI {
 
-//enum RectEdge{
-//	RECT_TOP = 0,
-//	RECT_RIGHT,
-//	RECT_BOTTOM,
-//	RECT_LEFT
-//};
+enum EdgeHandleAlignment{
+	ALIGN_INSIDE = 0,
+	ALIGN_CENTER,
+	ALIGN_OUTSIDE
+};
 
 class EdgeHandle: public ConstrainedGrabHandle{
 public:
 	
-	EdgeHandle(const std::string& id, DOM::RectEdge edge, DOM::Element* target);
+	EdgeHandle(const std::string& id, DOM::RectEdge edge, DOM::Element* target, EdgeHandleAlignment edgeAlignment = ALIGN_CENTER, bool bAutoHide = true);
 	virtual ~EdgeHandle(){}
 	
-	static ofRectangle getEdgeRect(DOM::Element* element, DOM::RectEdge edge);
+//	static ofRectangle getEdgeRect(DOM::Element* element, DOM::RectEdge edge, EdgeHandleAlignment alignment);
 	
 	
 	///\ brief the ammount of time, in milliseconds that will pass once the pointer is over and that the Handle starts showing.
 	static const uint64_t onOverDrawDelay;
 	
 	bool isFollowingTarget();
+	
+	
+	virtual void updateLayout() override;
+	
+	void setHandleSize(float handleSize);
+	float  getHandleSize() const;
+	
+	void setAutoHide(bool autoHide);
+	void enableAutoHide();
+	void disableAutoHide();
+	bool isAutoHidding();
+	
+	void setAlignment( EdgeHandleAlignment edgeAlignment);
+	EdgeHandleAlignment getAlignment() const;
+	
+	
+
 	
 protected:
 	virtual void onUpdate() override;
@@ -50,6 +67,23 @@ protected:
 	DOM::Element* _target = nullptr;
 	
 	
+	EdgeHandleAlignment _edgeAlignment = ALIGN_CENTER;
+
+	float _handleSize = EDGE_HANDLE_SIZE;
+	
+	
+	ofAlignHorz hTargetAnchor;
+	ofAlignHorz hThisAnchor;
+	
+	ofAlignVert vTargetAnchor;
+	ofAlignVert vThisAnchor;
+	
+
+	void setAnchors();
+
+	
+
+	bool _targetIsSibling = false;
 	
 private:
 	uint64_t _pointerCaptureTime = 0;
@@ -57,6 +91,9 @@ private:
 	bool _wasPointerOver = false;
 	
 	bool _followingTarget = false;
+	
+	bool _bAutoHide = true;
+	
 	
 };
 
