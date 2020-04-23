@@ -32,6 +32,37 @@ glm::vec2 ClippedView_<ContainerType>::getOffset()const
 	return {0,0};
 }
 
+template<typename ContainerType>
+void ClippedView_<ContainerType>::setZoom(DOM::Orientation index, const ofRange& zoom)
+{
+	if(index == DOM::HORIZONTAL || index == DOM::VERTICAL){
+		_zoom[index] = zoom;
+		MUI::keepRangeMinSpan(_zoom[index], _minZoom[index], {0,1});
+	}
+}
+
+template<typename ContainerType>
+void ClippedView_<ContainerType>::setZoomV(ofRange& v)
+{
+	setZoom(DOM::VERTICAL, v);
+}
+
+template<typename ContainerType>
+void ClippedView_<ContainerType>::setZoomH(ofRange& h)
+{
+	setZoom(DOM::HORIZONTAL, h);
+}
+
+template<typename ContainerType>
+ofRange ClippedView_<ContainerType>::getZoom(DOM::Orientation orientation) const
+{
+	if(orientation == DOM::HORIZONTAL || orientation == DOM::VERTICAL){
+		return _zoom[orientation];
+	}
+	return {0,1};
+}
+
+
 
 template class ClippedView_<DOM::Element>;
 template class ClippedView_<AutoReziseContainer>;
