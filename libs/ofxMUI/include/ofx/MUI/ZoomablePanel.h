@@ -29,24 +29,26 @@ public:
 	
 	virtual ~ZoomablePanel() = default;
 
-	bool isScrollbarActive(DOM::Orientation scrollbarOrientation);
-	float getScrollbarSize(DOM::Orientation scrollbarOrientation);
+	
 	
 	ClippedViewType* getClippingView();
 	
 	ClippedContainerType*  getContainer();
 	
 	
-	
-	
 	void setForceShowScrollbars(bool show);
 	bool isForceShowScrollbars();
 	
-	void setScrollH(const ofRange& d);
-	void setScrollV(const ofRange& d);
+//	void setScrollH(const ofRange& d);
+//	void setScrollV(const ofRange& d);
 	
 	
-	void updateVerticalScrollFromContainersHeight();
+//	void updateVerticalScrollFromContainersHeight();
+	    
+	void updateZoomFromCurrentClippedView();
+	
+//	void setup();
+	
 	
 protected:
 	
@@ -57,15 +59,25 @@ protected:
 	
 	
 	bool _forceShowScrollbars = false;
-	
+public:
 	ZoomScrollbar * _scrollbarH = nullptr;
 	ZoomScrollbar * _scrollbarV = nullptr;
-	ofEventListeners _scrollbarsListeners;
+protected:
 	
 
+	bool _isScrollbarActive(DOM::Orientation scrollbarOrientation);
+	float _getScrollbarSize(DOM::Orientation scrollbarOrientation);
+	
+	
+	void _setClippingPanelShape();
+	
 
+	
+	
 private:
 
+	
+	
 };
 
 } } // ofx::MUI

@@ -22,28 +22,39 @@ DOM::Element(id, rect.x,rect.y,rect.width,rect.height)
 	
 	_scrollbarH = this->addChild<ZoomScrollbar>("H_Scrollbar", DOM::Orientation::HORIZONTAL, _clippingPanel);
 	_scrollbarV = this->addChild<ZoomScrollbar>("V_Scrollbar", DOM::Orientation::VERTICAL, _clippingPanel);
-
+	
+	_setClippingPanelShape();
+	
 }
 
-//---------------------------------------------------------------------------------------------------
+
 template<typename  C, typename CT>
 void ZoomablePanel<C, CT>::_onShapeChange(const DOM::ShapeChangeEventArgs& e)
 {
 	
-	if(e.resized() && _clippingPanel){
+	if(e.resized())_setClippingPanelShape();
+}
+
+
+template<typename  C, typename CT>
+void ZoomablePanel<C, CT>::_setClippingPanelShape()
+{
+	if(_clippingPanel){
 		_clippingPanel->setShape({
-							CONTAINER_MARGIN,
-							CONTAINER_MARGIN,
-							getWidth() - (CONTAINER_MARGIN*2) - getScrollbarSize(DOM::Orientation::VERTICAL),
-							getHeight() - (CONTAINER_MARGIN*2) -  getScrollbarSize(DOM::Orientation::HORIZONTAL)}
-							);
+			CONTAINER_MARGIN,
+			CONTAINER_MARGIN,
+			getWidth() - (CONTAINER_MARGIN*2) - _getScrollbarSize(DOM::Orientation::VERTICAL),
+			getHeight() - (CONTAINER_MARGIN*2) -  _getScrollbarSize(DOM::Orientation::HORIZONTAL)}
+								 );
 	}
 }
+
 
 template<typename  C, typename CT>
 void ZoomablePanel<C, CT>::setForceShowScrollbars(bool show)
 {
 	_forceShowScrollbars = show;
+	_setClippingPanelShape();
 }
 
 
@@ -54,26 +65,6 @@ bool ZoomablePanel<C, CT>::isForceShowScrollbars()
 }
 
 
-template<typename  C, typename CT>
-void ZoomablePanel<C, CT>::setScrollH(const ofRange&  d)
-{
-	if(_scrollbarH){
-		_scrollbarH->setValue(d);
-	}else{
-		ofLogError("ScrollablePanel_::setScrollH") << "scrollbar null";
-	}
-}
-
-
-template<typename  C, typename CT>
-void ZoomablePanel<C, CT>::setScrollV(const ofRange&  d)
-{
-	if(_scrollbarV){
-		_scrollbarV->setValue(d);
-	}else{
-		ofLogError("ScrollablePanel_::setScrollV") << "scrollbar null";
-	}
-}
 
 
 template<typename  C, typename CT>
@@ -85,7 +76,7 @@ CT* ZoomablePanel<C, CT>::getContainer()
 
 
 template<typename  C, typename CT>
-bool ZoomablePanel<C, CT>::isScrollbarActive(DOM::Orientation scrollbarOrientation)
+bool ZoomablePanel<C, CT>::_isScrollbarActive(DOM::Orientation scrollbarOrientation)
 {
 	if(_forceShowScrollbars)return true;
 	if(_clippingPanel){
@@ -100,9 +91,9 @@ bool ZoomablePanel<C, CT>::isScrollbarActive(DOM::Orientation scrollbarOrientati
 
 
 template<typename  C, typename CT>
-float ZoomablePanel<C, CT>::getScrollbarSize(DOM::Orientation scrollbarOrientation)
+float ZoomablePanel<C, CT>::_getScrollbarSize(DOM::Orientation scrollbarOrientation)
 {
-	if(isScrollbarActive(scrollbarOrientation)){
+	if(_isScrollbarActive(scrollbarOrientation)){
 		return SCROLL_BAR_SIZE;
 	}else{
 		return 0;
@@ -117,22 +108,33 @@ C*  ZoomablePanel<C, CT>::getClippingView()
 }
 
 
-template<>
-void ZoomablePanel<LineaDeTiempo::TracksClippedView, AutoReziseContainer>::updateVerticalScrollFromContainersHeight()
-{
-	
-	auto z = _clippingPanel->getVerticalZoomFromContainerHeight();
-		
-	setScrollV(z);
-	
-}
+//template<>
+//void ZoomablePanel<LineaDeTiempo::TracksClippedView, AutoReziseContainer>::updateVerticalScrollFromContainersHeight()
+//{
+//
+//	auto z = _clippingPanel->getVerticalZoomFromContainerHeight();
+//
+//	setScrollV(z);
+//
+//}
+//
+//
+//template<typename  C, typename CT>
+//void ZoomablePanel<C, CT>::updateVerticalScrollFromContainersHeight()
+//{
+//	ofLogWarning("ZoomablePanel<C, CT>::updateVerticalScrollFromContainersHeight()") << "template specialization not implemented";
+//}
 
 
 template<typename  C, typename CT>
-void ZoomablePanel<C, CT>::updateVerticalScrollFromContainersHeight()
+void  ZoomablePanel<C, CT>::updateZoomFromCurrentClippedView()
 {
-	ofLogWarning("ZoomablePanel<C, CT>::updateVerticalScrollFromContainersHeight()") << "template specialization not implemented";
+	if(_scrollbarH) _scrollbarH->updateValueFromClippedView();
+	if(_scrollbarV) _scrollbarV->updateValueFromClippedView();
+	
 }
+
+
 
 template class ZoomablePanel<ClippedView, AutoReziseContainer>;
 

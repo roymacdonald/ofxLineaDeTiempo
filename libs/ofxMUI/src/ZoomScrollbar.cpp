@@ -5,11 +5,12 @@
 //  Created by Roy Macdonald on 4/20/20.
 //
 
-#include "ZoomScrollbar.h"
+#include "MUI/ZoomScrollbar.h"
 
-#include "ClippedView.h"
-#include "Constants.h"
-#include "Utils.h"
+#include "MUI/Constants.h"
+#include "MUI/Utils.h"
+#include "LineaDeTiempo/View/TracksClippedView.h"
+
 
 namespace ofx {
 namespace MUI {
@@ -21,54 +22,41 @@ ZoomScrollbar::ZoomScrollbar(const std::string& id, DOM::Orientation orientation
 , DOM::OrientedElement(orientation)
 , _clippedView(clippedView)
 {
-	handleValue.set(0,1);
-	ofRectangle r (0,0, SCROLL_BAR_SIZE, SCROLL_BAR_SIZE);
+	handleValue.set(-1,-1);
+	
 	
 	this->setFocusable(false);
-//	this->setHighlightOnOver(true);
-//		EdgeHandle(const std::string& id, DOM::RectEdge edge, DOM::Element* target, EdgeHandleAlignment edgeAlignment = ALIGN_CENTER, bool bAutoHide = true);
-		mainHandle =  this->addChild<ConstrainedGrabHandle>(id+"_Z_scroll_handle_", orientation, r);
-		mainHandle->setConstrainedToParent(true);
+
+	mainHandle =  this->addChild<ConstrainedGrabHandle>(id+"_Z_scroll_handle_", orientation, ofRectangle (0,0, SCROLL_BAR_SIZE, SCROLL_BAR_SIZE));
+	mainHandle->setConstrainedToParent(true);
+	mainHandle->setMoveToFrontOnCapture(false);
+
 	
-		inHandle = this->addChild<EdgeHandle>(id+"_Z_in_handle_", (orientation == DOM::HORIZONTAL? DOM::RECT_LEFT:DOM::RECT_TOP), mainHandle, ALIGN_INSIDE, false );
-		outHandle = this->addChild<EdgeHandle>(id+"_Z_out_handle_", (orientation == DOM::HORIZONTAL? DOM::RECT_RIGHT:DOM::RECT_BOTTOM), mainHandle, ALIGN_INSIDE, false );
-		
-		
-	//	inHandle->setShapeDrawMode( (orientation == DOM::HORIZONTAL)? ShapeDrawMode::LEFT_ROUNDED_RECTANGLE : ShapeDrawMode::TOP_ROUNDED_RECTANGLE);
-	//	outHandle->setShapeDrawMode( (orientation == DOM::HORIZONTAL)? ShapeDrawMode::RIGHT_ROUNDED_RECTANGLE : ShapeDrawMode::BOTTOM_ROUNDED_RECTANGLE);
-		
+	inHandle = this->addChild<EdgeHandle>(id+"_Z_in_handle_", (orientation == DOM::HORIZONTAL? DOM::RECT_LEFT:DOM::RECT_TOP), mainHandle, ALIGN_INSIDE, false );
+	outHandle = this->addChild<EdgeHandle>(id+"_Z_out_handle_", (orientation == DOM::HORIZONTAL? DOM::RECT_RIGHT:DOM::RECT_BOTTOM), mainHandle, ALIGN_INSIDE, false );
+	
+	
 	_setIOHandle(outHandle);
 	_setIOHandle(inHandle);
+	
+	
 		
-		mainHandle->setMoveToFrontOnCapture(false);
-		
-		
-//		_inHandleConstraint = std::make_unique<Widget>("in_constraint", r);
-//		_outHandleConstraint = std::make_unique<Widget>("out_constraint", r);
-//
-
-//		inHandle->constrainTo(_inHandleConstraint.get());
-//		outHandle->constrainTo(_outHandleConstraint.get());
-//
-
-		
-//		handlesListeners.push(inHandle->shapeChanged.newListener(this, &ZoomScrollbar::_onInHandleShapeChanged,std::numeric_limits<int>::lowest()));
-//		handlesListeners.push(outHandle->shapeChanged.newListener(this, &ZoomScrollbar::_onOutHandleShapeChanged,std::numeric_limits<int>::lowest()));
-//
-		_mainHandleListener = mainHandle->shapeChanged.newListener(this, &ZoomScrollbar::_onMainHandleShapeChanged,std::numeric_limits<int>::lowest());
-		
-		
-		mainHandle->moveToBack();
-//		_updateInHandle();
-//		_updateOutHandle();
+	_mainHandleListener = mainHandle->shapeChanged.newListener(this, &ZoomScrollbar::_onMainHandleShapeChanged,std::numeric_limits<int>::lowest());
+	
+	
+	mainHandle->moveToBack();
 	
 	_clippedViewShapeListener = _clippedView->shapeChanged.newListener(this, &ZoomScrollbar::_onClippedViewShapeChanged);
 	
 	_scrollListener = ofEvents().mouseScrolled.newListener(this, &ZoomScrollbar::_onScrollEvent,std::numeric_limits<int>::lowest());
 	
+	_containerShapeListener = _clippedView->container->shapeChanged.newListener(this, &ZoomScrollbar::_onContainerShapeChanged);
 	
 	_updateShape();
+	_setValue({0.f, 1.f});
 }
+
+
 void ZoomScrollbar::_setIOHandle(EdgeHandle* handle)
 {
 	handle->setHandleSize(SCROLL_BAR_SIZE);
@@ -76,6 +64,7 @@ void ZoomScrollbar::_setIOHandle(EdgeHandle* handle)
 	handle->setTargetMinSize(HANDLE_MIN_SIZE);
 	
 }
+
 
 bool ZoomScrollbar::_onScrollEvent(ofMouseEventArgs & e){
 	
@@ -86,133 +75,92 @@ bool ZoomScrollbar::_onScrollEvent(ofMouseEventArgs & e){
 }
 
 
-//void ZoomScrollbar::_setInHandleConstraint(){
-//	glm::vec2 size (SCROLL_BAR_SIZE, SCROLL_BAR_SIZE);
-//	glm::vec2 pos = getScreenPosition();//(0,0);
-//
-//	size [dimIndex()]  = mainHandle->getScreenShape().getMax()[dimIndex()] - HANDLE_MIN_SIZE + SCROLL_BAR_SIZE;
-//
-//	_inHandleConstraint->setShape(ofRectangle(pos.x, pos.y, size.x, size.y));
-//
-//	inHandle->constrainTo(_inHandleConstraint.get());
-//
-//}
-//
-//
-//void ZoomScrollbar::_setOutHandleConstraint(){
-//	glm::vec2 pos = getScreenPosition();//(0,0);
-//	glm::vec2 size (SCROLL_BAR_SIZE, SCROLL_BAR_SIZE);
-//	size[dimIndex()] = getSize()[dimIndex()] + pos[dimIndex()];
-//
-//	pos[dimIndex()] = mainHandle->getScreenPosition()[dimIndex()] + HANDLE_MIN_SIZE - SCROLL_BAR_SIZE;
-//
-//	size[dimIndex()] -= pos[dimIndex()];
-//
-//	_outHandleConstraint->setShape(ofRectangle(pos.x, pos.y, size.x, size.y ));
-//
-//	outHandle->constrainTo(_outHandleConstraint.get());
-//
-//}
-//
-//
-//bool ZoomScrollbar::_updateInHandle()
-//{
-//	if(inHandle->isDragging())return false;
-//	return setPosIfNonEqual(inHandle, mainHandle->getPosition());
-//}
-//
-//
-//bool ZoomScrollbar::_updateOutHandle()
-//{
-//	if(outHandle->isDragging())return false;
-//	auto mx =mainHandle->getShape().getMax();
-//	mx[dimIndex()] -= SCROLL_BAR_SIZE;
-//	mx[1 - dimIndex()] = 0;
-//
-//	return setPosIfNonEqual(outHandle, mx);
-//
-//}
-//
-void ZoomScrollbar::_onMainHandleShapeChanged(DOM::ShapeChangeEventArgs& e)
+void ZoomScrollbar::_zoomUpdate(ofRange r, bool forceUpdate)
 {
-
-//	if(!e.resized()){
-//		_updateInHandle();//move
-//		_updateOutHandle();//move
-//	}
-//
-//	_setInHandleConstraint();//move,resize
-//	_setOutHandleConstraint();//move,resize
-//
-	
-	ofRange r;
-	r.min = minPosToNormalizedValue();
-	r.max = maxPosToNormalizedValue();
-	
-	if(r != handleValue)
+	if(forceUpdate || !ofIsFloatEqual(r.min, handleValue.min)  || ofIsFloatEqual(r.max, handleValue.max))
 	{
 		handleValue = r;
 		if(_clippedView)
 		{
+			_bIgnoreContainerShapeChange=true;
 			_clippedView->setZoom(getOrientation(), handleValue);
+			_bIgnoreContainerShapeChange=false;
 		}
 		ofNotifyEvent(handleChangeEvent, r, this);
 	}
-	
-	
+}
+
+void ZoomScrollbar::_onContainerShapeChanged(DOM::ShapeChangeEventArgs&)
+{
+	if(!_bIgnoreContainerShapeChange)
+	{
+		updateValueFromClippedView();
+	}
 	
 }
 
-//
-//void ZoomScrollbar::_onInHandleShapeChanged(DOM::ShapeChangeEventArgs&)
-//{
-//	if(inHandle->isDragging()){
-//		auto hs = mainHandle->getSize();
-//		auto hp = mainHandle->getPosition();
-//		auto p = inHandle->getPosition();
-//
-//		hp[dimIndex()] = p[dimIndex()];
-//		hs[dimIndex()] = mainHandle->getShape().getMax()[dimIndex()] - p[dimIndex()];
-//
-//		if(setShapeIfNonEqual(mainHandle, {hp, hs.x, hs.y})){
-//			_updateOutHandle();
+void ZoomScrollbar::_onMainHandleShapeChanged(DOM::ShapeChangeEventArgs& e)
+{
+	if(!_bIgnoreMainHandleShapeChange)
+	{
+//		std::cout << __PRETTY_FUNCTION__ << "\n";
+		ofRange r = shapeToNormalizedValue(mainHandle->getShape());
+//		r.min = minPosToNormalizedValue();
+//		r.max = maxPosToNormalizedValue();
+		
+	_zoomUpdate(r, true);
+	
+	
+//		if(r != handleValue)
+//		{
+//			handleValue = r;
+//			if(_clippedView)
+//			{
+//				_clippedView->setZoom(getOrientation(), handleValue);
+//			}
+//			ofNotifyEvent(handleChangeEvent, r, this);
 //		}
-//	}
-//}
-//
-
-
-
-//void ZoomScrollbar::_onOutHandleShapeChanged(DOM::ShapeChangeEventArgs&)
-//{
-//	if(outHandle->isDragging()){
-//		auto hs = mainHandle->getSize();
-//		auto hp = mainHandle->getPosition();
-//		auto p = outHandle->getShape().getMax();
-//
-//		hs[dimIndex()] =  p[dimIndex()] - hp[dimIndex()];
-//		setShapeIfNonEqual(mainHandle, {hp, hs.x, hs.y});
-//	}
-//}
-
+	}
+}
+bool ZoomScrollbar::_setValue(const ofRange& val , bool bUpdateContainer)
+{
+	handleValue = val;
+		
+	_bIgnoreMainHandleShapeChange = true;
+	
+	
+	
+	auto b = setShapeIfNonEqual(mainHandle, normalizedValueToShape(val));
+	
+	if( b && bUpdateContainer)
+		_zoomUpdate(handleValue, true);
+	
+	_bIgnoreMainHandleShapeChange = false;
+	
+	return b;
+}
 
 bool ZoomScrollbar::setValue(const ofRange& val){
-	if(handleValue == val) return false;
-	handleValue = val;
-	return _updateValue();
+//	std::cout << "ZoomScrollbar::setValue:  " << val << "\n";
+//	if(handleValue == val) return false;
+	
+	return _setValue(val);
+//	handleValue = val;
+//
+//	_bIgnoreMainHandleShapeChange = true;
+//	auto a = normalizedValueToMinPos(handleValue.min);
+//	auto b = normalizedValueToMaxPos(handleValue.max);
+//	_zoomUpdate(handleValue, true);
+//	if(a || b){
+////		ofNotifyEvent(handleChangeEvent, handleValue, this);
+//
+//		_bIgnoreMainHandleShapeChange = false;
+//		return true;
+//	}
+//	_bIgnoreMainHandleShapeChange = false;
+//	return false;
 }
 
-
-bool ZoomScrollbar::_updateValue()
-{
-	auto a = normalizedValueToMinPos(handleValue.min);
-	auto b = normalizedValueToMaxPos(handleValue.max);
-	if(a || b){
-		ofNotifyEvent(handleChangeEvent, handleValue, this);
-		return true;
-	}
-	return false;
-}
 
 bool ZoomScrollbar::scroll(float amt){
 	
@@ -223,6 +171,8 @@ bool ZoomScrollbar::scroll(float amt){
 
 void ZoomScrollbar::_updateShape()
 {
+//	std::cout << __PRETTY_FUNCTION__ << "\n";
+	
 	if(_clippedView){
 		auto s = _clippedView->getShape();
 		ofRectangle shape;
@@ -237,8 +187,8 @@ void ZoomScrollbar::_updateShape()
 		}
 		
 		setShape(shape);
-				
-		updateValueFromClippedView();
+		_setValue(handleValue);
+//		updateValueFromClippedView();
 		
 	}
 	else
@@ -247,58 +197,97 @@ void ZoomScrollbar::_updateShape()
 	}
 }
 
+//hacer que los cambios de forma del container se reflejen en el handle.
 
 void ZoomScrollbar::_onClippedViewShapeChanged(DOM::ShapeChangeEventArgs&)
 {
+//	std::cout << __PRETTY_FUNCTION__ << "\n";
 	_updateShape();
 }
 
+//
+//float ZoomScrollbar::minPosToNormalizedValue()
+//{
+//	return ofMap( mainHandle->getPosition()[dimIndex()], 0, getSize()[dimIndex()] - HANDLE_MIN_SIZE , 0,1, true);
+//}
+//
+//
+//float ZoomScrollbar::maxPosToNormalizedValue(){
+//	return ofMap(mainHandle->getShape().getMax()[dimIndex()], HANDLE_MIN_SIZE, getSize()[dimIndex()] , 0,1, true);
+//}
+//
 
-float ZoomScrollbar::minPosToNormalizedValue()
+ofRange ZoomScrollbar::shapeToNormalizedValue(const DOM::Shape& shape)
 {
-	return ofMap( mainHandle->getPosition()[dimIndex()], 0, getSize()[dimIndex()] - HANDLE_MIN_SIZE , 0,1, true);
-}
-
-
-float ZoomScrollbar::maxPosToNormalizedValue(){
-	return ofMap(mainHandle->getShape().getMax()[dimIndex()], HANDLE_MIN_SIZE, getSize()[dimIndex()] , 0,1, true);
-}
-
-
-bool ZoomScrollbar::normalizedValueToMinPos(float val){
-	auto p = mainHandle->getPosition();
-	p[dimIndex()] = ofMap(val, 0, 1, 0, getSize()[dimIndex()] - HANDLE_MIN_SIZE ,  true);
-	if(setPosIfNonEqual(mainHandle, p)){
-		return true;
-	}
-	return false;
-}
-
-
-bool ZoomScrollbar::normalizedValueToMaxPos(float val){
 	
-	auto p = mainHandle->getShape().getMax();
+	ofRange r;
 	
-	p[dimIndex()] = ofMap(val, 0, 1, HANDLE_MIN_SIZE, getSize()[dimIndex()],  true);
-	if(setShapeIfNonEqual(mainHandle, {mainHandle->getPosition(), p})){
-		return true;
-	}
-	return false;
+	r.min = ofMap(shape.getPosition()[dimIndex()], 0, getSize()[dimIndex()] - HANDLE_MIN_SIZE , 0,1, true);
+	r.max = ofMap(shape.getMax()[dimIndex()], HANDLE_MIN_SIZE, getSize()[dimIndex()] , 0,1, true);
+	
+	return r;
+	
 }
+
+
+DOM::Shape ZoomScrollbar::normalizedValueToShape(const ofRange& val)
+{
+	
+	glm::vec2 mn (0,0);
+	glm::vec2 mx ( SCROLL_BAR_SIZE, SCROLL_BAR_SIZE);
+	
+	auto size = getSize()[dimIndex()];
+	
+	mn[dimIndex()] = ofMap(val.min ,  0,1, 0, size - HANDLE_MIN_SIZE , true);
+	mx[dimIndex()] = ofMap(val.max, 0, 1, HANDLE_MIN_SIZE, size , true);
+	
+	return DOM::Shape(mn, mx);
+	
+}
+
+
+//bool ZoomScrollbar::normalizedValueToMinPos(float val){
+//	auto p = mainHandle->getPosition();
+//	p[dimIndex()] = ofMap(val, 0, 1, 0, getSize()[dimIndex()] - HANDLE_MIN_SIZE ,  true);
+//	if(setPosIfNonEqual(mainHandle, p)){
+//		return true;
+//	}
+//	return false;
+//}
+//
+//
+//bool ZoomScrollbar::normalizedValueToMaxPos(float val){
+//
+//	auto p = mainHandle->getShape().getMax();
+//
+//	p[dimIndex()] = ofMap(val, 0, 1, HANDLE_MIN_SIZE, getSize()[dimIndex()],  true);
+//	if(setShapeIfNonEqual(mainHandle, {mainHandle->getPosition(), p})){
+//		return true;
+//	}
+//	return false;
+//}
 
 
 void ZoomScrollbar::updateValueFromClippedView()
 {
-//	std::cout << "ZoomScrollbar::updateValueFromClippedView()\n";
-//	ofRange r;
-//	auto s = _clippedView->container->getShape();
-//	r.min = ofMap(0, s.getMin()[dimIndex()], s.getMax()[dimIndex()], 0, 1, true);
-//	auto span = ofClamp( _clippedView->getSize()[dimIndex()]/_clippedView->container->getSize()[dimIndex()], 0, 1);
-//
-//	r.max =r.min + span;
-//
-//	setValue(r);
-	
+//	std::cout << __PRETTY_FUNCTION__ ;
+	auto t = dynamic_cast<LineaDeTiempo::TracksClippedView*>(_clippedView);
+	if(t)
+	{
+		
+		if(_orientation == DOM::HORIZONTAL)
+		{
+//			hacer funcion similar a _setValue pero que no sette el zoom del clipped view, ya uqe es de este de donde lo estamos obteniendo
+//			std::cout << " H: " << t->containerWidthToZoom() << "\n";
+//			_setValue(t->containerWidthToZoom().clamp({0,1}), false);
+		}
+		else
+		{
+//			std::cout << " V: " << t->containerHeightToZoom() << "\n";
+			
+//			_setValue(t->containerHeightToZoom().clamp({0,1}), false);
+		}
+	}
 }
 
 
@@ -308,254 +297,9 @@ void ZoomScrollbar::onDraw() const
 	ofNoFill();
 	ofSetColor(getStyles()->getColor(Styles::ROLE_BORDER , Styles::STATE_NORMAL));
 	ofDrawRectangle(0,0,getWidth(), getHeight());
-
+	
 	ofPopStyle();
 }
 
-//
-//ZoomScrollbar::ZoomScrollbar(const std::string& id, DOM::Orientation orientation, ClippedView* clippedView)
-//: DOM::Element(id, 0, 0, SCROLL_BAR_SIZE,SCROLL_BAR_SIZE)
-//, DOM::OrientedElement(orientation)
-//, _clippedView(clippedView)
-//{
-//
-//	ofRectangle handleRect (0,0, SCROLL_BAR_SIZE, SCROLL_BAR_SIZE);
-//
-//	this->setFocusable(false);
-//	//		this->setHighlightOnOver(true);
-//
-//	_mainHandle =  this->addChild<ConstrainedGrabHandle>(id+"_Z_scroll_handle_", orientation, handleRect);
-//
-//	DOM::RectEdge inEdge = (orientation == DOM::HORIZONTAL)?DOM::RECT_LEFT:DOM::RECT_TOP ;
-//	DOM::RectEdge outEdge = (orientation == DOM::HORIZONTAL)?DOM::RECT_RIGHT:DOM::RECT_BOTTOM ;
-//
-//	_inHandle = this->addChild<EdgeHandle>(id+"_Z_in_handle_", inEdge, _mainHandle, ALIGN_INSIDE, false);
-//	_outHandle = this->addChild<EdgeHandle>(id+"_Z_out_handle_", outEdge, _mainHandle, ALIGN_INSIDE, false);
-//
-//	_inConstraint = this->addChild<DOM::Element>("_inConstraint", handleRect);
-//	_outConstraint = this->addChild<DOM::Element>("_outConstraint", handleRect);
-//
-//	_inHandle->constrainTo(_inConstraint);
-//	_outHandle->constrainTo(_outConstraint);
-//
-//	_inHandle->setHandleSize(SCROLL_BAR_SIZE);
-//	_outHandle->setHandleSize(SCROLL_BAR_SIZE);
-//
-//	_mainHandle->setMoveToFrontOnCapture(false);
-//	_outHandle->setMoveToFrontOnCapture(false);
-//	_inHandle->setMoveToFrontOnCapture(false);
-//
-//	_mainHandle->setConstrainedToParent(true);
-////	_inHandle->setConstrainedToParent(true);
-////	_outHandle->setConstrainedToParent(true);
-//
-//
-//	_mainHandleListener = _mainHandle->shapeChanged.newListener(this, &ZoomScrollbar::_onMainHandleShapeChanged,std::numeric_limits<int>::lowest());
-//
-//
-//	_mainHandle->moveToBack();
-//
-//
-//	_clippedViewShapeListener = _clippedView->shapeChanged.newListener(this, &ZoomScrollbar::_onClippedViewShapeChanged);
-//
-//	_scrollListener = ofEvents().mouseScrolled.newListener(this, &ZoomScrollbar::_onScrollEvent,std::numeric_limits<int>::lowest());
-//
-//
-//	_updateShape();
-//}
-//
-//
-//bool ZoomScrollbar::_onScrollEvent(ofMouseEventArgs & e){
-//
-//	if(getScreenShape().inside(e) || (_clippedView && _clippedView->getScreenShape().inside(e))){
-//		return scroll((_orientation == DOM::HORIZONTAL)? e.scrollX: e.scrollY);
-//	}
-//	return false;
-//}
-//
-//
-//
-//void ZoomScrollbar::_onMainHandleShapeChanged(DOM::ShapeChangeEventArgs& args)
-//{
-////	if(_mainHandle)
-////	{
-////		auto s = _mainHandle->getSize();
-////		if( s[dimIndex()] < HANDLE_MIN_SIZE)
-////		{
-////
-////
-////			auto shape = _mainHandle->getShape();
-////
-////			ofRange r(shape.getMin()[dimIndex()], 1);
-////			r.max = HANDLE_MIN_SIZE +r.min;
-////
-////			MUI::keepRangeMinSpan(r, float(HANDLE_MIN_SIZE), {0.f, getSize()[dimIndex()]});
-////
-////			s[dimIndex()] = r.max - r.min;
-////
-////			auto pos = shape.getPosition();
-////			pos[dimIndex()] = r.min;
-////
-////			_mainHandle->setShape({ pos,s.x, s.y});
-////			return;
-////		}
-////	}
-//	if(args.resized())
-//	{
-//
-//	if(_inConstraint){
-//		auto s = getSize();
-//		s[dimIndex()] = _mainHandle->getShape().getMax()[dimIndex()] - HANDLE_MIN_SIZE + SCROLL_BAR_SIZE;
-//		_inConstraint->setShape({0,0,s.x, s.y});
-//	}
-//
-//
-//	if(_outConstraint)
-//	{
-//
-//		auto s = getSize();
-//		auto mn = _mainHandle->getShape().getMin();
-//		mn[dimIndex()] += HANDLE_MIN_SIZE - SCROLL_BAR_SIZE;
-//		s[dimIndex()] -= mn[dimIndex()];
-//		_outConstraint->setShape({mn.x, mn.y, s.x, s.y});
-//
-//	}
-//
-//	}
-//
-//	ofRange r;
-//	r.min = minPosToNormalizedValue();
-//	r.max = maxPosToNormalizedValue();
-//
-//	if(r != handleValue)
-//	{
-//		handleValue = r;
-//		ofNotifyEvent(handleChangeEvent, r, this);
-//		if(_clippedView)
-//		{
-//			_clippedView->setZoom(getOrientation(), handleValue);
-//		}
-//	}
-//}
-//
-//
-//bool ZoomScrollbar::setValue(const ofRange& val){
-//	if(handleValue == val) return false;
-//	handleValue = val;
-//	return _updateValue();
-//}
-//
-//
-//bool ZoomScrollbar::_updateValue()
-//{
-//	auto a = normalizedValueToMinPos(handleValue.min);
-//	auto b = normalizedValueToMaxPos(handleValue.max);
-//	if(a || b){
-//		ofNotifyEvent(handleChangeEvent, handleValue, this);
-//		return true;
-//	}
-//	return false;
-//}
-//
-//bool ZoomScrollbar::scroll(float amt){
-//
-//	float val = scrollSpeed * amt;
-//	return addToValue(val);
-//}
-//
-//
-//void ZoomScrollbar::_updateShape()
-//{
-//	if(_clippedView){
-//		auto s = _clippedView->getShape();
-//		ofRectangle shape;
-//
-//		if(_orientation == DOM::HORIZONTAL)
-//		{
-//			shape.set(s.x, s.getMaxY()+CONTAINER_MARGIN, s.width, SCROLL_BAR_SIZE);
-//		}
-//		else
-//		{
-//			shape.set(s.getMaxX()+CONTAINER_MARGIN, s.y, SCROLL_BAR_SIZE, s.height);
-//		}
-//
-//		setShape(shape);
-//
-//		updateValueFromClippedView();
-//
-//	}
-//	else
-//	{
-//		ofLogError("ZoomScrollbar::_onClippedViewShapeChanged") << " _clipppedView is null.This should not happen";
-//	}
-//}
-//
-//
-//void ZoomScrollbar::_onClippedViewShapeChanged(DOM::ShapeChangeEventArgs&)
-//{
-//	_updateShape();
-//}
-//
-//
-//float ZoomScrollbar::minPosToNormalizedValue()
-//{
-//	return ofMap(_mainHandle->getPosition()[dimIndex()], 0, getSize()[dimIndex()] - HANDLE_MIN_SIZE , 0,1, true);
-//}
-//
-//
-//float ZoomScrollbar::maxPosToNormalizedValue(){
-//	return ofMap(_mainHandle->getShape().getMax()[dimIndex()], HANDLE_MIN_SIZE, getSize()[dimIndex()] , 0,1, true);
-//}
-//
-//
-//bool ZoomScrollbar::normalizedValueToMinPos(float val){
-//	auto p = _mainHandle->getPosition();
-//	p[dimIndex()] = ofMap(val, 0, 1, 0, getSize()[dimIndex()] - HANDLE_MIN_SIZE ,  true);
-//	return setPosIfNonEqual(_mainHandle, p);
-//}
-//
-//
-//bool ZoomScrollbar::normalizedValueToMaxPos(float val){
-//
-//	auto p = _mainHandle->getShape().getMax();
-//
-//	p[dimIndex()] = ofMap(val, 0, 1, HANDLE_MIN_SIZE, getSize()[dimIndex()],  true);
-//	return setShapeIfNonEqual(_mainHandle, {_mainHandle->getPosition(), p});
-//}
-//
-//
-//void ZoomScrollbar::updateValueFromClippedView()
-//{
-////	std::cout << "ZoomScrollbar::updateValueFromClippedView()\n";
-////	ofRange r;
-////	auto s = _clippedView->container->getShape();
-////	r.min = ofMap(0, s.getMin()[dimIndex()], s.getMax()[dimIndex()], 0, 1, true);
-////	auto span = ofClamp( _clippedView->getSize()[dimIndex()]/_clippedView->container->getSize()[dimIndex()], 0, 1);
-////
-////	r.max =r.min + span;
-////
-////	setValue(r);
-//
-//}
-//
-//
-//void ZoomScrollbar::onDraw() const
-//{
-//	ofPushStyle();
-//	ofNoFill();
-//	ofSetColor(getStyles()->getColor(Styles::ROLE_BORDER , Styles::STATE_NORMAL));
-//	ofDrawRectangle(0,0,getWidth(), getHeight());
-//
-//	ofSetColor(ofColor::yellow);
-//	ofDrawRectangle(_inConstraint->getShape());
-//	ofSetColor(ofColor::magenta);
-//	ofDrawRectangle(_outConstraint->getShape());
-//
-//	ofPopStyle();
-//}
-
-
 
 } } // ofx::MUI
-
-//
