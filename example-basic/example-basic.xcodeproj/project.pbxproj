@@ -2116,6 +2116,20 @@
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
+			<key>83DE62F2D281056E49E4E997</key>
+			<dict>
+				<key>children</key>
+				<array>
+					<string>CF687551EDE71F2077CDBF6A</string>
+					<string>DA4AD88223C70471B9B5AABC</string>
+				</array>
+				<key>isa</key>
+				<string>PBXGroup</string>
+				<key>name</key>
+				<string>Data</string>
+				<key>sourceTree</key>
+				<string>&lt;group&gt;</string>
+			</dict>
 			<key>34F5B48B5659E2393B858B0C</key>
 			<dict>
 				<key>fileRef</key>
@@ -2135,43 +2149,6 @@
 				<string>KeyframedData.cpp</string>
 				<key>path</key>
 				<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Data/KeyframedData.cpp</string>
-				<key>sourceTree</key>
-				<string>SOURCE_ROOT</string>
-			</dict>
-			<key>83DE62F2D281056E49E4E997</key>
-			<dict>
-				<key>children</key>
-				<array>
-					<string>5EF6BD35E589E4A7096A2F95</string>
-					<string>CF687551EDE71F2077CDBF6A</string>
-					<string>DA4AD88223C70471B9B5AABC</string>
-				</array>
-				<key>isa</key>
-				<string>PBXGroup</string>
-				<key>name</key>
-				<string>Data</string>
-				<key>sourceTree</key>
-				<string>&lt;group&gt;</string>
-			</dict>
-			<key>A360B69BD74F70114633726E</key>
-			<dict>
-				<key>fileRef</key>
-				<string>5EF6BD35E589E4A7096A2F95</string>
-				<key>isa</key>
-				<string>PBXBuildFile</string>
-			</dict>
-			<key>5EF6BD35E589E4A7096A2F95</key>
-			<dict>
-				<key>explicitFileType</key>
-				<string>sourcecode.cpp.cpp</string>
-				<key>fileEncoding</key>
-				<string>4</string>
-				<key>isa</key>
-				<string>PBXFileReference</string>
-				<key>name</key>
-				<string>Keyframed.cpp</string>
-				<key>path</key>
-				<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Data/Keyframed.cpp</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
@@ -2910,6 +2887,21 @@
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
+			<key>2A45F9F7EC2E677B1F2C3444</key>
+			<dict>
+				<key>children</key>
+				<array>
+					<string>A45198BAC2E307EE57B958E9</string>
+					<string>5C443FC8BCACCAD0543F71D2</string>
+					<string>B5DACF66623E7D634488924C</string>
+				</array>
+				<key>isa</key>
+				<string>PBXGroup</string>
+				<key>name</key>
+				<string>Data</string>
+				<key>sourceTree</key>
+				<string>&lt;group&gt;</string>
+			</dict>
 			<key>A45198BAC2E307EE57B958E9</key>
 			<dict>
 				<key>explicitFileType</key>
@@ -2922,37 +2914,6 @@
 				<string>KeyframedData.h</string>
 				<key>path</key>
 				<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/include/ofx/LineaDeTiempo/Data/KeyframedData.h</string>
-				<key>sourceTree</key>
-				<string>SOURCE_ROOT</string>
-			</dict>
-			<key>2A45F9F7EC2E677B1F2C3444</key>
-			<dict>
-				<key>children</key>
-				<array>
-					<string>1B10537AD97920AA8C0DAC86</string>
-					<string>A45198BAC2E307EE57B958E9</string>
-					<string>5C443FC8BCACCAD0543F71D2</string>
-					<string>B5DACF66623E7D634488924C</string>
-				</array>
-				<key>isa</key>
-				<string>PBXGroup</string>
-				<key>name</key>
-				<string>Data</string>
-				<key>sourceTree</key>
-				<string>&lt;group&gt;</string>
-			</dict>
-			<key>1B10537AD97920AA8C0DAC86</key>
-			<dict>
-				<key>explicitFileType</key>
-				<string>sourcecode.c.h</string>
-				<key>fileEncoding</key>
-				<string>4</string>
-				<key>isa</key>
-				<string>PBXFileReference</string>
-				<key>name</key>
-				<string>Keyframed.h</string>
-				<key>path</key>
-				<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/include/ofx/LineaDeTiempo/Data/Keyframed.h</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
@@ -7495,7 +7456,6 @@ fi
 					<string>A49CC79077A3CF457B877CE1</string>
 					<string>8A7888CCA89EF1741D914BE0</string>
 					<string>002D6A4DAE25F4651D86A79F</string>
-					<string>A360B69BD74F70114633726E</string>
 					<string>34F5B48B5659E2393B858B0C</string>
 					<string>9CEC4022FA41A14E77EB99BE</string>
 					<string>EBABD5000F1E1280C6DA8B4F</string>

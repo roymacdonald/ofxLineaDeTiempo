@@ -4,38 +4,16 @@
 
 
 void ofApp::setup(){
-
-
-
-	numbersGroup.add(_param_int32_t);
-	numbersGroup.add(_param_uint32_t);
-	numbersGroup.add(_param_int64_t);
-	numbersGroup.add(_param_uint64_t);
-	numbersGroup.add(_param_int8_t);
-	numbersGroup.add(_param_uint8_t);
-	numbersGroup.add(_param_int16_t);
-	numbersGroup.add(_param_uint16_t);
-	numbersGroup.add(_param_size_t);
-	numbersGroup.add(_param_float);
-	numbersGroup.add(_param_double);
-
-	colorGroup.add(_param_ofColor);
-	colorGroup.add(_param_ofShortColor);
-	colorGroup.add(_param_ofFloatColor);
-	glmGroup.add(_param_Vec2);
-	glmGroup.add(_param_Vec3);
-	glmGroup.add(_param_Vec4);
 		
 	
-	/// start by setting up the ofxGui as you'd regularly do.
 	gui.setup();
-//	gui.add(numbersGroup);
 	
+	
+	gui.add(_param_float);
+	gui.add(_param_bool);
 	gui.add(_param_void);
-	gui.add(glmGroup);
-	
-	gui.add(colorGroup);
-	
+	gui.add(_param_ofColor);
+	gui.add(_param_Vec3);
 	
 	
 	/// then simply add your ofxPanel to the timeline.
@@ -45,10 +23,25 @@ void ofApp::setup(){
 	/// This can be done and undone on runtime, in order to show or hide the timeline.
 	/// look further down in the keyReleased function to see how to create or destroy the view.
 	timeline.generateView();
-//	timeline.enableAutoFillScreen();
-
-	timeline.setShape({100, 100, 405, 300});
+	timeline.setShape(ofRectangle(100,100,ofGetWidth() -200, ofGetHeight()-200));
 	
+	setHelpString();
+	
+}
+void ofApp::setHelpString()
+{
+	
+	helpString =  "[ Key ] : action\n";
+	helpString += "[ v ] : Show/Hide Timeline\n";
+	helpString += "[ space bar ] : Toggle Play\n";
+	helpString += "[ return/enter ] : Stop\n";
+	helpString += "[ s ] : Save\n";
+	helpString += "[ l ] : Load\n";
+	helpString += "[ g ] : Toggle Draw Gui\n";
+	helpString += "[ h ] : Show/Hide this help\n";
+	
+	ofBitmapFont bf;
+	helpStringHeight = bf.getBoundingBox(helpString, 0, 0).height;
 	
 }
 
@@ -65,7 +58,7 @@ void ofApp::draw(){
 	
 	if(bDrawGui) gui.draw();
 	
-	
+	if(bDrawHelp) ofDrawBitmapStringHighlight(helpString, 20, ofGetHeight() - helpStringHeight, ofColor(0, 100));
 }
 
 //--------------------------------------------------------------
@@ -80,20 +73,9 @@ void ofApp::keyReleased(int key){
 			timeline.generateView();
 		}
 	}
-	else if (key == 'z')
-	{
-
-		auto p = timeline.getPanel();
-		if(p)
-		{
-			p->getTracksView()->_scrollbarH->setValue({0,1});
-			p->getTracksView()->_scrollbarV->setValue({0,1});
-		}
-	}
 	else if (key == ' ')
 	{
 		timeline.getTimeControl()->tooglePlay();
-	
 	}
 	else if (key == 's')
 	{
@@ -109,17 +91,11 @@ void ofApp::keyReleased(int key){
 	{
 		bDrawGui ^= true;
 	}
-	else if (key == 'p') {
-		timeline.printStructure();
-		if(timeline.getView()) timeline.getView()->printStructure();
+	else if (key == 'h') {
+		bDrawHelp ^= true;
 	}
-	else if (key == 't') {
-		auto p = timeline.getPanel();
-		if(p)
-		{
-			p->updateLayout();
-		}
-//		timeline.getGroup(0)->getGroup(0)->getTrack(0)->getView()->setScaledHeight(300);
+	else if (key == OF_KEY_RETURN){
+		timeline.getTimeControl()->stop();
 	}
 	
 }
