@@ -2,8 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxLineaDeTiempo.h"
-//#include "ofxMUI.h"
-#include "TracksPanelController.h"
+
 #include "ofxGui.h"
 
 using namespace ofx::LineaDeTiempo;
@@ -65,9 +64,7 @@ public:
 	ofParameter<glm::vec4>     _param_Vec4         = {"glm::vec4"    ,     glm::vec4(0),        glm::vec4(-1),        glm::vec4(1)};
 
 
-	
-	
-	
+
 	
 	bool bDrawGui = true;
 	

@@ -378,6 +378,50 @@
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
+			<key>9FE53C04DC5449757A437B63</key>
+			<dict>
+				<key>fileRef</key>
+				<string>7463F7A055BB4071AE57E678</string>
+				<key>isa</key>
+				<string>PBXBuildFile</string>
+			</dict>
+			<key>7463F7A055BB4071AE57E678</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.cpp.cpp</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>ZoomablePanel.cpp</string>
+				<key>path</key>
+				<string>../../../addons/ofxLineaDeTiempo/libs/ofxMUI/src/ZoomablePanel.cpp</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>00BB0DF2B25AD7F1064C591F</key>
+			<dict>
+				<key>fileRef</key>
+				<string>619399F6FC47380FAB7CAC3C</string>
+				<key>isa</key>
+				<string>PBXBuildFile</string>
+			</dict>
+			<key>619399F6FC47380FAB7CAC3C</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.cpp.cpp</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>ZoomScrollbar.cpp</string>
+				<key>path</key>
+				<string>../../../addons/ofxLineaDeTiempo/libs/ofxMUI/src/ZoomScrollbar.cpp</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
 			<key>47D508B9D036CC89866EB8F4</key>
 			<dict>
 				<key>fileRef</key>
@@ -858,35 +902,6 @@
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
-			<key>DF0191BCEC70798578753D8F</key>
-			<dict>
-				<key>children</key>
-				<array>
-					<string>77F64D30E92C3BF6B7226421</string>
-					<string>96BDEC2571A5190122019905</string>
-					<string>2DEC919218AC99E7F67FD86E</string>
-					<string>81A319791904BA75C80DA0DC</string>
-					<string>29016838ACB3BAF264F92F7E</string>
-					<string>D2CFCAD832AAF1CA3C9846CB</string>
-					<string>8A9F03F6E7839B67329487FB</string>
-					<string>5E8A514962A4E00B02FEEE45</string>
-					<string>CCA39C7D150729E1D4D88933</string>
-					<string>6ED0E4EE5DF00A177B24A2FF</string>
-					<string>2E1F8DB9F780C99C4C7FD1C3</string>
-					<string>D881741565C82AADBB8E6BEA</string>
-					<string>A9F3C335A9EAA6E60942930D</string>
-					<string>39289EEE6D5AF818109662B4</string>
-					<string>6E969CCDE5C34099FB3663BB</string>
-					<string>8A67303FAF909431E4155783</string>
-					<string>300E779B4A3BEE65CEBD5CA2</string>
-				</array>
-				<key>isa</key>
-				<string>PBXGroup</string>
-				<key>name</key>
-				<string>src</string>
-				<key>sourceTree</key>
-				<string>&lt;group&gt;</string>
-			</dict>
 			<key>0833CF7FAA5DD4EB1032536E</key>
 			<dict>
 				<key>fileRef</key>
@@ -906,6 +921,60 @@
 				<string>Axis.cpp</string>
 				<key>path</key>
 				<string>../../../addons/ofxLineaDeTiempo/libs/ofxMUI/src/Axis.cpp</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>DF0191BCEC70798578753D8F</key>
+			<dict>
+				<key>children</key>
+				<array>
+					<string>0B661C7BEBAF38E3B6328850</string>
+					<string>77F64D30E92C3BF6B7226421</string>
+					<string>96BDEC2571A5190122019905</string>
+					<string>2DEC919218AC99E7F67FD86E</string>
+					<string>81A319791904BA75C80DA0DC</string>
+					<string>29016838ACB3BAF264F92F7E</string>
+					<string>D2CFCAD832AAF1CA3C9846CB</string>
+					<string>8A9F03F6E7839B67329487FB</string>
+					<string>5E8A514962A4E00B02FEEE45</string>
+					<string>CCA39C7D150729E1D4D88933</string>
+					<string>6ED0E4EE5DF00A177B24A2FF</string>
+					<string>2E1F8DB9F780C99C4C7FD1C3</string>
+					<string>D881741565C82AADBB8E6BEA</string>
+					<string>A9F3C335A9EAA6E60942930D</string>
+					<string>39289EEE6D5AF818109662B4</string>
+					<string>6E969CCDE5C34099FB3663BB</string>
+					<string>8A67303FAF909431E4155783</string>
+					<string>300E779B4A3BEE65CEBD5CA2</string>
+					<string>619399F6FC47380FAB7CAC3C</string>
+					<string>7463F7A055BB4071AE57E678</string>
+				</array>
+				<key>isa</key>
+				<string>PBXGroup</string>
+				<key>name</key>
+				<string>src</string>
+				<key>sourceTree</key>
+				<string>&lt;group&gt;</string>
+			</dict>
+			<key>6CD6DE0E7A8FE148AABE6289</key>
+			<dict>
+				<key>fileRef</key>
+				<string>0B661C7BEBAF38E3B6328850</string>
+				<key>isa</key>
+				<string>PBXBuildFile</string>
+			</dict>
+			<key>0B661C7BEBAF38E3B6328850</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.cpp.cpp</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>AutoReziseContainer.cpp</string>
+				<key>path</key>
+				<string>../../../addons/ofxLineaDeTiempo/libs/ofxMUI/src/AutoReziseContainer.cpp</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
@@ -936,6 +1005,36 @@
 				<string>ofRectangleHelper.h</string>
 				<key>path</key>
 				<string>../../../addons/ofxLineaDeTiempo/libs/ofxMUI/include/ofx/MUI/ofRectangleHelper.h</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>15D73CEB74763843F01EA2C3</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.c.h</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>ZoomablePanel.h</string>
+				<key>path</key>
+				<string>../../../addons/ofxLineaDeTiempo/libs/ofxMUI/include/ofx/MUI/ZoomablePanel.h</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>439F161320CDA744628921A8</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.c.h</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>ZoomScrollbar.h</string>
+				<key>path</key>
+				<string>../../../addons/ofxLineaDeTiempo/libs/ofxMUI/include/ofx/MUI/ZoomScrollbar.h</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
@@ -1377,10 +1476,26 @@
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
+			<key>FF1D9E1DD567131B5A34640D</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.c.h</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>Axis.h</string>
+				<key>path</key>
+				<string>../../../addons/ofxLineaDeTiempo/libs/ofxMUI/include/ofx/MUI/Axis.h</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
 			<key>8DF5E1323B0FFE23AF79D3A4</key>
 			<dict>
 				<key>children</key>
 				<array>
+					<string>D95E573AB36EDD0763C91A30</string>
 					<string>FF1D9E1DD567131B5A34640D</string>
 					<string>31542880384A718FDC0096D2</string>
 					<string>654657224F77FEBCFEFB1989</string>
@@ -1405,6 +1520,8 @@
 					<string>537BAAE584B62876E32E2A0F</string>
 					<string>C839D8968E5FE0859DEB7D1D</string>
 					<string>29FFE6270D0DF99D78E343DB</string>
+					<string>439F161320CDA744628921A8</string>
+					<string>15D73CEB74763843F01EA2C3</string>
 					<string>3C85B24F281313A414FB64CE</string>
 				</array>
 				<key>isa</key>
@@ -1455,7 +1572,7 @@
 				<key>sourceTree</key>
 				<string>&lt;group&gt;</string>
 			</dict>
-			<key>FF1D9E1DD567131B5A34640D</key>
+			<key>D95E573AB36EDD0763C91A30</key>
 			<dict>
 				<key>explicitFileType</key>
 				<string>sourcecode.c.h</string>
@@ -1464,9 +1581,31 @@
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>name</key>
-				<string>Axis.h</string>
+				<string>AutoReziseContainer.h</string>
 				<key>path</key>
-				<string>../../../addons/ofxLineaDeTiempo/libs/ofxMUI/include/ofx/MUI/Axis.h</string>
+				<string>../../../addons/ofxLineaDeTiempo/libs/ofxMUI/include/ofx/MUI/AutoReziseContainer.h</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>BE7B695BD5B45ABA0C1163B5</key>
+			<dict>
+				<key>fileRef</key>
+				<string>D077399252FA81875E0083D0</string>
+				<key>isa</key>
+				<string>PBXBuildFile</string>
+			</dict>
+			<key>D077399252FA81875E0083D0</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.cpp.cpp</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>ofxGuiView.cpp</string>
+				<key>path</key>
+				<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/View/ofxGuiView.cpp</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
@@ -1800,6 +1939,50 @@
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
+			<key>4705583CAE8555C546039461</key>
+			<dict>
+				<key>fileRef</key>
+				<string>560EAC6339C831ADA1C03A2E</string>
+				<key>isa</key>
+				<string>PBXBuildFile</string>
+			</dict>
+			<key>560EAC6339C831ADA1C03A2E</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.cpp.cpp</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>KeyframeTrackView.cpp</string>
+				<key>path</key>
+				<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/View/KeyframeTrackView.cpp</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>F9AD0976F882CB8DABF2CF87</key>
+			<dict>
+				<key>fileRef</key>
+				<string>7BC43CE4AC9020BD995103BF</string>
+				<key>isa</key>
+				<string>PBXBuildFile</string>
+			</dict>
+			<key>7BC43CE4AC9020BD995103BF</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.cpp.cpp</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>KeyframeTrackHeader.cpp</string>
+				<key>path</key>
+				<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/View/KeyframeTrackHeader.cpp</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
 			<key>668BADD011C066F0F9C7C1FB</key>
 			<dict>
 				<key>fileRef</key>
@@ -1828,6 +2011,8 @@
 				<array>
 					<string>86381E8336867D881C7624DF</string>
 					<string>932C296F01FBDB98DB33D249</string>
+					<string>7BC43CE4AC9020BD995103BF</string>
+					<string>560EAC6339C831ADA1C03A2E</string>
 					<string>E49E4A09C9D4DB0FC909BE9E</string>
 					<string>1329F754B921D34937F6E0A8</string>
 					<string>E73DF614E318F7C2BDEF7F6D</string>
@@ -1843,6 +2028,7 @@
 					<string>2C67E0A755182F642B87184A</string>
 					<string>42EF46A58BEC9D4E2EE56897</string>
 					<string>BF361122CF24810A7DCB2961</string>
+					<string>D077399252FA81875E0083D0</string>
 				</array>
 				<key>isa</key>
 				<string>PBXGroup</string>
@@ -1873,6 +2059,41 @@
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
+			<key>2FE8411AB94B5E8482921C41</key>
+			<dict>
+				<key>children</key>
+				<array>
+					<string>4CA3EFDA8EF9358821E2DC34</string>
+				</array>
+				<key>isa</key>
+				<string>PBXGroup</string>
+				<key>name</key>
+				<string>Utils</string>
+				<key>sourceTree</key>
+				<string>&lt;group&gt;</string>
+			</dict>
+			<key>EBABD5000F1E1280C6DA8B4F</key>
+			<dict>
+				<key>fileRef</key>
+				<string>4CA3EFDA8EF9358821E2DC34</string>
+				<key>isa</key>
+				<string>PBXBuildFile</string>
+			</dict>
+			<key>4CA3EFDA8EF9358821E2DC34</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.cpp.cpp</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>ConstVars.cpp</string>
+				<key>path</key>
+				<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Utils/ConstVars.cpp</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
 			<key>9CEC4022FA41A14E77EB99BE</key>
 			<dict>
 				<key>fileRef</key>
@@ -1895,20 +2116,6 @@
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
-			<key>83DE62F2D281056E49E4E997</key>
-			<dict>
-				<key>children</key>
-				<array>
-					<string>CF687551EDE71F2077CDBF6A</string>
-					<string>DA4AD88223C70471B9B5AABC</string>
-				</array>
-				<key>isa</key>
-				<string>PBXGroup</string>
-				<key>name</key>
-				<string>Data</string>
-				<key>sourceTree</key>
-				<string>&lt;group&gt;</string>
-			</dict>
 			<key>34F5B48B5659E2393B858B0C</key>
 			<dict>
 				<key>fileRef</key>
@@ -1928,6 +2135,43 @@
 				<string>KeyframedData.cpp</string>
 				<key>path</key>
 				<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Data/KeyframedData.cpp</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>83DE62F2D281056E49E4E997</key>
+			<dict>
+				<key>children</key>
+				<array>
+					<string>5EF6BD35E589E4A7096A2F95</string>
+					<string>CF687551EDE71F2077CDBF6A</string>
+					<string>DA4AD88223C70471B9B5AABC</string>
+				</array>
+				<key>isa</key>
+				<string>PBXGroup</string>
+				<key>name</key>
+				<string>Data</string>
+				<key>sourceTree</key>
+				<string>&lt;group&gt;</string>
+			</dict>
+			<key>A360B69BD74F70114633726E</key>
+			<dict>
+				<key>fileRef</key>
+				<string>5EF6BD35E589E4A7096A2F95</string>
+				<key>isa</key>
+				<string>PBXBuildFile</string>
+			</dict>
+			<key>5EF6BD35E589E4A7096A2F95</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.cpp.cpp</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>Keyframed.cpp</string>
+				<key>path</key>
+				<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Data/Keyframed.cpp</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
@@ -2180,6 +2424,7 @@
 				<array>
 					<string>5C23F29C4742EDADFDE4219E</string>
 					<string>83DE62F2D281056E49E4E997</string>
+					<string>2FE8411AB94B5E8482921C41</string>
 					<string>42C4B395B94CBA0ED384A0E1</string>
 				</array>
 				<key>isa</key>
@@ -2223,28 +2468,6 @@
 				<string>ofxGuiView.h</string>
 				<key>path</key>
 				<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/include/ofx/LineaDeTiempo/View/ofxGuiView.h</string>
-				<key>sourceTree</key>
-				<string>SOURCE_ROOT</string>
-			</dict>
-			<key>ED60AECC51B630D6F9DB51BF</key>
-			<dict>
-				<key>fileRef</key>
-				<string>DDEC3501171395084CA43C8D</string>
-				<key>isa</key>
-				<string>PBXBuildFile</string>
-			</dict>
-			<key>DDEC3501171395084CA43C8D</key>
-			<dict>
-				<key>explicitFileType</key>
-				<string>sourcecode.cpp.cpp</string>
-				<key>fileEncoding</key>
-				<string>4</string>
-				<key>isa</key>
-				<string>PBXFileReference</string>
-				<key>name</key>
-				<string>ofxGuiView.cpp</string>
-				<key>path</key>
-				<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/include/ofx/LineaDeTiempo/View/ofxGuiView.cpp</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
@@ -2473,6 +2696,21 @@
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
+			<key>90029DEA0BE53F0FB02F34D3</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.c.h</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>KeyframeTrackView.h</string>
+				<key>path</key>
+				<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/include/ofx/LineaDeTiempo/View/KeyframeTrackView.h</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
 			<key>3EABA57D5EF6FB359C4E522A</key>
 			<dict>
 				<key>explicitFileType</key>
@@ -2485,28 +2723,6 @@
 				<string>KeyframeTrackHeader.h</string>
 				<key>path</key>
 				<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/include/ofx/LineaDeTiempo/View/KeyframeTrackHeader.h</string>
-				<key>sourceTree</key>
-				<string>SOURCE_ROOT</string>
-			</dict>
-			<key>0E51166234CC786BD283CD69</key>
-			<dict>
-				<key>fileRef</key>
-				<string>F3C9B94AA2BFFF46FC80820F</string>
-				<key>isa</key>
-				<string>PBXBuildFile</string>
-			</dict>
-			<key>F3C9B94AA2BFFF46FC80820F</key>
-			<dict>
-				<key>explicitFileType</key>
-				<string>sourcecode.cpp.cpp</string>
-				<key>fileEncoding</key>
-				<string>4</string>
-				<key>isa</key>
-				<string>PBXFileReference</string>
-				<key>name</key>
-				<string>KeyframeTrackHeader.cpp</string>
-				<key>path</key>
-				<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/include/ofx/LineaDeTiempo/View/KeyframeTrackHeader.cpp</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
@@ -2531,8 +2747,8 @@
 				<array>
 					<string>3490A3A6512B31A687ECE7D5</string>
 					<string>39DBC59B1A294BF7C2CF0C1F</string>
-					<string>F3C9B94AA2BFFF46FC80820F</string>
 					<string>3EABA57D5EF6FB359C4E522A</string>
+					<string>90029DEA0BE53F0FB02F34D3</string>
 					<string>A469B721D69C4F2C454D3C8F</string>
 					<string>9D2A912988D852862B2E2A14</string>
 					<string>23620B0616A18ED892017FE3</string>
@@ -2548,7 +2764,6 @@
 					<string>D0F54E814CE594EDDEB9D9E1</string>
 					<string>DBF5702CDA21468434261F4A</string>
 					<string>D343E3427380DDABC75368FB</string>
-					<string>DDEC3501171395084CA43C8D</string>
 					<string>7A29194A008668B0944B4906</string>
 				</array>
 				<key>isa</key>
@@ -2633,34 +2848,11 @@
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
-			<key>60746CC1D13441BFB6CA8C33</key>
-			<dict>
-				<key>fileRef</key>
-				<string>5111A4DE1DF23AE6ED26F171</string>
-				<key>isa</key>
-				<string>PBXBuildFile</string>
-			</dict>
-			<key>5111A4DE1DF23AE6ED26F171</key>
-			<dict>
-				<key>explicitFileType</key>
-				<string>sourcecode.cpp.cpp</string>
-				<key>fileEncoding</key>
-				<string>4</string>
-				<key>isa</key>
-				<string>PBXFileReference</string>
-				<key>name</key>
-				<string>ConstVars.cpp</string>
-				<key>path</key>
-				<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/include/ofx/LineaDeTiempo/Utils/ConstVars.cpp</string>
-				<key>sourceTree</key>
-				<string>SOURCE_ROOT</string>
-			</dict>
 			<key>FBCB718AB3410C4FDF8CE18D</key>
 			<dict>
 				<key>children</key>
 				<array>
 					<string>529DBD9FB199C35484B522CE</string>
-					<string>5111A4DE1DF23AE6ED26F171</string>
 					<string>C2932C33B48BEA80608939BA</string>
 					<string>7D28DC6C6D231C8BCEB725FD</string>
 					<string>2725FC873B3261F6E185050C</string>
@@ -2733,26 +2925,10 @@
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
-			<key>1B10537AD97920AA8C0DAC86</key>
-			<dict>
-				<key>explicitFileType</key>
-				<string>sourcecode.c.h</string>
-				<key>fileEncoding</key>
-				<string>4</string>
-				<key>isa</key>
-				<string>PBXFileReference</string>
-				<key>name</key>
-				<string>Keyframed.h</string>
-				<key>path</key>
-				<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/include/ofx/LineaDeTiempo/Data/Keyframed.h</string>
-				<key>sourceTree</key>
-				<string>SOURCE_ROOT</string>
-			</dict>
 			<key>2A45F9F7EC2E677B1F2C3444</key>
 			<dict>
 				<key>children</key>
 				<array>
-					<string>53946FE8BD39C87DBCC31E5D</string>
 					<string>1B10537AD97920AA8C0DAC86</string>
 					<string>A45198BAC2E307EE57B958E9</string>
 					<string>5C443FC8BCACCAD0543F71D2</string>
@@ -2765,25 +2941,18 @@
 				<key>sourceTree</key>
 				<string>&lt;group&gt;</string>
 			</dict>
-			<key>2D64C623C858442F2BF13C7D</key>
-			<dict>
-				<key>fileRef</key>
-				<string>53946FE8BD39C87DBCC31E5D</string>
-				<key>isa</key>
-				<string>PBXBuildFile</string>
-			</dict>
-			<key>53946FE8BD39C87DBCC31E5D</key>
+			<key>1B10537AD97920AA8C0DAC86</key>
 			<dict>
 				<key>explicitFileType</key>
-				<string>sourcecode.cpp.cpp</string>
+				<string>sourcecode.c.h</string>
 				<key>fileEncoding</key>
 				<string>4</string>
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>name</key>
-				<string>Keyframed.cpp</string>
+				<string>Keyframed.h</string>
 				<key>path</key>
-				<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/include/ofx/LineaDeTiempo/Data/Keyframed.cpp</string>
+				<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/include/ofx/LineaDeTiempo/Data/Keyframed.h</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
@@ -4225,6 +4394,7 @@ fi
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/BaseTypes</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Controller</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Data</string>
+						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Utils</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/View</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxMUI</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxMUI/include</string>
@@ -4306,6 +4476,7 @@ fi
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/BaseTypes</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Controller</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Data</string>
+						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Utils</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/View</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxMUI</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxMUI/include</string>
@@ -7147,6 +7318,7 @@ fi
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/BaseTypes</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Controller</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Data</string>
+						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Utils</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/View</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxMUI</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxMUI/include</string>
@@ -7248,6 +7420,7 @@ fi
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/BaseTypes</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Controller</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Data</string>
+						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Utils</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/View</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxMUI</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxMUI/include</string>
@@ -7311,10 +7484,6 @@ fi
 					<string>B7ECEAD0294578E488E18CE5</string>
 					<string>BC7461A6F3E013F81033828F</string>
 					<string>4F875FFEAD0D31EB74635201</string>
-					<string>2D64C623C858442F2BF13C7D</string>
-					<string>60746CC1D13441BFB6CA8C33</string>
-					<string>0E51166234CC786BD283CD69</string>
-					<string>ED60AECC51B630D6F9DB51BF</string>
 					<string>463352F2F37B3345E7651BAC</string>
 					<string>9B31251B7B3827AC60A2502C</string>
 					<string>B1F6B5FE67891597BFF83710</string>
@@ -7326,10 +7495,14 @@ fi
 					<string>A49CC79077A3CF457B877CE1</string>
 					<string>8A7888CCA89EF1741D914BE0</string>
 					<string>002D6A4DAE25F4651D86A79F</string>
+					<string>A360B69BD74F70114633726E</string>
 					<string>34F5B48B5659E2393B858B0C</string>
 					<string>9CEC4022FA41A14E77EB99BE</string>
+					<string>EBABD5000F1E1280C6DA8B4F</string>
 					<string>4009C3B66F82FDA40B0BA3C0</string>
 					<string>668BADD011C066F0F9C7C1FB</string>
+					<string>F9AD0976F882CB8DABF2CF87</string>
+					<string>4705583CAE8555C546039461</string>
 					<string>351A9413E3C06FA45B656BD9</string>
 					<string>52D2355EDEE3BC5822348E0D</string>
 					<string>8F0CABB24FA03FCAC56F4A59</string>
@@ -7345,6 +7518,8 @@ fi
 					<string>3111E9EBB905B16DCBB7F723</string>
 					<string>0BAA52199BA693C0C2011ADE</string>
 					<string>134E7896C987FB5177CDC120</string>
+					<string>BE7B695BD5B45ABA0C1163B5</string>
+					<string>6CD6DE0E7A8FE148AABE6289</string>
 					<string>0833CF7FAA5DD4EB1032536E</string>
 					<string>F1C4EDE9EFD911F1B9979F53</string>
 					<string>CB565AC53B5CCE0CE50E6CE3</string>
@@ -7367,6 +7542,8 @@ fi
 					<string>39B33D8CD15B1F1D151B3F98</string>
 					<string>3A4ACF3ACAFC65DE46B0D21F</string>
 					<string>47D508B9D036CC89866EB8F4</string>
+					<string>00BB0DF2B25AD7F1064C591F</string>
+					<string>9FE53C04DC5449757A437B63</string>
 					<string>40E5BB4C5ACCE051DD58E399</string>
 					<string>91855159780EFAA7DA06F1C9</string>
 					<string>EAFA57EE8980CE80CC03AEE7</string>
@@ -7411,7 +7588,7 @@ fi
 				<key>isa</key>
 				<string>PBXNativeTarget</string>
 				<key>name</key>
-				<string>example</string>
+				<string>example-basic</string>
 				<key>productName</key>
 				<string>myOFApp</string>
 				<key>productReference</key>
@@ -7428,7 +7605,7 @@ fi
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>path</key>
-				<string>exampleDebug.app</string>
+				<string>example-basicDebug.app</string>
 				<key>sourceTree</key>
 				<string>BUILT_PRODUCTS_DIR</string>
 			</dict>
@@ -7492,6 +7669,7 @@ fi
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/BaseTypes</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Controller</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Data</string>
+						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Utils</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/View</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxMUI</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxMUI/include</string>
@@ -7582,6 +7760,7 @@ fi
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/BaseTypes</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Controller</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Data</string>
+						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Utils</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/View</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxMUI</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxMUI/include</string>

@@ -1,13 +1,5 @@
 #include "ofApp.h"
-//#include "Utils.h"
-//#include "Track.h"
-//#include "KeyFrames.h"
-//using namespace ofx::LineaDeTiempo;
-#include "LineaDeTiempo/Controller/TrackController.h"
-#include "LineaDeTiempo/Controller/TrackGroupController.h"
-#include "LineaDeTiempo/Controller/KeyframeTrackController.h"
-#include "LineaDeTiempo/Utils/ofxTypeTraits.h"
-#include "DOM/Element.h"
+
 //--------------------------------------------------------------
 
 
@@ -37,8 +29,9 @@ void ofApp::setup(){
 	
 	/// start by setting up the ofxGui as you'd regularly do.
 	gui.setup();
-	gui.add(numbersGroup);
+//	gui.add(numbersGroup);
 	
+	gui.add(_param_void);
 	gui.add(glmGroup);
 	
 	gui.add(colorGroup);
@@ -47,16 +40,14 @@ void ofApp::setup(){
 	
 	/// then simply add your ofxPanel to the timeline.
 	timeline.add(gui);
+	
 	/// The timeline also works without its view, so you need to generate it.
 	/// This can be done and undone on runtime, in order to show or hide the timeline.
 	/// look further down in the keyReleased function to see how to create or destroy the view.
 	timeline.generateView();
-	
+//	timeline.enableAutoFillScreen();
 
-	
-	
-	
-
+	timeline.setShape({100, 100, 405, 300});
 	
 	
 }
@@ -89,6 +80,16 @@ void ofApp::keyReleased(int key){
 			timeline.generateView();
 		}
 	}
+	else if (key == 'z')
+	{
+
+		auto p = timeline.getPanel();
+		if(p)
+		{
+			p->getTracksView()->_scrollbarH->setValue({0,1});
+			p->getTracksView()->_scrollbarV->setValue({0,1});
+		}
+	}
 	else if (key == ' ')
 	{
 		timeline.getTimeControl()->tooglePlay();
@@ -111,6 +112,14 @@ void ofApp::keyReleased(int key){
 	else if (key == 'p') {
 		timeline.printStructure();
 		if(timeline.getView()) timeline.getView()->printStructure();
+	}
+	else if (key == 't') {
+		auto p = timeline.getPanel();
+		if(p)
+		{
+			p->updateLayout();
+		}
+//		timeline.getGroup(0)->getGroup(0)->getTrack(0)->getView()->setScaledHeight(300);
 	}
 	
 }
