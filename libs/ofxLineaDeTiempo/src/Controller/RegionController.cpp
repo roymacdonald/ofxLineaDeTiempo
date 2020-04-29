@@ -14,9 +14,7 @@ namespace LineaDeTiempo {
 RegionController::RegionController(const std::string& name, const ofRange64u& timeRange, TrackController* parentTrack, TimeControl* timeControl)
 :BaseController<RegionView>(name, parentTrack, timeControl)
 {
-	
-	setTimeRange(timeRange, false);
-	
+	setTimeRange(timeRange);
 }
 		
 

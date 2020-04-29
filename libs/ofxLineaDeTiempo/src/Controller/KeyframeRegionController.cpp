@@ -27,8 +27,22 @@ KeyframeRegionController_<T>::KeyframeRegionController_(const std::string& name,
 	for(size_t i = 0; i < type_dimensions<T>::value; i++)
 	{
 		_collections.push_back(addChild<KeyframeCollectionController<T>>(this, i ));
+		_collections.back()->setTimeRange(timeRange);
 	}
 }
+
+template<>
+KeyframeRegionController_<void>::KeyframeRegionController_(const std::string& name, const ofRange64u& timeRange, TrackController* parentTrack, TimeControl* timeControl)
+: RegionController(name, timeRange, parentTrack, timeControl)
+, _parentTrack(dynamic_cast<KeyframeTrackController_<void>*>(parentTrack))
+{
+	_dataTypeName = typeid(void).name();
+		
+	_collections.push_back(addChild<KeyframeCollectionController<void>>(this));
+	_collections.back()->setTimeRange(timeRange);
+}
+
+
 
 
 template<typename T>
@@ -36,6 +50,18 @@ KeyframeRegionController_<T>::~KeyframeRegionController_()
 {
 	destroyView();
 }
+
+template<typename T>
+void KeyframeRegionController_<T>::setTimeRange(const ofRange64u& t, bool updateView )
+{
+ 	if(_timeRange != t){
+		for(auto&c :_collections)
+		{
+			c->setTimeRange(t);
+		}
+		RegionController::setTimeRange(t, updateView);
+ 	}
+ }
 
 
 template<typename T>
@@ -113,6 +139,21 @@ bool KeyframeRegionController_<T>::_update(const uint64_t& t, ofParameter<T>& pa
 	
 	return bUpdated;
 }
+template<>
+bool KeyframeRegionController_<void>::_update(const uint64_t& t, ofParameter<void>& param)
+{
+	bool bUpdated = false;
+	
+	
+	for(auto c : _collections)
+	{
+		bUpdated |= c->update(t, param);
+	}
+	
+	return bUpdated;
+}
+
+
 //
 //template<>
 //bool KeyframeRegionController_<void>::_update(const uint64_t& t, ofParameter<void>& param)
@@ -218,7 +259,7 @@ template class KeyframeRegionController_<glm::vec3>;
 template class KeyframeRegionController_<glm::vec4>;
 
 template class KeyframeRegionController_<bool>;
-//template class KeyframeRegionController_<void>;
+template class KeyframeRegionController_<void>;
 
 
 template class KeyframeRegionController_<ofColor>;

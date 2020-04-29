@@ -85,6 +85,76 @@ void KeyframeController<T>::_timeChanged(uint64_t& t)
 }
 
 
+
+
+
+
+
+KeyframeController<void>::KeyframeController( const std::string& name, uint64_t * data, KeyframeCollectionController<void>* parentController)
+: BaseController<KeyframeView>(name, parentController, nullptr)
+,_parentController(parentController)
+,_data(data)
+{
+		
+}
+
+
+KeyframeController<void>::~KeyframeController(){
+	destroyView();
+}
+
+
+
+void KeyframeController<void>::generateView()
+{
+	if(getView() == nullptr && _data && _parentController && _parentController->getView()){
+	
+		auto view = _parentController->getView()->addKeyframe(*_data);
+			
+		setView(view);
+			
+		viewListeners.push(view->timeChangedEvent.newListener(this, &KeyframeController<void>::_timeChanged));
+		
+		generateChildrenViews(this);
+	}
+}
+
+
+void KeyframeController<void>::destroyView()
+{
+	if(getView()){
+		destroyChildrenViews(this);
+		if(_parentController && _parentController->getView()){
+			
+			
+			if(_parentController->getView()->removeKeyframe(getView()) == false)
+			{
+				ofLogError("KeyframeController_<T>::destroyView") << "Could not remove track correctly. " << getId();
+			}
+			
+		}
+		viewListeners.unsubscribeAll();
+		setView(nullptr);
+	}
+}
+
+
+void KeyframeController<void>::_timeChanged(uint64_t& t)
+{
+	if(_data){
+		*_data = t;
+		_parentController->sortData();
+	}
+}
+
+
+
+
+
+
+
+
+
 template class KeyframeController<glm::vec2>;
 template class KeyframeController<glm::vec3>;
 template class KeyframeController<glm::vec4>;

@@ -43,7 +43,7 @@ public:
 	
 	virtual bool update(uint64_t& t) override;
 	
-
+	virtual void setTimeRange(const ofRange64u& t, bool updateView = true) override;
 	
 	
 	virtual void fromJson(const ofJson& j) override;

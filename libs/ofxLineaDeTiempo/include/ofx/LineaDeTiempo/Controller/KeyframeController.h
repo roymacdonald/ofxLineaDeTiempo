@@ -74,4 +74,63 @@ private:
 
 
 
+
+
+
+
+
+
+template<>
+class KeyframeController<void>
+: public BaseController<KeyframeView>
+{
+public:
+	
+	
+	KeyframeController( const std::string& name, uint64_t * data, KeyframeCollectionController<void>* parentController);
+//	: BaseController<KeyframeView>(name, parentController, nullptr)
+//	,_parentController(parentController)
+//	,_data(data)
+//	{
+//
+//	}
+
+	
+	
+	virtual ~KeyframeController();
+	
+	virtual void generateView() override;
+	virtual void destroyView() override;
+	
+
+	uint64_t * getData()
+	{
+		return _data;
+	}
+	
+	const uint64_t * getData() const
+	{
+		return _data;
+	}
+	
+protected:
+
+	
+private:
+	ofEventListeners viewListeners;
+	
+	void _timeChanged(uint64_t& t);
+	
+	KeyframeCollectionController<void>* _parentController = nullptr;
+	
+	uint64_t * _data = nullptr;
+	
+	
+	
+};
+
+
+
+
+
 } } // ofx::LineaDeTiempo

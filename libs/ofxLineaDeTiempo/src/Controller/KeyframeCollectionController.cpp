@@ -66,17 +66,17 @@ KeyframeController<D>* KeyframeCollectionController<D>::addKeyframe(KeyframeColl
 template<typename D>
 bool KeyframeCollectionController<D>::removeKeyframe(KeyframeController<D>* keyframe)
 {
+	if(keyframe->getView())
+	{
+		_keyframesViewMap.erase(keyframe->getView());
+		keyframe->destroyView();
+	}
 	
 	_keyframedData.remove(keyframe->getData());
 	ofRemove(_keyframes, [&](KeyframeController<D>* k){
 		return k == keyframe;
 	});
 	
-	if(keyframe->getView())
-	{
-		_keyframesViewMap.erase(keyframe->getView());
-		keyframe->destroyView();
-	}
 	
 	return (removeChild(keyframe) != nullptr);
 	
@@ -175,7 +175,7 @@ void KeyframeCollectionController<D>::_addKeyframeEventCB(AddKeyframeEventArgs& 
 template<typename D>
 bool KeyframeCollectionController<D>::compareKeyframeControlers(KeyframeController<D>*a, KeyframeController<D>*b)
 {
-	return a->getData()->time < a->getData()->time ;
+	return a->getData()->time < b->getData()->time ;
 }
 template<typename D>
 void KeyframeCollectionController<D>::sortData()
@@ -231,6 +231,11 @@ float KeyframeCollectionController<bool>::normalizeValue(bool val)
 	return (val?1.0f:0.0f );
 }
 
+template<typename D>
+const typename  KeyframeCollectionController<D>::innerDataType& KeyframeCollectionController<D>::getCurrentValue() const
+{
+	return _keyframedData.getCurrentValue();
+}
 
 
 //
@@ -300,6 +305,13 @@ ofJson KeyframeCollectionController<D>::toJson()
 	return j;
 	
 }
+
+template<typename D>
+void KeyframeCollectionController<D>::setTimeRange(const ofRange64u& timeRange)
+{
+	_keyframedData.setTimeRange(timeRange);
+}
+
 //template<typename D>
 //const D& KeyframeCollectionController<D>::getCurrentValue() const
 //{
@@ -324,12 +336,242 @@ ofJson KeyframeCollectionController<D>::toJson()
 //
 //}
 
+
+
+KeyframeCollectionController<void>::KeyframeCollectionController( KeyframeRegionController_<void> * parentRegion)
+: BaseController(parentRegion->getId() , parentRegion, parentRegion->getTimeControl())
+, _parentRegion(parentRegion)
+{
+	
+	_dataTypeName = typeid(void).name();
+
+}
+
+
+
+KeyframeCollectionController<void>::~KeyframeCollectionController()
+{
+	destroyView();
+}
+
+
+
+KeyframeController<void>* KeyframeCollectionController<void>::addKeyframe( uint64_t time)
+{
+	
+	
+	auto d = _keyframedData.add(time);
+	
+	if(d){
+		auto k = addChild<KeyframeController<void>>( "k_"+ofToString(_keyframedData.size()), d, this );
+		
+		_keyframes.push_back(k);
+		
+		if(getView())
+		{
+			k->generateView();
+			_keyframesViewMap[k->getView()] = k;
+		}
+		sortData();
+		return k;
+	}
+	return nullptr;
+}
+
+
+bool KeyframeCollectionController<void>::removeKeyframe(KeyframeController<void>* keyframe)
+{
+	
+	
+	
+	if(keyframe->getView())
+	{
+		_keyframesViewMap.erase(keyframe->getView());
+		keyframe->destroyView();
+	}
+	
+	_keyframedData.remove(keyframe->getData());
+	ofRemove(_keyframes, [&](KeyframeController<void>* k){
+		return k == keyframe;
+	});
+
+	return (removeChild(keyframe) != nullptr);
+	
+	
+	
+}
+
+
+void KeyframeCollectionController<void>::removeAllKeyframes()
+{
+	DOM::Node::removeAllChildren();
+	_keyframedData.clear();
+	_keyframesViewMap.clear();
+	_keyframes.clear();
+}
+
+
+void KeyframeCollectionController<void>::generateView()
+{
+	if(getView() == nullptr){
+		auto p = _parentRegion;
+		if(p && p->getKeyframesRegionView())
+		{
+			
+			auto views = p->getKeyframesRegionView()->getViews();
+			if(views.size())
+			{
+				setView(views[0]);
+				
+				auto cv = views[0];
+				
+				if(cv){
+					addKeyframeListener = cv -> addKeyframeEvent.newListener(this,&KeyframeCollectionController<void>::_addKeyframeEventCB);
+					
+					removeKeyframeListener = cv->removeKeyframeEvent.newListener(this, &KeyframeCollectionController<void>::_removeKeyframeEventCB);
+				}
+			}
+		}
+		
+		generateChildrenViews(this);
+		_keyframesViewMap.clear();
+		for(auto k: _keyframes)
+		{
+			if(k && k->getView())
+			{
+				_keyframesViewMap[k->getView()] = k;
+			}
+		}
+	}
+}
+
+
+void KeyframeCollectionController<void>::destroyView()
+{
+	if(getView()){
+		destroyChildrenViews(this);
+		_keyframesViewMap.clear();
+		
+		addKeyframeListener.unsubscribe();
+		removeKeyframeListener.unsubscribe();
+		setView(nullptr);
+	}
+}
+
+
+
+void KeyframeCollectionController<void>::_addKeyframeEventCB(AddKeyframeEventArgs& args)
+{
+	
+	addKeyframe( args.time);
+}
+
+
+bool KeyframeCollectionController<void>::compareKeyframeControlers(KeyframeController<void>*a, KeyframeController<void>*b)
+{
+	return *(a->getData()) < *(b->getData()) ;
+}
+
+void KeyframeCollectionController<void>::sortData()
+{
+	ofSort(_keyframes, KeyframeCollectionController<void>::compareKeyframeControlers);
+	
+	_keyframedData.sortData();
+	
+	if(getView()) getView()->updateKeyframeSort();
+	
+}
+
+
+void KeyframeCollectionController<void>::_removeKeyframeEventCB(RemoveKeyframesEventArgs& args)
+{
+	for(auto k: args.keyframes){
+		if(!k)
+		{
+			ofLogWarning("KeyframeCollectionController<D>::_removeKeyframeEventCB") << "failed because a nullptr was passed to it. This should not happen.";
+			continue;
+		}
+		if(_keyframesViewMap.count(k))
+		{
+			removeKeyframe(_keyframesViewMap[k]);
+		}
+	}
+}
+
+	
+bool KeyframeCollectionController<void>::update(const uint64_t& t, ofParameter<void>& param)
+{
+	if(_keyframedData.update(t))
+	{
+		param.trigger();
+		return true;
+	}
+	return false;
+}
+
+void KeyframeCollectionController<void>::setTimeRange(const ofRange64u& timeRange)
+{
+	_keyframedData.setTimeRange(timeRange);
+}
+	
+
+void KeyframeCollectionController<void>::fromJson(const ofJson& j)
+{
+	
+//	std::cout << "KeyframeCollectionController<D>::fromJson\n";
+	
+	setId(j["name"]);
+	
+	if(j.count("_keyframedData")== 0 || j.count("_dataTypeName") == 0)
+	{
+		ofLogError("KeyframeCollectionController<void>::fromJson") << "failed. Malformed json. DataTypeName or keyframedData elements not present";
+		return;
+	}
+	auto dt = j["_dataTypeName"].get<std::string>();
+	
+	if(dt != getDataTypeName())
+	{
+		ofLogError("KeyframeCollectionController<T>::fromJson") << "failed. DataType seems to be different to the one saved on file";
+		return;
+	}
+	
+	removeAllKeyframes();
+	
+	KeyframedData_<void> key_data;
+	
+	key_data.fromJson(j["_keyframedData"]);
+	
+	for(auto& d: key_data.getData())
+	{
+		addKeyframe(*d);
+	}
+}
+
+
+ofJson KeyframeCollectionController<void>::toJson()
+{
+	ofJson j;
+	j["class"] = "KeyframeCollectionController";
+	j["name"] = getId();
+	j["_dataTypeName"] = _dataTypeName;
+	
+	
+	j["_keyframedData"] = _keyframedData.toJson();
+	
+	
+	return j;
+	
+}
+
+
+
+
+
 template class KeyframeCollectionController<glm::vec2>;
 template class KeyframeCollectionController<glm::vec3>;
 template class KeyframeCollectionController<glm::vec4>;
 
 template class KeyframeCollectionController<bool>;
-//template class KeyframeCollectionController<void>;
 
 
 template class KeyframeCollectionController<ofColor>;

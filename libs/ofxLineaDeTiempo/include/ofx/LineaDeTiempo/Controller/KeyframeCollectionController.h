@@ -27,6 +27,7 @@
 #include "LineaDeTiempo/BaseTypes/AbstractSerializable.h"
 #include "LineaDeTiempo/Utils/ofxTypeTraits.h"
 #include "LineaDeTiempo/Utils/ParamHelper.h"
+#include "ofRange.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -34,6 +35,8 @@ namespace LineaDeTiempo {
 
 template<typename DataType>
 class KeyframeRegionController_;
+
+
 
 template<typename RegionDataType>
 class KeyframeCollectionController
@@ -70,10 +73,9 @@ public:
 	}
 	
 	
-	template<typename T>
 	///\brief Returns true if the value was updated
-	typename std::enable_if<not std::is_void<T>::value, bool>::type
-	update(const uint64_t& t, T& param)
+	template<typename T>
+	bool update(const uint64_t& t, T& param)
 	{
 //		if(
 		_keyframedData.update(t);//)
@@ -83,17 +85,7 @@ public:
 		return false;
 	}
 	
-	template<typename T>
-	typename std::enable_if< std::is_void<T>::value, bool>::type
-	update(const uint64_t& t, ofParameter<T>& param)
-	{
-		if(_keyframedData.update(t))
-		{
-			return param.trigger();
-		}
-		return false;
-	}
-	
+
 	
 	virtual void fromJson(const ofJson& j) override;
 	virtual ofJson toJson() override;
@@ -101,14 +93,14 @@ public:
 	virtual void generateView() override;
 	virtual void destroyView() override;
 	
-	const innerDataType& getCurrentValue() const
-	{
-		return _keyframedData.getCurrentValue();
-	}
-	
+	const innerDataType& getCurrentValue() const;
+//	{
+//		return _keyframedData.getCurrentValue();
+//	}
+//
 	const size_t& getDimensionIndex()const;
 	
-	
+	void setTimeRange(const ofRange64u& timeRange);
 	
 protected:
 	
@@ -190,6 +182,88 @@ private:
 	
 	
 };
+
+
+
+
+template<>
+class KeyframeCollectionController<void>
+: public BaseController<KeyframeCollectionView>
+, public AbstractSerializable
+{
+public:
+	
+	
+	KeyframeCollectionController( KeyframeRegionController_<void> * parentRegion);
+	
+	virtual ~KeyframeCollectionController();
+
+	
+	KeyframeController<void>* addKeyframe(uint64_t time);
+	
+	void sortData();
+	
+	bool removeKeyframe(KeyframeController<void>* keyframe);
+	
+	void removeAllKeyframes();
+	
+	
+	const KeyframedData_<void>& getKeyframedData() const
+	{
+		return _keyframedData;
+	}
+	
+	
+	bool update(const uint64_t& t, ofParameter<void>& param);
+	
+	virtual void fromJson(const ofJson& j) override;
+	virtual ofJson toJson() override;
+	
+	virtual void generateView() override;
+	virtual void destroyView() override;
+		
+	void setTimeRange(const ofRange64u& timeRange);
+	
+protected:
+	
+	
+	
+	// size_t _dimensionIndex = 1;
+	
+	
+	ofEventListener addKeyframeListener;
+	void _addKeyframeEventCB(AddKeyframeEventArgs& args);
+	
+	ofEventListener removeKeyframeListener;
+	void _removeKeyframeEventCB(RemoveKeyframesEventArgs& args);
+	
+	KeyframedData_<void> _keyframedData;
+	
+	std::vector<KeyframeController<void>* > _keyframes;
+	
+	std::unordered_map<KeyframeView*, KeyframeController<void>*>_keyframesViewMap;
+	
+	
+	KeyframeRegionController_<void> * _parentRegion = nullptr;
+
+	static bool compareKeyframeControlers(KeyframeController<void>*a, KeyframeController<void>*b);
+	
+	
+private:
+	
+	
+};
+
+
+
+
+
+
+
+
+
+
+
 
 
 } } // ofx::LineaDeTiempo
