@@ -9,6 +9,11 @@ A new timeline addon for openFrameworks.
 
 As I could not use ofxTimeline as the name of this addon, ofxTimeline2 sounded boring, and considering that I am a native Spanish speaker it made sense to use a Spanish word instead. **Línea De Tiempo** is the literal translation of **Timeline** into Spanish, hence **ofxLineaDeTiempo**
 
+## IMPORTANT
+**This is still a work in progress. Even when it is usable it might not be optimized or stable. Use at your own risk.**
+
+Check the [roadmap](https://github.com/roymacdonald/ofxLineaDeTiempo/issues/1) which shows the current status of things.
+
 
 ## Goals
 
