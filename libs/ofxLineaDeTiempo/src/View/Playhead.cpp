@@ -22,6 +22,9 @@ Playhead::Playhead(TimeRuler* timeRuler, TimeControl* timeControl, DOM::Element 
 {
 	
 	_currentTimeListener = timeControl->currentTimeUpdateEvent.newListener(this, &Playhead::_currentTimeChanged);
+
+	stopEventListener = timeControl->stopEvent.newListener(this, &Playhead::_onStopEvent);
+	
 	
 	_constraintShapeListener = _constraint->shapeChanged.newListener(this, &Playhead::_constraintShapeChanged);
 	
@@ -45,9 +48,14 @@ Playhead::Playhead(TimeRuler* timeRuler, TimeControl* timeControl, DOM::Element 
 	
 	moveToFront();
 	
+	fix: la posicion deja de calcularse correctamente cuando se mueve el panel completo
 	
 	
-	
+}
+
+void Playhead::_onStopEvent()
+{
+	updatePosition();
 }
 
 void Playhead::_onShapeChange(const DOM::ShapeChangeEventArgs& e)

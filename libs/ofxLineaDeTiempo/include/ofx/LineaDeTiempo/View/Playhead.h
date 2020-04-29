@@ -43,6 +43,11 @@ protected:
 	ofEventListener _currentTimeListener;
 	void _currentTimeChanged(uint64_t& t);
 
+	ofEventListener stopEventListener;
+	void _onStopEvent();
+	
+	
+	
 	ofEventListener _draggingStateListener;
 	void _draggingStateChanged(bool & bDragging);
 		
@@ -65,6 +70,8 @@ private:
 	ofEventListener _constraintShapeListener;
 	void _constraintShapeChanged(DOM::ShapeChangeEventArgs&);
 	ofRectangle _constraintRect;
+	
+	
 	
 };
 
