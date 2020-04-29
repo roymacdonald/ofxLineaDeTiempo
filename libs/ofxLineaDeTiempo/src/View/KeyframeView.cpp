@@ -126,12 +126,22 @@ void KeyframeView::_updatePosition()
 	auto p = _parentView;
 	
     if(p && p->parentTrack() && p->parentTrack()->getTimeRuler()){
-//		auto m = (ConstVars::DefaultKeyframeSize*0.5);
-		pos.y = p->keyframeValueToPosition(_value);
-		
 		auto s = p->parentTrack()->getTimeRuler()->timeToScreenPosition(_time);
 		
 		pos.x = p->screenToParent({s,0}).x;
+		
+		if(_bParamTypeIsVoid)
+		{
+			pos.y = p->getHeight()/2;
+			
+			setHeight(p->getHeight());
+			
+		}
+		else
+		{
+			pos.y = p->keyframeValueToPosition(_value);
+		}
+		
 		
 		
 		setCenterPosition(pos);
@@ -152,17 +162,18 @@ void KeyframeView::_updateValue()
     if(p && p->parentTrack() && p->parentTrack()->getTimeRuler()){
 	
 		auto t = p->parentTrack()->getTimeRuler()->screenPositionToTime(getScreenCenterPosition().x);
-		auto v = p->keyframePositionToValue(getCenterPosition().y);
-		
+			
 		if(t != _time)
 		{
 			_time = t;
 			ofNotifyEvent(timeChangedEvent, t, this);
 		}
-		if(!_bParamTypeIsVoid && v != _value)
-		{
-			_value = v;
-			ofNotifyEvent(valueChangedEvent, v, this);
+		if(!_bParamTypeIsVoid){
+			auto v = p->keyframePositionToValue(getCenterPosition().y);
+			if( !ofIsFloatEqual(v, _value)){
+				_value = v;
+				ofNotifyEvent(valueChangedEvent, v, this);
+			}
 		}
 	}
 }

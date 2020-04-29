@@ -19,7 +19,26 @@ TrackGroupView::TrackGroupView(DOM::Element* parentView, TrackGroupController * 
 {
 
 	_tracksContainer = this;
+	
+	_childrensChangeListeners.push(childAdded.newListener(this, &TrackGroupView::_onChildrensChange));
+	_childrensChangeListeners.push(childRemoved.newListener(this, &TrackGroupView::_onChildrensChange));
+	
 }
+void TrackGroupView::_onChildrensChange(DOM::ElementEventArgs& )
+{
+	onChildrensChange();
+}
+
+
+void TrackGroupView::onChildrensChange()
+{
+	if(_parentGroupView)
+	{
+		_parentGroupView->onChildrensChange();
+	}
+	
+}
+
 
 bool TrackGroupView::_containersCheck(const std::string & callerName)
 {

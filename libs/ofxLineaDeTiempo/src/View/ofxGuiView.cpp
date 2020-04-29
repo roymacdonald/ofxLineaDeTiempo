@@ -7,7 +7,8 @@
 
 #include "LineaDeTiempo/View/ofxGuiView.h"
 #include "LineaDeTiempo/View/TrackHeader.h"
-
+#include "LineaDeTiempo/View/TrackView.h"
+#include "LineaDeTiempo/Utils/ConstVars.h"
 namespace ofx {
 namespace LineaDeTiempo {
 
@@ -21,6 +22,10 @@ ofxGuiView<T>::ofxGuiView(ofParameter<T>& param, float width, TrackHeader* track
 	_gui.add(param);
 	_gui.disableHeader();
 	_gui.unregisterMouseEvents();
+	
+	_bGuiWasMinimized = _gui.isMinimized();
+	
+	
 //	for(size_t i = 0; i < _gui.getNumControls(); ++i)
 //	{
 //		auto g = dynamic_cast<ofxGuiGroup*>(_gui.getControl(i));
@@ -123,27 +128,51 @@ template<typename T>
 void ofxGuiView<T>::onUpdate()
 {
 	auto s = _gui.getShape();
-	
+
 	if(!ofIsFloatEqual(_guiShape.height, s.height) )
 	{
-		_guiShape = getShape();
-		_guiShape.height = s.height;
-		setShape(_guiShape);
-		
-		if(_trackHeader && _trackHeader->getHeight() >= getHeight() + getY()){
-			
+		auto tempShape = getShape();
+		tempShape.height = s.height;
+		setShape(tempShape);
+
+		_guiShape = s;
+
+
+		if( _trackHeader)
+		{
+			auto t = dynamic_cast<TrackView*>(_trackHeader->getTrack());
+			if(t)
+			{
+
+//				hacer las matematicas y logica de esto correctamente.
+
+				bool bHeaderTallerThanGui =  _trackHeader->getHeight() >= getHeight() + getY();
+				if(!_gui.isMinimized() && _bGuiWasMinimized )
+				{
+					if(!bHeaderTallerThanGui)
+					{
+						 if( _bGuiWasMinimized && !_gui.isMinimized())
+							 _minimizedHeightFactor = t->getHeightFactor();
+
+						t->setMinHeight(getHeight() + getY());
+					}
+				}
+				else if( !_bGuiWasMinimized && _gui.isMinimized())
+				{
+					t->setHeightFactor(_minimizedHeightFactor);
+				}
+				
+				_bGuiWasMinimized = _gui.isMinimized();
+			}
 		}
-		
-		
 	}
-	
 }
 template<typename T>
 void ofxGuiView<T>::onDraw() const
 {
-	if(parent() && parent()->getHeight() >= getHeight() + getY()){
+//	if(parent() && parent()->getHeight() >= getHeight() + getY()){
 		_gui.draw();
-	}
+//	}
 }
 
 
@@ -153,7 +182,7 @@ template class ofxGuiView<glm::vec3>;
 template class ofxGuiView<glm::vec4>;
 
 template class ofxGuiView<bool>;
-//template class ofxGuiView<void>;
+template class ofxGuiView<void>;
 
 
 template class ofxGuiView<int8_t>;

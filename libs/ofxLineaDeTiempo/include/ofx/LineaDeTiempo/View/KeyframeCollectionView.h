@@ -69,6 +69,7 @@ public:
     void selectAllKeyframes();
 
 	
+	KeyframeView* addKeyframe(uint64_t time);
 	
 	KeyframeView* addKeyframe(float value, uint64_t time);
 	

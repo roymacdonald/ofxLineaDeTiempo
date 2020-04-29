@@ -8,6 +8,7 @@
 #include "LineaDeTiempo/View/TrackView.h"
 #include "MUI/Utils.h"
 #include "LineaDeTiempo/Controller/TrackController.h"
+#include "LineaDeTiempo/View/TracksPanel.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -16,12 +17,13 @@ namespace LineaDeTiempo {
 
 TrackView::TrackView(DOM::Element* parentView, TrackController* controller,TimeRuler * timeRuler )
 : BaseTrackView(controller->getId(), parentView, timeRuler)
-, _unscaledHeight(ConstVars::TrackInitialHeight)
+//, _unscaledHeight(ConstVars::TrackInitialHeight)
 , _controller(controller)
 
 {
 	_regionsHeaderStyle = make_shared<MUI::Styles>("regionsHeaderStyle");
 	colorListener = BaseTrackView::colorChangeEvent.newListener(this, &TrackView::colorChanged);
+	_minHeight = ConstVars::ViewTopHeaderHeight;
 }
 
 shared_ptr<MUI::Styles> TrackView::getRegionsHeaderStyle()
@@ -68,8 +70,14 @@ float TrackView::getHeightFactor() const
 
 void TrackView::setHeightFactor(float factor)
 {
+	std::cout << "TrackView::setHeightFactor " << factor << "\n";
 	_heightFactor = factor;
-	_unscaledHeight = ConstVars::TrackInitialHeight * _heightFactor;
+//	_unscaledHeight = ConstVars::TrackInitialHeight * _heightFactor;
+	auto p = getParentPanel();
+	if(p && p->getTracksView())
+	{
+//		p->getTracksView()->updateVerticalScrollFromContainersHeight();
+	}
 }
 
 bool TrackView::removeRegion(RegionController * controller)
@@ -100,29 +108,35 @@ bool TrackView::removeRegion(RegionController * controller)
 
 float TrackView::getUnscaledHeight(size_t & numGroups)
 {
-	return _unscaledHeight;
+	return std::max(ConstVars::TrackInitialHeight * _heightFactor, _minHeight );
 }
+//
+//void TrackView::setScaledHeight(float h)
+//{
+//	std::cout << "TrackView::setScaledHeight " << h << "\n";
+//	_minHeight = h;
+//	setHeightFactor( h / (ConstVars::TrackInitialHeight *  _verticalScale));
+//}
+
 
 float TrackView::updateYScaled(float y, float yScale)
 {
+	_verticalScale = yScale;
 	auto h = ConstVars::TrackInitialHeight * _heightFactor * yScale;
-//	if(!ofIsFloatEqual(h, getHeight()) || !ofIsFloatEqual(y, getY()))
-//	{
-		setShape({0, y, getWidth(), h});
-		_updateRegionsHeight();
-//	}
-//	else
-//	{
-//		ofLogWarning("TrackView::updateYScaled") << " Not updating";
-//	}
+	setShape({0, y, getWidth(), h});
 	return h;
 }
+
 
 void TrackView::_onShapeChange(const DOM::ShapeChangeEventArgs& e)
 {
 	if(e.widthChanged())
 	{
 		_updateRegionsWidth();
+	}
+	if(e.heightChanged())
+	{
+		_updateRegionsHeight();
 	}
 }
 
@@ -160,6 +174,21 @@ TrackController * TrackView::getController()
 {
 	return _controller;
 }
+
+
+void TrackView::setMinHeight(float minHeight)
+{
+	_minHeight = minHeight;
+	setHeightFactor( minHeight / (ConstVars::TrackInitialHeight *  _verticalScale));
+	setHeight( minHeight);
+}
+
+
+float TrackView::getMinHeight()
+{
+	return _minHeight;
+}
+
 
 
 }} //ofx::LineaDeTiempo

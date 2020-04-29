@@ -66,7 +66,7 @@ template class KeyframeTrackHeader<glm::vec4>;
 //template class KeyframeTrackHeader<glm::quat>;
 //template class KeyframeTrackHeader<glm::mat4>;
 template class KeyframeTrackHeader<bool>;
-//template class KeyframeTrackHeader<void>;
+template class KeyframeTrackHeader<void>;
 //template class KeyframeTrackHeader<char>;
 //template class KeyframeTrackHeader<unsigned char>;
 //template class KeyframeTrackHeader<signed char>;

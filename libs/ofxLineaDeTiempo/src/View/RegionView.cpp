@@ -26,8 +26,8 @@ RegionView::RegionView (TrackView* parentTrack, RegionController *controller, st
 
 
 	
-	_leftHandle = addChild<MUI::EdgeHandle>("leftHandle", DOM::RECT_LEFT, this);
-	_rightHandle = addChild<MUI::EdgeHandle>("rightHandle", DOM::RECT_RIGHT, this);
+	_leftHandle = addChild<MUI::EdgeHandle>("leftHandle", DOM::RECT_LEFT, this, MUI::ALIGN_INSIDE);
+	_rightHandle = addChild<MUI::EdgeHandle>("rightHandle", DOM::RECT_RIGHT, this, MUI::ALIGN_INSIDE);
 	
 	_header = addChild<RegionHeaderView>(this);
 	_header->setStyles(headerStyles);
@@ -35,28 +35,28 @@ RegionView::RegionView (TrackView* parentTrack, RegionController *controller, st
 	setShapeDrawMode(MUI::ShapeDrawMode::ROUNDED_RECTANGLE);
 
 
-	_shapeListener = shapeChanged.newListener(this, &RegionView::_shapeChanged);
+//	_shapeListener = shapeChanged.newListener(this, &RegionView::_shapeChanged);
 
 //	_shapeListeners.push(resize.newListener(this, &RegionView::resized));
 	
-	if(controller)
-		_timeRangeChangeListener = controller->timeRangeChangedEvent.newListener(this, &RegionView::_timeRangeChanged);
+//	if(controller)
+//		_timeRangeChangeListener = controller->timeRangeChangedEvent.newListener(this, &RegionView::_timeRangeChanged);
 	setDraggable(true);
 	updateLayout();
 	
 }
 
-void RegionView::_timeRangeChanged(ofRange64u& timeRange)
-{
-	if(!bIgnoreTimeRangeChange)
-	{
-		
-		updateRectFromTimeRange(timeRange);
-		
-	}
-	_onTimeRangeChange();
-}
-void RegionView::_shapeChanged(DOM::ShapeChangeEventArgs& e)
+//void RegionView::_timeRangeChanged(ofRange64u& timeRange)
+//{
+//	if(!bIgnoreTimeRangeChange)
+//	{
+//
+//		updateRectFromTimeRange(timeRange);
+//
+//	}
+//	_onTimeRangeChange();
+//}
+void RegionView::_onShapeChange(const DOM::ShapeChangeEventArgs& e)
 {
 	if(!bIgnoreShapeChange && e.changedHorizontally())
 	{

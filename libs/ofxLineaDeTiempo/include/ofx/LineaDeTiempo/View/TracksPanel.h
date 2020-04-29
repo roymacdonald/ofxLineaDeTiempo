@@ -14,10 +14,11 @@
 #include "LineaDeTiempo/View/TimeRuler.h"
 #include "MUI/MUI.h"
 #include "MUI/Label.h"
+#include "MUI/ZoomablePanel.h"
+#include "LineaDeTiempo/View/TracksClippedView.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
-
 
 
 class TracksPanelController;
@@ -25,9 +26,6 @@ class TrackController;
 
 class TracksPanel
 : public TrackGroupView
-
-
-
 {
 public:
 	TracksPanel(const std::string& id, DOM::Element* parentView, const ofRectangle& rect, TracksPanelController* controller);
@@ -37,10 +35,11 @@ public:
 	virtual void updateLayout() override;
 	
 	virtual void onDraw() const override;
+	
+	virtual void onUpdate() override;
 		
 	typedef ofx::MUI::ClippedView_<TrackHeader> HeadersView;
-	typedef ofx::MUI::TracksScrollPanel TracksView;
-	
+	typedef ofx::MUI::ZoomablePanel<TracksClippedView, MUI::AutoReziseContainer>  TracksView;
 	
 	void setTracksHeaderWidth(float w);
 	
@@ -55,11 +54,14 @@ public:
 
 	void useHandles(bool b);
 	
+//	virtual void onChildrensChange() override;
+	
 protected:
 	
-	friend class TracksPanelController;
+	virtual void _onShapeChange(const DOM::ShapeChangeEventArgs& ) override;
 	
-	void _setup();
+	
+	friend class TracksPanelController;
 	
 	
 	ofRectangle _makeHeadersViewRect();
@@ -100,6 +102,9 @@ private:
 	
 	void _setHeaderHandleShape();
 	void _setCornerHandleViewRect();
+	
+	
+	bool _bLayoutNeedsUpdate = true;
 	
 };
 } } // ofx::LineaDeTiempo

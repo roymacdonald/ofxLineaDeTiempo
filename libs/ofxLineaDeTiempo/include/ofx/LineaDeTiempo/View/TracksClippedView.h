@@ -7,11 +7,14 @@
 #pragma once
 //#include "ofxMUI.h"
 
-#include "DOM/Layout.h"
+
 #include "MUI/ClippedView.h"
 
 namespace ofx {
+
 namespace LineaDeTiempo {
+
+
 
 class TracksClippedView
 : public MUI::ClippedView
@@ -19,58 +22,49 @@ class TracksClippedView
 {
 public:
 
+	
+	
 	TracksClippedView(const std::string& id, const ofRectangle& rect);
 	virtual ~TracksClippedView(){}
 	
+	virtual void setZoom(DOM::Orientation orientation, const ofRange& zoom) override;
 
-	
-	
-//	void setZoom(const std::vector<ofRange>& zooms);
-	
-	void setZoom(DOM::Orientation orientation, const ofRange& zoom);
-	
-	void setZoomV(ofRange& v);
-	void setZoomH(ofRange& v);
-	
-	
-	ofRange getZoom(DOM::Orientation orientation) const;
-		
-	
 	float getTracksWidth() const;
 	
-	
-	ofRange getVerticalZoomFromContainerHeight();
-	
-	
+	ofRange containerHeightToZoom();
+	ofRange containerWidthToZoom();
+
 protected:
-
-
 	
+	void updateTracksWidth();
+	
+	void updateVerticalLayout();
 		
-	glm::vec2 _minZoom = {
-		0.0001, //std::numeric_limits<float>::epsilon(),
-		0.0001 //std::numeric_limits<float>::epsilon()
-	};
 
-	ofRange _zoom [2];
+
+//	float _zoomToScale(const ofRange& zoom);
 	
-	float _tracksWidth = 0;
-	void _updateTracksWidth();
 	
-	void _updateVerticalLayout();
 	
+//	float _tracksWidth = 0;
 	float _unscaledHeight = 0;
+	
 	void _updateTracksUnscaledHeight();
 	
+	float _getZoomableHeight();
+
 	
-	ofEventListeners _listeners;
+//	virtual void _onShapeChange(const DOM::ShapeChangeEventArgs& e) override;
+//	void _onTrackAdded(DOM::ElementEventArgs&);
+//	void _onTrackRemoved(DOM::ElementEventArgs&);
+
 	
-	void _onResize(DOM::ShapeChangeEventArgs& e);
-	void _onTrackAdded(DOM::ElementEventArgs&);
-	void _onTrackRemoved(DOM::ElementEventArgs&);
-	
+//	void _updateVZoombar();
+//	void _updateHZoombar();
 
 	size_t _numGroups = 0;
+
+//	bool _bIgnoreScrollbar = false;
 	
 };
 

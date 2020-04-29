@@ -10,6 +10,7 @@
 
 //#include "ofx/MUI/Widget.h"
 #include "ofx/DOM/Element.h"
+#include "ofx/MUI/Handles/EdgeHandle.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -40,9 +41,12 @@ protected:
 	
 	
 	ofEventListener _trackListener;
+	ofEventListener _edgeHandleListener;
+	
 	
 	void _updateShape();
 	
+	void _onEdgeHandleChange(DOM::ShapeChangeEventArgs& );
 	
 	void _trackShapeChanged(DOM::ShapeChangeEventArgs& e);
 //	void _trackMoved(DOM::MoveEventArgs& e);
@@ -53,5 +57,9 @@ protected:
 	bool _bGroupHeader = false;
 	
 	bool _belongsToPanel = false;
+	
+	
+	MUI::EdgeHandle* _edgeHandle = nullptr;
+	
 };
 } } // ofx::LineaDeTiempo

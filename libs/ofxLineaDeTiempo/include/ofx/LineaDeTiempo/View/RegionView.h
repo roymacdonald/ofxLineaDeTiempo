@@ -46,18 +46,18 @@ protected:
 	
 	
 
-	ofEventListener _timeRangeChangeListener;
+//	ofEventListener _timeRangeChangeListener;
 	bool bIgnoreTimeRangeChange = false;
 	bool bIgnoreShapeChange = false;
-	void _timeRangeChanged(ofRange64u& );
+//	void _timeRangeChanged(ofRange64u& );
 	
-	ofEventListener _shapeListener;
-	void _shapeChanged(DOM::ShapeChangeEventArgs&);
+//	ofEventListener _shapeListener;
+	virtual void _onShapeChange(const DOM::ShapeChangeEventArgs&) override;
 
-	virtual void _onTimeRangeChange()
-	{
-		
-	}// = 0;
+//	virtual void _onTimeRangeChange()
+//	{
+//
+//	}// = 0;
 	
 	RegionController * _controller = nullptr;
 	

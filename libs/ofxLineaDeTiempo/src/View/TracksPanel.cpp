@@ -29,7 +29,6 @@ TracksPanel::TracksPanel(const std::string& id, DOM::Element* parentView, const 
 	
 	_tracksView = addChild<TracksView>(id + "_tracksView", _makeTracksViewRect());
 	_tracksView->setForceShowScrollbars(true);
-	_tracksView->setMoveToFrontOnCapture(false);
 	_tracksContainer = _tracksView->getContainer();
 	
 	
@@ -45,22 +44,18 @@ TracksPanel::TracksPanel(const std::string& id, DOM::Element* parentView, const 
 
 	_timeRuler = addChild<TimeRuler>(this, controller->getTimeControl(), _makeTimeRulerViewRect());
 	_timeRuler->moveToFront();
-	
+	_setTracksHeaderWidth(getTracksHeaderWidth());
 	updateLayout();
 	
 	
 }
 
-void TracksPanel::_setup()
-{
-	if(_tracksView)
-	{
-		_tracksView->setScrollH({0,1});
-		_tracksView->setScrollV({0,1});
-		_setTracksHeaderWidth(getTracksHeaderWidth());
-		updateLayout();
-	}
-}
+
+//void TracksPanel::onChildrensChange()
+//{
+////	if(_tracksView)_tracksView->updateZoomFromCurrentClippedView();
+//}
+
 
 void TracksPanel::setTracksHeaderWidth(float w)
 {
@@ -72,7 +67,9 @@ void TracksPanel::_tracksViewShapeChanged(DOM::ShapeChangeEventArgs& e)
 {
 	if(e.changedVertically())
 	{
-		_headersView->setOffset(_tracksView->getClippingView()->getOffset());
+		auto o = _tracksView->getClippingView()->getOffset();
+		o.x =0;
+		_headersView->setOffset(o);
 		_headersView->container->setHeight(_tracksView->getContainer()->getHeight());
 	}
 	
@@ -86,9 +83,26 @@ void TracksPanel::_viewShapeChanged(DOM::ShapeChangeEventArgs& e)
 		updateLayout();
 	}
 }
+
+void TracksPanel::_onShapeChange(const DOM::ShapeChangeEventArgs& e)
+{
+	if(e.resized()){
+		updateLayout();
+	}
+}
+//---------------------------------------------------------------------
+void TracksPanel::onUpdate()
+{
+	if(_bLayoutNeedsUpdate)
+	{
+		updateLayout();
+		_bLayoutNeedsUpdate = false;
+	}
+}
 //---------------------------------------------------------------------
 void TracksPanel::onDraw() const
 {
+		
 	ofSetDrawBitmapMode(OF_BITMAPMODE_SIMPLE);
 	
 	ofFill();
@@ -237,13 +251,13 @@ const TracksPanelController* TracksPanel::getController() const
 }
 
 
-ofx::MUI::TracksScrollPanel* TracksPanel::getTracksView()
+TracksPanel::TracksView* TracksPanel::getTracksView()
 {
 	return _tracksView;
 }
 
 
-const ofx::MUI::TracksScrollPanel* TracksPanel::getTracksView() const
+const TracksPanel::TracksView* TracksPanel::getTracksView() const
 {
 	return _tracksView;
 }

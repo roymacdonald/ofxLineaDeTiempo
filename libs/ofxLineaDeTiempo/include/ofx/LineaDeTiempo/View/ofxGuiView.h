@@ -46,6 +46,10 @@ protected:
 	float _minimizedHeightFactor = 1;
 
 	TrackHeader* _trackHeader = nullptr;
+
+
+	bool _bGuiWasMinimized = true;
+
 	
 };
 

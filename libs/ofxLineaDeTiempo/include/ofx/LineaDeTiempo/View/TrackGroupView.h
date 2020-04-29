@@ -51,7 +51,12 @@ public:
 	virtual float updateYScaled(float y, float yScale) override;
 		
 	
+	virtual void onChildrensChange();
+	
 protected:
+	
+	void _onChildrensChange(DOM::ElementEventArgs& );
+	
 	void _setTracksHeaderWidth(float w);
 	
 	TrackGroupController* _controller = nullptr;
@@ -68,6 +73,9 @@ protected:
 private:
 	
 	float _getInitialYpos();
+	
+	ofEventListeners _childrensChangeListeners;
+	
 	
 };
 template< typename DataType>

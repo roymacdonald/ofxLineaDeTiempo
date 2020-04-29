@@ -24,9 +24,17 @@ TrackHeader::TrackHeader(const std::string& id, const ofRectangle& rect, BaseTra
 	if(_track)
 	{
 		_track->setHeader(this);
-	
 		auto t = dynamic_cast<TrackView*>(track);
 		_bGroupHeader = ! bool(t);
+		
+		if(!_bGroupHeader)
+		{
+		
+			_edgeHandle = addChild<MUI::EdgeHandle>("TrackHeaderResizeHandle", DOM::RECT_BOTTOM, this);
+
+			_edgeHandleListener = _edgeHandle->shapeChanged.newListener(this, &TrackHeader::_onEdgeHandleChange);
+		}
+		
 		
 		_trackListener = _track->shapeChanged.newListener(this, &TrackHeader::_trackShapeChanged);
 		_updateShape();
@@ -41,7 +49,19 @@ void TrackHeader::_trackShapeChanged(DOM::ShapeChangeEventArgs& e)
 		_updateShape();
 	}
 }
+void TrackHeader::_onEdgeHandleChange(DOM::ShapeChangeEventArgs& e)
+{
 
+	if(_edgeHandle && !_edgeHandle->isFollowingTarget() && _edgeHandle->isDragging() && e.yChanged() && _track && !ofIsFloatEqual(getHeight(), _track->getHeight()))
+	{
+		auto t = dynamic_cast<TrackView*>(_track);
+		if(t)
+		{
+			t->setMinHeight(getHeight());
+		}
+	}
+
+}
 
 void TrackHeader::_updateShape()
 {
@@ -56,6 +76,7 @@ void TrackHeader::_updateShape()
 		}
 		setShape({ indent, _track->getY(), _group->getTracksHeaderWidth() - indent, _track->getHeight() });
 	}
+	if(_edgeHandle)_edgeHandle->moveToFront();
 }
 //---------------------------------------------------------------------
 BaseTrackView* TrackHeader::getTrack()

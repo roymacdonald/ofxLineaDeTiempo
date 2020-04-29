@@ -67,7 +67,7 @@ template class KeyframeTrackView<glm::vec4>;
 //template class KeyframeTrackView<glm::quat>;
 //template class KeyframeTrackView<glm::mat4>;
 template class KeyframeTrackView<bool>;
-//template class KeyframeTrackView<void>;
+template class KeyframeTrackView<void>;
 //template class KeyframeTrackView<char>;
 //template class KeyframeTrackView<unsigned char>;
 //template class KeyframeTrackView<signed char>;

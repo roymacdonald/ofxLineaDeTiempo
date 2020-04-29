@@ -64,13 +64,15 @@ public:
 	virtual float getUnscaledHeight(size_t & numGroups) override;
 	virtual float updateYScaled(float y, float yScale) override;
 
+//	void setScaledHeight(float h);
 	
 	const TrackController * getController() const;
 	
 	TrackController * getController();
 
 	
-	
+	void setMinHeight(float minHeight);
+	float getMinHeight();
 	
 protected:
 
@@ -80,7 +82,6 @@ protected:
 	
 	
 	float _heightFactor = 1;
-	float _unscaledHeight;
 	
 	shared_ptr<MUI::Styles> _regionsHeaderStyle = nullptr;
 	
@@ -96,6 +97,11 @@ protected:
 	void _updateRegionsHeight();
 	
 	void _updateRegionsWidth();
+	
+	float _verticalScale = 1;
+	
+	float _minHeight =0;
+	
 };
 
 

@@ -231,6 +231,12 @@ void KeyframeCollectionView::updateKeyframeSort()
 	}
 }
 
+KeyframeView* KeyframeCollectionView::addKeyframe(uint64_t time)
+{
+	return addKeyframe(0, time);
+}
+
+
 KeyframeView* KeyframeCollectionView::addKeyframe(float value, uint64_t time)
 {
 	auto c = this->addChild<KeyframeView>("_k"+ofToString(keyFrames.size()), value, time , this, _bParamTypeIsVoid);
