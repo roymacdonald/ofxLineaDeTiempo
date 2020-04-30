@@ -48,6 +48,7 @@ Just as a general good practice, update the examples with the Project Generator.
 * [~~ofxSoundObjects~~](github.com/roymacdonald/ofxSoundObjects/) (optional)
 
 ## Thanks
+This addon was build ontop of Christopher Baker's ( @bakercp ) excenent adons [ofxMUI](https://github.com/bakercp/ofxMUI), [ofxDOM](https://github.com/bakercp/ofxDOM), and [ofxPointer](https://github.com/bakercp/ofxPointer)
 
 This addon was kickstarted while I was a Resident and Contributor at [COSA](https://www.du.edu/ahss/opensourcearts/) at University of Denver on the winter of 2020. Many thanks to Christopher Coleman @digitalcoleman, director of COSA, who was kind enough to make it happen. :D
 
