@@ -78,17 +78,21 @@ void TracksPanel::_tracksViewShapeChanged(DOM::ShapeChangeEventArgs& e)
 void TracksPanel::_viewShapeChanged(DOM::ShapeChangeEventArgs& e)
 {
 
-	if(e.resized()){
+//	if(e.resized()){
 		setSize(e.shape.width, e.shape.height);
 		updateLayout();
-	}
+	if(_tracksView && _tracksView->getClippingView())
+		_tracksView->getClippingView()->updateLayout();
+//	}
 }
 
 void TracksPanel::_onShapeChange(const DOM::ShapeChangeEventArgs& e)
 {
-	if(e.resized()){
+//	if(e.resized()){
 		updateLayout();
-	}
+	if(_tracksView && _tracksView->getClippingView())
+		_tracksView->getClippingView()->updateLayout();
+//	}
 }
 //---------------------------------------------------------------------
 void TracksPanel::onUpdate()

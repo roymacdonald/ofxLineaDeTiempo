@@ -61,6 +61,8 @@ protected:
 	
 	Playhead * _playhead = nullptr;
 	
+	void _setTrackScreenHorizontalRange();
+	
 	
 	
 };

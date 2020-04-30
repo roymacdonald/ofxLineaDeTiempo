@@ -32,7 +32,8 @@ template<typename  C, typename CT>
 void ZoomablePanel<C, CT>::_onShapeChange(const DOM::ShapeChangeEventArgs& e)
 {
 	
-	if(e.resized())_setClippingPanelShape();
+//	if(e.resized())
+		_setClippingPanelShape();
 }
 
 

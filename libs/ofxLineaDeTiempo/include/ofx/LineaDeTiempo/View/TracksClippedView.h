@@ -34,6 +34,9 @@ public:
 	ofRange containerHeightToZoom();
 	ofRange containerWidthToZoom();
 
+	
+	virtual void updateLayout() override;
+	
 protected:
 	
 	void updateTracksWidth();

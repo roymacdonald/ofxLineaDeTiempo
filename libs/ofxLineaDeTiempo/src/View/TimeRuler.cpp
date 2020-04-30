@@ -43,21 +43,31 @@ TimeRuler::TimeRuler(TracksPanel* panel, TimeControl* timeControl, const ofRecta
 	_playhead->moveToFront();
 	
 }
+void TimeRuler::_setTrackScreenHorizontalRange()
+{
+	if(_panel->getTracksView() && _panel->getTracksView()->getContainer())
+	{
+		auto r = _panel->getTracksView()->getContainer()->getScreenShape();
+		if(r.width < 0.0f) r.standardize();
+		
+//		if(! ofIsFloatEqual(_trackScreenHorizontal.min, r.x) ||
+//		   ! ofIsFloatEqual(_trackScreenHorizontal.max, r.x + r.width))
+//		{
+			_trackScreenHorizontal.min = r.x;
+			_trackScreenHorizontal.max = r.x + r.width;
+//		}
+	}
+}
+
 
 void TimeRuler::_tracksContainerShapeChanged(DOM::ShapeChangeEventArgs& e)
 {
 	if(e.changedHorizontally()){
-		if(_bar && _panel->getTracksView() && _panel->getTracksView()->getContainer())
+		if(_bar)
 		{
-			auto r = _panel->getTracksView()->getContainer()->getScreenShape();
-			if(r.width < 0.0f) r.standardize();
 			
-			if(! ofIsFloatEqual(_trackScreenHorizontal.min, r.x) ||
-			   ! ofIsFloatEqual(_trackScreenHorizontal.max, r.x + r.width))
-			{
-				_trackScreenHorizontal.min = r.x;
-				_trackScreenHorizontal.max = r.x + r.width;
-			}
+			_setTrackScreenHorizontalRange();
+			
 			if(e.widthChanged())
 			{
 				_setBarShape(true);
@@ -74,7 +84,7 @@ void TimeRuler::_tracksContainerShapeChanged(DOM::ShapeChangeEventArgs& e)
 
 void TimeRuler::_setBarShape(bool dontCheck)
 {
-	if(_panel && _panel->getTracksView())
+	if(_bar && _panel && _panel->getTracksView())
 	{
 		auto cv = _panel->getTracksView()->getClippingView();
 		if(cv){
@@ -92,6 +102,7 @@ void TimeRuler::_setBarShape(bool dontCheck)
 
 void TimeRuler::updateLayout()
 {
+	_setTrackScreenHorizontalRange();
 	if(_panel && _header && _bar)// && _panel->getClippingView())
 	{
 		

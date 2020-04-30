@@ -37,6 +37,12 @@ void TracksClippedView::setZoom(DOM::Orientation index, const ofRange& zoom)
 	}
 }
 
+//this might lead to some redundant updates.
+void TracksClippedView::updateLayout()
+{
+		updateTracksWidth();
+		updateVerticalLayout();
+}
 
 //---------------------------------------------------------------------
 float TracksClippedView::getTracksWidth() const

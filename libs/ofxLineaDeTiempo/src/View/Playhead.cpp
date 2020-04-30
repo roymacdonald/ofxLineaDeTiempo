@@ -48,8 +48,6 @@ Playhead::Playhead(TimeRuler* timeRuler, TimeControl* timeControl, DOM::Element 
 	
 	moveToFront();
 	
-	fix: la posicion deja de calcularse correctamente cuando se mueve el panel completo
-	
 	
 }
 
