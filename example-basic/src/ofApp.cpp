@@ -23,7 +23,11 @@ void ofApp::setup(){
 	/// This can be done and undone on runtime, in order to show or hide the timeline.
 	/// look further down in the keyReleased function to see how to create or destroy the view.
 	timeline.generateView();
-	timeline.setShape(ofRectangle(100,100,ofGetWidth() -200, ofGetHeight()-200));
+	
+	/// By default ofxLineaDeTiempo will auto adjust itself to fill the whole window in which it is being drawn.
+	/// if you uncomment the following line, the timeline's shape will be set and the autofill property will get disabled.
+	/// When you do so, the ofxLineaDeTiempo instance will now be drawn with a header bar, which you can clic and drag to drag the whole timeline around. Aswell it will have a handle in its lowerright corner which you can use for resizing the timeline.
+	timeline.setShape(ofRectangle(100,100,ofGetWidth() - 200, ofGetHeight()-200));
 	
 	setHelpString();
 	
