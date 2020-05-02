@@ -38,7 +38,6 @@ void TracksPanelController::setWindow(ofAppBaseWindow* window)
 
 void TracksPanelController::generateView()
 {
-	
 	if(!_panel){
 		if(_currentWindow == nullptr)
 		{
@@ -59,7 +58,11 @@ void TracksPanelController::generateView()
 			auto s = _mainView->getDocumentStyles();
 			s->setColor(ConstVars::RegionBackgroundColor.get(), ofx::MUI::Styles::ROLE_BACKGROUND);
 			
-			
+		}
+		
+		if(_bAutoFill)
+		{
+			_shape.set(0,0, _currentWindow->getWidth(), _currentWindow->getHeight());
 		}
 		
 		_panel = _mainView->addChild<TracksPanel>( this->getId(), _mainView.get(), ofRectangle(0,0, _shape.width, _shape.height), this);
@@ -67,6 +70,7 @@ void TracksPanelController::generateView()
 		
 		setAutoFillScreen(_bAutoFill);
 		
+		setView(_panel);
 		
 		if(!_bAutoFill)
 		{
@@ -77,15 +81,12 @@ void TracksPanelController::generateView()
 			_shape = _mainView->getShape();
 		}
 		
-		
-		setView(_panel);
+	
 		
 		generateChildrenViews(this);
-		
-//		_panel->_setup();
+		_panel->recursiveUpdateLayout();
 		
 	}
-	
 }
 
 void  TracksPanelController::enableAutoFillScreen()
