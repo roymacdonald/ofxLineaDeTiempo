@@ -925,8 +925,8 @@ Element* Element::recursiveHitTest(const Position& parentPosition)
 {
 	if (_enabled)
 	{
-		
-	 	if (hitTest(parentPosition)) //only allow hits that are inside the parent element.
+		bool bHit = hitTest(parentPosition);
+	 	if ((_drawAsViewport && bHit) || !_drawAsViewport) //only allow hits that are inside the parent element.
 		{
 			Position childLocal = parentPosition - this->getPosition();
 			
@@ -942,9 +942,9 @@ Element* Element::recursiveHitTest(const Position& parentPosition)
 					}
 				}
 			}
-			return this;
+			if(bHit)
+				return this;
 		}
-		return nullptr;
 	}
 	return nullptr;
 }
@@ -1149,10 +1149,12 @@ void Element::setDrawChildrenOnly(bool drawChildrenOnly)
 	_drawChildrenOnly = drawChildrenOnly;
 }
 
+
 bool Element::isDrawingChildrenOnly() const
 {
 	return _drawChildrenOnly;
 }
+
 
 void Element::printStructure(std::string prefix)
 {
@@ -1193,6 +1195,14 @@ void Element::setStyles(std::shared_ptr<MUI::Styles> styles)
     _styles = styles;
 }
 
+void Element::recursiveUpdateLayout()
+{
+	updateLayout();
+	for(auto& c: _children)
+	{
+		c->recursiveUpdateLayout();
+	}
+}
 
 
 } } // namespace ofx::DOM

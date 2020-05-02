@@ -283,9 +283,12 @@ public:
     /// \returns a pointer to the associated Layout or nullptr if there is none.
     Layout* layout();
 
-	
+	///\brief override this function for updating the layout of this element's children
 	virtual void updateLayout(){}
 
+	///\brief Call updateLayout recursively throught the whole inheritance tree.
+	void recursiveUpdateLayout();
+	
     /// \brief Perform a hit test on the Element.
     ///
     /// For a normal Element, the hit test will test the rectangular shape
