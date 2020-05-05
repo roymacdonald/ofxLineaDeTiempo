@@ -25,7 +25,7 @@ ofParameter<float> ConstVars::TrackInitialHeight = ofParameter<float>("TrackInit
 ofParameter<float> ConstVars::DefaultKeyframeSize = ofParameter<float>("DefaultKeyframeSize", 5.0, 0.f, 20.f);
 ofParameter<float> ConstVars::ViewTopHeaderHeight = ofParameter<float>("ViewTopHeaderHeight", 18.f, 0.f, 50.f);
 ofParameter<float> ConstVars::HeaderViewIndent = ofParameter<float>("HeaderViewIndent", 4.f, 0.f, 10.f);
-ofParameter<float> ConstVars::TimeRulerInitialHeight = ofParameter<float>("TimeRulerInitialHeight", 30.f, 0.f, 100.f);
+ofParameter<float> ConstVars::TimeRulerInitialHeight = ofParameter<float>("TimeRulerInitialHeight", 40.f, 0.f, 100.f);
 ofParameter<float> ConstVars::PlayheadTriangleSize = ofParameter<float>("PlayheadTriangleSize", 15.f, 0.f, 150.f);
 ofParameter<float> ConstVars::PlayheadWidth = ofParameter<float>("PlayheadWidth", 3.f, 0.f, 10.f);
 
