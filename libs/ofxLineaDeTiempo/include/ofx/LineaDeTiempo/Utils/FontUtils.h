@@ -4,7 +4,7 @@
 //
 //  Created by Roy Macdonald on 4/11/20.
 //
-
+#pragma once
 #include "ofTrueTypeFont.h"
 
 namespace ofx {
