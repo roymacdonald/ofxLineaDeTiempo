@@ -27,21 +27,10 @@ public:
 	
 	virtual ~TimeRulerHeader() = default;
 	
-//	virtual void onDraw() const override;
-//
 	virtual void updateLayout() override;
 protected:
 	TimeControlView* _timeControlView  = nullptr;
 	TimeDisplay* _timeDisplay = nullptr;
-//	TimeControl* _timeControl = nullptr;
-//
-////	static ofBitmapFont _bf;
-//
-//	mutable std::string _timeText;
-//
-//	void _makeTimeText() const;
-//
-//	glm::vec2 _textPos;
 };
 
 
