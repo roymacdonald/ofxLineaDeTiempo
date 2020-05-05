@@ -38,7 +38,7 @@ public:
 	void setPlayheadHeight(float height);
 
 	
-	const ofRange64u & getVisibleTimeRange();
+	const ofRange64u & getVisibleTimeRange() const;
 	
 protected:
 	friend class TimeRulerBar;
