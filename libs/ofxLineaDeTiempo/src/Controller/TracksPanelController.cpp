@@ -57,7 +57,7 @@ void TracksPanelController::generateView()
 			
 			auto s = _mainView->getDocumentStyles();
 			s->setColor(ConstVars::RegionBackgroundColor.get(), ofx::MUI::Styles::ROLE_BACKGROUND);
-			
+			s->setColor(ofColor(220), ofx::MUI::Styles::ROLE_FOREGROUND);
 		}
 		
 		if(_bAutoFill)
