@@ -6,9 +6,7 @@
 //
 
 #include "LineaDeTiempo/View/TimeRulerHeader.h"
-#include "LineaDeTiempo/Utils/ConstVars.h"
-#include "LineaDeTiempo/Utils/FontUtils.h"
-#include "ofxTimecode.h"
+
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -16,55 +14,47 @@ namespace LineaDeTiempo {
 
 
 
-TimeRulerHeader::TimeRulerHeader( TimeControl* timeControl)
-:  DOM::Element("TimeRulerHeader", 0,0,100,100)
-, _timeControl(timeControl)
+TimeRulerHeader::TimeRulerHeader( const ofRectangle& shape, TracksPanel* panel, TimeControl* timeControl)
+:  DOM::Element("TimeRulerHeader",shape)
 {
+	ofRectangle s (0,0,shape.width, shape.height/2);
+	
+	_timeControlView  =  addChild<TimeControlView>(s, panel,  timeControl, DOM::HORIZONTAL);
+	
+	_timeControlView->add(SET_IN_BUTTON);
+	_timeControlView->add(GOTO_IN_BUTTON);
+	_timeControlView->add(SPACER);
+	_timeControlView->add(JUMP_BACKWARDS_BUTTON);
+	_timeControlView->add(TRIGGER_BUTTON);
+	_timeControlView->add(PLAY_PAUSE_TOGGLE);
+	_timeControlView->add(STOP_BUTTON);
+	_timeControlView->add(JUMP_FORWARDS_BUTTON);
+	_timeControlView->add(SPACER);
+	_timeControlView->add(GOTO_OUT_BUTTON);
+	_timeControlView->add(SET_OUT_BUTTON);
+	
+	
+	s.y += s.getHeight();
+	
+	_timeDisplay = addChild<TimeDisplay>(s, timeControl);
+	
+	updateLayout();
 
 }
-
 void TimeRulerHeader::updateLayout()
 {
-
-	_makeTimeText();
-		
-	ofBitmapFont _bf;
-	
-	auto bb = _bf.getBoundingBox(_timeText, 0, 0);
-
-	auto y = bb.y;
-
-	bb.alignTo(getShape());
-
-	_textPos = {bb.x, bb.y - y};
-	
-}
-void TimeRulerHeader::_makeTimeText() const
-{
-	auto t =_timeControl->getCurrentTime();
-	
-	_timeText = ofxTimecode::timecodeForMillis(t);
-    
-}
-
-void TimeRulerHeader::onDraw() const
-{
-	DOM::Element::onDraw();
-	
-	_makeTimeText();
-		
-	ofPushStyle();
-	
-	ofSetColor(getStyles()->getColor(MUI::Styles::ROLE_TEXT, MUI::Styles::STATE_NORMAL));
-	ofDrawBitmapString( _timeText, _textPos);
-	
-	
-	ofNoFill();
-	ofSetColor(ConstVars::TrackEdgeColor);
-	ofDrawRectangle(getShape());
-	
-	ofPopStyle();
-	
+	ofRectangle shape(0,0,getWidth(), getHeight()/2);
+	if(_timeControlView)
+	{
+		_timeControlView->setShape(shape);
+		_timeControlView->updateLayout();
+	}
+	if(_timeDisplay)
+	{
+		shape.y += shape.getHeight();
+		_timeDisplay->setShape(shape);
+		_timeDisplay->updateLayout();
+	}
 }
 
 } } // ofx::LineaDeTiempo

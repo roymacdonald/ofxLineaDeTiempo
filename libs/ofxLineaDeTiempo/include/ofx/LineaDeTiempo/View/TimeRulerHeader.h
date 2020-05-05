@@ -12,7 +12,7 @@
 
 #include "ofx/DOM/Element.h"
 #include "LineaDeTiempo/Controller/TimeControl.h"
-
+#include "LineaDeTiempo/View/TimeControlView.h"
 
 
 namespace ofx {
@@ -23,23 +23,25 @@ class TimeRulerHeader
 : public DOM::Element
 {
 public:
-	TimeRulerHeader( TimeControl* timeControl);
+	TimeRulerHeader( const ofRectangle& shape, TracksPanel* panel, TimeControl* timeControl);
 	
 	virtual ~TimeRulerHeader() = default;
 	
-	virtual void onDraw() const override;
-	
+//	virtual void onDraw() const override;
+//
 	virtual void updateLayout() override;
 protected:
-	TimeControl* _timeControl = nullptr;
-	
-//	static ofBitmapFont _bf;
-
-	mutable std::string _timeText;
-
-	void _makeTimeText() const;
-	
-	glm::vec2 _textPos;
+	TimeControlView* _timeControlView  = nullptr;
+	TimeDisplay* _timeDisplay = nullptr;
+//	TimeControl* _timeControl = nullptr;
+//
+////	static ofBitmapFont _bf;
+//
+//	mutable std::string _timeText;
+//
+//	void _makeTimeText() const;
+//
+//	glm::vec2 _textPos;
 };
 
 
