@@ -8,6 +8,7 @@
 #include "LineaDeTiempo/View/TimeRuler.h"
 #include "LineaDeTiempo/View/TracksPanel.h"
 #include "LineaDeTiempo/Utils/ConstVars.h"
+#include "MUI/Constants.h"
 #include <chrono>
 #include "ofMath.h"
 
@@ -21,12 +22,21 @@ TimeRuler::TimeRuler(TracksPanel* panel, TimeControl* timeControl, const ofRecta
 , _timeControl(timeControl)
 {
 	
-	_header = addChild<TimeRulerHeader>(timeControl);
+	_header = addChild<TimeRulerHeader>(ofRectangle (0, 0, _panel->getTracksHeaderWidth(), ConstVars::TimeRulerInitialHeight), panel, timeControl);
+	_header->updateLayout();
+	
 	_bar = addChild<TimeRulerBar>( this, timeControl);
 
 	_playhead = addChild<Playhead>(this, timeControl, _bar);
 	_playhead->updatePosition();
 
+	
+	_totalTimeLoopButtons = addChild<TimeControlView>(ofRectangle (rect.getMaxX()-SCROLL_BAR_SIZE, 0, SCROLL_BAR_SIZE + CONTAINER_MARGIN, ConstVars::TimeRulerInitialHeight), panel, timeControl, DOM::VERTICAL);
+	_totalTimeLoopButtons->add(SET_TOTAL_TIME_BUTTON);
+	_totalTimeLoopButtons->add(SPACER);
+	_totalTimeLoopButtons->add(LOOP_TOGGLE);
+	
+	
 	updateLayout();
 	
 	if(panel->getTracksView() && panel->getTracksView()->getContainer())
@@ -55,6 +65,10 @@ void TimeRuler::_setTrackScreenHorizontalRange()
 //		{
 			_trackScreenHorizontal.min = r.x;
 			_trackScreenHorizontal.max = r.x + r.width;
+		
+		_visibleTimeRange.min = screenPositionToTime(_trackScreenHorizontal.min);
+		_visibleTimeRange.max = screenPositionToTime(_trackScreenHorizontal.max);
+		
 //		}
 	}
 }
@@ -116,6 +130,11 @@ void TimeRuler::updateLayout()
 		
 		_setBarShape();
 		
+		if(_totalTimeLoopButtons)
+		{
+			_totalTimeLoopButtons->setShape(ofRectangle (_bar->getShape().getMaxX() , 0, SCROLL_BAR_SIZE + CONTAINER_MARGIN, ConstVars::TimeRulerInitialHeight));
+		}
+		
 		if(_panel->getTracksView() && _panel->getTracksView()->getClippingView())
 		{
 			float h = _panel->getTracksView()->getClippingView()->getScreenShape().getMaxY() - getScreenY();
@@ -143,7 +162,10 @@ void TimeRuler::setPlayheadHeight(float height)
 	}
 }
 
-
+const ofRange64u & TimeRuler::getVisibleTimeRange() const
+{
+	return _visibleTimeRange;
+}
 } } // ofx::LineaDeTiempo
 
 

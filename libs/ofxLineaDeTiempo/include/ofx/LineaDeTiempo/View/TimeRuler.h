@@ -38,12 +38,15 @@ public:
 	void setPlayheadHeight(float height);
 
 	
+	const ofRange64u & getVisibleTimeRange();
+	
 protected:
 	friend class TimeRulerBar;
 	TimeRulerHeader* _header = nullptr;
 
 	TimeRulerBar* _bar = nullptr;
 	
+	TimeControlView* _totalTimeLoopButtons = nullptr;
 
 	TracksPanel* _panel = nullptr;
 	
@@ -54,6 +57,8 @@ protected:
 	TimeControl * _timeControl = nullptr;
 	
 	ofRange _trackScreenHorizontal;
+	
+	ofRange64u _visibleTimeRange;
 	
 	
 	ofEventListener _trackContainerListener;
