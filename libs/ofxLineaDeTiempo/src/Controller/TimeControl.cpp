@@ -46,6 +46,13 @@ void TimeControl::pause()
 	_setState(PAUSED);
 }
 //---------------------------------------------------------------------
+void TimeControl::trigger()
+{
+	setCurrentTime(_getStartTime());
+	play();
+}
+
+//---------------------------------------------------------------------
 void TimeControl::setLooping(bool looping)
 {
 	_bLoop = looping;
@@ -207,13 +214,9 @@ void TimeControl::_setState(TimeControlState state)
 			ofNotifyEvent(pauseEvent,this);
 		}
 		
-		// TODO: handle individual states
+		ofNotifyEvent(stateChangeEvent, state, this);
+		
 	}
-	
-	
-	
-	
-	
 }
 
 //---------------------------------------------------------------------

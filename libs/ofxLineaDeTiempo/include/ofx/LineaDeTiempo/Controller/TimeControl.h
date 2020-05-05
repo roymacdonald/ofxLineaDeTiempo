@@ -53,6 +53,10 @@ public:
 	void tooglePlay();
 	
 	
+	///\brief Will go back to the in time and play from there
+	void trigger();
+	
+	
 	void setLooping(bool looping);
 	
 	bool isPlaying() const;
@@ -87,7 +91,7 @@ public:
 	ofEvent<void> playEvent;
 	ofEvent<void> pauseEvent;
 	ofEvent<void> stopEvent;
-	
+	ofEvent<TimeControlState> stateChangeEvent;
 	
 	
 	
