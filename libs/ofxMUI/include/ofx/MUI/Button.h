@@ -11,7 +11,7 @@
 #include "ofTexture.h"
 #include "ofx/DOM/Events.h"
 #include "ofx/MUI/Widget.h"
-
+#include <map>
 
 namespace ofx {
 namespace MUI {
@@ -163,6 +163,9 @@ public:
     /// \brief The event that is set when the value of a button changes.
     ofEvent<int> valueChanged;
 
+	///\brief Sets the value
+	void setValue(int value);
+	
     /// \brief The assignment operator.
     /// \param v Value to assign.
     /// \returns the assigned value.
@@ -171,6 +174,8 @@ public:
     /// \brief Dereference operator.
     operator const int& ();
 
+	void setIcon(const ofPath& icon, int state = 0);
+	
     enum
     {
         DEFAULT_WIDTH = 40,
@@ -209,6 +214,8 @@ protected:
 
     friend class ButtonGroup;
 
+	std::map< int, ofVboMesh> _iconMeshes;
+	
 };
 
 

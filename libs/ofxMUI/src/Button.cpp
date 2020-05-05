@@ -134,12 +134,25 @@ void Button::onDraw() const
     {
         ofSetColor(styles->getColor(Styles::ROLE_FOREGROUND, Styles::STATE_NORMAL));
     }
-
-    ofRectangle targetRectangle(5, 5, getWidth() - 10, getHeight() - 10);
-    ofRectangle fullRectangle(0, 0, getWidth(), getHeight());
-
-    ofDrawRectangle(targetRectangle);
-
+	
+	if(_iconMeshes.size())
+	{
+		if(_iconMeshes.count(_value.get()))
+		{
+			_iconMeshes.at(_value.get()).draw();
+		}
+		else
+		{
+			_iconMeshes.begin()->second.draw();
+		}		
+	}
+	else
+	{
+		ofRectangle targetRectangle(5, 5, getWidth() - 10, getHeight() - 10);
+		ofDrawRectangle(targetRectangle);
+	}
+	
+	ofRectangle fullRectangle(0, 0, getWidth(), getHeight());
     ofNoFill();
     ofSetColor(styles->getColor(Styles::ROLE_BORDER, Styles::STATE_NORMAL));
     ofDrawRectangle(fullRectangle);
@@ -216,6 +229,10 @@ void Button::_onValueChanged(const void* sender, int& value)
     ofNotifyEvent(valueChanged, value, this);
 }
 
+void Button::setValue(int value)
+{
+	_value = value;
+}
 
 int Button::operator = (int v)
 {
@@ -251,6 +268,15 @@ void Button::_incrementState()
 }
 
 
+void Button::setIcon(const ofPath& icon, int state)
+{
+	if(state < _stateCount)
+	{
+		_iconMeshes[state] = icon.getTessellation();
+	}
+}
+
+
 ToggleButton::ToggleButton(const std::string& id,
                            float x,
                            float y,
@@ -281,7 +307,7 @@ void ToggleButton::onDraw() const
 {
     Button::onDraw();
 
-    if (_value)
+    if (_iconMeshes.size() == 0 && _value)
     {
         ofFill();
         ofSetColor(getStyles()->getColor(Styles::ROLE_ACCENT, Styles::STATE_DOWN));
