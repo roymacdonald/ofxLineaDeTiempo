@@ -42,6 +42,11 @@ public:
 		return _dimIndex;
 		
 	}
+	const int& dimIndex() const
+	{
+		return _dimIndex;
+		
+	}
 	
 protected:
 	void _setDimIndex(){
