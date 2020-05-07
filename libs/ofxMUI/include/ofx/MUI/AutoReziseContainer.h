@@ -6,7 +6,7 @@
 //
 
 
-
+#pragma once
 #include "ofx/DOM/Element.h"
 
 namespace ofx {
