@@ -30,7 +30,6 @@ RegionHeaderView::RegionHeaderView(RegionView* parentRegion)
 	
 }
 void RegionHeaderView::_parentShapeChanged(DOM::ShapeChangeEventArgs & e)
-//void RegionHeaderView::_parentResized(DOM::ResizeEventArgs &)
 {
 	if(e.widthChanged()){
 	this->setSize(_parentRegion->getWidth(), ConstVars::ViewTopHeaderHeight);

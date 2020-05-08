@@ -35,27 +35,12 @@ RegionView::RegionView (TrackView* parentTrack, RegionController *controller, st
 	setShapeDrawMode(MUI::ShapeDrawMode::ROUNDED_RECTANGLE);
 
 
-//	_shapeListener = shapeChanged.newListener(this, &RegionView::_shapeChanged);
-
-//	_shapeListeners.push(resize.newListener(this, &RegionView::resized));
-	
-//	if(controller)
-//		_timeRangeChangeListener = controller->timeRangeChangedEvent.newListener(this, &RegionView::_timeRangeChanged);
 	setDraggable(true);
 	updateLayout();
 	
 }
 
-//void RegionView::_timeRangeChanged(ofRange64u& timeRange)
-//{
-//	if(!bIgnoreTimeRangeChange)
-//	{
-//
-//		updateRectFromTimeRange(timeRange);
-//
-//	}
-//	_onTimeRangeChange();
-//}
+
 void RegionView::_onShapeChange(const DOM::ShapeChangeEventArgs& e)
 {
 	if(!bIgnoreShapeChange && e.changedHorizontally())
@@ -67,20 +52,13 @@ void RegionView::_onShapeChange(const DOM::ShapeChangeEventArgs& e)
 	}
 }
 
-//void RegionView::updateLayout()
-//{
-//	if(_controller && !bIgnoreTimeRangeChange)
-//	updateRectFromTimeRange();
-//}
 
 void RegionView::updateTimeRangeFromRect()
 {
 	bIgnoreTimeRangeChange = true;
 	if(_parentTrack && _controller){
-//		std::cout << "RegionView::updateTimeRangeFromRect " << getId() << "  -  " << getShape();
 		_controller->setTimeRange(_parentTrack->rectToTimeRange(getShape()), false);
 		updateLayout();
-//		std::cout << "  " << _controller->getTimeRange() << "\n";
 	}
 	bIgnoreTimeRangeChange = false;
 }

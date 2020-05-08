@@ -73,19 +73,6 @@ void BaseTrackView::onDraw() const
 }
 
 
-//
-//void BaseTrackView::updateLayout()
-//{
-//	for(auto r: children())
-//	{
-//
-//		if(r)
-//		{
-//			r->updateLayout();
-//
-//		}
-//	}
-//}
 void BaseTrackView::updateWidth(const float& w)
 {
 	auto s = getShape();

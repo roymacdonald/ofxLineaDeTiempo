@@ -43,9 +43,7 @@ public:
 	const ofColor& getTextColor() const;
 	
 	virtual void onDraw() const override;
-	
-//	virtual void updateLayout() override;
-	
+
 
 	void setHeader(TrackHeader* header);
 	
