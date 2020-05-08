@@ -8,23 +8,18 @@
 #include "ofx/MUI/Panel.h"
 #include "ofGraphics.h"
 #include "ConstVars.h"
+#include "LineaDeTiempo/View/TracksPanel.h"
+
 
 namespace ofx {
 namespace MUI {
 
 
 
-Panel::Panel(const std::string& id, const ofRectangle& rect):
-DOM::Element(id, rect)
-{
-	container = addChild<AutoReziseContainer>(id+ "_container", ofRectangle(0, 0, rect.width, rect.height));
-	
-}
 
 
-
-
-void Panel::updateLayout()
+template<typename T>
+void Panel<T>::updateLayout()
 {
 	_setHeaderHandleShape();
 	_setCornerHandleViewRect();
@@ -32,7 +27,8 @@ void Panel::updateLayout()
 
 
 
-void Panel::setEnableHeaderHandle(bool enable)
+template<typename T>
+void Panel<T>::setEnableHeaderHandle(bool enable)
 {
 	if(enable)
 	{
@@ -45,13 +41,15 @@ void Panel::setEnableHeaderHandle(bool enable)
 }
 
 
-bool Panel::hasHeaderHandle() const
+template<typename T>
+bool Panel<T>::hasHeaderHandle() const
 {
 	return (bool) _headerHandle;
 }
 
 
-void Panel::_setHeaderHandleShape()
+template<typename T>
+void Panel<T>::_setHeaderHandleShape()
 {
 	if(_headerHandle)
 	{
@@ -60,37 +58,46 @@ void Panel::_setHeaderHandleShape()
 }
 
 
-void Panel::_cornerHandleChanged(DOM::ShapeChangeEventArgs& e)
+template<typename T>
+void Panel<T>::_cornerHandleChanged(DOM::ShapeChangeEventArgs& e)
 {
-	if(!_ignoreCornerHandleChange && e.moved() && parent())
+	if(!_ignoreCornerHandleChange && e.moved())
 	{
 		_ignoreCornerHandleChange = true;
 		
-		auto ps = parent()->getScreenPosition();
-		auto c = _cornerHandle->getScreenShape().getMax();
+//		auto ps = getScreenPosition();
+		auto c = _cornerHandle->getShape().getMax();
 		
 		
-		setSize(c.x -ps.x, c.y -ps.y);
+		setSize(c.x , c.y);
 		
 		_ignoreCornerHandleChange = false;
 	}
 }
 
 
-void Panel::_headerHandleChanged(DOM::ShapeChangeEventArgs& e)
+template<typename T>
+void Panel<T>::_headerHandleChanged(DOM::ShapeChangeEventArgs& e)
 {
-	if(!_ignoreHeaderHandleChange && e.moved() && parent())
+	if(!_ignoreHeaderHandleChange && e.moved())
 	{
 		_ignoreHeaderHandleChange = true;
-		parent()->setPosition( _headerHandle->getScreenPosition());
+		setPosition( getPosition() + _headerHandle->getPosition());
 		_headerHandle->setPosition(0, 0);
 		_ignoreHeaderHandleChange = false;
 	}
 }
 
-void Panel::_onShapeChange(const DOM::ShapeChangeEventArgs& e)
+template<typename T>
+void Panel<T>::_onShapeChange(const DOM::ShapeChangeEventArgs& e)
 {
 	updateLayout();
+	_updateContainerShape();
+}
+
+template<typename T>
+void Panel<T>::_updateContainerShape()
+{
 	if(container)
 	{
 		float h  = ((bool)_headerHandle)?_headerHandle->getHeight():0;
@@ -98,12 +105,11 @@ void Panel::_onShapeChange(const DOM::ShapeChangeEventArgs& e)
 	}
 }
 
-
-void Panel::_addHeaderHandle()
+template<typename T>
+void Panel<T>::_addHeaderHandle()
 {
 	if(_headerHandle == nullptr)
 	{
-		std::cout << "Panel::_addHeaderHandle()\n";
 		_headerHandle = addChild<Label>("ofxLineaDeTiempo");
 		_headerHandle->setDraggable(true);
 		
@@ -115,17 +121,18 @@ void Panel::_addHeaderHandle()
 		_headerHandle->setText(_headerLabel);
 		
 		_setHeaderHandleShape();
-//		container->setPosition(0, _headerHandle->getHeight());
-		setHeight(getHeight() + _headerHandle->getHeight() );
+
+		_updateContainerShape();
 		
 		_headerHandleListener = _headerHandle->shapeChanged.newListener(this, &Panel::_headerHandleChanged);
 	}
 }
 
 
-void Panel::_removeHeaderHandle()
+template<typename T>
+void Panel<T>::_removeHeaderHandle()
 {
-	if(_headerHandle)
+	if(_headerHandle && container)
 	{
 		container->setPosition(0, 0);
 		setHeight(getHeight() - _headerHandle->getHeight() );
@@ -134,26 +141,31 @@ void Panel::_removeHeaderHandle()
 		_headerHandleListener.unsubscribe();
 		_headerHandle = nullptr;
 		
+		_updateContainerShape();
+		
 	}
 }
 
-void Panel::setHeaderLabel(const std::string& label)
+template<typename T>
+void Panel<T>::setHeaderLabel(const std::string& label)
 {
 	_headerLabel = label;
 	_headerHandle->setText(_headerLabel);
 }
 
 
-const std::string& Panel::getHeaderLabel() const
+template<typename T>
+const std::string& Panel<T>::getHeaderLabel() const
 {
 	return _headerLabel;
 }
 
-void Panel::_addCornerHandle()
+template<typename T>
+void Panel<T>::_addCornerHandle()
 {
 	if(_cornerHandle == nullptr)
 	{
-		_cornerHandle = addChild<Widget>("Corner Handle", ofRectangle(getWidth() - _cornerHandleSize, getHeight() - _cornerHandleSize, _cornerHandleSize, _cornerHandleSize));
+		_cornerHandle = addChild<Widget>("Corner Handle", ofRectangle());
 		_setCornerHandleViewRect();
 		_cornerHandle->setDraggable(true);
 		
@@ -162,7 +174,8 @@ void Panel::_addCornerHandle()
 }
 
 
-void Panel::_removeCornerHandle()
+template<typename T>
+void Panel<T>::_removeCornerHandle()
 {
 	if(_cornerHandle)
 	{
@@ -173,7 +186,8 @@ void Panel::_removeCornerHandle()
 }
 
 
-void Panel::_setCornerHandleViewRect()
+template<typename T>
+void Panel<T>::_setCornerHandleViewRect()
 {
 	
 	if(_cornerHandle)
@@ -183,20 +197,23 @@ void Panel::_setCornerHandleViewRect()
 	}
 }
 
-void Panel::setCornerHandleSize(float cornerHandleSize )
+template<typename T>
+void Panel<T>::setCornerHandleSize(float cornerHandleSize )
 {
 	_cornerHandleSize = cornerHandleSize;
 	updateLayout();
 }
 
 
-float Panel::getCornerHandleSize() const
+template<typename T>
+float Panel<T>::getCornerHandleSize() const
 {
 	return _cornerHandleSize;
 }
 
 
-void Panel::setResizable(bool resizable)
+template<typename T>
+void Panel<T>::setResizable(bool resizable)
 {
 	
 	if(_resizeable != resizable)
@@ -215,10 +232,13 @@ void Panel::setResizable(bool resizable)
 }
 
 
-bool Panel::isResizable() const
+template<typename T>
+bool Panel<T>::isResizable() const
 {
 	return _resizeable;
 }
 
+template class Panel<LineaDeTiempo::TracksPanel>;
 
 } } // namespace ofx::MUI
+

@@ -10,29 +10,29 @@
 
 #include "ofx/MUI/Widget.h"
 #include "ofx/MUI/Label.h"
-#include "ofx/MUI/AutoReziseContainer.h"
 
 namespace ofx {
 namespace MUI {
 
 
+template<typename ContainerType>
 class Panel
 : public DOM::Element
 {
 public:
-    
-	Panel(const std::string& id, const ofRectangle& rect);
 	
-    /// \brief Destroy the Panel.
+	static_assert(std::is_base_of<DOM::Element, ContainerType>(), "ContainerType must be an DOM::Element or derived from DOM::Element.");
+	
+	template <typename... Args>
+	Panel(const std::string& id, const ofRectangle& rect, Args&&... args);
+	
+    
 	virtual ~Panel() = default;
 
-    // void onDraw() const override;
-
-	
-	
+    
 
 	virtual void updateLayout() override;
-	AutoReziseContainer * container = nullptr;
+	ContainerType * container = nullptr;
 	
 	
 	void setCornerHandleSize(float cornerHandleSize );
@@ -85,7 +85,18 @@ private:
 	
 	std::string _headerLabel = "";
 	
+	void _updateContainerShape();
+	
+	
 };
+template<typename T>
+template <typename... Args>
+Panel<T>::Panel(const std::string& id, const ofRectangle& rect, Args&&... args)
+: DOM::Element(id, rect)
+{
+	container = addChild<T>(id+ "_container", ofRectangle(0, 0, rect.width, rect.height), std::forward<Args>(args)...);
+}
+
 
 
 } } // ofx::MUI
