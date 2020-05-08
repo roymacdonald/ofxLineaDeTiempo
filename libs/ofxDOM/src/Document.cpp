@@ -60,7 +60,7 @@ void Document::exit(ofEventArgs& e)
 
 void Document::windowResized(ofResizeEventArgs& e)
 {
-	setSize(e.width, e.height);
+	setShape(Shape(0,0,e.width, e.height));
 }
 
 
@@ -95,7 +95,7 @@ void Document::setAutoFillScreen(bool autoFillScreen)
 
     if (autoFillScreen)
     {
-        setSize(ofGetWidth(), ofGetHeight());
+        setShape(ofRectangle(0,0,ofGetWidth(), ofGetHeight()));
     }
 }
 
@@ -104,6 +104,74 @@ bool Document::getAutoFillScreen() const
 {
 	return _settings.enabledListeners[WINDOW_RESIZED_EVENT];
 }
+
+void Document::focusElement(Element* target)
+{
+	if(target != nullptr && target->isFocusable() ){
+		if (_focusedElement != nullptr && _focusedElement != target)
+		{
+			Element* _lastFocusedElement = nullptr;
+			
+			FocusEventArgs focusOut(FocusEventArgs::FOCUS_OUT,
+									this,
+									_focusedElement,
+									target);
+			
+			_focusedElement->dispatchEvent(focusOut);
+			
+			FocusEventArgs focusIn(FocusEventArgs::FOCUS_IN,
+								   this,
+								   target,
+								   _focusedElement);
+			
+			target->dispatchEvent(focusIn);
+			
+			_focusedElement->_focused = false;
+			
+			FocusEventArgs blur(FocusEventArgs::BLUR,
+								this,
+								_focusedElement,
+								target);
+			
+			_focusedElement->dispatchEvent(blur);
+			
+			_lastFocusedElement = _focusedElement;
+			_focusedElement = target;
+			
+			target->_focused = true;
+			
+			FocusEventArgs focus(FocusEventArgs::FOCUS,
+								 this,
+								 _focusedElement,
+								 _lastFocusedElement);
+			
+			_focusedElement->dispatchEvent(focus);
+			
+		}
+		else
+		{
+			FocusEventArgs focusIn(FocusEventArgs::FOCUS_IN,
+								   this,
+								   target,
+								   nullptr);
+			
+			target->dispatchEvent(focusIn);
+			
+			_focusedElement = target;
+			
+			target->_focused = true;
+			
+			FocusEventArgs focus(FocusEventArgs::FOCUS,
+								 this,
+								 _focusedElement,
+								 nullptr);
+			
+			_focusedElement->dispatchEvent(focus);
+		}
+	}
+}
+
+
 
 
 bool Document::onPointerEvent(PointerEventArgs& e)
@@ -123,68 +191,9 @@ bool Document::onPointerEvent(PointerEventArgs& e)
     Element* activeTarget = recursiveHitTest(screenToParent(e.position()));
 
     // TODO: Quick and dirty.
-    if (e.eventType() == PointerEventArgs::POINTER_DOWN && activeTarget != nullptr && activeTarget->isFocusable() && capturedPointers().empty())
+    if (e.eventType() == PointerEventArgs::POINTER_DOWN && capturedPointers().empty())
     {
-        if (_focusedElement != nullptr && _focusedElement != activeTarget)
-        {
-            Element* _lastFocusedElement = nullptr;
-
-            FocusEventArgs focusOut(FocusEventArgs::FOCUS_OUT,
-                                    this,
-                                    _focusedElement,
-                                    activeTarget);
-
-            _focusedElement->dispatchEvent(focusOut);
-
-            FocusEventArgs focusIn(FocusEventArgs::FOCUS_IN,
-                                    this,
-                                    activeTarget,
-                                    _focusedElement);
-
-            activeTarget->dispatchEvent(focusIn);
-
-            _focusedElement->_focused = false;
-
-            FocusEventArgs blur(FocusEventArgs::BLUR,
-                                   this,
-                                   _focusedElement,
-                                   activeTarget);
-
-            _focusedElement->dispatchEvent(blur);
-
-            _lastFocusedElement = _focusedElement;
-            _focusedElement = activeTarget;
-
-            activeTarget->_focused = true;
-
-            FocusEventArgs focus(FocusEventArgs::FOCUS,
-                                 this,
-                                 _focusedElement,
-                                 _lastFocusedElement);
-
-            _focusedElement->dispatchEvent(focus);
-
-        }
-        else
-        {
-            FocusEventArgs focusIn(FocusEventArgs::FOCUS_IN,
-                                   this,
-                                   activeTarget,
-                                   nullptr);
-
-            activeTarget->dispatchEvent(focusIn);
-
-            _focusedElement = activeTarget;
-
-            activeTarget->_focused = true;
-
-            FocusEventArgs focus(FocusEventArgs::FOCUS,
-                                 this,
-                                 _focusedElement,
-                                 nullptr);
-            
-            _focusedElement->dispatchEvent(focus);
-        }
+		focusElement(activeTarget);
     }
 
     // The event target is the target that will receive the event.

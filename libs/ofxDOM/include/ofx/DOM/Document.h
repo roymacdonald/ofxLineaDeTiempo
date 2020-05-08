@@ -133,6 +133,9 @@ public:
 	void setWindow(ofAppBaseWindow* window);
 	
 	
+	void focusElement(Element* target);
+	
+	
 protected:
     /// \brief Map pointer ids to Elements.
     typedef std::unordered_map<std::size_t, Element*> PointerElementMap;
