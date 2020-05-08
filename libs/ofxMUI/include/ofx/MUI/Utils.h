@@ -11,6 +11,7 @@
 #include <cmath>
 #include <limits>
 #include <algorithm>
+#include <tgmath.h>
 //#include "ofxMUI.h"
 #include "ofx/DOM/Element.h"
 #include "ofRange.h"
