@@ -28,7 +28,7 @@ class TracksPanel
 : public TrackGroupView
 {
 public:
-	TracksPanel(const std::string& id, DOM::Element* parentView, const ofRectangle& rect, TracksPanelController* controller);
+	TracksPanel(const std::string& id, const ofRectangle& rect, DOM::Element* parentView, TracksPanelController* controller);
 	
 	virtual ~TracksPanel() = default;
 
@@ -51,10 +51,6 @@ public:
 	
 	HeadersView * getHeadersView();
 	const HeadersView * getHeadersView() const;
-
-	void useHandles(bool b);
-	
-//	virtual void onChildrensChange() override;
 	
 protected:
 	
@@ -71,11 +67,6 @@ protected:
 	ofEventListener _viewListener;
 	void _viewShapeChanged(DOM::ShapeChangeEventArgs&);
 	
-	
-	
-	void _cornerHandleChanged(DOM::ShapeChangeEventArgs&);
-	void _headerHandleChanged(DOM::ShapeChangeEventArgs&);
-
 private:
 
 	
@@ -89,21 +80,6 @@ private:
 	
 	HeadersView * _headersView = nullptr;
 
-	bool bUsingHandles = false;
-	
-	MUI::Widget * _cornerHandle = nullptr;
-	MUI::Label *  _headerHandle = nullptr;
-
-	ofEventListener _cornerHandleListener;
-	ofEventListener _headerHandleListener;
-	
-	bool _ignoreCornerHandleChange = false;
-	bool _ignoreHeaderHandleChange = false;
-	
-	void _setHeaderHandleShape();
-	void _setCornerHandleViewRect();
-	
-	
 	bool _bLayoutNeedsUpdate = true;
 	
 };
