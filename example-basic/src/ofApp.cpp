@@ -43,6 +43,7 @@ void ofApp::setHelpString()
 	helpString += "[ l ] : Load\n";
 	helpString += "[ g ] : Toggle Draw Gui\n";
 	helpString += "[ h ] : Show/Hide this help\n";
+	helpString += "[ f ] : Toggle AutoFillWindow mode\n";
 	
 	ofBitmapFont bf;
 	helpStringHeight = bf.getBoundingBox(helpString, 0, 0).height;
@@ -95,11 +96,17 @@ void ofApp::keyReleased(int key){
 	{
 		bDrawGui ^= true;
 	}
-	else if (key == 'h') {
+	else if (key == 'h')
+	{
 		bDrawHelp ^= true;
 	}
 	else if (key == OF_KEY_RETURN){
-		timeline.getTimeControl()->stop();
+		timeline.getTimeControl()->stop();		
 	}
+	else if (key == 'f')
+	{
+		timeline.setAutoFillScreen(!timeline.isAutoFillScreenEnabled());
+	}
+
 	
 }
