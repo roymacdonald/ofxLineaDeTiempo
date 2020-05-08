@@ -14,6 +14,15 @@ As I could not use ofxTimeline as the name of this addon, ofxTimeline2 sounded b
 
 Check the [roadmap](https://github.com/roymacdonald/ofxLineaDeTiempo/issues/1) which shows the current status of things.
 
+## Continous Integration (CI) builds status
+Platform                     | CI Status
+-----------------------------|:---------
+OSX                          | [![OSX Build Status](http://badges.herokuapp.com/travis/roymacdonald/ofxLineaDeTiempo?env=BADGE=osx&label=build&branch=master)](https://travis-ci.org/roymacdonald/ofxLineaDeTiempo)
+Linux  64bit                 | [![Linux64 Build Status](http://badges.herokuapp.com/travis/roymacdonald/ofxLineaDeTiempo?env=BADGE=linux64&label=build&branch=master)](https://travis-ci.org/roymacdonald/ofxLineaDeTiempo)
+Windows MSYS2 32bits         | [![Build status](https://appveyor-matrix-badges.herokuapp.com/repos/roymacdonald/ofxlineadetiempo/branch/master/1)](https://ci.appveyor.com/project/roymacdonald/ofxlineadetiempo/branch/master)
+Windows Visual Studio 32bits | [![Build status](https://appveyor-matrix-badges.herokuapp.com/repos/roymacdonald/ofxlineadetiempo/branch/master/2)](https://ci.appveyor.com/project/roymacdonald/ofxlineadetiempo/branch/master)
+Windows Visual Studio 64bits | [![Build status](https://appveyor-matrix-badges.herokuapp.com/repos/roymacdonald/ofxlineadetiempo/branch/master/3)](https://ci.appveyor.com/project/roymacdonald/ofxlineadetiempo/branch/master)
+
 
 ## Goals
 
