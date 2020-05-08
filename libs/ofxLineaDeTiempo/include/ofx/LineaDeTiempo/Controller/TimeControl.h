@@ -92,7 +92,7 @@ public:
 	ofEvent<void> pauseEvent;
 	ofEvent<void> stopEvent;
 	ofEvent<TimeControlState> stateChangeEvent;
-	
+	ofEvent<void> totalTimeChangedEvent;
 	
 	
 	const uint64_t&  getTotalTime() const;

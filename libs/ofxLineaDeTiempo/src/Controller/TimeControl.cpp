@@ -227,8 +227,11 @@ const uint64_t&  TimeControl::getTotalTime() const
 //---------------------------------------------------------------------
 void TimeControl::setTotalTime(const uint64_t&  t)
 {
-	_totalTime = t;
-
+	if(_totalTime != t)
+	{
+		_totalTime = t;
+		ofNotifyEvent(totalTimeChangedEvent, this);
+	}
 }
 //---------------------------------------------------------------------
 TimeControlState TimeControl::getState() const
