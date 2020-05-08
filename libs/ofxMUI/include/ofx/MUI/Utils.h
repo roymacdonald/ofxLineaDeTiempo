@@ -11,7 +11,6 @@
 #include <cmath>
 #include <limits>
 #include <algorithm>
-#include <tgmath.h>
 //#include "ofxMUI.h"
 #include "ofx/DOM/Element.h"
 #include "ofRange.h"
@@ -60,7 +59,13 @@ public:
                         long double outputMax,
 						bool clampOutput = false)
     {
+		
+		
+#if defined TARGET_OSX || (defined TARGET_WIN32 && defined _MSC_VER)
         if (std::fabsl(inputMin - inputMax) < std::numeric_limits<long double>::epsilon())
+#else
+		if (std::fabs(inputMin - inputMax) < std::numeric_limits<long double>::epsilon())
+#endif
         {
             return outputMin;
         }
