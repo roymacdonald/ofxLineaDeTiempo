@@ -7,6 +7,7 @@
 
 //#include "LineaDeTiempo/Controller/TrackController.h"
 #include "LineaDeTiempo/Controller/TracksPanelController.h"
+#include "MUI/Constants.h"
 //#include "ofxMUI.h"
 namespace ofx {
 namespace LineaDeTiempo {
@@ -43,6 +44,13 @@ void TracksPanelController::generateView()
 		{
 			setWindow(ofGetWindowPtr());
 		}
+			
+		if(_bAutoFill)
+		{
+			_shape.set(0,0, _currentWindow->getWidth(), _currentWindow->getHeight());
+		}
+		
+		
 		
 		if(!_mainView){
 			DOM::DocumentSettings docSettings;
@@ -51,35 +59,41 @@ void TracksPanelController::generateView()
 			docSettings.enabledListeners[DOM::DRAW_EVENT] = false;
 			
 			_mainView = std::make_unique<MUI::MUI>(docSettings);
-			
+			_mainView->setShape(_shape);
 			
 			ofx::MUI::TrueTypeFontSettings::setDefaultFont(ofToDataPath("assets/fonts/OpenSans-Regular.ttf"));
 			
 			auto s = _mainView->getDocumentStyles();
 			s->setColor(ConstVars::RegionBackgroundColor.get(), ofx::MUI::Styles::ROLE_BACKGROUND);
 			s->setColor(ofColor(220), ofx::MUI::Styles::ROLE_FOREGROUND);
+			
+			
+			_parentPanel = _mainView->addChild<MUI::Panel<TracksPanel>>(getId(), ofRectangle (0,0, _shape.width, _shape.height), _mainView.get(), this);
+			
+			
+			_parentPanel->setEnableHeaderHandle(!_bAutoFill);
+			_parentPanel->setResizable(!_bAutoFill);
+			_parentPanel->setCornerHandleSize(SCROLL_BAR_SIZE);
+			
+						
 		}
-		
-		if(_bAutoFill)
-		{
-			_shape.set(0,0, _currentWindow->getWidth(), _currentWindow->getHeight());
-		}
-		
-		_panel = _mainView->addChild<TracksPanel>( this->getId(), _mainView.get(), ofRectangle(0,0, _shape.width, _shape.height), this);
+		_panel = _parentPanel->container;
 		
 		
-		setAutoFillScreen(_bAutoFill);
+//		setAutoFillScreen(_bAutoFill);
+		_setPanelShapeListener();
+		
 		
 		setView(_panel);
 		
-		if(!_bAutoFill)
-		{
-			_mainView->setShape(_shape);
-		}
-		else
-		{
-			_shape = _mainView->getShape();
-		}
+//		if(!_bAutoFill)
+//		{
+//			_mainView->setShape(_shape);
+//		}
+//		else
+//		{
+//			_shape = _mainView->getShape();
+//		}
 		
 	
 		
@@ -88,6 +102,8 @@ void TracksPanelController::generateView()
 		
 	}
 }
+
+
 
 void  TracksPanelController::enableAutoFillScreen()
 {
@@ -109,9 +125,19 @@ bool  TracksPanelController::isAutoFillScreenEnabled()
 
 void TracksPanelController::setAutoFillScreen(bool autoFill)
 {
-	if(_mainView && _panel){
+	if(_mainView && _parentPanel){
 		_mainView->setAutoFillScreen(autoFill);
-		_panel->useHandles(!autoFill);
+//		_panel->useHandles(!autoFill);
+		
+		_parentPanel->setEnableHeaderHandle(!autoFill);
+		_parentPanel->setResizable(!autoFill);
+		
+		if(autoFill)
+		{
+			_mainView->setPosition(0, 0);
+			_parentPanel->setShape(ofRectangle(0,0,_mainView->getWidth(), _mainView->getHeight()));
+		}
+		
 	}
 	_bAutoFill = autoFill;
 	_setPanelShapeListener();
@@ -122,9 +148,14 @@ void TracksPanelController::setShape(const ofRectangle& shape)
 {
 	disableAutoFillScreen();
 	_shape = shape;
-	if(_mainView)
+	if(_mainView &&  _parentPanel)
 	{
 		_mainView->setShape(_shape);
+		_parentPanel->setShape(ofRectangle(0,0,_shape.getWidth(), _shape.getHeight()));
+//		_parentPanel->setShape(_shape);
+//		_parentPanel->setShape(_shape);
+//		_parentPanel->setShape(_shape);
+//		_panel->recursiveUpdateLayout();
 //		_panel->setShape({0,0, _shape.width, _shape.height});
 	}
 }
@@ -147,7 +178,13 @@ void TracksPanelController::_setPanelShapeListener()
 }
 void TracksPanelController::_onPanelShapeChanged(DOM::ShapeChangeEventArgs & e)
 {
+	
 	_shape = e.shape;
+	if( _parentPanel && _bAutoFill)
+	{
+		_parentPanel->setShape(ofRectangle(0,0,_shape.width, _shape.height));
+	}
+	
 }
 
 
@@ -264,4 +301,7 @@ const TracksPanel * TracksPanelController::getPanel() const
 
 
 
+
 } } // ofx::LineaDeTiempo
+
+//template class ofx::MUI::Panel<ofx::LineaDeTiempo::TracksPanel>;

@@ -14,7 +14,7 @@
 #include "LineaDeTiempo/View/TracksPanel.h"
 
 #include "ofx/MUI/MUI.h"
-
+#include "MUI/Panel.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -129,6 +129,8 @@ protected:
 	
 	void _onPanelShapeChanged(DOM::ShapeChangeEventArgs &);
 	
+
+	MUI::Panel<TracksPanel>* _parentPanel = nullptr;
 	
 private:
 	
