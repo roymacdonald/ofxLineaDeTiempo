@@ -86,10 +86,10 @@ void TracksClippedView::updateTracksWidth()
 		auto a = s.width;
 		auto b = container->getShape().width;
 		
-		if(!ofIsFloatEqual( a, b))
-		{
-			std::cout << "+++  " << a << "  " << b << "\n";
-		}
+//		if(!ofIsFloatEqual( a, b))
+//		{
+//			std::cout << "+++  " << a << "  " << b << "\n";
+//		}
 	}
 	
 //	if( !(_zoom[0] == containerWidthToZoom()))

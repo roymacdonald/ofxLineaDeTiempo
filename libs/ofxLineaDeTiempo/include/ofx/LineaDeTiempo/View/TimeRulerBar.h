@@ -40,7 +40,6 @@ public:
 	
 	virtual void onDraw() const override;
 
-	virtual void updateLayout() override;
 	
 	
 	void makeRulerLines();

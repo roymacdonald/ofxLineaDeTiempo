@@ -152,15 +152,9 @@ void TimeSubDiv::onKeyboardDownEvent(DOM::KeyboardUIEventArgs& evt)
 			}
 			disableKeys();
 		}
-		else if(evt.key().key == 'p')
-		{
-			printCurrentDigitIndex();
-		}
 	}
 }
-void TimeSubDiv::printCurrentDigitIndex(){
-	std::cout << getId() << " _currentDigitIndex: " << _currentDigitIndex << "\n";
-}
+
 
 void TimeSubDiv::enableKeys()
 {
@@ -210,7 +204,7 @@ void TimeSubDiv::onDraw() const
 	
 	ofFill();
 	ofSetColor(255);
-	ofDrawBitmapString(ofToString(value, _numDigits, '0') + _delimiter, 0,  _fontYOffset);
+	ofDrawBitmapString(getValueAsString(), 0,  _fontYOffset);
 }
 
 
@@ -247,9 +241,10 @@ void TimeSubDiv::_enableSmaller()
 		_enableParentKeys();
 	}
 }
+
+
 void TimeSubDiv::_enableParentKeys()
 {
-	std::cout <<"TimeSubDiv::_enableParentKeys()\n";
 	auto p = dynamic_cast<TimeModifier*>(parent());
 	if(p)
 	{
@@ -257,6 +252,11 @@ void TimeSubDiv::_enableParentKeys()
 	}
 }
 
+
+std::string TimeSubDiv::getValueAsString() const
+{
+	return ofToString(value, _numDigits, '0') + _delimiter;
+}
 
 //----------------------------------------------------------------------------
 
@@ -410,7 +410,7 @@ void TimeModifier::onKeyboardDownEvent(DOM::KeyboardUIEventArgs& evt)
 {
 	if (this == evt.target())
 	{
-		std::cout << "TimeModifier::onKeyboardDownEvent\n";
+//		std::cout << "TimeModifier::onKeyboardDownEvent\n";
 		
 		if(evt.key().key == OF_KEY_RETURN)
 		{
@@ -430,13 +430,6 @@ void TimeModifier::onKeyboardDownEvent(DOM::KeyboardUIEventArgs& evt)
 				_subDivs.front()->enableKeys();
 			}
 		}
-		else if(evt.key().key == 'p')
-		{
-			for(auto& s: _subDivs)
-			{
-				s->printCurrentDigitIndex();
-			}
-		}
 	}
 }
 
@@ -454,5 +447,12 @@ bool TimeModifier::_subDivsKeysEnabled() const
 	return false;
 }
 
+std::string TimeModifier::getTimecodeString() const
+{
+	return _subDivs[0]->getValueAsString()+
+		   _subDivs[1]->getValueAsString()+
+		   _subDivs[2]->getValueAsString()+
+		   _subDivs[3]->getValueAsString();
+}
 
 } } // ofx::LineaDeTiempo

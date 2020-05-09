@@ -187,20 +187,6 @@ void TimeRulerBar::onDraw() const
 	
 }
 
-void TimeRulerBar::updateLayout()
-{
-
-	std::cout << "void TimeRulerBar::updateLayout() being called. this does nothing and should not be called\n";
-}
-//	if(_timeRuler)
-//	{
-//
-//		makeRulerLines();
-//
-//		_updatePlayheadSize();
-//	}
-//}
-
 
 
 } } // ofx::LineaDeTiempo

@@ -45,7 +45,9 @@ public:
 	
 	bool hasKeysEnabled()const;
 
-	void printCurrentDigitIndex();
+	
+	
+	std::string getValueAsString() const;
 	
 protected:
 	
@@ -85,7 +87,7 @@ class TimeModifier
 public:
 	TimeModifier();
 	
-	void mousePressed(ofMouseEventArgs& args);
+	
 	
 	
 //	void draw();
@@ -102,6 +104,7 @@ public:
 
 	ofEvent<void> valueSetEvent;
 	
+	std::string getTimecodeString() const;
 	
 protected:
 	
