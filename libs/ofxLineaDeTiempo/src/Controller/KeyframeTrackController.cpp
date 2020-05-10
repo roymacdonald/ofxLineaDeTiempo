@@ -184,7 +184,9 @@ template class ofx::LineaDeTiempo::KeyframeTrackController_<int64_t>;
 template class ofx::LineaDeTiempo::KeyframeTrackController_<uint64_t>;
 template class ofx::LineaDeTiempo::KeyframeTrackController_<float>;
 template class ofx::LineaDeTiempo::KeyframeTrackController_<double>;
+#ifndef TARGET_LINUX
 template class ofx::LineaDeTiempo::KeyframeTrackController_<typename std::conditional<std::is_same<uint32_t, size_t>::value || std::is_same<uint64_t, size_t>::value, bool, size_t>::type>;
+#endif
 
 
 

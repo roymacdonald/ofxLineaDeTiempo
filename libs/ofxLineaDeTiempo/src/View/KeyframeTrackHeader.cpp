@@ -96,7 +96,9 @@ template class KeyframeTrackHeader<int64_t>;
 template class KeyframeTrackHeader<uint64_t>;
 template class KeyframeTrackHeader<float>;
 template class KeyframeTrackHeader<double>;
+#ifndef TARGET_LINUX
 template class KeyframeTrackHeader<typename std::conditional<std::is_same<uint32_t, size_t>::value || std::is_same<uint64_t, size_t>::value, bool, size_t>::type>;
+#endif
 
 
 

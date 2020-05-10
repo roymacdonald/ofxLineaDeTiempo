@@ -177,7 +177,9 @@ template class KeyframeController<int64_t>;
 template class KeyframeController<uint64_t>;
 template class KeyframeController<float>;
 template class KeyframeController<double>;
+#ifndef TARGET_LINUX
 template class KeyframeController<typename std::conditional<std::is_same<uint32_t, size_t>::value || std::is_same<uint64_t, size_t>::value, bool, size_t>::type>;
+#endif
 
 
 } } // ofx::LineaDeTiempo

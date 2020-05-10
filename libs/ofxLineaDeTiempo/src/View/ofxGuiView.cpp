@@ -195,8 +195,9 @@ template class ofxGuiView<int64_t>;
 template class ofxGuiView<uint64_t>;
 template class ofxGuiView<float>;
 template class ofxGuiView<double>;
-
+#ifndef TARGET_LINUX
 template class ofxGuiView<typename std::conditional<std::is_same<uint32_t, size_t>::value || std::is_same<uint64_t, size_t>::value, bool, size_t>::type>;
+#endif
 
 
 

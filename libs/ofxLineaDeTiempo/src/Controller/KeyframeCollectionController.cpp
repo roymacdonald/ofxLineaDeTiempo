@@ -589,8 +589,9 @@ template class KeyframeCollectionController<int64_t>;
 template class KeyframeCollectionController<uint64_t>;
 template class KeyframeCollectionController<float>;
 template class KeyframeCollectionController<double>;
+#ifndef TARGET_LINUX
 template class KeyframeCollectionController<typename std::conditional<std::is_same<uint32_t, size_t>::value || std::is_same<uint64_t, size_t>::value, bool, size_t>::type>;
-
+#endif
 
 
 
