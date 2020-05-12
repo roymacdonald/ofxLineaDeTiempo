@@ -33,7 +33,14 @@ void TracksPanelController::setWindow(ofAppBaseWindow* window)
 {
 	if(_currentWindow != window)
 	{
+		if(_ownedWindow.get() != window) closeWindow();
+		
 		_currentWindow = window;
+		if(hasView())
+		{
+			destroyView();
+			generateView();
+		}
 	}
 }
 
@@ -56,8 +63,10 @@ void TracksPanelController::generateView()
 			DOM::DocumentSettings docSettings;
 			docSettings.window = _currentWindow;
 			
-			docSettings.enabledListeners[DOM::DRAW_EVENT] = false;
-			
+			if(_ownedWindow == nullptr)
+			{
+				docSettings.enabledListeners[DOM::DRAW_EVENT] = false;
+			}
 			_mainView = std::make_unique<MUI::MUI>(docSettings);
 			_mainView->setShape(_shape);
 			
@@ -203,7 +212,7 @@ void TracksPanelController::destroyView()
 {
 	if(_mainView && _panel)
 	{
-		
+		std::cout << "TracksPanelController::destroyView()\n";
 		destroyChildrenViews(this);
 		
 		_mainView->removeChild(_panel);
@@ -299,8 +308,74 @@ const TracksPanel * TracksPanelController::getPanel() const
 	return _panel;
 }
 
+shared_ptr<ofAppBaseWindow> TracksPanelController::displayOnNewWindow(const ofRectangle& windowShape, bool bShareCurrentContext)
+{
+	if(_ownedWindow  == nullptr)
+	{
+		ofGLFWWindowSettings settings;
+		settings.setSize(windowShape.width, windowShape.height);
+		settings.setPosition(windowShape.getPosition());
+		settings.resizable = true;
+		if(bShareCurrentContext) settings.shareContextWith = ofGetCurrentWindow();
+		return displayOnNewWindow(settings);
+	}
+	return nullptr;
+}
 
 
+shared_ptr<ofAppBaseWindow> TracksPanelController::displayOnNewWindow(const ofGLFWWindowSettings& settings)
+{
+	if(_ownedWindow == nullptr)
+	{
+		_ownedWindow = ofCreateWindow(settings);
+		_ownedWindow->setVerticalSync(false);
+		_bAutoFill = true;
+		setWindow(_ownedWindow.get());
+		if(!hasView())
+		{
+			generateView();
+		}
+		
+		
+		auto w = dynamic_cast<ofAppGLFWWindow*>(_ownedWindow.get());
+		if(w)
+		{
+			std::cout << "_ownedWindowExitListener\n";
+			_ownedWindowExitListener = w->events().exit.newListener(this, &TracksPanelController::_ownedWindowExited);
+		}
+		
+		return _ownedWindow;
+	}
+	return nullptr;
+}
+
+void TracksPanelController::_ownedWindowExited(ofEventArgs&)
+{
+	_currentWindow = nullptr;
+	destroyView();
+	_ownedWindow = nullptr;
+	_ownedWindowExitListener.unsubscribe();
+	
+	std::cout << " TracksPanelController::_ownedWindowExited(ofEventArgs&)\n";
+}
+
+void TracksPanelController::closeWindow()
+{
+	if(_ownedWindow)
+	{
+		auto w = dynamic_cast<ofAppGLFWWindow*>(_ownedWindow.get());
+		if(w)
+		{
+			w->setWindowShouldClose();
+			ofEventArgs a;
+			_ownedWindowExited(a);
+		}
+	}
+}
+bool TracksPanelController::hasWindow() const
+{
+	return _ownedWindow != nullptr;
+}
 
 } } // ofx::LineaDeTiempo
 

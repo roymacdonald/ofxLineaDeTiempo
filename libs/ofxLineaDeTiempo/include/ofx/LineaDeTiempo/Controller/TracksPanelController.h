@@ -100,6 +100,26 @@ public:
 	std::shared_ptr<ofx::MUI::Styles> getStyles();
 	
 	
+	///\brief Creates a new window and displays the timeline in it.
+	///\param windowShape The rectangle that defines the shape of the window. In screen coordinates
+	///\param bShareCurrentContext set to true if you want this window to share the context with the current context.
+	///\returns shared_ptr (smart pointer) to the newly created window.
+	shared_ptr<ofAppBaseWindow> displayOnNewWindow(const ofRectangle& windowShape, bool bShareCurrentContext = true);
+	
+	///\brief Creates a new window and displays the timeline in it. (Use this if you want more advanced and customized window settings).
+	///\param settings the GLFW window settings for the new window.
+	///\returns shared_ptr (smart pointer) to the newly created window.
+	shared_ptr<ofAppBaseWindow> displayOnNewWindow(const ofGLFWWindowSettings& settings);
+	
+	///\brief Will close the window created with displayOnNewWindow(...)
+	void closeWindow();
+	
+	
+	///\brief get if the timeline has its own window or not.
+	///\returns true if it is using a window created with displayOnNewWindow(...) otherwise false;
+	bool hasWindow() const;
+	
+	
 protected:
 	
 	
@@ -133,6 +153,11 @@ protected:
 	MUI::Panel<TracksPanel>* _parentPanel = nullptr;
 	
 private:
+	
+	shared_ptr<ofAppBaseWindow> _ownedWindow = nullptr;
+	ofEventListener _ownedWindowExitListener;
+	
+	void _ownedWindowExited(ofEventArgs&);
 	
 	
 };
