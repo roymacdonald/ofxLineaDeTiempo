@@ -247,9 +247,12 @@ bool TracksPanelController::save(const std::filesystem::path& filepath)
 
 bool TracksPanelController::load(const std::filesystem::path& filepath)
 {
-	//TODO: return the proper value
-	fromJson(ofLoadJson(filepath));
-	return true;
+	ofFile jsonFile(filepath);
+	if(jsonFile.exists()){
+		fromJson(ofLoadJson(filepath));
+		return true;
+	}
+	return false;
 }
 
 
