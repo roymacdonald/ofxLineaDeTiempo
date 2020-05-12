@@ -4,16 +4,14 @@
 
 
 void ofApp::setup(){
-		
-	
-	gui.setup();
-	
-	
-	gui.add(_param_float);
-	gui.add(_param_bool);
-	gui.add(_param_void);
-	gui.add(_param_ofColor);
-	gui.add(_param_Vec3);
+	ofSetCircleResolution(200);
+	ofSetBackgroundColor(0);
+
+	// these come from openFrameworks/examples/windowing/multiWindowOneAppExample
+	parameters.setName("parameters");
+	parameters.add(radius.set("radius",50,1,100));
+	parameters.add(color.set("color",100,ofColor(0,0),255));
+	gui.setup(parameters);
 	
 	
 	/// then simply add your ofxPanel to the timeline.
@@ -23,28 +21,33 @@ void ofApp::setup(){
 	/// display the timeline on its own window. By default, the timeline will fill the window and automatically call it's draw function, so you do not need to draw it in ofApp::draw. As well, it will automatically call generateView() so you dont need to do so.
 
 	timeline.displayOnNewWindow(ofRectangle(100,100,ofGetWidth() - 200, ofGetHeight()-200));
-	
-	
+
+	///\ Lets load some data into the timeline
+	///\ You can save this data pressing the 's' key.
+	timeline.load( ofToDataPath("timelineData.json"));
 	
 	
 	setHelpString();
+
 	
 }
 void ofApp::setHelpString()
 {
-	
+
 	helpString =  "[ Key ] : action\n";
+	helpString += "[ w ] : Create or destroy timeline window\n";
 	helpString += "[ s ] : Save\n";
 	helpString += "[ l ] : Load\n";
 	helpString += "[ g ] : Toggle Draw Gui\n";
 	helpString += "[ h ] : Show/Hide this help\n";
-	helpString += "\nNotice that these actions happen only when the apps main window is in focus,\n the one with this message.";
 	
-	
-	
+	helpString += "\nNotice that these actions happen only when the apps main window (the one with this message) is in focus.";
+
+
+
 	ofBitmapFont bf;
 	helpStringHeight = bf.getBoundingBox(helpString, 0, 0).height;
-	
+
 }
 
 //--------------------------------------------------------------
@@ -55,12 +58,10 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 
-	
-	// Dont call timeline.draw(); here as the window created with displayOnNewWindow will do so automatically.
+	ofSetColor(color);
+	ofDrawCircle(ofGetWidth()*0.5,ofGetHeight()*0.5,radius);
+	ofDrawBitmapStringHighlight(helpString, 20, ofGetHeight() - helpStringHeight, ofColor(0, 100));
 
-	if(bDrawGui) gui.draw();
-	
-	if(bDrawHelp) ofDrawBitmapStringHighlight(helpString, 20, ofGetHeight() - helpStringHeight, ofColor(0, 100));
 }
 
 //--------------------------------------------------------------
@@ -69,19 +70,11 @@ void ofApp::keyReleased(int key){
 	
 	if (key == 's')
 	{
-		timeline.save( ofToDataPath("testSave.json"));
+		timeline.save( ofToDataPath("timelineData.json"));
 	}
 	else if (key == 'l')
 	{
-		timeline.load( ofToDataPath("testSave.json"));
-	}
-	else if (key == 'g')
-	{
-		bDrawGui ^= true;
-	}
-	else if (key == 'h')
-	{
-		bDrawHelp ^= true;
+		timeline.load(  ofToDataPath("timelineData.json"));
 	}
 	else if (key == 'w')
 	{

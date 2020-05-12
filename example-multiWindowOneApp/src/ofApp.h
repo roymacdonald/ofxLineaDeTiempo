@@ -21,43 +21,23 @@ public:
 	void keyReleased(int key) override;
 	
 	
-	
-	void setupTimeline(shared_ptr<ofAppBaseWindow> timelineWindow);
-	
 		
 	// simply declare an ofxLineaDeTiempo instance.
 	ofxLineaDeTiempo timeline = {"Timeline"};
 
 	
-	// just use a regular ofxPanel object. Does not matter how you initialize it or
-	// how you add elements to it.
-	
+	// This example is the same as core example in the openFrameworks/examples/windowing/multiWindowOneAppExample
+	// But with a timeline included. Compare both to see that you need very few lines to make it all work.
+	ofParameterGroup parameters;
+	ofParameter<float> radius;
+	ofParameter<ofColor> color;
 	ofxPanel gui;
 	
+		
 	
-	// I personally prefer instancing ofParameters instead of ofxGui's gui elements, as sliders or buttons.
-	// But you can do it either way to.
-	
-	
-	
-	ofParameter <float>        _param_float        = {"float"        ,        float(0) ,    -1 ,    1};
-	ofParameter <bool>         _param_bool         = {"bool"         ,         true};
-	ofParameter <void>         _param_void         = {"void"};
-	ofParameter <ofColor>      _param_ofColor      = {"ofColor"      , 		ofColor(0,0) ,      ofColor(0,0) ,      ofColor(255,255)};
-	ofParameter<glm::vec3>     _param_Vec3         = {"glm::vec3"    ,     glm::vec3(0),        glm::vec3(-1),        glm::vec3(1)};
-
-	// Tip: did you notice the nice way of declaring and initializing the ofParametrs using the curly brackets?
-	// That's a newish C++ thing, not specific to ofParameter. These are called initializer lists.
-	
-	
-	// some helper stuff
-	bool bDrawGui = true;
-	bool bDrawHelp = true;
-	
-	string helpString;
-	float helpStringHeight;
+	//Some extra help text
 	void setHelpString();
-	
-	
+	string 	helpString;
+	float helpStringHeight;
 	
 };
