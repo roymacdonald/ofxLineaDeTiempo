@@ -92,7 +92,7 @@ bool KeyframesRegionView::removeKeyframe(KeyframeView* k, size_t viewIndex)
 	if(viewIndex < _views.size()){
 		return _views[viewIndex]->removeKeyframe(k);
 	}
-	return nullptr;
+	return false;
 }
 
 Selector<KeyframeView>& KeyframesRegionView::getSelector()
