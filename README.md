@@ -10,7 +10,7 @@ A new timeline addon for openFrameworks.
 As I could not use ofxTimeline as the name of this addon, ofxTimeline2 sounded boring, and considering that I am a native Spanish speaker it made sense to use a Spanish word instead. **Línea De Tiempo** is the literal translation of **Timeline** into Spanish, hence **ofxLineaDeTiempo**
 
 ## IMPORTANT
-**This is still a work in progress. Even when it is usable it might not be optimized or stable. Use at your own risk.**
+**This is still a work in progress.** It is working as expected and seems stable, yet it needs more testing. You are very welcome to test and provide feedback, as well as using it on your projects.
 
 Check the [roadmap](https://github.com/roymacdonald/ofxLineaDeTiempo/issues/1) which shows the current status of things.
 
@@ -18,7 +18,7 @@ Check the [roadmap](https://github.com/roymacdonald/ofxLineaDeTiempo/issues/1) w
 Platform                     | CI Status
 -----------------------------|:---------
 OSX                          | [![OSX Build Status](http://badges.herokuapp.com/travis/roymacdonald/ofxLineaDeTiempo?env=BADGE=osx&label=build&branch=master)](https://travis-ci.org/roymacdonald/ofxLineaDeTiempo)
-Linux  64bit                 | [![Linux64 Build Status](http://badges.herokuapp.com/travis/roymacdonald/ofxLineaDeTiempo?env=BADGE=linux64&label=build&branch=master)](https://travis-ci.org/roymacdonald/ofxLineaDeTiempo)
+Linux  64bit                 | [![Linux64 Build Status](http://badges.herokuapp.com/travis/roymacdonald/ofxLineaDeTiempo?env=BADGE=linux&label=build&branch=master)](https://travis-ci.org/roymacdonald/ofxLineaDeTiempo)
 Windows MSYS2 32bits         | [![Build status](https://appveyor-matrix-badges.herokuapp.com/repos/roymacdonald/ofxlineadetiempo/branch/master/1)](https://ci.appveyor.com/project/roymacdonald/ofxlineadetiempo/branch/master)
 Windows Visual Studio 32bits | [![Build status](https://appveyor-matrix-badges.herokuapp.com/repos/roymacdonald/ofxlineadetiempo/branch/master/2)](https://ci.appveyor.com/project/roymacdonald/ofxlineadetiempo/branch/master)
 Windows Visual Studio 64bits | [![Build status](https://appveyor-matrix-badges.herokuapp.com/repos/roymacdonald/ofxlineadetiempo/branch/master/3)](https://ci.appveyor.com/project/roymacdonald/ofxlineadetiempo/branch/master)
