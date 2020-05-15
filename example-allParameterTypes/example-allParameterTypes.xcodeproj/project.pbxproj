@@ -1785,6 +1785,50 @@
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
+			<key>0F712B550286035A17555043</key>
+			<dict>
+				<key>fileRef</key>
+				<string>ECD76E48360A73C31C1F2767</string>
+				<key>isa</key>
+				<string>PBXBuildFile</string>
+			</dict>
+			<key>ECD76E48360A73C31C1F2767</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.cpp.cpp</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>TimeModifierView.cpp</string>
+				<key>path</key>
+				<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/View/TimeModifierView.cpp</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>1D41534D4F88F3AC5A159293</key>
+			<dict>
+				<key>fileRef</key>
+				<string>1E78FC3F3DB26FCAD304045B</string>
+				<key>isa</key>
+				<string>PBXBuildFile</string>
+			</dict>
+			<key>1E78FC3F3DB26FCAD304045B</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.cpp.cpp</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>TimeControlView.cpp</string>
+				<key>path</key>
+				<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/View/TimeControlView.cpp</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
 			<key>2533B6919119E61B1845FE70</key>
 			<dict>
 				<key>fileRef</key>
@@ -2020,6 +2064,8 @@
 					<string>2DF81D6A451F22DC821A1554</string>
 					<string>250D8B5F67E930B2DD10AD31</string>
 					<string>69EC626FB9A1C2D37080057C</string>
+					<string>1E78FC3F3DB26FCAD304045B</string>
+					<string>ECD76E48360A73C31C1F2767</string>
 					<string>E6F31780026BC59717E2CA02</string>
 					<string>C420AD99348AB941ADDA6EB6</string>
 					<string>F2FDB96642CAAB0AA3587160</string>
@@ -2568,6 +2614,36 @@
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
+			<key>43557E1BF875C71B6B15B70F</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.c.h</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>TimeModifierView.h</string>
+				<key>path</key>
+				<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/include/ofx/LineaDeTiempo/View/TimeModifierView.h</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>E6EE5F25045E63AA139CDC63</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.c.h</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>TimeControlView.h</string>
+				<key>path</key>
+				<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/include/ofx/LineaDeTiempo/View/TimeControlView.h</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
 			<key>EF33EB7097174F45100AF139</key>
 			<dict>
 				<key>explicitFileType</key>
@@ -2733,6 +2809,8 @@
 					<string>57574F0CC3C9A044E08EC3A2</string>
 					<string>B42D6D2A9DCCA7BCE520A8D7</string>
 					<string>EF33EB7097174F45100AF139</string>
+					<string>E6EE5F25045E63AA139CDC63</string>
+					<string>43557E1BF875C71B6B15B70F</string>
 					<string>EB87F782F5E355B209244D64</string>
 					<string>D6313EA7FAB66BB47C4B6814</string>
 					<string>9083260BE97BDE8584C586A5</string>
@@ -4352,7 +4430,6 @@ fi
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/include/ofx/LineaDeTiempo/Utils</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/include/ofx/LineaDeTiempo/View</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src</string>
-						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/BaseTypes</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Controller</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Data</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Utils</string>
@@ -4434,7 +4511,6 @@ fi
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/include/ofx/LineaDeTiempo/Utils</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/include/ofx/LineaDeTiempo/View</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src</string>
-						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/BaseTypes</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Controller</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Data</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Utils</string>
@@ -7276,7 +7352,6 @@ fi
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/include/ofx/LineaDeTiempo/Utils</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/include/ofx/LineaDeTiempo/View</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src</string>
-						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/BaseTypes</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Controller</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Data</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Utils</string>
@@ -7378,7 +7453,6 @@ fi
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/include/ofx/LineaDeTiempo/Utils</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/include/ofx/LineaDeTiempo/View</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src</string>
-						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/BaseTypes</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Controller</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Data</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Utils</string>
@@ -7470,6 +7544,8 @@ fi
 					<string>DA6DDAB6A051C5732F3089D0</string>
 					<string>9072C7E7B94B48EDC6422515</string>
 					<string>2533B6919119E61B1845FE70</string>
+					<string>1D41534D4F88F3AC5A159293</string>
+					<string>0F712B550286035A17555043</string>
 					<string>FCFF653AC127FC07D6D84964</string>
 					<string>12E82BC9B87A204D0F60820C</string>
 					<string>AF101C9BD545C4718046727D</string>
@@ -7626,7 +7702,6 @@ fi
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/include/ofx/LineaDeTiempo/Utils</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/include/ofx/LineaDeTiempo/View</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src</string>
-						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/BaseTypes</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Controller</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Data</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Utils</string>
@@ -7717,7 +7792,6 @@ fi
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/include/ofx/LineaDeTiempo/Utils</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/include/ofx/LineaDeTiempo/View</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src</string>
-						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/BaseTypes</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Controller</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Data</string>
 						<string>../../../addons/ofxLineaDeTiempo/libs/ofxLineaDeTiempo/src/Utils</string>
