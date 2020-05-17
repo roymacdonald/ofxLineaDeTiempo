@@ -56,9 +56,9 @@ public:
 	ofParameter <double>       _param_double       = {"double"       ,       double(0) ,   std::numeric_limits<double>::min() ,   std::numeric_limits<double>::max()};
 	ofParameter <bool>         _param_bool         = {"bool"         ,         true};
 	ofParameter <void>         _param_void         = {"void"};
-	ofParameter <ofColor>      _param_ofColor      = {"ofColor"      , 		ofColor(0) ,      ofColor::black ,      ofColor::white};
-	ofParameter <ofShortColor> _param_ofShortColor = {"ofShortColor" , ofShortColor(0) , ofShortColor::black , ofShortColor::white};
-	ofParameter <ofFloatColor> _param_ofFloatColor = {"ofFloatColor" , ofFloatColor(0) , ofFloatColor::black , ofFloatColor::white};
+	ofParameter <ofColor>      _param_ofColor      = {"ofColor"      , 		ofColor(0) ,      ofColor(0,0) ,      ofColor(255,255)};
+	ofParameter <ofShortColor> _param_ofShortColor = {"ofShortColor" , ofShortColor(0) , ofShortColor(0,0) , ofShortColor(ofShortColor::limit(), ofShortColor::limit())};
+	ofParameter <ofFloatColor> _param_ofFloatColor = {"ofFloatColor" , ofFloatColor(0) , ofFloatColor(0,0) , ofFloatColor(1,1)};
 	ofParameter<glm::vec2>     _param_Vec2         = {"glm::vec2"    ,     glm::vec2(0),        glm::vec2(-1),        glm::vec2(1)};
 	ofParameter<glm::vec3>     _param_Vec3         = {"glm::vec3"    ,     glm::vec3(0),        glm::vec3(-1),        glm::vec3(1)};
 	ofParameter<glm::vec4>     _param_Vec4         = {"glm::vec4"    ,     glm::vec4(0),        glm::vec4(-1),        glm::vec4(1)};
