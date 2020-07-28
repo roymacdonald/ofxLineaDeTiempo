@@ -183,6 +183,16 @@ void EdgeHandle::updateLayout()
 		auto s = _target->getShape();
 		ofRectangle r = s;
 		
+		if(_target == parent())
+		{
+			s.setPosition(0, 0);
+		}
+		else
+		{
+			auto p = _target->parentToScreen(r.getPosition());
+			p = this->screenToParent(p);
+			s.setPosition(p.x, p.y);
+		}
 		
 		if (_edge == DOM::RECT_TOP || _edge == DOM::RECT_BOTTOM)
 		{
@@ -322,6 +332,16 @@ void EdgeHandle::removeTargetMinSize()
 }
 
 
+void EdgeHandle::setTargetConstraint(DOM::Element* constraint)
+{
+	_targetConstraint = constraint;
+}
+
+
+DOM::Element* EdgeHandle::getTargetConstraint()
+{
+	return _targetConstraint;
+}
 
 
 } } // ofx::MUI

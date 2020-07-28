@@ -53,6 +53,8 @@ public:
 	bool hasTargetMinSize() const;
 	void removeTargetMinSize();
 	
+	void setTargetConstraint(DOM::Element* constraint);
+	DOM::Element* getTargetConstraint();
 	
 protected:
 	virtual void onUpdate() override;
