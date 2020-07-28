@@ -29,6 +29,9 @@ RegionView::RegionView (TrackView* parentTrack, RegionController *controller, st
 	_leftHandle = addChild<MUI::EdgeHandle>("leftHandle", DOM::RECT_LEFT, this, MUI::ALIGN_INSIDE);
 	_rightHandle = addChild<MUI::EdgeHandle>("rightHandle", DOM::RECT_RIGHT, this, MUI::ALIGN_INSIDE);
 	
+	_leftHandle->setTargetConstraint(_parentTrack);
+	_rightHandle->setTargetConstraint(_parentTrack);
+	
 	_header = addChild<RegionHeaderView>(this);
 	_header->setStyles(headerStyles);
 	
@@ -58,6 +61,8 @@ void RegionView::updateTimeRangeFromRect()
 	bIgnoreTimeRangeChange = true;
 	if(_parentTrack && _controller){
 		_controller->setTimeRange(_parentTrack->rectToTimeRange(getShape()), false);
+//		auto t = _parentTrack->rectToTimeRange(getShape());
+//		ofNotifyEvent(timeRangeChangedEvent, t, this);
 		updateLayout();
 	}
 	bIgnoreTimeRangeChange = false;
