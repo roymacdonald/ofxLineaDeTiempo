@@ -346,7 +346,19 @@ void _timeJumpByVisibleTimeFactor(float factor, TimeControl* _timeControl,  Trac
 	{
 		auto s = _tracksPanel->getTimeRuler()->getVisibleTimeRange().span();
 		
-		_timeControl->setCurrentTime(_timeControl->getCurrentTime() + s/factor);
+		float jumpSpan = s/factor;
+		if(jumpSpan < 0.0f) // is negative
+		{
+			uint64_t j = (jumpSpan * -1);
+			if(_timeControl->getCurrentTime() < j)
+			{
+				_timeControl->setCurrentTime(0);
+			}
+		}
+		else
+		{
+			_timeControl->setCurrentTime(_timeControl->getCurrentTime() + s/factor);
+		}
 	}
 }
 
