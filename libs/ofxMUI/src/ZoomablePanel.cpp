@@ -136,6 +136,49 @@ void  ZoomablePanel<C, CT>::updateZoomFromCurrentClippedView()
 }
 
 
+template<typename  C, typename CT>
+void ZoomablePanel<C, CT>::setHorizontalScrollbarValue(const ofRange& d)
+{
+	if(_scrollbarH)
+	{
+		_scrollbarH->setValue(d);
+	}
+}
+
+
+template<typename  C, typename CT>
+void ZoomablePanel<C, CT>::setVerticalScrollbarValue(const ofRange& d)
+{
+	if(_scrollbarV)
+	{
+		_scrollbarV->setValue(d);
+	}
+}
+
+
+template<typename  C, typename CT>
+ofRange ZoomablePanel<C, CT>::getHorizontalScrollbarValue() const
+{
+	if(_scrollbarH)
+	{
+		return _scrollbarH->getValue();
+	}
+	return ofRange(0,0);
+}
+
+
+template<typename  C, typename CT>
+ofRange ZoomablePanel<C, CT>::getVerticalScrollbarValue() const
+{
+	if(_scrollbarV)
+	{
+		return _scrollbarV->getValue();
+	}
+	return ofRange(0,0);
+}
+
+
+
 
 template class ZoomablePanel<ClippedView, AutoReziseContainer>;
 

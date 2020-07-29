@@ -39,8 +39,12 @@ public:
 	void setForceShowScrollbars(bool show);
 	bool isForceShowScrollbars();
 	
-//	void setScrollH(const ofRange& d);
-//	void setScrollV(const ofRange& d);
+	void setHorizontalScrollbarValue(const ofRange& d);
+	void setVerticalScrollbarValue(const ofRange& d);
+
+	ofRange getHorizontalScrollbarValue() const;
+	ofRange getVerticalScrollbarValue() const;
+
 	
 	
 //	void updateVerticalScrollFromContainersHeight();
