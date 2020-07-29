@@ -57,7 +57,7 @@ void KeyframeRegionController_<T>::setTimeRange(const ofRange64u& t, bool update
  	if(_timeRange != t){
 		for(auto&c :_collections)
 		{
-			c->setTimeRange(t);
+				c->setTimeRange(t);
 		}
 		RegionController::setTimeRange(t, updateView);
  	}
@@ -80,6 +80,7 @@ void KeyframeRegionController_<T>::generateView()
 			_keyframesRegionView = p->getView()->template addRegion<KeyframesRegionView, KeyframeRegionController_<T>>(this);
 			
 			setView(_keyframesRegionView);
+			_registerViewTimeRangeEvent();
 		}
 		
 		generateChildrenViews(this);
@@ -102,6 +103,7 @@ void KeyframeRegionController_<T>::destroyView()
 			}
 			setView(nullptr);
 			_keyframesRegionView = nullptr;
+			_unregisterViewTimeRangeEvent();
 		}
 	}
 }

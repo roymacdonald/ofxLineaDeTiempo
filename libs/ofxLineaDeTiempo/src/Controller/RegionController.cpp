@@ -25,6 +25,29 @@ const ofRange64u& RegionController::getTimeRange() const
  }
 
 
+
+void RegionController::_registerViewTimeRangeEvent()
+{
+	if(getView())
+	{
+		_keyframesViewTimeRangeChangeListener = getView()->timeRangeChangedEvent.newListener(this, &RegionController::_onViewTimeRangeChange);
+	}
+}
+
+
+void RegionController::_unregisterViewTimeRangeEvent()
+{
+	_keyframesViewTimeRangeChangeListener.unsubscribe();
+}
+
+
+void RegionController::_onViewTimeRangeChange(ofRange64u& t)
+{
+	this->setTimeRange(t, false);
+}
+
+
+
 void RegionController::setTimeRange(const ofRange64u& t, bool updateView )
 {
  	if(_timeRange != t){

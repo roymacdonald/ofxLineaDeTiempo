@@ -57,6 +57,13 @@ protected:
 	
 	ofRange64u _timeRange;
 
+//	
+	void _registerViewTimeRangeEvent();
+	void _unregisterViewTimeRangeEvent();
+	ofEventListener _keyframesViewTimeRangeChangeListener;
+
+	void _onViewTimeRangeChange(ofRange64u& t);
+	
 private:
 	TrackController * _parentTrack;
 };
