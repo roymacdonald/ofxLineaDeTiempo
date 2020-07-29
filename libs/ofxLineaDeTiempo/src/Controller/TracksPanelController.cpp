@@ -109,6 +109,9 @@ void TracksPanelController::generateView()
 		generateChildrenViews(this);
 		_panel->recursiveUpdateLayout();
 		
+		getTimeControl()->setTotalTime(getTimeControl()->getTotalTime());
+		
+		
 	}
 }
 
