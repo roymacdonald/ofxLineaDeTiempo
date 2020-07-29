@@ -122,6 +122,7 @@ bool TimeControl::isOutTimeEnabled() const
 void TimeControl::setCurrentTime(const uint64_t& currentTime)
 {
 	_currentTime = currentTime;
+	if(_currentTime > _totalTime) _currentTime = _totalTime;
 	_notifyCurrentTime();
 }
 //---------------------------------------------------------------------
@@ -227,11 +228,11 @@ const uint64_t&  TimeControl::getTotalTime() const
 //---------------------------------------------------------------------
 void TimeControl::setTotalTime(const uint64_t&  t)
 {
-	if(_totalTime != t)
-	{
+//	if(_totalTime != t)
+//	{
 		_totalTime = t;
 		ofNotifyEvent(totalTimeChangedEvent, this);
-	}
+//	}
 }
 //---------------------------------------------------------------------
 TimeControlState TimeControl::getState() const
@@ -262,8 +263,11 @@ void TimeControl::drawDebug(float x, float y)
 void TimeControl::fromJson(const ofJson& j)
 {
 	
-	j["_totalTime"].get_to( _totalTime);
-	j["_currentTime"].get_to( _currentTime);
+//	j["_totalTime"].get_to( _totalTime);
+	setTotalTime(j["_totalTime"].get<uint64_t>());
+//	j["_currentTime"].get_to( _currentTime);
+	setCurrentTime(j["_currentTime"].get<uint64_t>());
+	
 	j["_inTime"]["enabled"].get_to( _inTime.enabled);
 	j["_inTime"]["time"].get_to( _inTime.time);
 	j["_outTime"]["enabled"].get_to( _outTime.enabled);
