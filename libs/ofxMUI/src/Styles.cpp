@@ -175,6 +175,24 @@ Styles::~Styles()
 {
 }
 
+void Styles::print()
+{
+	
+	
+	for(int r = 0; r < _colors.size(); r++)
+	{
+		for(int s = 0; s < _colors[r].size(); s++)
+		{
+			std::cout << toString(Role(r)) << " " << toString(State(s)) << ": ";
+#ifdef LINEA_DE_TIEMPO_USE_OF_PARAMETER
+			std::cout << _colors[r][s].get() << "\n";
+#else
+			std::cout << _colors[r][s] << "\n";
+#endif
+		}
+	}
+}
+
 const std::string& Styles::getName() const
 {
 	return _name;

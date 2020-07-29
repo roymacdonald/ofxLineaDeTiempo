@@ -197,7 +197,7 @@ public:
 #ifdef LINEA_DE_TIEMPO_USE_OF_PARAMETER
 	ofParameterGroup parameters;
 #endif
-	
+	void print();
 protected:
     /// \brief A collection of colors for this Style.
 #ifdef LINEA_DE_TIEMPO_USE_OF_PARAMETER
@@ -211,6 +211,36 @@ protected:
     mutable std::vector<std::shared_ptr<ofTrueTypeFont>> _fonts;
 
 	std::string _name = "";
+	
+	
+	
+	std::string toString(State s)
+	{
+		switch(s)
+		{
+			case STATE_NORMAL: return "STATE_NORMAL";
+			case STATE_OVER: return "STATE_OVER";
+			case STATE_DOWN: return "STATE_DOWN";
+			case STATE_DISABLED: return "STATE_DISABLED";
+		}
+		return "";
+	}
+	std::string toString(Role r)
+	{
+		switch(r)
+		{
+			case ROLE_FOREGROUND: return "ROLE_FOREGROUND";
+			case ROLE_BACKGROUND: return "ROLE_BACKGROUND";
+			case ROLE_ACCENT: return "ROLE_ACCENT";
+			case ROLE_BORDER: return "ROLE_BORDER";
+			case ROLE_TEXT: return "ROLE_TEXT";
+		}
+		return "";
+	}
+	
+	
+	
+	
 };
 
 

@@ -122,7 +122,7 @@ void Button::onDraw() const
 
     ofFill();
 
-    if (isPointerDown())
+    if (isPointerDown() || _value > 0)
     {
         ofSetColor(styles->getColor(Styles::ROLE_FOREGROUND, Styles::STATE_DOWN));
     }
