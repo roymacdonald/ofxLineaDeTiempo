@@ -13,6 +13,8 @@
 #include "ofRange.h"
 #include "LineaDeTiempo/View/TimeRulerHeader.h"
 #include "LineaDeTiempo/View/TimeRulerBar.h"
+#include "MUI/ZoomScrollbar.h"
+
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -23,7 +25,7 @@ class TimeRuler
 : public DOM::Element
 {
 public:
-	TimeRuler( TracksPanel* panel, TimeControl* timeControl, const ofRectangle& rect);
+	TimeRuler( TracksPanel* panel, TimeControl* timeControl, const ofRectangle& rect, MUI::ZoomScrollbar * scrollbar);
 	
 	virtual ~TimeRuler() = default;
 	
@@ -56,17 +58,30 @@ protected:
 	
 	TimeControl * _timeControl = nullptr;
 	
-	ofRange _trackScreenHorizontal;
+//	virtual void _onShapeChange(const ShapeChangeEventArgs& ) override;
+	
+//	ofRange _trackScreenHorizontal;
 	
 	ofRange64u _visibleTimeRange;
 	
 	
-	ofEventListener _trackContainerListener;
-	void _tracksContainerShapeChanged(DOM::ShapeChangeEventArgs& e);
+//	ofEventListener _trackContainerListener;
+//	void _tracksContainerShapeChanged(DOM::ShapeChangeEventArgs& e);
 	
 	Playhead * _playhead = nullptr;
 	
-	void _setTrackScreenHorizontalRange();
+//	void _setTrackScreenHorizontalRange();
+	
+	ofEventListener _totalTimeListener;
+	void _totalTimeChanged();
+	
+	ofEventListener _horizontalZoomScrollbarListener;
+	void _horizontalZoomChanged(ofRange&);
+
+	void _updateVisibleTimeRange();
+	
+	MUI::ZoomScrollbar * _scrollbar = nullptr;
+
 	
 	
 	
