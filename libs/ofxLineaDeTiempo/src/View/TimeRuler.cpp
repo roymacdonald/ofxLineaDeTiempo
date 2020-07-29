@@ -197,7 +197,7 @@ float TimeRuler::timeToScreenPosition(uint64_t time) const
 	if(_bar)
 		{
 			auto s = _bar->getScreenShape();
-			return MUI::Math::lerp(time, _visibleTimeRange.min, _visibleTimeRange.max, s.getMinX(), s.getMaxX(), true);
+			return MUI::Math::lerp(time, _visibleTimeRange.min, _visibleTimeRange.max, s.getMinX(), s.getMaxX());
 	//		return MUI::Math::lerp(x, _trackScreenHorizontal.min, _trackScreenHorizontal.max, 0, _timeControl->getTotalTime(), true);
 		}
 		return 0;
@@ -210,7 +210,7 @@ uint64_t  TimeRuler::screenPositionToTime(float x) const
 	if(_bar)
 	{
 		auto s = _bar->getScreenShape();
-		return MUI::Math::lerp(x, s.getMinX(), s.getMaxX(), _visibleTimeRange.min, _visibleTimeRange.max, true);
+		return MUI::Math::lerp(x, s.getMinX(), s.getMaxX(), _visibleTimeRange.min, _visibleTimeRange.max);
 //		return MUI::Math::lerp(x, _trackScreenHorizontal.min, _trackScreenHorizontal.max, 0, _timeControl->getTotalTime(), true);
 	}
 	return 0;
