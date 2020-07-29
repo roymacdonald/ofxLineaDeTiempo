@@ -41,6 +41,7 @@ public:
 	
 //	static float headerHeight;
 	
+	ofEvent<ofRange64u> timeRangeChangedEvent;
 	
 protected:
 	

@@ -60,10 +60,11 @@ void RegionView::updateTimeRangeFromRect()
 {
 	bIgnoreTimeRangeChange = true;
 	if(_parentTrack && _controller){
-		_controller->setTimeRange(_parentTrack->rectToTimeRange(getShape()), false);
-//		auto t = _parentTrack->rectToTimeRange(getShape());
-//		ofNotifyEvent(timeRangeChangedEvent, t, this);
+//		_controller->setTimeRange(_parentTrack->rectToTimeRange(getShape()), false);
+		// communicate from view to controller via ofEvent to make sure there are no threading data races
 		updateLayout();
+		auto t = _parentTrack->rectToTimeRange(getShape());
+		ofNotifyEvent(timeRangeChangedEvent, t, this);
 	}
 	bIgnoreTimeRangeChange = false;
 }
