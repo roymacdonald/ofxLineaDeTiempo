@@ -102,6 +102,8 @@ public:
 	
 	void setTimeRange(const ofRange64u& timeRange);
 	
+	void moveAllKeyframesByTime(const uint64_t & _timeOffset);
+	
 protected:
 	
 	
@@ -223,6 +225,8 @@ public:
 	virtual void destroyView() override;
 		
 	void setTimeRange(const ofRange64u& timeRange);
+	
+	void moveAllKeyframesByTime(const uint64_t & _timeOffset);
 	
 protected:
 	

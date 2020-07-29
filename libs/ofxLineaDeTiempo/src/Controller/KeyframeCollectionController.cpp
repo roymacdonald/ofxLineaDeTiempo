@@ -313,6 +313,13 @@ void KeyframeCollectionController<D>::setTimeRange(const ofRange64u& timeRange)
 }
 
 //template<typename D>
+//void KeyframeCollectionController<D>::moveAllKeyframesByTime(const uint64_t & _timeOffset)
+//{
+//	_keyframedData.moveAllByTime(_timeOffset);
+//	if(getView()) getView()->updateLayout();
+//}
+
+//template<typename D>
 //const D& KeyframeCollectionController<D>::getCurrentValue() const
 //{
 //	return _keyframedData.getCurrentValue();
@@ -514,6 +521,15 @@ void KeyframeCollectionController<void>::setTimeRange(const ofRange64u& timeRang
 	_keyframedData.setTimeRange(timeRange);
 }
 	
+
+void KeyframeCollectionController<void>::moveAllKeyframesByTime(const uint64_t & _timeOffset)
+{
+	_keyframedData.moveAllByTime(_timeOffset);
+	if(getView()) getView()->updateLayout();
+}
+
+
+
 
 void KeyframeCollectionController<void>::fromJson(const ofJson& j)
 {
