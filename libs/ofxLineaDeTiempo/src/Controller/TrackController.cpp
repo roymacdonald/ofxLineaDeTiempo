@@ -122,8 +122,15 @@ void TrackController::update(uint64_t& time)
 		else if(r->getTimeRange().max < time)
 		{
 			_findRegionAtCurrentTime(_currentRegion+1);
-			update(time);
+			if(_currentRegion < _regionsCollection.size()) update(time);
 		}
+	}
+	else
+	{
+
+		_findCurrentRegion();
+		if(_currentRegion < _regionsCollection.size()) update(time);
+		
 	}
 }
 
