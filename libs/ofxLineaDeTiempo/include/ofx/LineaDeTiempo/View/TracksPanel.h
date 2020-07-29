@@ -71,6 +71,10 @@ private:
 
 	
 	ofEventListener _tracksViewListener;
+	ofEventListener _totalTimeChangedListener;
+	
+	void _totalTimeChanged();
+	
 	void _tracksViewShapeChanged(DOM::ShapeChangeEventArgs&);
 	
 	TracksPanelController* _controller = nullptr;
