@@ -196,6 +196,11 @@ const KeyframeTrackController_<T>* KeyframeRegionController_<T>::getParentKeyfra
 	return _parentTrack;
 }
 
+template<typename T>
+const std::vector<KeyframeCollectionController<T>* >& KeyframeRegionController_<T>::getKeyframesCollection() const
+{
+	return _collections;
+}
 
 
 template<typename T>

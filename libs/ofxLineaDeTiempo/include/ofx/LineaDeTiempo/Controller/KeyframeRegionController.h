@@ -58,14 +58,14 @@ public:
 	KeyframeTrackController_<DataType>* getParentKeyframeTrack();
 	const KeyframeTrackController_<DataType>* getParentKeyframeTrack()const;
 	
-	
+	const std::vector<KeyframeCollectionController<DataType>* >& getKeyframesCollection() const;
 	
 protected:
 	bool _update(const uint64_t& t, ofParameter<DataType>& param);
 	
 	friend class KeyframeTrackController_< DataType >;
 	friend class KeyframeController<DataType>;
-	
+
 	std::vector<KeyframeCollectionController<DataType>* > _collections;
 	
 	
