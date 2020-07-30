@@ -74,6 +74,9 @@ public:
 	void setMinHeight(float minHeight);
 	float getMinHeight();
 	
+	
+	virtual void updateWidth(const float& w) override;
+	
 protected:
 
 	

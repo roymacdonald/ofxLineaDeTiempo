@@ -55,12 +55,28 @@ ofRectangle TrackView::timeRangeToRect(const ofRange64u& t) const
 
 float TrackView::timeToLocalPosition(const uint64_t& t) const
 {
-	return MUI::Math::lerp(t, 0, _controller->getTimeControl()->getTotalTime(), 0, getWidth());
+//	std::cout << "TrackView::timeToLocalPosition\n";
+	auto ruler = getTimeRuler();
+	if(ruler)
+	{
+		return screenToLocal({ruler->timeToScreenPosition(t),0}).x ;
+	}
+//	return MUI::Math::lerp(t, 0, _controller->getTimeControl()->getTotalTime(), 0, getWidth());
+	return 0;
 }
 
 uint64_t TrackView::localPositionToTime(float x) const
 {
-	return MUI::Math::lerp(x, 0, getWidth(), 0, _controller->getTimeControl()->getTotalTime());
+//	std::cout << "TrackView::localPositionToTime\n";
+	
+	auto ruler = getTimeRuler();
+	if(ruler)
+	{
+		return ruler->screenPositionToTime(localToScreenX(x));
+//		return screenToLocal({ruler->timeToScreenPosition(t),0}).x ;
+	}
+//	return MUI::Math::lerp(x, 0, getWidth(), 0, _controller->getTimeControl()->getTotalTime());
+	return 0;
 }
 
 float TrackView::getHeightFactor() const
@@ -70,7 +86,7 @@ float TrackView::getHeightFactor() const
 
 void TrackView::setHeightFactor(float factor)
 {
-	std::cout << "TrackView::setHeightFactor " << factor << "\n";
+
 	_heightFactor = factor;
 //	_unscaledHeight = ConstVars::TrackInitialHeight * _heightFactor;
 	auto p = getParentPanel();
@@ -162,6 +178,12 @@ void TrackView::_updateRegionsWidth()
 	}
 }
 
+
+void TrackView::updateWidth(const float& w)
+{
+	BaseTrackView::updateWidth(w);
+	_updateRegionsWidth();
+}
 
 
 const TrackController * TrackView::getController() const
