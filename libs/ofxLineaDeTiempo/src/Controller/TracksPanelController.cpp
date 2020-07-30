@@ -215,7 +215,7 @@ void TracksPanelController::destroyView()
 {
 	if(_mainView && _panel)
 	{
-		std::cout << "TracksPanelController::destroyView()\n";
+		
 		destroyChildrenViews(this);
 		
 		_mainView->removeChild(_panel);
