@@ -30,9 +30,9 @@ public:
 	: DOM::Element(id, rect.x, rect.y, rect.width, rect.height)
 	{
 
-		_zoom[0] = {0,1};
-		_zoom[1] = {0,1};
-		
+//		_zoom[0] = {0,1};
+//		_zoom[1] = {0,1};
+//
 		setDrawAsViewport(true);
 		setFocusable(false);
 		container = addChild<ContainerType>(id+"_Container", ofRectangle(0,0,rect.width, rect.height), std::forward<Args>(args)...);
@@ -48,23 +48,23 @@ public:
 	
 	ContainerType* container = nullptr;
 	
-	virtual void setZoom(DOM::Orientation orientation, const ofRange& zoom);
+//	virtual void setZoom(DOM::Orientation orientation, const ofRange& zoom);
 
-	void setZoomV(ofRange& v);
-	void setZoomH(ofRange& v);
+//	void setZoomV(ofRange& v);
+//	void setZoomH(ofRange& v);
 	
-	ofRange getZoom(DOM::Orientation orientation) const;
+//	ofRange getZoom(DOM::Orientation orientation) const;
 	
 protected:	
 	
 	
-	glm::vec2 _minZoom = {
-		0.0001, //std::numeric_limits<float>::epsilon(),
-		0.0001 //std::numeric_limits<float>::epsilon()
-	};
+//	glm::vec2 _minZoom = {
+//		0.0001, //std::numeric_limits<float>::epsilon(),
+//		0.0001 //std::numeric_limits<float>::epsilon()
+//	};
 
 	
-	ofRange _zoom [2];
+//	ofRange _zoom [2];
 };
 
 

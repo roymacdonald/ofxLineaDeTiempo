@@ -9,6 +9,8 @@
 
 
 #include "MUI/ClippedView.h"
+#include "MUI/ZoomScrollbar.h"
+#include "ofRange.h"
 
 namespace ofx {
 
@@ -21,13 +23,10 @@ class TracksClippedView
 
 {
 public:
-
-	
 	
 	TracksClippedView(const std::string& id, const ofRectangle& rect);
 	virtual ~TracksClippedView(){}
 	
-	virtual void setZoom(DOM::Orientation orientation, const ofRange& zoom) override;
 
 	float getTracksWidth() const;
 	
@@ -37,6 +36,9 @@ public:
 	
 	virtual void updateLayout() override;
 	
+	void setScrollbars(MUI::ZoomScrollbar* zoomScrollbarH, MUI::ZoomScrollbar* zoomScrollbarV);
+	
+	
 protected:
 	
 	void updateTracksWidth();
@@ -44,30 +46,26 @@ protected:
 	void updateVerticalLayout();
 		
 
+	MUI::ZoomScrollbar* _zoomScrollbarH = nullptr;
+	MUI::ZoomScrollbar* _zoomScrollbarV = nullptr;
+	
+	
+	void zoomChangedH(ofRange&);
+	void zoomChangedV(ofRange&);
+	
+	
 
-//	float _zoomToScale(const ofRange& zoom);
-	
-	
-	
-//	float _tracksWidth = 0;
 	float _unscaledHeight = 0;
 	
 	void _updateTracksUnscaledHeight();
 	
 	float _getZoomableHeight();
 
-	
-//	virtual void _onShapeChange(const DOM::ShapeChangeEventArgs& e) override;
-//	void _onTrackAdded(DOM::ElementEventArgs&);
-//	void _onTrackRemoved(DOM::ElementEventArgs&);
-
-	
-//	void _updateVZoombar();
-//	void _updateHZoombar();
-
 	size_t _numGroups = 0;
 
-//	bool _bIgnoreScrollbar = false;
+
+	
+	ofEventListeners zoomListeners;
 	
 };
 

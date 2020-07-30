@@ -15,27 +15,65 @@ namespace LineaDeTiempo {
 
 TracksClippedView::TracksClippedView(const std::string& id, const ofRectangle& rect)
 : MUI::ClippedView(id, rect)
+{
+//	updateTracksWidth();
+	
+	
+	
+	
+}
 
+void TracksClippedView::setScrollbars(MUI::ZoomScrollbar* zoomScrollbarH, MUI::ZoomScrollbar* zoomScrollbarV)
+{
+	
+	_zoomScrollbarH = zoomScrollbarH;
+	_zoomScrollbarV = zoomScrollbarV;
+	
+	if(_zoomScrollbarH){
+		zoomListeners.push(_zoomScrollbarH->handleChangeEvent.newListener(this, &TracksClippedView::zoomChangedH));
+	}
+	else
+	{
+		ofLogVerbose("TracksClippedView::setScrollbars") << "TracksClippedView::setScrollbars  _zoomScrollbarH == nullptr";
+	}
+	if(_zoomScrollbarV){
+		zoomListeners.push(_zoomScrollbarV->handleChangeEvent.newListener(this, &TracksClippedView::zoomChangedV));
+	}
+	else
+	{
+		ofLogVerbose("TracksClippedView::setScrollbars") << "TracksClippedView::setScrollbars  _zoomScrollbarV == nullptr";
+	}
+	
+	updateTracksWidth();
+}
+
+void TracksClippedView::zoomChangedV(ofRange&)
+{
+	updateVerticalLayout();
+		
+}
+
+
+void TracksClippedView::zoomChangedH(ofRange&)
 {
 	updateTracksWidth();
 }
 
 
-
 //---------------------------------------------------------------------
-void TracksClippedView::setZoom(DOM::Orientation index, const ofRange& zoom)
-{
-	MUI::ClippedView::setZoom(index, zoom);
-	
-	if(index == DOM::HORIZONTAL)
-	{
-		updateTracksWidth();
-	}
-	else if( index == DOM::VERTICAL)
-	{
-		updateVerticalLayout();
-	}
-}
+//void TracksClippedView::setZoom(DOM::Orientation index, const ofRange& zoom)
+//{
+//	MUI::ClippedView::setZoom(index, zoom);
+//	
+//	if(index == DOM::HORIZONTAL)
+//	{
+//		updateTracksWidth();
+//	}
+//	else if( index == DOM::VERTICAL)
+//	{
+//		updateVerticalLayout();
+//	}
+//}
 
 //this might lead to some redundant updates.
 void TracksClippedView::updateLayout()
@@ -62,14 +100,16 @@ void TracksClippedView::updateTracksWidth()
 //	{
 //		std::cout << "TracksClippedView::_currentWidthToZoom() map and div not equal\n";
 //	}
-	if(container){
-//		std::cout << "TracksClippedView::updateTracksWidth\n";
+	if(container && _zoomScrollbarH){
+		
 		auto s = container->getShape();
 		
-		s.width = getWidth() / _zoom[0].span();
+		auto zoom = _zoomScrollbarH->getValue();
+		
+		s.width = getWidth() / zoom.span();
 //		s.width = _tracksWidth;
 	
-		s.x =  s.width * _zoom[0].min * -1.f;
+		s.x =  s.width * zoom.min * -1.f;
 	
 		container->setShape(s);
 //		std::cout << container->getWidth() << " --  " << s.width << "\n";
@@ -78,13 +118,15 @@ void TracksClippedView::updateTracksWidth()
 			auto c = dynamic_cast<BaseTrackView*>(child);
 			
 			c->updateWidth( s.width);
+			
 //			std::cout << container->getWidth() - s.width << "\n";
 //			std::cout << container->getWidth()  << "\n";
 //			std::cout << s.width << "\n";
 //			std::cout << c->getWidth() << "\n";
 		}
-		auto a = s.width;
-		auto b = container->getShape().width;
+		
+//		auto a = s.width;
+//		auto b = container->getShape().width;
 		
 //		if(!ofIsFloatEqual( a, b))
 //		{
@@ -175,34 +217,34 @@ ofRange TracksClippedView::containerHeightToZoom()
 //---------------------------------------------------------------------
 void TracksClippedView::updateVerticalLayout()
 {
-//	std::cout << "TracksClippedView::updateVerticalLayout()  " << _zoom[1] << "\n";
+	//	std::cout << "TracksClippedView::updateVerticalLayout()  " << _zoom[1] << "\n";
 	_updateTracksUnscaledHeight();
-
-	float yScale = _getZoomableHeight()/ (_unscaledHeight * _zoom[1].span());
 	
+	if(_zoomScrollbarH)
+	{
+		auto zoom = _zoomScrollbarV->getValue();
+		float yScale = _getZoomableHeight()/ (_unscaledHeight * zoom.span());
 		
-	float totalHeight = yScale*_unscaledHeight;
-	
-	float currentY = 0;
-	for (auto c : container->children()){
-		auto t = dynamic_cast<BaseTrackView*>(c);
-		if (t){
-			currentY += t->updateYScaled(currentY, yScale);
+		
+		float totalHeight = yScale*_unscaledHeight;
+		
+		float currentY = 0;
+		for (auto c : container->children()){
+			auto t = dynamic_cast<BaseTrackView*>(c);
+			if (t){
+				currentY += t->updateYScaled(currentY, yScale);
+			}
+		}
+		
+		if(container){
+			auto s = container->getShape();
+			s.y =  totalHeight * zoom.min * -1.f;
+			
+			s.height = totalHeight;
+			
+			container->setShape(s);
 		}
 	}
-
-	if(container){
-		auto s = container->getShape();
-		s.y =  totalHeight * _zoom[1].min * -1.f;
-		
-		s.height = totalHeight;
-				
-		container->setShape(s);
-	}
-	
-//	if(!(_zoom[1] == containerHeightToZoom()))
-//	std::cout << "TracksClippedView::updateVerticalLayout\n" << _zoom[1] << "\n" << containerHeightToZoom() << "\n";
-	
 }
 
 
