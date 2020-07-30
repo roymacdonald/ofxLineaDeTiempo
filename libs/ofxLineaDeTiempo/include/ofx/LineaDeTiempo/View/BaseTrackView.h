@@ -61,7 +61,7 @@ public:
 	
 	const TimeRuler * getTimeRuler() const;
 	
-	void updateWidth(const float& w);
+	virtual void updateWidth(const float& w);
 	
     using DOM::Element::isEnabled;
     using DOM::Element::isFocusable;
