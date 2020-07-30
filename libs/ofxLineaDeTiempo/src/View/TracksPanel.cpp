@@ -30,6 +30,11 @@ TracksPanel::TracksPanel(const std::string& id, const ofRectangle& rect, DOM::El
 	_tracksView = addChild<TracksView>(id + "_tracksView", _makeTracksViewRect());
 	_tracksView->setForceShowScrollbars(true);
 	_tracksContainer = _tracksView->getContainer();
+
+
+	_tracksView->getClippingView()->setScrollbars(_tracksView->getScrollbarH(), _tracksView->getScrollbarV());
+	
+	
 	
 	
 	_headersView = addChild<HeadersView>(id + "headersView", _makeHeadersViewRect(), nullptr, nullptr, true);
@@ -42,10 +47,10 @@ TracksPanel::TracksPanel(const std::string& id, const ofRectangle& rect, DOM::El
 	_totalTimeChangedListener =  controller->getTimeControl()->totalTimeChangedEvent.newListener(this, &TracksPanel::_totalTimeChanged);
 	
 	
-
+	
 	
 
-	_timeRuler = addChild<TimeRuler>(this, controller->getTimeControl(), _makeTimeRulerViewRect(), _tracksView->_scrollbarH);
+	_timeRuler = addChild<TimeRuler>(this, controller->getTimeControl(), _makeTimeRulerViewRect(), _tracksView->getScrollbarH());
 	_timeRuler->moveToFront();
 	_setTracksHeaderWidth(getTracksHeaderWidth());
 	
@@ -61,21 +66,8 @@ void TracksPanel::_totalTimeChanged()
 	auto t = getTracksView();
 	if(t)
 	{
-		if(t->getHorizontalScrollbarValue() == ofRange(0,1))
-		{
-			//ugly hack to force updating
-			t->setHorizontalScrollbarValue({0,0.9});
-		}
-		t->setHorizontalScrollbarValue({0,1});
-		
-		
-		
-//		t->getClippingView()->updateTracksWidth()
-		
-		
-//		t->getClippingView()->updateLayout();
+		t->getClippingView()->updateLayout();
 	}
-//	updateLayout();
 }
 
 void TracksPanel::setTracksHeaderWidth(float w)
