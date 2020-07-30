@@ -42,6 +42,8 @@ public:
 	
 	const ofRange64u & getVisibleTimeRange() const;
 	
+	void printStatus();
+	
 protected:
 	friend class TimeRulerBar;
 	TimeRulerHeader* _header = nullptr;

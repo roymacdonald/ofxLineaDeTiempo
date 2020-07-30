@@ -38,7 +38,7 @@ TimeRuler::TimeRuler(TracksPanel* panel, TimeControl* timeControl, const ofRecta
 	_totalTimeLoopButtons->add(LOOP_TOGGLE);
 	
 	
-	_totalTimeListener = _timeControl->totalTimeChangedEvent.newListener(this, &TimeRuler::_totalTimeChanged);
+	_totalTimeListener = _timeControl->totalTimeChangedEvent.newListener(this, &TimeRuler::_totalTimeChanged, std::numeric_limits<int>::lowest());
 
 	if(_scrollbar)
 	{
@@ -50,7 +50,7 @@ TimeRuler::TimeRuler(TracksPanel* panel, TimeControl* timeControl, const ofRecta
 	}
 	
 
-
+	_updateVisibleTimeRange();
 	
 	updateLayout();
 	
@@ -62,7 +62,7 @@ TimeRuler::TimeRuler(TracksPanel* panel, TimeControl* timeControl, const ofRecta
 //	{
 //		ofLogError("TimeRuler::TimeRuler") << "Panel's track view or its container are null. Cant set listeners for those";
 //	}
-//	
+//
 	setDrawChildrenOnly(true);
 	moveToFront();
 	_playhead->moveToFront();
@@ -233,20 +233,21 @@ const ofRange64u & TimeRuler::getVisibleTimeRange() const
 
 void TimeRuler::_totalTimeChanged()
 {
-	std::cout << "TimeRuler::_totalTimeChanged()\n";
-//	if(_bar)
-//	{
-////		_setTrackScreenHorizontalRange();
-//		_setBarShape(true);
-//		_bar->makeRulerLines();
-//		if(_playhead) _playhead->updatePosition();
-//	}
-	
 	_updateVisibleTimeRange();
 	
 	updateLayout();
 }
 
+
+void TimeRuler::printStatus()
+{
+	std::cout << "TimeRuler status: 	_visibleTimeRange: " << _visibleTimeRange << "  totalTime: " << _timeControl->getTotalTime();
+	if(_bar)
+	{
+		std::cout << "  bar screenShape: " << _bar->getScreenShape();
+	}
+	std::cout << "\n";
+}
 
 
 
