@@ -309,7 +309,6 @@ DOM::Shape ZoomScrollbar::normalizedValueToShape(const ofRange& val)
 void ZoomScrollbar::onDraw() const
 {
 	
-	ofDrawBitmapStringHighlight(ofToString(getValue()), 0, 0);
 	ofPushStyle();
 	ofNoFill();
 	ofSetColor(getStyles()->getColor(Styles::ROLE_BORDER , Styles::STATE_NORMAL));
