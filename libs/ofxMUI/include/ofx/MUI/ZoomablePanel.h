@@ -39,19 +39,19 @@ public:
 	void setForceShowScrollbars(bool show);
 	bool isForceShowScrollbars();
 	
-	void setHorizontalScrollbarValue(const ofRange& d);
-	void setVerticalScrollbarValue(const ofRange& d);
-
-	ofRange getHorizontalScrollbarValue() const;
-	ofRange getVerticalScrollbarValue() const;
+//	void setHorizontalScrollbarValue(const ofRange& d);
+//	void setVerticalScrollbarValue(const ofRange& d);
+//
+//	ofRange getHorizontalScrollbarValue() const;
+//	ofRange getVerticalScrollbarValue() const;
 
 	
-	
-//	void updateVerticalScrollFromContainersHeight();
 	    
-	void updateZoomFromCurrentClippedView();
+//	void updateZoomFromCurrentClippedView();
 	
-//	void setup();
+	
+	ZoomScrollbar * getScrollbarH();
+	ZoomScrollbar * getScrollbarV();
 	
 	
 protected:
@@ -63,10 +63,10 @@ protected:
 	
 	
 	bool _forceShowScrollbars = false;
-public:
+
 	ZoomScrollbar * _scrollbarH = nullptr;
 	ZoomScrollbar * _scrollbarV = nullptr;
-protected:
+
 	
 
 	bool _isScrollbarActive(DOM::Orientation scrollbarOrientation);

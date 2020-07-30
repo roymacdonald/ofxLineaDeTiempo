@@ -66,8 +66,6 @@ bool ZoomablePanel<C, CT>::isForceShowScrollbars()
 }
 
 
-
-
 template<typename  C, typename CT>
 CT* ZoomablePanel<C, CT>::getContainer()
 {
@@ -127,54 +125,67 @@ C*  ZoomablePanel<C, CT>::getClippingView()
 //}
 
 
+//template<typename  C, typename CT>
+//void  ZoomablePanel<C, CT>::updateZoomFromCurrentClippedView()
+//{
+//	if(_scrollbarH) _scrollbarH->updateValueFromClippedView();
+//	if(_scrollbarV) _scrollbarV->updateValueFromClippedView();
+//	
+//}
+
+//
+//template<typename  C, typename CT>
+//void ZoomablePanel<C, CT>::setHorizontalScrollbarValue(const ofRange& d)
+//{
+//	if(_scrollbarH)
+//	{
+//		_scrollbarH->setValue(d);
+//	}
+//}
+//
+//
+//template<typename  C, typename CT>
+//void ZoomablePanel<C, CT>::setVerticalScrollbarValue(const ofRange& d)
+//{
+//	if(_scrollbarV)
+//	{
+//		_scrollbarV->setValue(d);
+//	}
+//}
+//
+//
+//template<typename  C, typename CT>
+//ofRange ZoomablePanel<C, CT>::getHorizontalScrollbarValue() const
+//{
+//	if(_scrollbarH)
+//	{
+//		return _scrollbarH->getValue();
+//	}
+//	return ofRange(0,0);
+//}
+//
+//
+//template<typename  C, typename CT>
+//ofRange ZoomablePanel<C, CT>::getVerticalScrollbarValue() const
+//{
+//	if(_scrollbarV)
+//	{
+//		return _scrollbarV->getValue();
+//	}
+//	return ofRange(0,0);
+//}
+
 template<typename  C, typename CT>
-void  ZoomablePanel<C, CT>::updateZoomFromCurrentClippedView()
+ZoomScrollbar * ZoomablePanel<C, CT>::getScrollbarH()
 {
-	if(_scrollbarH) _scrollbarH->updateValueFromClippedView();
-	if(_scrollbarV) _scrollbarV->updateValueFromClippedView();
-	
+	return _scrollbarH;
 }
 
 
 template<typename  C, typename CT>
-void ZoomablePanel<C, CT>::setHorizontalScrollbarValue(const ofRange& d)
+ZoomScrollbar * ZoomablePanel<C, CT>::getScrollbarV()
 {
-	if(_scrollbarH)
-	{
-		_scrollbarH->setValue(d);
-	}
-}
-
-
-template<typename  C, typename CT>
-void ZoomablePanel<C, CT>::setVerticalScrollbarValue(const ofRange& d)
-{
-	if(_scrollbarV)
-	{
-		_scrollbarV->setValue(d);
-	}
-}
-
-
-template<typename  C, typename CT>
-ofRange ZoomablePanel<C, CT>::getHorizontalScrollbarValue() const
-{
-	if(_scrollbarH)
-	{
-		return _scrollbarH->getValue();
-	}
-	return ofRange(0,0);
-}
-
-
-template<typename  C, typename CT>
-ofRange ZoomablePanel<C, CT>::getVerticalScrollbarValue() const
-{
-	if(_scrollbarV)
-	{
-		return _scrollbarV->getValue();
-	}
-	return ofRange(0,0);
+	return _scrollbarV;
 }
 
 
