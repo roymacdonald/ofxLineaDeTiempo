@@ -1,13 +1,24 @@
 //
-//  TimedZoomableView.hpp
+//  TimedZoomableView.h
 //  oscGuiTimeline
 //
 //  Created by Roy Macdonald on 7/28/20.
 //
 
-#ifndef TimedZoomableView_hpp
-#define TimedZoomableView_hpp
-
-#include <stdio.h>
-
-#endif /* TimedZoomableView_hpp */
+#pragma once
+//#include "MUI/ZoomablePanel.h"
+//#include "LineaDeTiempo/View/TracksClippedView.h"
+//#include "MUI/AutoResizeContainer.h"
+//
+//
+//namespace ofx {
+//namespace LineaDeTiempo {
+//
+//class TimedZoomableView:
+//public ofx::MUI::ZoomablePanel<TracksClippedView, MUI::AutoReziseContainer>
+//{
+//
+//};
+//
+//
+//}}//ofx::LineaDeTiempo
