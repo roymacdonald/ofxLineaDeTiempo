@@ -51,8 +51,7 @@ KeyframesRegionView::KeyframesRegionView(TrackView* parentTrack, RegionControlle
 //---------------------------------------------------------------------------------------------------------------------
 void KeyframesRegionView::updateLayout()
 {
-	
-//	RegionView::updateLayout();
+
 	
 	ofRectangle rect(0, ConstVars::ViewTopHeaderHeight, getWidth(), _getCollectionViewHeight());
 	

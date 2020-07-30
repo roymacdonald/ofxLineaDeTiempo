@@ -73,13 +73,6 @@ private:
 
 
 
-
-
-
-
-
-
-
 template<>
 class KeyframeController<void>
 : public BaseController<KeyframeView>
@@ -88,12 +81,6 @@ public:
 	
 	
 	KeyframeController( const std::string& name, uint64_t * data, KeyframeCollectionController<void>* parentController);
-//	: BaseController<KeyframeView>(name, parentController, nullptr)
-//	,_parentController(parentController)
-//	,_data(data)
-//	{
-//
-//	}
 
 	
 	

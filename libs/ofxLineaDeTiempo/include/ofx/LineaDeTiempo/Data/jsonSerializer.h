@@ -21,69 +21,9 @@
 
 
 
-//class ofRectangle;
-
-//void from_json(const nlohmann::json& j, ofRectangle& d);
-//void to_json(nlohmann::json& j, const ofRectangle & data);
-
-//
-//namespace ofx {
-//namespace LineaDeTiempo {
-//{
-//void tryJson(){
-//try
-//{
-//
-//
-//}
-//catch (nlohmann::json::type_error& e)
-//{
-//	std::cout << e.what() << '\n';
-//}
-//catch (nlohmann::json::out_of_range& e)
-//{
-//	std::cout << e.what() << '\n';
-//}
-//}
-//}
-//}} // ofx::LineaDeTiempo
-
-
 
 namespace nlohmann {
 
-
-
-//namespace nlohmann {
-
-
-//    template <typename T>
-//    struct adl_serializer<ofx::LineaDeTiempo::TimedData_<T>> {
-//		static ofx::LineaDeTiempo::TimedData_<T> from_json(const json& j)
-//		{
-//			return {j["value"].get<T>(), j["time"].get<uint64_t>()};
-//        }
-//
-//		static void to_json(json& j, ofx::LineaDeTiempo::TimedData_<T> t)
-//		{
-//			j["value"] = t.value;
-//			j["time"] = t.time;
-//        }
-//    };
-//}
-
-
-//template <>
-//struct adl_serializer<ofRectangle> {
-//	static void from_json(const json& j, ofRectangle& d);
-////	   {
-////		d.set(j.at(0).get<float>(),j.at(1).get<float>(),j.at(2).get<float>(),j.at(3).get<float>());
-////	   }
-//	static void to_json(json& j, const ofRectangle & data);
-////	{
-////		j = json{data.x, data.y, data.width, data.height};
-////   }
-//};
 
 
 

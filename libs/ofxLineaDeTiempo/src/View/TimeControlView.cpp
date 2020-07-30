@@ -596,238 +596,19 @@ float TimeControlView::getButtonsSpacing() const
 	
 
 
-// void TimeControlView::_setButtonsIcons()
-// {
-		// auto w = getHeight()*0.35;
-		// ofRectangle  pathRect(0,0,w,w);
-		
-		// pathRect.scaleFromCenter(0.7);
-		// {
-		// 	///////// Play
-		// 	ofPath playPath;
-		// 	float x =pathRect.x + sin(ofDegToRad(60))*pathRect.width;
-		// 	playPath.triangle(pathRect.getMin(), {x , pathRect.getCenter().y}, pathRect.getBottomLeft());
-
-			
-		// 	///////// Pause
-		// 	ofPath path;
-			
-		// 	auto r = pathRect;
-		// 	r.width*= 0.33;
-			
-		// 	path.rectangle(r);
-		// 	r.x = pathRect.getMaxX() - r.width;
-		// 	path.rectangle(r);
-		// 	playPauseToggle->setIcon(path, 0);
-			
-		// 	playPauseToggle->setIcon(playPath, 1);
-			
-		// 	///////// Goto OUT
-		// 	r.x =x;
-		// 	r.width = pathRect.getMaxX() - x;
-		// 	playPath.rectangle(r);
-		// 	gotoOutButton->setIcon(playPath);
-			
-			
-		// 	///////// Goto IN
-		// 	playPath.scale(-1, 1);
-		// 	playPath.translate({pathRect.width + (pathRect.x*2), 0,0});
-		// 	gotoInButton->setIcon(playPath);
-		// }
-		// {
-		// 	///////// STOP
-		// 	ofPath path;
-		// 	path.rectangle(pathRect);
-		// 	stopButton->setIcon(path);
-		// }
-		// {
-		// 	///////// JUMP FWD
-		// 	ofPath path;
-		// 	path.triangle(pathRect.getMin(), pathRect.getCenter(), pathRect.getBottomLeft());
-		// 	glm::vec3 w2 (pathRect.getWidth()/2, 0,0);
-		// 	path.triangle(pathRect.getMin() + w2, pathRect.getCenter() + w2, pathRect.getBottomLeft() + w2);
-		// 	jumpForwardsButton->setIcon(path);
-			
-		// }
-		// 	///////// JUMP Back
-		// {
-		// 	ofPath path;
-		// 	auto c = pathRect.getCenter();
-		// 	path.triangle(pathRect.getTopRight(), c, pathRect.getBottomRight());
-			
-		// 	path.triangle({pathRect.getMinX(), c.y}, {c.x, pathRect.getMinY()}, {c.x, pathRect.getMaxY()});
-		// 	jumpBackwardsButton->setIcon(path);
-		// }
-		
-		// ofTrueTypeFont f;
-		// f.load(	MUI::TrueTypeFontSettings::DEFAULT_FONT,pathRect.height, true, true, true);
-		
-		// _setButtonLabel('I', setInButton, pathRect, f);
-	
-		// _setButtonLabel('x', triggerButton, pathRect, f);
-	
-		// _setButtonLabel('O', setOutButton, pathRect, f);
-		
-		// _setButtonLabel('L', loopToggle, pathRect, f);
-		
-		// _setButtonLabel('T', setTotalTimeButton, pathRect, f);
-		
-// }
-
-
-
-
-
-//void TimeControlView::_setButtonLabel(char ch, MUI::Button* b, const ofRectangle & rect, ofTrueTypeFont & f)
-//{
-//	auto c = f.getCharacterAsPoints(ch);
-//	auto r = getPathBoundingBox(c);
-//
-//
-//	c.translate(rect.getCenter() - r.getCenter());
-//	b->setIcon(c);
-//}
-//
-
 DOM::Element* TimeControlView::addSpacer()
 {
 	
-//
-//	auto s = getSize();
-//	s[dimIndex()] = s[1-dimIndex()] * 0.5;
-//
-//	ofRectangle r(0,0, s.x, s.y );
-//
 	++_numSpacers;
 	auto sp = addChild<DOM::Element>("spacer",0,0,0,0);
 	return sp;
-//	return nullptr;
+
 }
 
-
-// void TimeControlView::_setEvents()
-// {
-	// _listeners.push(stopButton->buttonPressed.event().newListener(this, &TimeControlView::_stopPressed));
-	// _listeners.push(triggerButton->buttonPressed.event().newListener(this, &TimeControlView::_triggerPressed));
-	// _listeners.push(setInButton->buttonPressed.event().newListener(this, &TimeControlView::_setInPressed));
-	// _listeners.push(setOutButton->buttonPressed.event().newListener(this, &TimeControlView::_setOutPressed));
-	// _listeners.push(gotoInButton->buttonPressed.event().newListener(this, &TimeControlView::_gotoInPressed));
-	// _listeners.push(gotoOutButton->buttonPressed.event().newListener(this, &TimeControlView::_gotoOutPressed));
-	// _listeners.push(jumpForwardsButton->buttonPressed.event().newListener(this, &TimeControlView::_jumpForwardsPressed));
-	// _listeners.push(jumpBackwardsButton->buttonPressed.event().newListener(this, &TimeControlView::_jumpBackwardsPressed));
-	// _listeners.push(setTotalTimeButton->buttonPressed.event().newListener(this, &TimeControlView::_setTotalTimePressed));
-
-	// _listeners.push(playPauseToggle->valueChanged.newListener(this, &TimeControlView::_playPauseChanged));
-	// _listeners.push(loopToggle->valueChanged.newListener(this, &TimeControlView::_loopChanged));
-	
-	
-	// _listeners.push(_timeControl->stateChangeEvent.newListener(this, &TimeControlView::_timeControlStateChanged));
-
-// }
-
-
-// void TimeControlView::_stopPressed(MUI::ButtonEventArgs& )
-// {
-// 	if(_timeControl)_timeControl->stop();
-// }
-
-
-// void TimeControlView::_triggerPressed(MUI::ButtonEventArgs& )
-// {
-// 	if(_timeControl)_timeControl->trigger();
-// }
-
-
-// void TimeControlView::_setInPressed(MUI::ButtonEventArgs& )
-// {
-// 	if(_timeControl)_timeControl->setInTime(_timeControl->getCurrentTime());
-// }
-
-
-// void TimeControlView::_setOutPressed(MUI::ButtonEventArgs& )
-// {
-// 	if(_timeControl)_timeControl->setOutTime(_timeControl->getCurrentTime());
-// }
-
-
-// void TimeControlView::_gotoInPressed(MUI::ButtonEventArgs& )
-// {
-// 	if(_timeControl)_timeControl->setCurrentTime(_timeControl->isInTimeEnabled()?_timeControl->getInTime():0);
-	
-// }
-
-
-// void TimeControlView::_gotoOutPressed(MUI::ButtonEventArgs& )
-// {
-// 	if(_timeControl)_timeControl->setCurrentTime(_timeControl->isOutTimeEnabled()?_timeControl->getOutTime():_timeControl->getTotalTime());
-// }
-
-
-// void TimeControlView::_timeJumpByVisibleTimeFactor(float factor )
-// {
-// 	if(_timeControl && _tracksPanel && _tracksPanel->getTimeRuler())
-// 	{
-// 		auto s = _tracksPanel->getTimeRuler()->getVisibleTimeRange().span();
-		
-// 		_timeControl->setCurrentTime(_timeControl->getCurrentTime() + s/factor);
-// 	}
-// }
-
-
-// void TimeControlView::_jumpForwardsPressed(MUI::ButtonEventArgs& )
-// {
-	
-// 	_timeJumpByVisibleTimeFactor(10.f);
-// }
-
-
-// void TimeControlView::_jumpBackwardsPressed(MUI::ButtonEventArgs& )
-// {
-// 	_timeJumpByVisibleTimeFactor(-10.f);
-// }
-
-
-// void TimeControlView::_setTotalTimePressed(MUI::ButtonEventArgs& )
-// {
-// //	if(_timeControl)_timeControl->setTotalTime();
-// }
-// void TimeControlView::_timeControlStateChanged(TimeControlState& s)
-// {
-// 	_bIgnoreTimeControlStateChange = true;
-// 	playPauseToggle->setValue(s==PLAYING? 0: 1);
-// 	_bIgnoreTimeControlStateChange = false;
-// }
-
-// void TimeControlView::_playPauseChanged(int& i)
-// {
-// 	if(!_bIgnoreTimeControlStateChange && _timeControl)
-// 	{
-// 		if(i == 1)
-// 		{
-// 			_timeControl->pause();
-// 		}
-// 		else
-// 		{
-// 			_timeControl->play();
-// 		}
-// 	}
-	
-
-// }
-
-
-// void TimeControlView::_loopChanged(int&i)
-// {
-// 	if(_timeControl)_timeControl->setLooping(i==1);
-// }
 
 
 void TimeControlView::updateLayout()
 {
-	
-//	auto r = getShape();
-//	r.x =0;
-//	r.y =0;
 	auto child = children();
 	
 	
@@ -848,8 +629,7 @@ void TimeControlView::updateLayout()
 		auto p = b->getPosition();
 		p[dimIndex()] = x;
 		b->setPosition(p);
-//		if(r.inside(b->getShape()))
-//		{
+
 		if(b->getId() == "spacer" && ofIsFloatEqual(b->getSize()[dimIndex()], 0.f))
 		{
 			x += spacerWidth + _buttonsMargin;
@@ -859,61 +639,10 @@ void TimeControlView::updateLayout()
 			if(!b->isHidden())
 				x += b->getSize()[dimIndex()] + _buttonsMargin;
 		}
-//		}
-//		else
-//		{
-//			if(!b->isHidden())b->setHidden(true);
-//		}
 	}
 	
 	
-	
-	// _makeTimeText();
-	
-	// ofBitmapFont _bf;
-	
-	// auto bb = _bf.getBoundingBox(_timeText, 0, 0);
-	
-	// auto y = bb.y;
-	
-	// auto s = getShape();
-	// s.y = s.getCenter().y;
-	// s.height*=0.5;
-	// bb.alignTo(s);
-	
-	// _textPos = {bb.x, bb.y - y};
-	
 }
-
-
-// void TimeControlView::_makeTimeText() const
-// {
-// 	auto t =_timeControl->getCurrentTime();
-	
-// 	_timeText = ofxTimecode::timecodeForMillis(t);
-	
-// }
-
-
-// void TimeControlView::onDraw() const
-// {
-// 	DOM::Element::onDraw();
-	
-	// _makeTimeText();
-	
-	// ofPushStyle();
-	
-	// ofSetColor(getStyles()->getColor(MUI::Styles::ROLE_TEXT, MUI::Styles::STATE_NORMAL));
-	// ofDrawBitmapString( _timeText, _textPos);
-	
-	
-	// ofNoFill();
-	// ofSetColor(ConstVars::TrackEdgeColor);
-	// ofDrawRectangle(getShape());
-	
-	// ofPopStyle();
-	
-// }
 
 
 }} //ofx::LineaDeTiempo

@@ -51,7 +51,6 @@ void TimeSubDiv::_onPointerEvent(DOM::PointerUIEventArgs& e)
 	
 	if (e.type() == PointerEventArgs::POINTER_DOWN)
     {
-//		std::cout << "TimeSubDiv::_onPointerEvent\n";
 		enableKeys();
 		for(auto& s: siblings())
 		{
@@ -65,8 +64,6 @@ void TimeSubDiv::_onPointerEvent(DOM::PointerUIEventArgs& e)
 }
 
 
-//void TimeSubDiv::keyPressed(ofKeyEventArgs & args)
-//{
 void TimeSubDiv::onKeyboardDownEvent(DOM::KeyboardUIEventArgs& evt)
 {
 	if (this == evt.target())
@@ -179,15 +176,7 @@ void TimeSubDiv::disableKeys()
 						&TimeSubDiv::onKeyboardDownEvent,
 						false,
 						std::numeric_limits<int>::lowest());
-	//	listener.unsubscribe();
 }
-
-
-//
-//const ofRectangle& TimeSubDiv::getShape() const
-//{
-//	return _shape;
-//}
 
 
 void TimeSubDiv::onDraw() const
@@ -298,9 +287,7 @@ TimeModifier::TimeModifier()
 	}
 	setShape(_shape);
 	
-//	mouseListener = ofEvents().mousePressed.newListener(this, &TimeModifier::mousePressed);
-	//	keysListener = ofEvents().keyPressed.newListener(this, &TimeModifier::keyPressed);
-	
+
 	setFocusable(true);
 	
 	_subDivs[0]->enableKeys();
@@ -329,88 +316,20 @@ void TimeModifier::disableKeys()
 }
 
 
-//
-//void TimeModifier::_onPointerEvent(DOM::PointerUIEventArgs& e)
-//{
-//	if (e.type() == PointerEventArgs::POINTER_DOWN)
-//    {
-//		std::cout << e.screenPosition() << "\n";
-//		auto p = e.screenPosition();
-//
-//		TimeSubDiv* pressed = nullptr;
-//		for(auto& s: _subDivs)
-//		{
-//			if(s->getScreenShape().inside(p))
-//			{
-//				pressed = s;
-//				s->enableKeys();
-//				break;
-//			}
-//		}
-//		if(pressed)
-//		{
-//			for(auto& s: _subDivs)
-//			{
-//				if(s != pressed)
-//				{
-//					s->disableKeys();
-//				}
-//			}
-//		}
-//    }
-//}
-
-//void TimeModifier::mousePressed(ofMouseEventArgs& args)
-//{
-//	TimeSubDiv* pressed = nullptr;
-//	for(auto& s: _subDivs)
-//	{
-//		if(s->getShape().inside(args))
-//		{
-//			pressed = s;
-//			s->enableKeys();
-//			break;
-//		}
-//	}
-//	if(pressed)
-//	{
-//		for(auto& s: _subDivs)
-//		{
-//			if(s != pressed)
-//			{
-//				s->disableKeys();
-//			}
-//		}
-//	}
-//}
-
 
 void TimeModifier::onDraw() const
 {
 	ofSetColor(0);
 	ofDrawRectangle(0,0,getWidth(), getHeight());
 	
-	//	for(auto& s: _subDivs)
-	//	{
-	//		s->draw();
-	//	}
+	
 }
 
-//
-//const ofRectangle& TimeModifier::getShape() const
-//{
-//	return _shape;
-//}
-
-
-//void TimeModifier::keyPressed(ofKeyEventArgs & args)
-//{
 
 void TimeModifier::onKeyboardDownEvent(DOM::KeyboardUIEventArgs& evt)
 {
 	if (this == evt.target())
 	{
-//		std::cout << "TimeModifier::onKeyboardDownEvent\n";
 		
 		if(evt.key().key == OF_KEY_RETURN)
 		{

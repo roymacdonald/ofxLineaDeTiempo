@@ -46,7 +46,7 @@ class KeyframeCollectionController
 public:
 	
 	typedef  typename std::conditional<is_multi_dim_param<RegionDataType>::value , float, RegionDataType>::type innerDataType;
-//	typedef  typename std::conditional<std::is_void<RegionDataType>::value, Keyframed<uint64_t> , KeyframedData_<innerDataType>>::type KeyframedDataType;
+
 	
 	typedef KeyframedData_<innerDataType> KeyframedDataType;
 	

@@ -22,7 +22,6 @@ class TimedData_: public AbstractSerializable
 {
 public:
 	
-//	static_assert(std::is_base_of<AbstractSerializable, DataType>, "TimedData_<DataType> error. DataType must inherit from ofx::LineaDeTiempo::AbstractSerializable");
 	TimedData_(){}
 	TimedData_(const DataType& _value, const uint64_t& _time)
 	: value(_value)

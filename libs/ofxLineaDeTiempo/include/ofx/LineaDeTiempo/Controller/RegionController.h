@@ -28,8 +28,7 @@ class RegionController
 {
 public:
 
-//	RegionController(const std::string& name, TrackController* parentTrack, TimeControl* timeControl);
-	
+
 	RegionController(const std::string& name, const ofRange64u& timeRange, TrackController* parentTrack, TimeControl* timeControl);
 	
 	virtual ~RegionController() = default;

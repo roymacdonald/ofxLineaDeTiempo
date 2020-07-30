@@ -199,14 +199,7 @@ protected:
 	
 private:
 
-	
-
-	
-//	size_t _lastTiggeredIndex;
-	
 	size_t _findNextIndex( const uint64_t& time);
-	
-//	bool _isTimeInDataBounds(const uint64_t& time);
 	
 
 	

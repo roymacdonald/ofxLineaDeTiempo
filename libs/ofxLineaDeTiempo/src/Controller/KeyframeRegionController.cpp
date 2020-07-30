@@ -156,23 +156,6 @@ bool KeyframeRegionController_<void>::_update(const uint64_t& t, ofParameter<voi
 }
 
 
-//
-//template<>
-//bool KeyframeRegionController_<void>::_update(const uint64_t& t, ofParameter<void>& param)
-//{
-//	bool bUpdated = false;
-//
-//	for(auto c : _collections)
-//	{
-//		bUpdated |= c->update(t, param);
-//	}
-//
-//
-//	return bUpdated;
-//}
-
-
-
 template<typename T>
 KeyframesRegionView*  KeyframeRegionController_<T>::getKeyframesRegionView()
 {

@@ -91,9 +91,6 @@ public:
 	virtual ofJson toJson() override;
 
 	
-	///\ returns the number of dimensions of this region, which depend on the DataType of the templated controller that extends from this.
-	/// integers and floats are 1, a glm::vec3 is 3, etc.
-	
 				
 protected:
 	
@@ -121,18 +118,10 @@ protected:
 	}
 	
 
-	
-	
-	
-	
-	
-	
-	
-	
 	/// as regions need to be templated, in order to avoid the parsing of the data type I'll delegate it to the derived class which already "know" which templated type to use.
 	virtual void _addRegionFromJson(const std::string& name, ofJson j)= 0;
 	
-	//	TrackGroupController * _parentGroup = nullptr;
+
 	
 	TrackGroupView* _getTrackGroupView();
 
@@ -140,7 +129,7 @@ protected:
 	void _findCurrentRegion();
 	void _resetCurrentRegion();
 	void _findRegionAtCurrentTime(const size_t& startIndex);
-//	size_t _currentRegion = 0;
+
 	
 	ofEventListeners _timeControlListeners;
 

@@ -41,9 +41,6 @@ public:
 	
 	static float valueToPosition(float value, KeyframeView * k);
 	
-//	static float defaultKeyframeSize;
-	
-	
 	virtual bool isSelected() const override;
 	
 	virtual void setSelected(bool selected) override;

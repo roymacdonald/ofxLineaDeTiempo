@@ -51,16 +51,6 @@ template class KeyframeTrackView<ofColor>;
 template class KeyframeTrackView<ofShortColor>;
 template class KeyframeTrackView<ofFloatColor>;
 
-//template class KeyframeTrackView<ofColor_<char>>;
-//template class KeyframeTrackView<ofColor_<unsigned char>>;
-//template class KeyframeTrackView<ofColor_<short>>;
-//template class KeyframeTrackView<ofColor_<unsigned short>>;
-//template class KeyframeTrackView<ofColor_<int>>;
-//template class KeyframeTrackView<ofColor_<unsigned int>>;
-//template class KeyframeTrackView<ofColor_<long>>;
-//template class KeyframeTrackView<ofColor_<unsigned long>>;
-//template class KeyframeTrackView<ofColor_<float>>;
-//template class KeyframeTrackView<ofColor_<double>>;
 template class KeyframeTrackView<glm::vec2>;
 template class KeyframeTrackView<glm::vec3>;
 template class KeyframeTrackView<glm::vec4>;
@@ -68,21 +58,6 @@ template class KeyframeTrackView<glm::vec4>;
 //template class KeyframeTrackView<glm::mat4>;
 template class KeyframeTrackView<bool>;
 template class KeyframeTrackView<void>;
-//template class KeyframeTrackView<char>;
-//template class KeyframeTrackView<unsigned char>;
-//template class KeyframeTrackView<signed char>;
-//template class KeyframeTrackView<short>;
-//template class KeyframeTrackView<unsigned short>;
-//template class KeyframeTrackView<int>;
-//template class KeyframeTrackView<unsigned int>;
-//template class KeyframeTrackView<long>;
-//template class KeyframeTrackView<unsigned long>;
-//template class KeyframeTrackView<long long>;
-//template class KeyframeTrackView<unsigned long long>;
-//template class KeyframeTrackView<float>;
-//template class KeyframeTrackView<double>;
-//template class KeyframeTrackView<long double>;
-
 
 template class KeyframeTrackView<int8_t>;
 template class KeyframeTrackView<uint8_t>;

@@ -22,7 +22,6 @@ public:
 	
 	virtual ~KeyframeTrackHeader(){}
 	
-//	virtual void onDraw() const override;
 	
 protected:
 	virtual void _onShapeChange(const DOM::ShapeChangeEventArgs& ) override;

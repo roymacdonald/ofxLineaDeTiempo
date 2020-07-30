@@ -25,8 +25,6 @@ public:
 	TimeSubDiv();
 	void setup(const std::string& name, size_t numDigits, size_t maxValue, TimeSubDiv* larger, TimeSubDiv* smaller);
 
-//	void keyPressed(ofKeyEventArgs & args);
-
 	
 	void enableKeys();
 	void disableKeys();
@@ -36,11 +34,7 @@ public:
 	void onKeyboardDownEvent(DOM::KeyboardUIEventArgs& evt);
 
 	virtual void _onPointerEvent(DOM::PointerUIEventArgs& e) override;
-//	virtual void _onPointerCaptureEvent(DOM::PointerCaptureUIEventArgs& e) override;
-	
-//	const ofRectangle& getShape() const;
-	
-//	void draw();
+
 	virtual void onDraw() const override;
 	
 	bool hasKeysEnabled()const;
@@ -61,16 +55,13 @@ protected:
 	
 
 	void _enableSmaller();
-	
-//	ofRectangle _shape;
-	
+		
 	size_t _currentDigitIndex = 1;
 	int _maxValue = 10;
 	
 	TimeSubDiv* _smaller = nullptr;
 	TimeSubDiv* _larger = nullptr;
 	
-//	ofEventListener listener;
 	
 	size_t _numDigits = 2;
 	
@@ -90,12 +81,8 @@ public:
 	
 	
 	
-//	void draw();
 	virtual void onDraw() const override;
 	
-//	const ofRectangle& getShape() const;
-		
-//	void keyPressed(ofKeyEventArgs & args);
 	void onKeyboardDownEvent(DOM::KeyboardUIEventArgs& evt);
 		
 	
@@ -109,13 +96,9 @@ public:
 protected:
 	
 	bool _subDivsKeysEnabled() const;
-
-//	ofEventListener mouseListener;
-//	ofEventListener keysListener;
-	
 	
 	std::vector<TimeSubDiv*> _subDivs;
-//	ofRectangle _shape;
+
 	
 };
 

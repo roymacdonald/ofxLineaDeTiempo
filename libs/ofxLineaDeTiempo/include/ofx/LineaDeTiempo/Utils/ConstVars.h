@@ -11,37 +11,6 @@
 #include "MUI/Styles.h"
 namespace ofx {
 namespace LineaDeTiempo {
-//
-//static ofParameter<ofColor> DefaultTextColor;// = ofColor(220);
-//
-////BaseTrackView
-//static  ofParameter<ofColor> TrackBackgroundColor;// = ofColor(40);
-//static  ofParameter<ofColor> TrackEdgeColor;// = ofColor(120);
-//static  ofParameter<float>   TrackInitialHeight;// = 150.0;
-//
-////KeyframeView
-//static ofParameter<float> DefaultKeyframeSize;// = 5.0;
-//
-////RegionView
-//static ofParameter<float> ViewTopHeaderHeight;// = 18.f;
-//static  ofParameter<ofColor> RegionBackgroundColor;// = ofColor(80);
-//
-////HeaderView
-//
-//static ofParameter<float> HeaderViewIndent;// = 4.f;
-//
-//
-////TimeRuler
-//
-//static ofParameter<float> TimeRulerInitialHeight;// = 30.f;
-//
-//static ofParameter<float> PlayheadTriangleSize;// = 15.f;
-//
-//static ofParameter<float> PlayheadWidth;// = 3.f;
-
-
-// [^:](DefaultTextColor|TrackBackgroundColor|TrackEdgeColor|RegionBackgroundColor|TrackInitialHeight|DefaultKeyframeSize|ViewTopHeaderHeight|HeaderViewIndent|TimeRulerInitialHeight|PlayheadTriangleSize|PlayheadWidth)
-
 
 struct ConstVars
 {
@@ -52,7 +21,7 @@ struct ConstVars
 	static ofParameter<ofColor> TrackBackgroundColor  ;//= {"TrackBackgroundColor", ofColor(40), ofColor::black, ofColor::white};
 	static ofParameter<ofColor> TrackEdgeColor        ;//= {"TrackEdgeColor", ofColor(120), ofColor::black, ofColor::white};
 	static ofParameter<ofColor> RegionBackgroundColor ;//= {"RegionBackgroundColor", ofColor(80), ofColor::black, ofColor::white};
-//	static ofParameter<ofColor> SelectedColor; //ofColor::yellow
+
 	static ofColor SelectedColor;
 	
 	static ofParameter<float> TrackInitialHeight      ;//= {"TrackInitialHeight", 150.0, 0.f, 400.f};
@@ -86,5 +55,5 @@ static std::string GetNameForDimension(const size_t & dim, const size_t & totalD
 }
 
 }} //ofx::LineaDeTiempo
-//#include "LineaDeTiempo/Utils/ConstVars.h"
+
 

@@ -39,7 +39,6 @@ public:
 	const TrackView* parentTrack() const;
 	TrackView* parentTrack();
 	
-//	static float headerHeight;
 	
 	ofEvent<ofRange64u> timeRangeChangedEvent;
 	
@@ -52,18 +51,13 @@ protected:
 	
 	
 
-//	ofEventListener _timeRangeChangeListener;
+
 	bool bIgnoreTimeRangeChange = false;
 	bool bIgnoreShapeChange = false;
-//	void _timeRangeChanged(ofRange64u& );
+
 	
-//	ofEventListener _shapeListener;
 	virtual void _onShapeChange(const DOM::ShapeChangeEventArgs&) override;
 
-//	virtual void _onTimeRangeChange()
-//	{
-//
-//	}// = 0;
 	
 	RegionController * _controller = nullptr;
 	

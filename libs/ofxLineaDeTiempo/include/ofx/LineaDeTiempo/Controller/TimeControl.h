@@ -101,7 +101,6 @@ public:
 
 	TimeControlState getState() const;
 	
-//	ofEvent<ofRange64u> updatedTimeRangeEvent;
 	
 	void drawDebug(float x, float y);
 	std::string getDebugString();

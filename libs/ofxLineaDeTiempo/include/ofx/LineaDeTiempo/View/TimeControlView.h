@@ -243,62 +243,22 @@ public:
 
 	void add(TimeControlViewElement e);
 
-//	addChild<MUI::ToggleButton>();
-
 	virtual void updateLayout() override;
 	
-	// virtual void onDraw() const override;
+	
 	void setButtonsSpacing(float spacing);
 	float getButtonsSpacing() const;
 	
 protected:
 		
-		// mutable std::string _timeText;
-
-		// void _makeTimeText() const;
-		
-		// glm::vec2 _textPos;
-	
-
-	
-	// void _setEvents();
-	// void _setButtonsIcons();
-	
-	// void _stopPressed(MUI::ButtonEventArgs& );
-	// void _triggerPressed(MUI::ButtonEventArgs& );
-	// void _setInPressed(MUI::ButtonEventArgs& );
-	// void _setOutPressed(MUI::ButtonEventArgs& );
-	// void _gotoInPressed(MUI::ButtonEventArgs& );
-	// void _gotoOutPressed(MUI::ButtonEventArgs& );
-	// void _jumpForwardsPressed(MUI::ButtonEventArgs& );
-	// void _jumpBackwardsPressed(MUI::ButtonEventArgs& );
-	// void _setTotalTimePressed(MUI::ButtonEventArgs& );
-
-	// void _playPauseChanged(int&);
-	// void _loopChanged(int&);
-		
-	
-	// ofEventListeners _listeners;
-
 	float _buttonsMargin = 3;
 	
 	TimeControl* _timeControl = nullptr;
 	TracksPanel * _tracksPanel = nullptr;
 	
-	// std::vector<DOM::Element* > _buttons;
-//	std::vector<MUI::Spacer* > _spacers;
 	
 	DOM::Element* addSpacer();
 	size_t _numSpacers = 0;
-	// void _setButtonLabel(char c, MUI::Button*, const ofRectangle & r, ofTrueTypeFont & f);
-	
-	// void _timeJumpByVisibleTimeFactor(float factor);
-	
-	
-	// bool _bIgnoreTimeControlStateChange = false;
-	
-	// void _timeControlStateChanged(TimeControlState& s);
-	
 	
 };
 
