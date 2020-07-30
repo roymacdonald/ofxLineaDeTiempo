@@ -28,7 +28,6 @@ public:
     /// \brief Destroy the GrabHandle.
     virtual ~GrabHandle();
 
-    void onDraw() const override;
 
     void onKeyboardDownEvent(DOM::KeyboardUIEventArgs& evt);
 

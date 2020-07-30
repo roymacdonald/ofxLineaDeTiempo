@@ -39,16 +39,6 @@ public:
 	void setForceShowScrollbars(bool show);
 	bool isForceShowScrollbars();
 	
-//	void setHorizontalScrollbarValue(const ofRange& d);
-//	void setVerticalScrollbarValue(const ofRange& d);
-//
-//	ofRange getHorizontalScrollbarValue() const;
-//	ofRange getVerticalScrollbarValue() const;
-
-	
-	    
-//	void updateZoomFromCurrentClippedView();
-	
 	
 	ZoomScrollbar * getScrollbarH();
 	ZoomScrollbar * getScrollbarV();

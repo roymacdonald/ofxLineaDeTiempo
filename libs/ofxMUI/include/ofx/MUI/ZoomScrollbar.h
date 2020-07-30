@@ -53,18 +53,18 @@ public:
 
 	virtual void onDraw() const override;
 
-	
-	ofRange shapeToNormalizedValue(const DOM::Shape& shape);
-	DOM::Shape normalizedValueToShape(const ofRange& val);
-	
-	
+	///\brief attach this scrollbar to another element. The scrollbar will automatically resize and follow this other element
+	///\param attachedToElement element to which this scrollbar will be attached
 	void attachTo(DOM::Element* attachedToElement);
-	
-	
-//	void updateValueFromClippedView();
 
 protected:
 
+	ofRange _shapeToNormalizedValue(const DOM::Shape& shape);
+	
+	DOM::Shape _normalizedValueToShape(const ofRange& val);
+	
+	
+	
 	ConstrainedGrabHandle* mainHandle = nullptr;
 	EdgeHandle* inHandle = nullptr ;
 	EdgeHandle* outHandle = nullptr;
@@ -76,11 +76,9 @@ protected:
 	
 	void _onAttachedToViewShapeChanged(DOM::ShapeChangeEventArgs&);
 
-//	void _onContainerShapeChanged(DOM::ShapeChangeEventArgs&);
-	
+
 	bool _onScrollEvent(ofMouseEventArgs & e);
 
-//	ClippedView* _clippedView = nullptr;
 	DOM::Element* _attachedToElement = nullptr;
 
 	void _updateShape();
@@ -94,7 +92,7 @@ protected:
 private:
 	
 	ofEventListener _attachedToViewShapeListener;
-//	ofEventListener _containerShapeListener;
+
 	ofEventListener _scrollListener;
 
 	void _setIOHandle(EdgeHandle* handle);
@@ -103,7 +101,6 @@ private:
 	///\ this is used to avoid recursive callbacks
 	bool _bIgnoreMainHandleShapeChange = false;
 	
-//	bool _bIgnoreContainerShapeChange = false;
 	
 };
 

@@ -31,9 +31,7 @@ DOM::Element(id, rect.x,rect.y,rect.width,rect.height)
 template<typename  C, typename CT>
 void ZoomablePanel<C, CT>::_onShapeChange(const DOM::ShapeChangeEventArgs& e)
 {
-	
-//	if(e.resized())
-		_setClippingPanelShape();
+	_setClippingPanelShape();
 }
 
 
@@ -106,74 +104,6 @@ C*  ZoomablePanel<C, CT>::getClippingView()
 	return _clippingPanel;
 }
 
-
-//template<>
-//void ZoomablePanel<LineaDeTiempo::TracksClippedView, AutoReziseContainer>::updateVerticalScrollFromContainersHeight()
-//{
-//
-//	auto z = _clippingPanel->getVerticalZoomFromContainerHeight();
-//
-//	setScrollV(z);
-//
-//}
-//
-//
-//template<typename  C, typename CT>
-//void ZoomablePanel<C, CT>::updateVerticalScrollFromContainersHeight()
-//{
-//	ofLogWarning("ZoomablePanel<C, CT>::updateVerticalScrollFromContainersHeight()") << "template specialization not implemented";
-//}
-
-
-//template<typename  C, typename CT>
-//void  ZoomablePanel<C, CT>::updateZoomFromCurrentClippedView()
-//{
-//	if(_scrollbarH) _scrollbarH->updateValueFromClippedView();
-//	if(_scrollbarV) _scrollbarV->updateValueFromClippedView();
-//	
-//}
-
-//
-//template<typename  C, typename CT>
-//void ZoomablePanel<C, CT>::setHorizontalScrollbarValue(const ofRange& d)
-//{
-//	if(_scrollbarH)
-//	{
-//		_scrollbarH->setValue(d);
-//	}
-//}
-//
-//
-//template<typename  C, typename CT>
-//void ZoomablePanel<C, CT>::setVerticalScrollbarValue(const ofRange& d)
-//{
-//	if(_scrollbarV)
-//	{
-//		_scrollbarV->setValue(d);
-//	}
-//}
-//
-//
-//template<typename  C, typename CT>
-//ofRange ZoomablePanel<C, CT>::getHorizontalScrollbarValue() const
-//{
-//	if(_scrollbarH)
-//	{
-//		return _scrollbarH->getValue();
-//	}
-//	return ofRange(0,0);
-//}
-//
-//
-//template<typename  C, typename CT>
-//ofRange ZoomablePanel<C, CT>::getVerticalScrollbarValue() const
-//{
-//	if(_scrollbarV)
-//	{
-//		return _scrollbarV->getValue();
-//	}
-//	return ofRange(0,0);
-//}
 
 template<typename  C, typename CT>
 ZoomScrollbar * ZoomablePanel<C, CT>::getScrollbarH()

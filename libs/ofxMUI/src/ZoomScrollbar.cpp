@@ -50,8 +50,6 @@ ZoomScrollbar::ZoomScrollbar(const std::string& id, DOM::Orientation orientation
 	
 	attachTo(attachedToElement);
 	
-//	_containerShapeListener = _clippedView->container->shapeChanged.newListener(this, &ZoomScrollbar::_onContainerShapeChanged);
-	
 	_updateShape();
 	_setValue({0.f, 1.f});
 }
@@ -94,46 +92,18 @@ void ZoomScrollbar::_zoomUpdate(ofRange r, bool forceUpdate)
 	if(forceUpdate || !ofIsFloatEqual(r.min, handleValue.min)  || ofIsFloatEqual(r.max, handleValue.max))
 	{
 		handleValue = r;
-//		if(_clippedView)
-//		{
-//			_bIgnoreContainerShapeChange=true;
-////			_clippedView->setZoom(getOrientation(), handleValue);
-//			_bIgnoreContainerShapeChange=false;
-//		}
+
 		ofNotifyEvent(handleChangeEvent, r, this);
 	}
 }
 
-//void ZoomScrollbar::_onContainerShapeChanged(DOM::ShapeChangeEventArgs&)
-//{
-//	if(!_bIgnoreContainerShapeChange)
-//	{
-//		updateValueFromClippedView();
-//	}
-//
-//}
 
 void ZoomScrollbar::_onMainHandleShapeChanged(DOM::ShapeChangeEventArgs& e)
 {
 	if(!_bIgnoreMainHandleShapeChange)
 	{
-//		std::cout << __PRETTY_FUNCTION__ << "\n";
-		ofRange r = shapeToNormalizedValue(mainHandle->getShape());
-//		r.min = minPosToNormalizedValue();
-//		r.max = maxPosToNormalizedValue();
-		
-	_zoomUpdate(r, true);
-	
-	
-//		if(r != handleValue)
-//		{
-//			handleValue = r;
-//			if(_clippedView)
-//			{
-//				_clippedView->setZoom(getOrientation(), handleValue);
-//			}
-//			ofNotifyEvent(handleChangeEvent, r, this);
-//		}
+		ofRange r = _shapeToNormalizedValue(mainHandle->getShape());
+		_zoomUpdate(r, true);
 	}
 }
 
@@ -146,7 +116,7 @@ bool ZoomScrollbar::_setValue(const ofRange& val , bool bUpdateContainer)
 	
 	
 	
-	auto b = setShapeIfNonEqual(mainHandle, normalizedValueToShape(val));
+	auto b = setShapeIfNonEqual(mainHandle, _normalizedValueToShape(val));
 	
 	if( b && bUpdateContainer)
 		_zoomUpdate(handleValue, true);
@@ -158,24 +128,7 @@ bool ZoomScrollbar::_setValue(const ofRange& val , bool bUpdateContainer)
 
 
 bool ZoomScrollbar::setValue(const ofRange& val){
-//	std::cout << "ZoomScrollbar::setValue:  " << val << "\n";
-//	if(handleValue == val) return false;
-	
 	return _setValue(val);
-//	handleValue = val;
-//
-//	_bIgnoreMainHandleShapeChange = true;
-//	auto a = normalizedValueToMinPos(handleValue.min);
-//	auto b = normalizedValueToMaxPos(handleValue.max);
-//	_zoomUpdate(handleValue, true);
-//	if(a || b){
-////		ofNotifyEvent(handleChangeEvent, handleValue, this);
-//
-//		_bIgnoreMainHandleShapeChange = false;
-//		return true;
-//	}
-//	_bIgnoreMainHandleShapeChange = false;
-//	return false;
 }
 
 
@@ -203,36 +156,17 @@ void ZoomScrollbar::_updateShape()
 		
 		setShape(shape);
 		_setValue(handleValue);
-//		updateValueFromClippedView();
-		
 	}
-//	else
-//	{
-//		ofLogError("ZoomScrollbar::_onClippedViewShapeChanged") << " _clipppedView is null.This should not happen";
-//	}
 }
 
-//hacer que los cambios de forma del container se reflejen en el handle.
 
 void ZoomScrollbar::_onAttachedToViewShapeChanged(DOM::ShapeChangeEventArgs&)
 {
-//	std::cout << __PRETTY_FUNCTION__ << "\n";
 	_updateShape();
 }
 
-//
-//float ZoomScrollbar::minPosToNormalizedValue()
-//{
-//	return ofMap( mainHandle->getPosition()[dimIndex()], 0, getSize()[dimIndex()] - HANDLE_MIN_SIZE , 0,1, true);
-//}
-//
-//
-//float ZoomScrollbar::maxPosToNormalizedValue(){
-//	return ofMap(mainHandle->getShape().getMax()[dimIndex()], HANDLE_MIN_SIZE, getSize()[dimIndex()] , 0,1, true);
-//}
-//
 
-ofRange ZoomScrollbar::shapeToNormalizedValue(const DOM::Shape& shape)
+ofRange ZoomScrollbar::_shapeToNormalizedValue(const DOM::Shape& shape)
 {
 	
 	ofRange r;
@@ -245,7 +179,7 @@ ofRange ZoomScrollbar::shapeToNormalizedValue(const DOM::Shape& shape)
 }
 
 
-DOM::Shape ZoomScrollbar::normalizedValueToShape(const ofRange& val)
+DOM::Shape ZoomScrollbar::_normalizedValueToShape(const ofRange& val)
 {
 	
 	glm::vec2 mn (0,0);
@@ -259,51 +193,6 @@ DOM::Shape ZoomScrollbar::normalizedValueToShape(const ofRange& val)
 	return DOM::Shape(mn, mx);
 	
 }
-
-
-//bool ZoomScrollbar::normalizedValueToMinPos(float val){
-//	auto p = mainHandle->getPosition();
-//	p[dimIndex()] = ofMap(val, 0, 1, 0, getSize()[dimIndex()] - HANDLE_MIN_SIZE ,  true);
-//	if(setPosIfNonEqual(mainHandle, p)){
-//		return true;
-//	}
-//	return false;
-//}
-//
-//
-//bool ZoomScrollbar::normalizedValueToMaxPos(float val){
-//
-//	auto p = mainHandle->getShape().getMax();
-//
-//	p[dimIndex()] = ofMap(val, 0, 1, HANDLE_MIN_SIZE, getSize()[dimIndex()],  true);
-//	if(setShapeIfNonEqual(mainHandle, {mainHandle->getPosition(), p})){
-//		return true;
-//	}
-//	return false;
-//}
-
-
-//void ZoomScrollbar::updateValueFromClippedView()
-//{
-////	std::cout << __PRETTY_FUNCTION__ ;
-//	auto t = dynamic_cast<LineaDeTiempo::TracksClippedView*>(_clippedView);
-//	if(t)
-//	{
-//
-//		if(_orientation == DOM::HORIZONTAL)
-//		{
-////			hacer funcion similar a _setValue pero que no sette el zoom del clipped view, ya uqe es de este de donde lo estamos obteniendo
-////			std::cout << " H: " << t->containerWidthToZoom() << "\n";
-////			_setValue(t->containerWidthToZoom().clamp({0,1}), false);
-//		}
-//		else
-//		{
-////			std::cout << " V: " << t->containerHeightToZoom() << "\n";
-//
-////			_setValue(t->containerHeightToZoom().clamp({0,1}), false);
-//		}
-//	}
-//}
 
 
 void ZoomScrollbar::onDraw() const

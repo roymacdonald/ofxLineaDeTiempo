@@ -12,32 +12,6 @@ namespace ofx {
 namespace MUI {
 
 
-//template <typename DataType>
-//bool BaseScrollHandle<DataType>::setValue(const DataType& val ){
-//	if(handleValue != val){
-//		handleValue = val;
-//		ofNotifyEvent(handleChangeEvent, handleValue, this);
-//		return true;
-//	}
-//	return false;
-//}
-//template <>
-//bool BaseScrollHandle<float>::setValue(const float& val ){
-//	if(setFloatIfNonEqual(handleValue, val)){
-//		ofNotifyEvent(handleChangeEvent, handleValue, this);
-//		return true;
-//	}
-//	return false;
-//}
-
-//template <>
-//bool BaseScrollHandle<ofRange>::setValue(const ofRange& val ){
-//	if(setRangeIfNonEqual(handleValue, val)){
-//		ofNotifyEvent(handleChangeEvent, handleValue, this);
-//		return true;
-//	}
-//	return false;
-//}
 template <>
 bool BaseScrollHandle<ofRange>::addToValue(float amt){
 	if(ofIsFloatEqual(amt, 0.0f))return false;
