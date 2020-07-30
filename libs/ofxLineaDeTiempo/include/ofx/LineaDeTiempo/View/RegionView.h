@@ -43,6 +43,11 @@ public:
 	
 	ofEvent<ofRange64u> timeRangeChangedEvent;
 	
+	
+	void moveRegionX(float x);
+	
+	bool isBeingMoved() const;
+	
 protected:
 	
 	
@@ -69,6 +74,9 @@ protected:
 	TrackView* _parentTrack = nullptr;
 	
 	RegionHeaderView* _header = nullptr;
+	
+private:
+	bool bIsMoving = false;
 };
 
 

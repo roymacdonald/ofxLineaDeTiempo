@@ -275,11 +275,26 @@ void KeyframeCollectionView::_onShapeChange(const DOM::ShapeChangeEventArgs& )
 //---------------------------------------------------------------------------------------------------------------------
 void KeyframeCollectionView::updateLayout()
 {
-	for(auto k: keyFrames)
+	
+	if(_parentRegion)
 	{
-		if(k)k->_updatePosition();
+		///TODO: this is ugly. needs to be optimized. Changing the value of the keyframe will make it update its position, which will be the same as it currently is. Is redundant. A better way needs to be done.
+		if( _parentRegion->isBeingMoved())
+		{
+			for(auto k: keyFrames)
+			{
+				if(k)k->_updateValue();
+			}
+		}
+		else
+		{
+			for(auto k: keyFrames)
+			{
+				if(k)k->_updatePosition();
+			}
+		}
+		_makeInterpolationLine();
 	}
-	_makeInterpolationLine();
 }
 
 void KeyframeCollectionView::removeElements(std::vector<KeyframeView*> & elementsToRemove)

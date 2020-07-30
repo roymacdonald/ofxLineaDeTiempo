@@ -95,6 +95,18 @@ TrackView* RegionView::parentTrack()
 	return _parentTrack;
 }
 
+void RegionView::moveRegionX(float x)
+{
+	bIsMoving = true;
+	setPosition(x + getX(), getY());
+	
+	
+	bIsMoving = false;
+}
 
+bool RegionView::isBeingMoved() const
+{
+	return bIsMoving;
+}
 
 } } // ofx::LineaDeTiempo

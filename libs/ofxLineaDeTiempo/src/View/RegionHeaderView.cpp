@@ -31,8 +31,9 @@ RegionHeaderView::RegionHeaderView(RegionView* parentRegion)
 }
 void RegionHeaderView::_parentShapeChanged(DOM::ShapeChangeEventArgs & e)
 {
-	if(e.widthChanged()){
-	this->setSize(_parentRegion->getWidth(), ConstVars::ViewTopHeaderHeight);
+	
+	if(_parentRegion && e.widthChanged()){
+		this->setSize(_parentRegion->getWidth(), ConstVars::ViewTopHeaderHeight);
 	}
 }
 
@@ -40,8 +41,9 @@ void RegionHeaderView::_onDragging(const DOM::CapturedPointer& pointer)
 {
 	MUI::ConstrainedGrabHandle::_onDragging(pointer);
 	
-	float x = _parentRegion->getX() + this->getX();
-	_parentRegion->setPosition(x, 0);
+//	float x = _parentRegion->getX() + this->getX();
+	_parentRegion->moveRegionX(this->getX());
+//	_parentRegion->setPosition(x, 0);
 	
 	this->setPosition(0, 0);
 	
