@@ -17,10 +17,9 @@ namespace MUI {
 
 float ZoomScrollbar::scrollSpeed = 0.02;
 
-ZoomScrollbar::ZoomScrollbar(const std::string& id, DOM::Orientation orientation, ClippedView* clippedView)
+ZoomScrollbar::ZoomScrollbar(const std::string& id, DOM::Orientation orientation, DOM::Element* attachedToElement)
 : DOM::Element(id, 0, 0, SCROLL_BAR_SIZE,SCROLL_BAR_SIZE)
 , DOM::OrientedElement(orientation)
-, _clippedView(clippedView)
 {
 	handleValue.set(-1,-1);
 	
@@ -46,14 +45,29 @@ ZoomScrollbar::ZoomScrollbar(const std::string& id, DOM::Orientation orientation
 	
 	mainHandle->moveToBack();
 	
-	_clippedViewShapeListener = _clippedView->shapeChanged.newListener(this, &ZoomScrollbar::_onClippedViewShapeChanged);
 	
 	_scrollListener = ofEvents().mouseScrolled.newListener(this, &ZoomScrollbar::_onScrollEvent,std::numeric_limits<int>::lowest());
 	
-	_containerShapeListener = _clippedView->container->shapeChanged.newListener(this, &ZoomScrollbar::_onContainerShapeChanged);
+	attachTo(attachedToElement);
+	
+//	_containerShapeListener = _clippedView->container->shapeChanged.newListener(this, &ZoomScrollbar::_onContainerShapeChanged);
 	
 	_updateShape();
 	_setValue({0.f, 1.f});
+}
+
+void ZoomScrollbar::attachTo(DOM::Element* attachedToElement)
+{
+	_attachedToElement = attachedToElement;
+	if(_attachedToElement)
+	{
+		_attachedToViewShapeListener = _attachedToElement->shapeChanged.newListener(this, &ZoomScrollbar::_onAttachedToViewShapeChanged);
+		_updateShape();
+	}
+	else
+	{
+		_attachedToViewShapeListener.unsubscribe();
+	}
 }
 
 
@@ -68,7 +82,7 @@ void ZoomScrollbar::_setIOHandle(EdgeHandle* handle)
 
 bool ZoomScrollbar::_onScrollEvent(ofMouseEventArgs & e){
 	
-	if(getScreenShape().inside(e) || (_clippedView && _clippedView->getScreenShape().inside(e))){
+	if(getScreenShape().inside(e) || (_attachedToElement && _attachedToElement->getScreenShape().inside(e))){
 		return scroll((_orientation == DOM::HORIZONTAL)? e.scrollX: e.scrollY);
 	}
 	return false;
@@ -80,24 +94,24 @@ void ZoomScrollbar::_zoomUpdate(ofRange r, bool forceUpdate)
 	if(forceUpdate || !ofIsFloatEqual(r.min, handleValue.min)  || ofIsFloatEqual(r.max, handleValue.max))
 	{
 		handleValue = r;
-		if(_clippedView)
-		{
-			_bIgnoreContainerShapeChange=true;
-			_clippedView->setZoom(getOrientation(), handleValue);
-			_bIgnoreContainerShapeChange=false;
-		}
+//		if(_clippedView)
+//		{
+//			_bIgnoreContainerShapeChange=true;
+////			_clippedView->setZoom(getOrientation(), handleValue);
+//			_bIgnoreContainerShapeChange=false;
+//		}
 		ofNotifyEvent(handleChangeEvent, r, this);
 	}
 }
 
-void ZoomScrollbar::_onContainerShapeChanged(DOM::ShapeChangeEventArgs&)
-{
-	if(!_bIgnoreContainerShapeChange)
-	{
-		updateValueFromClippedView();
-	}
-	
-}
+//void ZoomScrollbar::_onContainerShapeChanged(DOM::ShapeChangeEventArgs&)
+//{
+//	if(!_bIgnoreContainerShapeChange)
+//	{
+//		updateValueFromClippedView();
+//	}
+//
+//}
 
 void ZoomScrollbar::_onMainHandleShapeChanged(DOM::ShapeChangeEventArgs& e)
 {
@@ -122,6 +136,8 @@ void ZoomScrollbar::_onMainHandleShapeChanged(DOM::ShapeChangeEventArgs& e)
 //		}
 	}
 }
+
+
 bool ZoomScrollbar::_setValue(const ofRange& val , bool bUpdateContainer)
 {
 	handleValue = val;
@@ -139,6 +155,7 @@ bool ZoomScrollbar::_setValue(const ofRange& val , bool bUpdateContainer)
 	
 	return b;
 }
+
 
 bool ZoomScrollbar::setValue(const ofRange& val){
 //	std::cout << "ZoomScrollbar::setValue:  " << val << "\n";
@@ -171,10 +188,8 @@ bool ZoomScrollbar::scroll(float amt){
 
 void ZoomScrollbar::_updateShape()
 {
-//	std::cout << __PRETTY_FUNCTION__ << "\n";
-	
-	if(_clippedView){
-		auto s = _clippedView->getShape();
+	if(_attachedToElement){
+		auto s = _attachedToElement->getShape();
 		ofRectangle shape;
 		
 		if(_orientation == DOM::HORIZONTAL)
@@ -191,15 +206,15 @@ void ZoomScrollbar::_updateShape()
 //		updateValueFromClippedView();
 		
 	}
-	else
-	{
-		ofLogError("ZoomScrollbar::_onClippedViewShapeChanged") << " _clipppedView is null.This should not happen";
-	}
+//	else
+//	{
+//		ofLogError("ZoomScrollbar::_onClippedViewShapeChanged") << " _clipppedView is null.This should not happen";
+//	}
 }
 
 //hacer que los cambios de forma del container se reflejen en el handle.
 
-void ZoomScrollbar::_onClippedViewShapeChanged(DOM::ShapeChangeEventArgs&)
+void ZoomScrollbar::_onAttachedToViewShapeChanged(DOM::ShapeChangeEventArgs&)
 {
 //	std::cout << __PRETTY_FUNCTION__ << "\n";
 	_updateShape();
@@ -268,31 +283,33 @@ DOM::Shape ZoomScrollbar::normalizedValueToShape(const ofRange& val)
 //}
 
 
-void ZoomScrollbar::updateValueFromClippedView()
-{
-//	std::cout << __PRETTY_FUNCTION__ ;
-	auto t = dynamic_cast<LineaDeTiempo::TracksClippedView*>(_clippedView);
-	if(t)
-	{
-		
-		if(_orientation == DOM::HORIZONTAL)
-		{
-//			hacer funcion similar a _setValue pero que no sette el zoom del clipped view, ya uqe es de este de donde lo estamos obteniendo
-//			std::cout << " H: " << t->containerWidthToZoom() << "\n";
-//			_setValue(t->containerWidthToZoom().clamp({0,1}), false);
-		}
-		else
-		{
-//			std::cout << " V: " << t->containerHeightToZoom() << "\n";
-			
-//			_setValue(t->containerHeightToZoom().clamp({0,1}), false);
-		}
-	}
-}
+//void ZoomScrollbar::updateValueFromClippedView()
+//{
+////	std::cout << __PRETTY_FUNCTION__ ;
+//	auto t = dynamic_cast<LineaDeTiempo::TracksClippedView*>(_clippedView);
+//	if(t)
+//	{
+//
+//		if(_orientation == DOM::HORIZONTAL)
+//		{
+////			hacer funcion similar a _setValue pero que no sette el zoom del clipped view, ya uqe es de este de donde lo estamos obteniendo
+////			std::cout << " H: " << t->containerWidthToZoom() << "\n";
+////			_setValue(t->containerWidthToZoom().clamp({0,1}), false);
+//		}
+//		else
+//		{
+////			std::cout << " V: " << t->containerHeightToZoom() << "\n";
+//
+////			_setValue(t->containerHeightToZoom().clamp({0,1}), false);
+//		}
+//	}
+//}
 
 
 void ZoomScrollbar::onDraw() const
 {
+	
+	ofDrawBitmapStringHighlight(ofToString(getValue()), 0, 0);
 	ofPushStyle();
 	ofNoFill();
 	ofSetColor(getStyles()->getColor(Styles::ROLE_BORDER , Styles::STATE_NORMAL));

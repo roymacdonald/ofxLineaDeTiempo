@@ -12,7 +12,7 @@
 #include "MUI/Handles/ConstrainedGrabHandle.h"
 #include "ofRange.h"
 #include "MUI/Handles/EdgeHandle.h"
-#include "MUI/ClippedView.h"
+//#include "MUI/ClippedView.h"
 #include "MUI/Handles/BaseScrollHandle.h"
 #include "MUI/OrientedElement.h"
 
@@ -26,13 +26,17 @@ public:
 	/// \brief Create a Scrollbar with the given parameters.
 	/// \param id The Widget's id string.
 	/// \param orientation The orientation of the .
-	/// \param clippedView The clippedView that this scrollbar will control
-	ZoomScrollbar(const std::string& id, DOM::Orientation orientation, ClippedView* clippedView);
+	/// \param attachedToElement The element to which this scrollbar is attached
+	ZoomScrollbar(const std::string& id, DOM::Orientation orientation, DOM::Element* attachedToElement);
 
 	/// \brief Destroy the Scrollbar.
 	virtual ~ZoomScrollbar(){}
 
 
+	
+	///\brief sets the value of the zoomscrollbar.
+	///\param val the value to set the zoomscrollbar, as an ofRange from 0 to 1
+	///\return true if value actually changed. false otherwise.
 	virtual bool setValue(const ofRange& val ) override;
 
 
@@ -42,22 +46,22 @@ public:
 	///\return true if it was able to move the scroll handle
 	bool scroll(float amt);
 
+	
+	///\brief static class variable for the scrolling speed of the the zoomscrollbar. Default is 0.02
 	static float scrollSpeed;
 
 
 	virtual void onDraw() const override;
 
-//	float minPosToNormalizedValue();
-//	float maxPosToNormalizedValue();
-	
-//	bool normalizedValueToMinPos(float val);
-//	bool normalizedValueToMaxPos(float val);
-
 	
 	ofRange shapeToNormalizedValue(const DOM::Shape& shape);
 	DOM::Shape normalizedValueToShape(const ofRange& val);
 	
-	void updateValueFromClippedView();
+	
+	void attachTo(DOM::Element* attachedToElement);
+	
+	
+//	void updateValueFromClippedView();
 
 protected:
 
@@ -70,13 +74,14 @@ protected:
 
 	ofEventListener _mainHandleListener;
 	
-	void _onClippedViewShapeChanged(DOM::ShapeChangeEventArgs&);
+	void _onAttachedToViewShapeChanged(DOM::ShapeChangeEventArgs&);
 
-	void _onContainerShapeChanged(DOM::ShapeChangeEventArgs&);
+//	void _onContainerShapeChanged(DOM::ShapeChangeEventArgs&);
 	
 	bool _onScrollEvent(ofMouseEventArgs & e);
 
-	ClippedView* _clippedView = nullptr;
+//	ClippedView* _clippedView = nullptr;
+	DOM::Element* _attachedToElement = nullptr;
 
 	void _updateShape();
 
@@ -88,8 +93,8 @@ protected:
 	
 private:
 	
-	ofEventListener _clippedViewShapeListener;
-	ofEventListener _containerShapeListener;
+	ofEventListener _attachedToViewShapeListener;
+//	ofEventListener _containerShapeListener;
 	ofEventListener _scrollListener;
 
 	void _setIOHandle(EdgeHandle* handle);
@@ -98,7 +103,7 @@ private:
 	///\ this is used to avoid recursive callbacks
 	bool _bIgnoreMainHandleShapeChange = false;
 	
-	bool _bIgnoreContainerShapeChange = false;
+//	bool _bIgnoreContainerShapeChange = false;
 	
 };
 
