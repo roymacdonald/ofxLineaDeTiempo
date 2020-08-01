@@ -17,20 +17,19 @@ struct ConstVars
 	
 	
 	static ofParameter<ofColor> PanelBackgroundColor;
-	static ofParameter<ofColor> DefaultTextColor      ;//= {"DefaultTextColor", ofColor(220), ofColor::black, ofColor::white};
-	static ofParameter<ofColor> TrackBackgroundColor  ;//= {"TrackBackgroundColor", ofColor(40), ofColor::black, ofColor::white};
-	static ofParameter<ofColor> TrackEdgeColor        ;//= {"TrackEdgeColor", ofColor(120), ofColor::black, ofColor::white};
-	static ofParameter<ofColor> RegionBackgroundColor ;//= {"RegionBackgroundColor", ofColor(80), ofColor::black, ofColor::white};
+	static ofParameter<ofColor> TrackBackgroundColor  ;
+	static ofParameter<ofColor> TrackEdgeColor        ;
+
 
 	static ofColor SelectedColor;
 	
-	static ofParameter<float> TrackInitialHeight      ;//= {"TrackInitialHeight", 150.0, 0.f, 400.f};
-	static ofParameter<float> DefaultKeyframeSize     ;//= {"DefaultKeyframeSize", 5.0, 0.f, 20.f};
-	static ofParameter<float> ViewTopHeaderHeight     ;//= {"ViewTopHeaderHeight", 18.f, 0.f, 50.f};
-	static ofParameter<float> HeaderViewIndent        ;//= {"HeaderViewIndent", 4.f, 0.f, 10.f};
-	static ofParameter<float> TimeRulerInitialHeight  ;//= {"TimeRulerInitialHeight", 30.f, 0.f, 100.f};
-	static ofParameter<float> PlayheadTriangleSize    ;//= {"PlayheadTriangleSize", 15.f, 0.f, 150.f};
-	static ofParameter<float> PlayheadWidth           ;//= {"PlayheadWidth", 3.f, 0.f, 10.f};
+	static ofParameter<float> TrackInitialHeight      ;
+	static ofParameter<float> DefaultKeyframeSize     ;
+	static ofParameter<float> ViewTopHeaderHeight     ;
+	static ofParameter<float> HeaderViewIndent        ;
+	static ofParameter<float> TimeRulerInitialHeight  ;
+	static ofParameter<float> PlayheadTriangleSize    ;
+	static ofParameter<float> PlayheadWidth           ;
 	
 	
 	

@@ -72,9 +72,9 @@ void TracksPanelController::generateView()
 			
 			ofx::MUI::TrueTypeFontSettings::setDefaultFont(ofToDataPath("assets/fonts/OpenSans-Regular.ttf"));
 			
-			auto s = _mainView->getDocumentStyles();
-			s->setColor(ConstVars::RegionBackgroundColor.get(), ofx::MUI::Styles::ROLE_BACKGROUND);
-			s->setColor(ofColor(220), ofx::MUI::Styles::ROLE_FOREGROUND);
+//			auto s = _mainView->getDocumentStyles();
+//			s->setColor(ConstVars::RegionBackgroundColor.get(), ofx::MUI::Styles::ROLE_BACKGROUND);
+//			s->setColor(ofColor(220), ofx::MUI::Styles::ROLE_FOREGROUND);
 			
 			
 			_parentPanel = _mainView->addChild<MUI::Panel<TracksPanel>>(getId(), ofRectangle (0,0, _shape.width, _shape.height), _mainView.get(), this);

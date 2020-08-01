@@ -477,10 +477,6 @@ void TimeDisplay::onDraw() const
 	ofDrawBitmapString( _timeText, _textPos);
 	
 	
-//	ofNoFill();
-//	ofSetColor(ConstVars::TrackEdgeColor);
-//	ofDrawRectangle(getShape());
-//	
 	ofPopStyle();
 	
 }
