@@ -6,8 +6,6 @@
 //
 
 #pragma once
-#include "MUI/ScrollablePanel.h"
-
 
 
 #include "LineaDeTiempo/View/TrackGroupView.h"
