@@ -105,7 +105,7 @@ void Scope<DataType>::onDraw() const
     ofDrawRectangle(0, 0, getWidth(), getHeight());
 
     ofNoFill();
-    ofSetColor(getStyles()->getColor(Styles::ROLE_BORDER, Styles::STATE_NORMAL));
+    ofSetColor(getStyles()->getColor(Styles::ROLE_BORDER_BACKGROUND, Styles::STATE_NORMAL));
     ofDrawRectangle(0, 0, getWidth(), getHeight());
 
 

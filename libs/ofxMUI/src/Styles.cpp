@@ -110,7 +110,8 @@ std::string toString(Styles::Role role)
     if(role == Styles::ROLE_FOREGROUND) return "FOREGROUND";
     if(role == Styles::ROLE_BACKGROUND) return "BACKGROUND";
     if(role == Styles::ROLE_ACCENT) return "ACCENT";
-    if(role == Styles::ROLE_BORDER) return "BORDER";
+    if(role == Styles::ROLE_BORDER_FOREGROUND) return "BORDER_FOREGROUND";
+	if(role == Styles::ROLE_BORDER_BACKGROUND) return "BORDER_BACKGROUND";
     if(role == Styles::ROLE_TEXT) return "TEXT";
     
     return "";
@@ -137,7 +138,8 @@ Styles::Styles(const std::string& name)
     // https://color.adobe.com/Neutral-Blue-color-theme-22361/
     ofColor text = ofColor::fromHex(0xFCFFF5); // text
     ofColor accent = ofColor::fromHex(0xD1DBBD); // accent
-    ofColor border = ofColor::fromHex(0x91AA9D); // border
+    ofColor border_foreground = ofColor::fromHex(0x91AA9D); // border
+	ofColor border_background = ofColor::fromHex(0x91AA9D); // border
     ofColor foreground = ofColor::fromHex(0x3E606F); // foreground
     ofColor background = ofColor::fromHex(0x193441); // background
 
@@ -165,7 +167,7 @@ Styles::Styles(const std::string& name)
 #else
 	_colors.assign(ROLE_TEXT + 1, std::vector<ofColor>(STATE_DISABLED + 1, ofColor()));
 #endif
-    setColors(foreground, background, accent, border, text);
+    setColors(foreground, background, accent, border_foreground, border_background, text);
 	
 	
 }
@@ -236,13 +238,15 @@ void Styles::setColor(const ofColor& color, Role role)
 void Styles::setColors(const ofColor& foreground,
                        const ofColor& background,
                        const ofColor& accent,
-                       const ofColor& border,
+                       const ofColor& border_foreground,
+					   const ofColor& border_background,
                        const ofColor& text)
 {
     setColor(foreground, ROLE_FOREGROUND);
     setColor(background, ROLE_BACKGROUND);
     setColor(accent, ROLE_ACCENT);
-    setColor(border, ROLE_BORDER);
+	setColor(border_foreground, ROLE_BORDER_FOREGROUND);
+	setColor(border_background, ROLE_BORDER_BACKGROUND);
     setColor(text, ROLE_TEXT);
 }
 

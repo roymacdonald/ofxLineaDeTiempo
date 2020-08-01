@@ -102,6 +102,12 @@ public:
 	
 	virtual void printStructure(std::string prefix = "") override;
 	
+	
+	///\brief set the style role for this widget.
+	/// this will define which colors to use when rendering.
+	///\param role The role to set
+	void setStyleRole(Styles::Role role);
+	
 protected:
 	///\brief Callback when dragging happens. override to change behavior
 	virtual void _onDragging(const DOM::CapturedPointer& pointer);
@@ -147,7 +153,8 @@ protected:
 	///\ brief Highlihgt the widget when the pointer is over.
 	bool _highlightOnOver = true;
 
-	
+	Styles::Role _widgetRole = Styles::ROLE_BACKGROUND;
+	Styles::Role _borderStyleRole = Styles::ROLE_BORDER_BACKGROUND;
 	
 };
 

@@ -122,8 +122,10 @@ public:
         ROLE_BACKGROUND,
         /// \brief Styles applied to the accent areas.
         ROLE_ACCENT,
-        /// \brief Styles applied to the borders.
-        ROLE_BORDER,
+        /// \brief Styles applied to the foreground's borders.
+        ROLE_BORDER_FOREGROUND,
+		/// \brief Styles applied to the background's borders.
+        ROLE_BORDER_BACKGROUND,
         /// \brief Styles applied to the text.
         ROLE_TEXT
     };
@@ -151,12 +153,14 @@ public:
     /// \param foreground The foreground color.
     /// \param background The background color.
     /// \param accent The accent color.
-    /// \param border The border color.
+	/// \param border_foreground The foreground's border color.
+	/// \param border_background The background's border color.
     /// \param text The text color.
     void setColors(const ofColor& foreground,
                    const ofColor& background,
                    const ofColor& accent,
-                   const ofColor& border,
+                   const ofColor& border_foreground,
+				   const ofColor& border_background,
                    const ofColor& text);
 
     /// \brief Get the ofColor for a given Role and State.
@@ -232,7 +236,8 @@ protected:
 			case ROLE_FOREGROUND: return "ROLE_FOREGROUND";
 			case ROLE_BACKGROUND: return "ROLE_BACKGROUND";
 			case ROLE_ACCENT: return "ROLE_ACCENT";
-			case ROLE_BORDER: return "ROLE_BORDER";
+			case ROLE_BORDER_FOREGROUND: return "ROLE_BORDER_FOREGROUND";
+			case ROLE_BORDER_BACKGROUND: return "ROLE_BORDER_BACKGROUND";
 			case ROLE_TEXT: return "ROLE_TEXT";
 		}
 		return "";
@@ -248,7 +253,8 @@ NLOHMANN_JSON_SERIALIZE_ENUM( Styles::Role, {
     { Styles::Role::ROLE_FOREGROUND, "ROLE_FOREGROUND" },
     { Styles::Role::ROLE_BACKGROUND, "ROLE_BACKGROUND"},
     { Styles::Role::ROLE_ACCENT, "ROLE_ACCENT"},
-    { Styles::Role::ROLE_BORDER, "ROLE_BORDER"},
+    { Styles::Role::ROLE_BORDER_FOREGROUND, "ROLE_BORDER_FOREGROUND"},
+    { Styles::Role::ROLE_BORDER_BACKGROUND, "ROLE_BORDER_BACKGROUND"},
     { Styles::Role::ROLE_TEXT, "ROLE_TEXT"}
 })
 

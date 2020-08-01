@@ -30,6 +30,8 @@ ZoomScrollbar::ZoomScrollbar(const std::string& id, DOM::Orientation orientation
 	mainHandle->setConstrainedToParent(true);
 	mainHandle->setMoveToFrontOnCapture(false);
 
+	mainHandle->setStyleRole(Styles::ROLE_FOREGROUND);
+	
 	
 	inHandle = this->addChild<EdgeHandle>(id+"_Z_in_handle_", (orientation == DOM::HORIZONTAL? DOM::RECT_LEFT:DOM::RECT_TOP), mainHandle, ALIGN_INSIDE, false );
 	outHandle = this->addChild<EdgeHandle>(id+"_Z_out_handle_", (orientation == DOM::HORIZONTAL? DOM::RECT_RIGHT:DOM::RECT_BOTTOM), mainHandle, ALIGN_INSIDE, false );
@@ -74,6 +76,7 @@ void ZoomScrollbar::_setIOHandle(EdgeHandle* handle)
 	handle->setHandleSize(SCROLL_BAR_SIZE);
 	handle->setMoveToFrontOnCapture(true);
 	handle->setTargetMinSize(HANDLE_MIN_SIZE);
+	handle->setStyleRole(Styles::ROLE_FOREGROUND);
 	
 }
 
@@ -199,8 +202,9 @@ void ZoomScrollbar::onDraw() const
 {
 	
 	ofPushStyle();
+	
 	ofNoFill();
-	ofSetColor(getStyles()->getColor(Styles::ROLE_BORDER , Styles::STATE_NORMAL));
+	ofSetColor(getStyles()->getColor(Styles::ROLE_BORDER_BACKGROUND , Styles::STATE_NORMAL));
 	ofDrawRectangle(0,0,getWidth(), getHeight());
 	
 	ofPopStyle();

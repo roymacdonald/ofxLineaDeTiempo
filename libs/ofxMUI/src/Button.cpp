@@ -154,7 +154,7 @@ void Button::onDraw() const
 	
 	ofRectangle fullRectangle(0, 0, getWidth(), getHeight());
     ofNoFill();
-    ofSetColor(styles->getColor(Styles::ROLE_BORDER, Styles::STATE_NORMAL));
+    ofSetColor(styles->getColor(Styles::ROLE_BORDER_FOREGROUND, Styles::STATE_NORMAL));
     ofDrawRectangle(fullRectangle);
 }
 

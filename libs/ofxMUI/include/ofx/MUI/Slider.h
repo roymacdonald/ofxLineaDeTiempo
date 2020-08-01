@@ -428,7 +428,7 @@ void Slider<Type>::onDraw() const
     }
 
     ofNoFill();
-    ofSetColor(styles->getColor(Styles::ROLE_BORDER, Styles::STATE_NORMAL));
+    ofSetColor(styles->getColor(Styles::ROLE_BORDER_FOREGROUND, Styles::STATE_NORMAL));
     ofDrawRectangle(0, 0, getWidth(), getHeight());
 }
 

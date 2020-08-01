@@ -80,32 +80,32 @@ void Widget::onDraw() const
 
     if (isPointerDown() || isFocused())
     {
-        ofSetColor(styles->getColor(Styles::ROLE_BACKGROUND, Styles::STATE_DOWN));
+        ofSetColor(styles->getColor(_widgetRole, Styles::STATE_DOWN));
     }
     else if (isPointerOver() && _highlightOnOver)
     {
-        ofSetColor(styles->getColor(Styles::ROLE_BACKGROUND, Styles::STATE_OVER));
+        ofSetColor(styles->getColor(_widgetRole, Styles::STATE_OVER));
     }
     else
     {
-        ofSetColor(styles->getColor(Styles::ROLE_BACKGROUND, Styles::STATE_NORMAL));
+        ofSetColor(styles->getColor(_widgetRole, Styles::STATE_NORMAL));
     }
 
     drawShape(0, 0, getWidth(), getHeight());
 
     ofNoFill();
-
+	
     if (isPointerDown())
     {
-        ofSetColor(styles->getColor(Styles::ROLE_BORDER, Styles::STATE_DOWN));
+        ofSetColor(styles->getColor(_borderStyleRole, Styles::STATE_DOWN));
     }
     else if (isPointerOver() && _highlightOnOver)
     {
-        ofSetColor(styles->getColor(Styles::ROLE_BORDER, Styles::STATE_OVER));
+        ofSetColor(styles->getColor(_borderStyleRole, Styles::STATE_OVER));
     }
     else
     {
-        ofSetColor(styles->getColor(Styles::ROLE_BORDER, Styles::STATE_NORMAL));
+        ofSetColor(styles->getColor(_borderStyleRole, Styles::STATE_NORMAL));
     }
 
     drawShape(0, 0, getWidth(), getHeight());
@@ -318,7 +318,7 @@ void Widget::setHighlightOnOver(bool bHighlight){
 
 bool Widget::isHighlightingOnOver(){
 	return _highlightOnOver;
-};
+}
 
 void Widget::printStructure(std::string prefix)
 {
@@ -329,7 +329,11 @@ void Widget::printStructure(std::string prefix)
 	{
 		c->printStructure(prefix);
 	}
-	
+}
+
+void Widget::setStyleRole(Styles::Role role)
+{
+	_widgetRole = role;
 }
 
 
