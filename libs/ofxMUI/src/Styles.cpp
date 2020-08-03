@@ -136,12 +136,12 @@ Styles::Styles(const std::string& name)
     _fonts.assign(EXTRA_LARGE + 1, nullptr);
 
     // https://color.adobe.com/Neutral-Blue-color-theme-22361/
-    ofColor text = ofColor::fromHex(0xFCFFF5); // text
-    ofColor accent = ofColor::fromHex(0xD1DBBD); // accent
-    ofColor border_foreground = ofColor::fromHex(0x91AA9D); // border
-	ofColor border_background = ofColor::fromHex(0x91AA9D); // border
-    ofColor foreground = ofColor::fromHex(0x3E606F); // foreground
-    ofColor background = ofColor::fromHex(0x193441); // background
+    ofColor text (220); // text
+    ofColor accent  (200); // accent
+    ofColor border_foreground (80); // border
+	ofColor border_background  (30); // border
+    ofColor foreground (120); // foreground
+    ofColor background (60); // background
 
 #ifdef LINEA_DE_TIEMPO_USE_OF_PARAMETER
 
