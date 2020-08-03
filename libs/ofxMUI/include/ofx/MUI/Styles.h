@@ -217,8 +217,8 @@ protected:
 	std::string _name = "";
 	
 	
-	
-	std::string toString(State s)
+public:
+	static std::string toString(State s)
 	{
 		switch(s)
 		{
@@ -229,7 +229,7 @@ protected:
 		}
 		return "";
 	}
-	std::string toString(Role r)
+	static std::string toString(Role r)
 	{
 		switch(r)
 		{
