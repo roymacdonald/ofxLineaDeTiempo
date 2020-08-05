@@ -216,6 +216,10 @@ protected:
 
 	std::map< int, ofVboMesh> _iconMeshes;
 	
+	
+	Styles::Role _buttonDrawRole = Styles::ROLE_FOREGROUND;
+	
+	
 };
 
 
@@ -246,6 +250,12 @@ public:
     virtual ~ToggleButton();
 
     virtual void onDraw() const override;
+	
+protected:
+	
+	void _valueChanged(int&);
+	bool _bChangeRoleOnValueChange  = true;
+	
 
 };
 

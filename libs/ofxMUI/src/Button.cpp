@@ -84,7 +84,7 @@ Button::~Button()
 
     removeEventListener(pointerDown, &Button::onPointerEvent, false, std::numeric_limits<int>::lowest());
     removeEventListener(pointerUp, &Button::onPointerEvent, false, std::numeric_limits<int>::lowest());
-
+	
     removeEventListener(gotPointerCapture, &Button::onPointerCaptureEvent);
     removeEventListener(lostPointerCapture, &Button::onPointerCaptureEvent);
 }
@@ -124,15 +124,15 @@ void Button::onDraw() const
 
     if (isPointerDown() || _value > 0)
     {
-        ofSetColor(styles->getColor(Styles::ROLE_FOREGROUND, Styles::STATE_DOWN));
+        ofSetColor(styles->getColor(_buttonDrawRole, Styles::STATE_DOWN));
     }
     else if (isPointerOver())
     {
-        ofSetColor(styles->getColor(Styles::ROLE_FOREGROUND, Styles::STATE_OVER));
+        ofSetColor(styles->getColor(_buttonDrawRole, Styles::STATE_OVER));
     }
     else
     {
-        ofSetColor(styles->getColor(Styles::ROLE_FOREGROUND, Styles::STATE_NORMAL));
+        ofSetColor(styles->getColor(_buttonDrawRole, Styles::STATE_NORMAL));
     }
 	
 	if(_iconMeshes.size())
@@ -154,7 +154,7 @@ void Button::onDraw() const
 	
 	ofRectangle fullRectangle(0, 0, getWidth(), getHeight());
     ofNoFill();
-    ofSetColor(styles->getColor(Styles::ROLE_BORDER_FOREGROUND, Styles::STATE_NORMAL));
+    ofSetColor(styles->getColor(_buttonDrawRole, Styles::STATE_NORMAL));
     ofDrawRectangle(fullRectangle);
 }
 
@@ -295,23 +295,44 @@ ToggleButton::ToggleButton(const std::string& id,
            requirePointerOverOnRelease,
            2)
 {
+	_value.addListener(this, &ToggleButton::_valueChanged);
 }
 
 
 ToggleButton::~ToggleButton()
 {
+	_value.removeListener(this, &ToggleButton::_valueChanged);
 }
 
+void ToggleButton::_valueChanged(int&)
+{
+	if(_bChangeRoleOnValueChange)
+	{
+	if(_value == 0)
+	{
+		_buttonDrawRole = Styles::ROLE_FOREGROUND;
+		_widgetRole = Styles::ROLE_BACKGROUND;
+	}
+	else
+	{
+		_buttonDrawRole = Styles::ROLE_ACCENT;
+		_widgetRole = Styles::ROLE_FOREGROUND;
+	}
+	}
+}
 
 void ToggleButton::onDraw() const
 {
+	
     Button::onDraw();
 
     if (_iconMeshes.size() == 0 && _value)
     {
         ofFill();
-        ofSetColor(getStyles()->getColor(Styles::ROLE_ACCENT, Styles::STATE_DOWN));
-        ofDrawRectangle(10, 10, getWidth() - 20, getHeight() - 20);
+        ofSetColor(getStyles()->getColor(_buttonDrawRole, Styles::STATE_DOWN));
+		ofRectangle r(0, 0, getWidth(), getHeight());
+		r.scaleFromCenter(0.8);
+        ofDrawRectangle(r);
     }
 }
 
