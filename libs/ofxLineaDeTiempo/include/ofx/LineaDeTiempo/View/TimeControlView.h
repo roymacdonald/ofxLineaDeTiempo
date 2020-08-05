@@ -29,6 +29,16 @@ public:
 
 protected:
 
+	std::string _tooltip = "";
+	
+	uint64_t _overStartTime = 0;
+
+	bool _shouldShowTooltip = false;
+	
+	void _updateShowTooltip(bool bMoving, bool bOver);
+
+	void _drawTooltip(const DOM::Position& screenPointerPosition, const DOM::Position& localPointerPosition) const;
+	
 	TimeControl* _timeControl = nullptr;
 	ofEventListener _listener;
 
@@ -50,6 +60,8 @@ public:
 	~BaseTimeControlButton () = default;
 
 protected:
+	virtual void onDraw() const override;
+	virtual void onUpdate() override;
 	virtual void _buttonPressed(MUI::ButtonEventArgs& )= 0;
 	virtual void _setListeners() override;
 };
@@ -64,6 +76,8 @@ public:
 	~BaseTimeControlToogle () = default;
 
 protected:
+	virtual void onDraw() const override;
+	virtual void onUpdate() override;
 	virtual void _valueChanged(int& )= 0;
 	virtual void _setListeners() override;
 };
