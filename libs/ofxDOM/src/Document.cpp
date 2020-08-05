@@ -260,13 +260,14 @@ bool Document::onPointerEvent(PointerEventArgs& e)
         }
     }
 
-    // Create a DOM pointer event.
-    PointerUIEventArgs event(e, this, eventTarget);
-
+ 
     // Now, dispatch the original event if there is a target.
     // If eventTarget != nullptr, that means the current pointer id is captured.
     if (eventTarget != nullptr)
     {
+		// Create a DOM pointer event.
+		 PointerUIEventArgs event(e, this, eventTarget);
+
         event.setPhase(EventArgs::Phase::AT_TARGET);
 
         // Update captured pointer data.
@@ -300,8 +301,16 @@ bool Document::onPointerEvent(PointerEventArgs& e)
         wasEventHandled = true;
 
     }
-    else if (activeTarget == nullptr || !activeTarget->dispatchEvent(event))
+    else
+	if (activeTarget != nullptr)
     {
+		//Dispatch the event in case that the event was not comming from a captured pointer; mouse move, mouse scroll, etc
+			// Create a DOM pointer event.
+			 PointerUIEventArgs event(e, this, activeTarget);
+			
+			if(!activeTarget->dispatchEvent(event)){
+				//TODO: (roymacdonald) i am not sure if here something should be done
+			}
         // TODO: call default action if there is one.
     }
 
