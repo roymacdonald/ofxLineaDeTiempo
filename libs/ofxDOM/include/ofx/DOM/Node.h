@@ -33,7 +33,7 @@ public:
 	:name(_name)
 	{
 		_uniqueNum = getUniqueNum();
-		std::cout << "New NodeBase " << _name << " unique num: " << _uniqueNum << "\n";
+
 	}
 	
 	virtual DerivedClass* parent() = 0;

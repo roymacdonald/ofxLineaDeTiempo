@@ -346,7 +346,6 @@ shared_ptr<ofAppBaseWindow> TracksPanelController::displayOnNewWindow(const ofGL
 		auto w = dynamic_cast<ofAppGLFWWindow*>(_ownedWindow.get());
 		if(w)
 		{
-			std::cout << "_ownedWindowExitListener\n";
 			_ownedWindowExitListener = w->events().exit.newListener(this, &TracksPanelController::_ownedWindowExited);
 		}
 		
@@ -362,7 +361,6 @@ void TracksPanelController::_ownedWindowExited(ofEventArgs&)
 	_ownedWindow = nullptr;
 	_ownedWindowExitListener.unsubscribe();
 	
-	std::cout << " TracksPanelController::_ownedWindowExited(ofEventArgs&)\n";
 }
 
 void TracksPanelController::closeWindow()
