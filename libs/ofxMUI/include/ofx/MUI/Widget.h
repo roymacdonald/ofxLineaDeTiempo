@@ -35,6 +35,8 @@ public:
     virtual ~Widget();
 
     virtual void onDraw() const override;
+	
+	virtual void onUpdate() override;
 
     /// \returns true if the pointer is over this Widget.
     bool isPointerOver() const;
@@ -62,6 +64,11 @@ public:
     /// \returns true if this Widget is being dragged.
     bool isDragging() const;
 
+	/// \brief Determine if a pointer move event was received
+    /// \returns true if the las pointer event was moving
+    bool isPointerMoving() const;
+	
+	
     /// \brief Set the elevation of the widget.
     /// \param elevation The elevation in pixels.
     void setElevation(float elevation);
@@ -108,6 +115,11 @@ public:
 	///\param role The role to set
 	void setStyleRole(Styles::Role role);
 	
+	///\brief Get the pointers that are over this Widget
+	///\returns a std::map containing the pointers that are currently over this Widget
+	/// in the returned map the key of type size_t is the ID of the pointer
+	const std::map<size_t, PointerEventArgs> & getOverPointers() const;
+	
 protected:
 	///\brief Callback when dragging happens. override to change behavior
 	virtual void _onDragging(const DOM::CapturedPointer& pointer);
@@ -153,8 +165,18 @@ protected:
 	///\ brief Highlihgt the widget when the pointer is over.
 	bool _highlightOnOver = true;
 
+	
+	/// \brief The Style role used to draw this widget
 	Styles::Role _widgetRole = Styles::ROLE_BACKGROUND;
+	
+	///\brief the Style role used to draw this widget's border
 	Styles::Role _borderStyleRole = Styles::ROLE_BORDER_BACKGROUND;
+	
+	bool _pointerMoving = false;
+	uint64_t _pointerMoveLastFrame = 0;
+	
+	std::map<size_t,  PointerEventArgs> _overPointersMap;
+	
 	
 };
 

@@ -64,6 +64,13 @@ Widget::~Widget()
     removeEventListener(lostPointerCapture, &Widget::_onPointerCaptureEvent, false, std::numeric_limits<int>::lowest());
 }
 
+void Widget::onUpdate()
+{
+	if(_pointerMoving && _pointerMoveLastFrame != ofGetFrameNum())
+	{
+		_pointerMoving = false;
+	}
+}
 
 void Widget::onDraw() const
 {
@@ -169,7 +176,13 @@ bool Widget::isDragging() const
 {
     return _isDragging;
 }
-    
+ 
+
+bool Widget::isPointerMoving() const
+{
+	return _pointerMoving;
+}
+
     
 void Widget::setElevation(float elevation)
 {
@@ -218,11 +231,15 @@ void Widget::_onDragging(const DOM::CapturedPointer& pointer)
 
 void Widget::_onPointerEvent(DOM::PointerUIEventArgs& e)
 {
+	_pointerMoving = false;
     if (e.type() == PointerEventArgs::POINTER_DOWN)
     {
     }
     else if (e.type() == PointerEventArgs::POINTER_MOVE)
     {
+		
+		_pointerMoving = true;
+		_pointerMoveLastFrame = ofGetFrameNum();
         if (_isDragging)
         {
             if (!capturedPointers().empty())
@@ -239,10 +256,17 @@ void Widget::_onPointerEvent(DOM::PointerUIEventArgs& e)
     else if (e.type() == PointerEventArgs::POINTER_OVER)
     {
         _isPointerOver = true;
+		_overPointersMap[e.pointer().pointerId()] = e.pointer();
     }
     else if (e.type() == PointerEventArgs::POINTER_OUT)
     {
         _isPointerOver = false;
+		
+		auto it =  _overPointersMap.find(e.pointer().pointerId());
+		if(it != _overPointersMap.end())
+		{
+			_overPointersMap.erase(it);
+		}
     }
     else
     {
@@ -336,5 +360,10 @@ void Widget::setStyleRole(Styles::Role role)
 	_widgetRole = role;
 }
 
+
+const std::map<size_t, PointerEventArgs> & Widget::getOverPointers() const
+{
+	return _overPointersMap;
+}
 
 } } // namespace ofx::MUI
