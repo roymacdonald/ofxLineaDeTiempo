@@ -32,6 +32,7 @@ struct ConstVars
 	static ofParameter<float> PlayheadWidth           ;
 	
 	
+	static uint64_t tooltipDelay;
 	
 	
 };

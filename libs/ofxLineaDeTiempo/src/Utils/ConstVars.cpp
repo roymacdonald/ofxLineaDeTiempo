@@ -29,6 +29,7 @@ ofParameter<float> ConstVars::PlayheadTriangleSize = ofParameter<float>("Playhea
 ofParameter<float> ConstVars::PlayheadWidth = ofParameter<float>("PlayheadWidth", 3.f, 0.f, 10.f);
 
 
+uint64_t ConstVars::tooltipDelay = 800;
 
 
 
