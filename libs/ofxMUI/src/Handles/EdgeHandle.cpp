@@ -241,6 +241,7 @@ void EdgeHandle::_onPointerCaptureEvent(DOM::PointerCaptureUIEventArgs& e)
 
 
 void EdgeHandle::onUpdate(){
+	MUI::Widget::onUpdate();
 	if(_bAutoHide){
 		if(!_wasPointerOver && isPointerOver()){
 			_wasPointerOver = true;

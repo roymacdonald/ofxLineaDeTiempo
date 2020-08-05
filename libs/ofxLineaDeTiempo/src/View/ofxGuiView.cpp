@@ -127,6 +127,7 @@ const ofxGuiGroup &  ofxGuiView<T>::getOfxGui() const
 template<typename T>
 void ofxGuiView<T>::onUpdate()
 {
+	MUI::Widget::onUpdate();
 	auto s = _gui.getShape();
 
 	if(!ofIsFloatEqual(_guiShape.height, s.height) )
