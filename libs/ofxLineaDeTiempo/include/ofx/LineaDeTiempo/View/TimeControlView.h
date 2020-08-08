@@ -12,6 +12,7 @@
 #include "MUI/OrientedElement.h"
 #include "MUI/Button.h"
 #include "LineaDeTiempo/Controller/TimeControl.h"
+#include "LineaDeTiempo/View/TimelineDocument.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -27,40 +28,51 @@ public:
 
 	virtual void _setButtonIcon() = 0;
 
+//	void onPointerOver(DOM::PointerUIEventArgs& e);
 protected:
-
-	std::string _tooltip = "";
+//
+//	std::string _tooltip = "";
+//
+//	uint64_t _overStartTime = 0;
+//
+//	void _updateShowTooltip(DOM::Element* tooltipOwner, bool bMoving, bool bOver, const std::map<size_t, PointerEventArgs>& pointersOver, DOM::Document* docu);
+//
+//	bool _bCanShowTooltip = false;
+//
+//	Tooltip* _tooltipModal = nullptr;
+//
+//	ofEventListener _modalRemoveListener;
+//	void _removeModalCB();
+//
 	
-	uint64_t _overStartTime = 0;
-
-	bool _shouldShowTooltip = false;
-	
-	void _updateShowTooltip(bool bMoving, bool bOver);
-
-	void _drawTooltip(const DOM::Position& screenPointerPosition, const DOM::Position& localPointerPosition) const;
 	
 	TimeControl* _timeControl = nullptr;
 	ofEventListener _listener;
 
+	
 	virtual void _setListeners() = 0;
 
 	ofPath _getButtonLabel(std::string label, DOM::Element* e);
 
 	ofRectangle _getButtonRect(DOM::Element* e);
+	
+	
+	
 };
 
 
 class BaseTimeControlButton 
 : public AbstractTimeControlButton
 , public MUI::Button
+, public TooltipOwner
 {
 public:
-	BaseTimeControlButton(const std::string& name, const ofRectangle& shape, TimeControl* timeControl);
+	BaseTimeControlButton(const std::string& name, const std::string& tooltip, const ofRectangle& shape, TimeControl* timeControl);
 
 	~BaseTimeControlButton () = default;
 
 protected:
-	virtual void onDraw() const override;
+
 	virtual void onUpdate() override;
 	virtual void _buttonPressed(MUI::ButtonEventArgs& )= 0;
 	virtual void _setListeners() override;
@@ -70,13 +82,15 @@ protected:
 class BaseTimeControlToogle 
 : public AbstractTimeControlButton
 , public MUI::ToggleButton
+, public TooltipOwner
+
 {
 public:
-	BaseTimeControlToogle(const std::string& name, const ofRectangle& shape, TimeControl* timeControl);
+	BaseTimeControlToogle(const std::string& name, const std::string& tooltip, const ofRectangle& shape, TimeControl* timeControl);
 	~BaseTimeControlToogle () = default;
 
 protected:
-	virtual void onDraw() const override;
+
 	virtual void onUpdate() override;
 	virtual void _valueChanged(int& )= 0;
 	virtual void _setListeners() override;

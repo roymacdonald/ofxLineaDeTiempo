@@ -21,7 +21,7 @@ namespace LineaDeTiempo {
 AbstractTimeControlButton::AbstractTimeControlButton(TimeControl* timeControl)
 :_timeControl(timeControl)
 {
-	_overStartTime = ofGetElapsedTimeMillis();
+	
 }
 
 
@@ -84,54 +84,76 @@ ofPath AbstractTimeControlButton::_getButtonLabel(std::string label, DOM::Elemen
 	return p;
 }
 
+//
+//void AbstractTimeControlButton::_updateShowTooltip(DOM::Element* tooltipOwner, bool bMoving, bool bOver, const std::map<size_t, PointerEventArgs>& pointersOver, DOM::Document* docu)
+//{
+//
+//	if(!ConstVars::showTooltips) return;
+//
+//	if(tooltipOwner == nullptr)
+//	{
+//		std::cout << "AbstractTimeControlButton::_updateShowTooltip: tooltop Owner is null\n";
+//		return;
+//	}
+//	if(_tooltip != "")
+//	{
+//		auto doc = dynamic_cast<TimelineDocument*>(docu);
+//		if(doc)
+//		{
+//			if(doc->getModal()){
+//
+//				if(bOver)
+//				{
+//					if(bMoving){
+//
+//						_overStartTime = ofGetElapsedTimeMillis();
+//						if(_tooltipModal != nullptr)
+//						{
+//							_tooltipModal->expire();
+//						}
+//					}
+//					else
+//					{
+//						if(_tooltipModal == nullptr && _bCanShowTooltip)
+//						{
+//							if(ofGetElapsedTimeMillis() - _overStartTime  > ConstVars::tooltipDelay)
+//							{
+//								for(auto& p: pointersOver)
+//								{
+//
+//									_tooltipModal = doc->getModal()->add<Tooltip>(tooltipOwner, _tooltip, p.second.position());
+//									_modalRemoveListener = _tooltipModal->willBeRemovedEvent.newListener(this, &::ofx::LineaDeTiempo::AbstractTimeControlButton::_removeModalCB);
+//								}
+//							}
+//						}
+//					}
+//				}
+//				else if(_tooltipModal != nullptr)
+//				{
+//					_tooltipModal->expire();
+//				}
+//			}
+//		}
+//	}
+//}
+//void AbstractTimeControlButton::_removeModalCB()
+//{
+//	_tooltipModal = nullptr;
+//	_modalRemoveListener.unsubscribe();
+//	_bCanShowTooltip = false;
+//}
 
-void AbstractTimeControlButton::_updateShowTooltip(bool bMoving, bool bOver)
-{
-	if(_tooltip != "")
-	{
-		if(bOver)
-		{
-			if(bMoving){
-				
-				_overStartTime = ofGetElapsedTimeMillis();
-			}
-			else
-			{
-				if(ofGetElapsedTimeMillis() - _overStartTime  > ConstVars::tooltipDelay)
-				{
-					_shouldShowTooltip = true;
-					return;
-				}
-			}
-		}
-	}
-	_shouldShowTooltip = false;
-}
-
-
-void AbstractTimeControlButton::_drawTooltip(const DOM::Position& screenPointerPosition, const DOM::Position& localPointerPosition) const
-{
-	if(_shouldShowTooltip)
-	{
-		ofBitmapFont bf;
-		
-		DOM::Position offset (0,0) ;
-		auto bb = bf.getBoundingBox(_tooltip, screenPointerPosition.x, screenPointerPosition.y);
-		if(bb.getMaxX() > ofGetWidth())
-		{
-			offset.x = - bb.width - 4;
-		}
-		
-		
-		ofDrawBitmapStringHighlight(_tooltip, localPointerPosition + offset);
-	}
-}
-
+//
+//void AbstractTimeControlButton::onPointerOver(DOM::PointerUIEventArgs& e)
+//{
+//	_bCanShowTooltip = true;
+//}
 
 //-----------------------------------------------------------------------------------------------------
-BaseTimeControlButton::BaseTimeControlButton(const std::string& name, const ofRectangle& shape,TimeControl* timeControl)
+BaseTimeControlButton::BaseTimeControlButton(const std::string& name, const std::string& tooltip, const ofRectangle& shape,TimeControl* timeControl)
 : AbstractTimeControlButton(timeControl)
 , MUI::Button(name, shape.x, shape.y, shape.width, shape.height)
+, TooltipOwner(this, tooltip)
 {
 	_setListeners();
 }
@@ -139,31 +161,24 @@ BaseTimeControlButton::BaseTimeControlButton(const std::string& name, const ofRe
 
 void BaseTimeControlButton::_setListeners()
 {
-	_listener = this->buttonPressed.event().newListener(this, &BaseTimeControlButton::_buttonPressed);	
+	_listener = this->buttonPressed.event().newListener(this, &BaseTimeControlButton::_buttonPressed);
+	
 }
 
 
 void BaseTimeControlButton::onUpdate()
 {
 	MUI::Widget::onUpdate();
-	_updateShowTooltip(isPointerMoving(), isPointerOver());
-}
-
-
-void BaseTimeControlButton::onDraw() const
-{
-	MUI::Button::onDraw();
-	for(auto& p: getOverPointers())
-	{
-		_drawTooltip(p.second.position(), screenToLocal(p.second.position()));
-	}
+	_updateShowTooltip( isPointerMoving(), isPointerOver(), getOverPointers(), document());
+	
 }
 
 
 //-----------------------------------------------------------------------------------------------------
-BaseTimeControlToogle::BaseTimeControlToogle(const std::string& name, const ofRectangle& shape, TimeControl* timeControl)
+BaseTimeControlToogle::BaseTimeControlToogle(const std::string& name, const std::string& tooltip, const ofRectangle& shape, TimeControl* timeControl)
 : AbstractTimeControlButton(timeControl)
 , MUI::ToggleButton(name, shape.x, shape.y, shape.width, shape.height)
+, TooltipOwner(this, tooltip)
 {
 	_setListeners();
 }
@@ -172,29 +187,22 @@ BaseTimeControlToogle::BaseTimeControlToogle(const std::string& name, const ofRe
 void BaseTimeControlToogle::_setListeners()
 {
 	_listener = this->valueChanged.newListener(this, &BaseTimeControlToogle::_valueChanged);
+	
+
 }
 
 
 void BaseTimeControlToogle::onUpdate()
 {
 	Widget::onUpdate();
-	_updateShowTooltip(isPointerMoving(), isPointerOver());
+	_updateShowTooltip(isPointerMoving(), isPointerOver(), getOverPointers(), document());
 }
 
-
-void BaseTimeControlToogle::onDraw() const
-{
-	MUI::ToggleButton::onDraw();
-	for(auto& p: getOverPointers())
-	{
-		_drawTooltip(p.second.position(), screenToLocal(p.second.position()));
-	}
-}
 
 
 //-----------------------------------------------------------------------------------------------------
 PlayPauseToggle::PlayPauseToggle(const ofRectangle& shape, TimeControl* timeControl)
-: BaseTimeControlToogle("PlayPause Toggle", shape, timeControl)
+: BaseTimeControlToogle("PlayPause Toggle", "Play/Pause Toggle", shape, timeControl)
 {
 	_setButtonIcon();
 	_bChangeRoleOnValueChange = false;
@@ -203,7 +211,7 @@ PlayPauseToggle::PlayPauseToggle(const ofRectangle& shape, TimeControl* timeCont
 	_bIgnoreTimeControlStateChange = false;
 	_stateListener = _timeControl->stateChangeEvent.newListener(this, &PlayPauseToggle::_timeControlStateChanged);
 	
-	_tooltip = "Play/Pause Toggle";
+	// _tooltip = "Play/Pause Toggle";
 	
 }
 
@@ -258,10 +266,10 @@ void PlayPauseToggle::_setButtonIcon()
 
 //-----------------------------------------------------------------------------------------------------
 LoopToggle::LoopToggle(const ofRectangle& shape, TimeControl* timeControl)
-: BaseTimeControlToogle("Loop Toggle", shape, timeControl)
+: BaseTimeControlToogle("Loop Toggle", "Looping Toogle", shape, timeControl)
 {
 	_setButtonIcon();
-	_tooltip = "Looping Toogle";
+	// _tooltip = "Looping Toogle";
 }
 
 
@@ -278,10 +286,10 @@ void LoopToggle::_setButtonIcon()
 
 //-----------------------------------------------------------------------------------------------------
 StopButton::StopButton(const ofRectangle& shape, TimeControl* timeControl)
-: BaseTimeControlButton("Stop Button", shape, timeControl)
+: BaseTimeControlButton("Stop Button", "Stop", shape, timeControl)
 {
 	_setButtonIcon();
-	_tooltip = "Stop";
+	// _tooltip = "Stop";
 }
 
 
@@ -303,10 +311,10 @@ void StopButton::_setButtonIcon()
 
 //-----------------------------------------------------------------------------------------------------
 TriggerButton::TriggerButton(const ofRectangle& shape, TimeControl* timeControl)
-: BaseTimeControlButton("Trigger Button", shape, timeControl)
+: BaseTimeControlButton("Trigger Button", "Play from IN time", shape, timeControl)
 {
 	_setButtonIcon();
-	_tooltip = "Play from IN time";
+	// _tooltip = "Play from IN time";
 }
 
 
@@ -323,10 +331,10 @@ void TriggerButton::_setButtonIcon()
 
 //-----------------------------------------------------------------------------------------------------
 SetInButton::SetInButton(const ofRectangle& shape, TimeControl* timeControl)
-: BaseTimeControlButton("Set In Button", shape, timeControl)
+: BaseTimeControlButton("Set In Button", "Set IN time", shape, timeControl)
 {
 	_setButtonIcon();
-	_tooltip = "Set IN time";
+	// _tooltip = "Set IN time";
 }
 
 
@@ -343,10 +351,10 @@ void SetInButton::_setButtonIcon()
 
 //-----------------------------------------------------------------------------------------------------
 SetOutButton::SetOutButton(const ofRectangle& shape, TimeControl* timeControl)
-: BaseTimeControlButton("Set Out Button", shape, timeControl)
+: BaseTimeControlButton("Set Out Button", "Set OUT time", shape, timeControl)
 {
 	_setButtonIcon();
-	_tooltip = "Set OUT time";
+	// _tooltip = "Set OUT time";
 }
 
 
@@ -363,10 +371,10 @@ void SetOutButton::_setButtonIcon()
 
 //-----------------------------------------------------------------------------------------------------
 GotoInButton::GotoInButton(const ofRectangle& shape, TimeControl* timeControl)
-: BaseTimeControlButton("Goto In Button", shape, timeControl)
+: BaseTimeControlButton("Goto In Button", "Go to IN time", shape, timeControl)
 {
 	_setButtonIcon();
-	_tooltip = "Go to IN time";
+	// _tooltip = "Go to IN time";
 }
 
 
@@ -396,10 +404,10 @@ void GotoInButton::_setButtonIcon()
 
 //-----------------------------------------------------------------------------------------------------
 GotoOutButton::GotoOutButton(const ofRectangle& shape, TimeControl* timeControl)
-: BaseTimeControlButton("Goto Out Button", shape, timeControl)
+: BaseTimeControlButton("Goto Out Button", "Go to OUT time", shape, timeControl)
 {
 	_setButtonIcon();
-	_tooltip = "Go to OUT time";
+	// _tooltip = "Go to OUT time";
 }
 
 
@@ -452,11 +460,11 @@ void _timeJumpByVisibleTimeFactor(float factor, TimeControl* _timeControl,  Trac
 
 //-----------------------------------------------------------------------------------------------------
 JumpForwardsButton::JumpForwardsButton(const ofRectangle& shape, TimeControl* timeControl, TracksPanel* tracksPanel)
-: BaseTimeControlButton("Jump Forwards Button", shape, timeControl)
+: BaseTimeControlButton("Jump Forwards Button", "Jump forwards", shape, timeControl)
 , _tracksPanel(tracksPanel)
 {
 	_setButtonIcon();
-	_tooltip = "Jump forwards";
+	// _tooltip = "Jump forwards";
 }
 
 
@@ -478,11 +486,11 @@ void JumpForwardsButton::_setButtonIcon()
 
 //-----------------------------------------------------------------------------------------------------
 JumpBackwardsButton::JumpBackwardsButton(const ofRectangle& shape, TimeControl* timeControl, TracksPanel* tracksPanel)
-: BaseTimeControlButton("Jump Backwards Button", shape, timeControl)
+: BaseTimeControlButton("Jump Backwards Button", "Jump backwards", shape, timeControl)
 , _tracksPanel(tracksPanel)
 {
 	_setButtonIcon();
-	_tooltip = "Jump backwards";
+	// _tooltip = "Jump backwards";
 }
 
 
@@ -505,10 +513,10 @@ void JumpBackwardsButton::_setButtonIcon()
 
 //-----------------------------------------------------------------------------------------------------
 SetTotalTimeButton::SetTotalTimeButton(const ofRectangle& shape, TimeControl* timeControl)
-: BaseTimeControlButton("Set Total TimeButton", shape, timeControl)
+: BaseTimeControlButton("Set Total TimeButton", "Set total time", shape, timeControl)
 {
 	_setButtonIcon();
-	_tooltip = "Set total time";
+	// _tooltip = "Set total time";
 }
 
 
