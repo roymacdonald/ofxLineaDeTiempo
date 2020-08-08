@@ -152,10 +152,10 @@ void Button::onDraw() const
 		ofDrawRectangle(targetRectangle);
 	}
 	
-	ofRectangle fullRectangle(0, 0, getWidth(), getHeight());
-    ofNoFill();
-    ofSetColor(styles->getColor(_buttonDrawRole, Styles::STATE_NORMAL));
-    ofDrawRectangle(fullRectangle);
+//	ofRectangle fullRectangle(0, 0, getWidth(), getHeight());
+//    ofNoFill();
+//    ofSetColor(styles->getColor(_buttonDrawRole, Styles::STATE_NORMAL));
+//    ofDrawRectangle(fullRectangle);
 }
 
 
@@ -308,16 +308,18 @@ void ToggleButton::_valueChanged(int&)
 {
 	if(_bChangeRoleOnValueChange)
 	{
-	if(_value == 0)
-	{
-		_buttonDrawRole = Styles::ROLE_FOREGROUND;
-		_widgetRole = Styles::ROLE_BACKGROUND;
-	}
-	else
-	{
-		_buttonDrawRole = Styles::ROLE_ACCENT;
-		_widgetRole = Styles::ROLE_FOREGROUND;
-	}
+		if(_value == 0)
+		{
+			_buttonDrawRole = Styles::ROLE_FOREGROUND;
+			_widgetRole = Styles::ROLE_BACKGROUND;
+			_borderStyleRole = Styles::ROLE_BORDER_FOREGROUND;
+		}
+		else
+		{
+			_buttonDrawRole = Styles::ROLE_ACCENT;
+			_widgetRole = Styles::ROLE_FOREGROUND;
+			_borderStyleRole = Styles::ROLE_BORDER_FOREGROUND;
+		}
 	}
 }
 
