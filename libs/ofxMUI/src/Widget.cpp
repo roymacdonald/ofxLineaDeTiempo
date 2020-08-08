@@ -196,34 +196,6 @@ float Widget::getElevation() const
 }
 
 
-//std::shared_ptr<Styles> Widget::getStyles() const
-//{
-//    if (_styles == nullptr)
-//    {
-//        const MUI* mui = dynamic_cast<const MUI*>(document());
-//
-//        if (mui != nullptr)
-//        {
-//            _styles = mui->getDocumentStyles();
-//        }
-//        else
-//        {
-//            ofLogWarning("Widget::getStyles") << "No root document, using default styles.";
-//            _styles = std::make_shared<Styles>(getId() +"_Styles");
-//        }
-//    }
-//
-//    return _styles;
-//}
-//
-//
-//void Widget::setStyles(std::shared_ptr<Styles> styles)
-//{
-//    _styles = styles;
-//}
-//
-
-
 void Widget::_onDragging(const DOM::CapturedPointer& pointer)
 {
 	setPosition(screenToParent(pointer.position() - pointer.offset()));
@@ -239,6 +211,14 @@ void Widget::_onPointerEvent(DOM::PointerUIEventArgs& e)
     {
 		
 		_pointerMoving = true;
+//		if(_overPointersMap.count(e.pointer().pointerId()))
+//		{
+			_overPointersMap[e.pointer().pointerId()] = e.pointer();
+//		}
+//		else
+//		{
+//			ofLogError("Widget::_onPointerEvent") << "moving pointer not registered by the pointer over event. This should not happen";
+//		}
 		_pointerMoveLastFrame = ofGetFrameNum();
         if (_isDragging)
         {
@@ -358,6 +338,12 @@ void Widget::printStructure(std::string prefix)
 void Widget::setStyleRole(Styles::Role role)
 {
 	_widgetRole = role;
+}
+
+
+void Widget::setStyleBorderRole(Styles::Role role)
+{
+	_borderStyleRole = role;
 }
 
 

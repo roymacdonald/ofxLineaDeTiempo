@@ -115,6 +115,13 @@ public:
 	///\param role The role to set
 	void setStyleRole(Styles::Role role);
 	
+	///\brief set the style role for this widget's border.
+	/// this will define which colors to use when rendering the border.
+	///\param role The role to set
+	void setStyleBorderRole(Styles::Role role);
+	
+	
+	
 	///\brief Get the pointers that are over this Widget
 	///\returns a std::map containing the pointers that are currently over this Widget
 	/// in the returned map the key of type size_t is the ID of the pointer
