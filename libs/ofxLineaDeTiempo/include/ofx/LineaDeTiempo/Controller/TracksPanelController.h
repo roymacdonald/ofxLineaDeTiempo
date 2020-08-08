@@ -13,7 +13,7 @@
 
 #include "LineaDeTiempo/View/TracksPanel.h"
 
-#include "ofx/MUI/MUI.h"
+#include "LineaDeTiempo/View/TimelineDocument.h"
 #include "MUI/Panel.h"
 
 namespace ofx {
@@ -120,6 +120,17 @@ public:
 	bool hasWindow() const;
 	
 	
+	///\brief returns the Timeline's main view document.
+	///This is the outmost view of the timeline, the TimelineDocument instance. it might not be the most useful as the actual timeline is a few layers in.
+	TimelineDocument* getMainView()
+	{
+		if(_mainView != nullptr)
+		{
+			return _mainView.get();
+		}
+		return nullptr;
+	}
+	
 protected:
 	
 	
@@ -133,7 +144,7 @@ protected:
 	
 	ofAppBaseWindow* _currentWindow = nullptr;
 
-	std::unique_ptr<MUI::MUI> _mainView = nullptr;
+	std::unique_ptr<TimelineDocument> _mainView = nullptr;
 	
 
 	std::unique_ptr<TimeControl> _uniqueTimeControl = nullptr;

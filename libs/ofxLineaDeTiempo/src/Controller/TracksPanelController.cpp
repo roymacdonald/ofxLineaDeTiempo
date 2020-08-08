@@ -67,7 +67,7 @@ void TracksPanelController::generateView()
 			{
 				docSettings.enabledListeners[DOM::DRAW_EVENT] = false;
 			}
-			_mainView = std::make_unique<MUI::MUI>(docSettings);
+			_mainView = std::make_unique<TimelineDocument>(docSettings);
 			_mainView->setShape(_shape);
 			
 			ofx::MUI::TrueTypeFontSettings::setDefaultFont(ofToDataPath("assets/fonts/OpenSans-Regular.ttf"));
@@ -83,7 +83,7 @@ void TracksPanelController::generateView()
 			_parentPanel->setEnableHeaderHandle(!_bAutoFill);
 			_parentPanel->setResizable(!_bAutoFill);
 			_parentPanel->setCornerHandleSize(SCROLL_BAR_SIZE);
-			
+			_parentPanel->moveToBack();
 						
 		}
 		_panel = _parentPanel->container;
