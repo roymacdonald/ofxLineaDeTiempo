@@ -7,7 +7,7 @@
 
 
 #include "LineaDeTiempo/View/TimeControlView.h"
-//#include "LineaDeTiempo/Controller/TimeControl.h"
+
 #include "LineaDeTiempo/View/TracksPanel.h"
 #include "LineaDeTiempo/Utils/ConstVars.h"
 #include "LineaDeTiempo/Utils/FontUtils.h"
@@ -79,75 +79,10 @@ ofPath AbstractTimeControlButton::_getButtonLabel(std::string label, DOM::Elemen
 			p.append(paths[i]);
 		}
 		p.translate(pathRect.getCenter() - r.getCenter());
-//		setIcon(p);
+
 	}
 	return p;
 }
-
-//
-//void AbstractTimeControlButton::_updateShowTooltip(DOM::Element* tooltipOwner, bool bMoving, bool bOver, const std::map<size_t, PointerEventArgs>& pointersOver, DOM::Document* docu)
-//{
-//
-//	if(!ConstVars::showTooltips) return;
-//
-//	if(tooltipOwner == nullptr)
-//	{
-//		std::cout << "AbstractTimeControlButton::_updateShowTooltip: tooltop Owner is null\n";
-//		return;
-//	}
-//	if(_tooltip != "")
-//	{
-//		auto doc = dynamic_cast<TimelineDocument*>(docu);
-//		if(doc)
-//		{
-//			if(doc->getModal()){
-//
-//				if(bOver)
-//				{
-//					if(bMoving){
-//
-//						_overStartTime = ofGetElapsedTimeMillis();
-//						if(_tooltipModal != nullptr)
-//						{
-//							_tooltipModal->expire();
-//						}
-//					}
-//					else
-//					{
-//						if(_tooltipModal == nullptr && _bCanShowTooltip)
-//						{
-//							if(ofGetElapsedTimeMillis() - _overStartTime  > ConstVars::tooltipDelay)
-//							{
-//								for(auto& p: pointersOver)
-//								{
-//
-//									_tooltipModal = doc->getModal()->add<Tooltip>(tooltipOwner, _tooltip, p.second.position());
-//									_modalRemoveListener = _tooltipModal->willBeRemovedEvent.newListener(this, &::ofx::LineaDeTiempo::AbstractTimeControlButton::_removeModalCB);
-//								}
-//							}
-//						}
-//					}
-//				}
-//				else if(_tooltipModal != nullptr)
-//				{
-//					_tooltipModal->expire();
-//				}
-//			}
-//		}
-//	}
-//}
-//void AbstractTimeControlButton::_removeModalCB()
-//{
-//	_tooltipModal = nullptr;
-//	_modalRemoveListener.unsubscribe();
-//	_bCanShowTooltip = false;
-//}
-
-//
-//void AbstractTimeControlButton::onPointerOver(DOM::PointerUIEventArgs& e)
-//{
-//	_bCanShowTooltip = true;
-//}
 
 //-----------------------------------------------------------------------------------------------------
 BaseTimeControlButton::BaseTimeControlButton(const std::string& name, const std::string& tooltip, const ofRectangle& shape,TimeControl* timeControl)
@@ -211,7 +146,6 @@ PlayPauseToggle::PlayPauseToggle(const ofRectangle& shape, TimeControl* timeCont
 	_bIgnoreTimeControlStateChange = false;
 	_stateListener = _timeControl->stateChangeEvent.newListener(this, &PlayPauseToggle::_timeControlStateChanged);
 	
-	// _tooltip = "Play/Pause Toggle";
 	
 }
 
@@ -269,7 +203,6 @@ LoopToggle::LoopToggle(const ofRectangle& shape, TimeControl* timeControl)
 : BaseTimeControlToogle("Loop Toggle", "Looping Toogle", shape, timeControl)
 {
 	_setButtonIcon();
-	// _tooltip = "Looping Toogle";
 }
 
 
@@ -289,7 +222,6 @@ StopButton::StopButton(const ofRectangle& shape, TimeControl* timeControl)
 : BaseTimeControlButton("Stop Button", "Stop", shape, timeControl)
 {
 	_setButtonIcon();
-	// _tooltip = "Stop";
 }
 
 
@@ -314,7 +246,6 @@ TriggerButton::TriggerButton(const ofRectangle& shape, TimeControl* timeControl)
 : BaseTimeControlButton("Trigger Button", "Play from IN time", shape, timeControl)
 {
 	_setButtonIcon();
-	// _tooltip = "Play from IN time";
 }
 
 
@@ -334,7 +265,6 @@ SetInButton::SetInButton(const ofRectangle& shape, TimeControl* timeControl)
 : BaseTimeControlButton("Set In Button", "Set IN time", shape, timeControl)
 {
 	_setButtonIcon();
-	// _tooltip = "Set IN time";
 }
 
 
@@ -354,7 +284,6 @@ SetOutButton::SetOutButton(const ofRectangle& shape, TimeControl* timeControl)
 : BaseTimeControlButton("Set Out Button", "Set OUT time", shape, timeControl)
 {
 	_setButtonIcon();
-	// _tooltip = "Set OUT time";
 }
 
 
@@ -374,7 +303,6 @@ GotoInButton::GotoInButton(const ofRectangle& shape, TimeControl* timeControl)
 : BaseTimeControlButton("Goto In Button", "Go to IN time", shape, timeControl)
 {
 	_setButtonIcon();
-	// _tooltip = "Go to IN time";
 }
 
 
@@ -407,7 +335,6 @@ GotoOutButton::GotoOutButton(const ofRectangle& shape, TimeControl* timeControl)
 : BaseTimeControlButton("Goto Out Button", "Go to OUT time", shape, timeControl)
 {
 	_setButtonIcon();
-	// _tooltip = "Go to OUT time";
 }
 
 
@@ -464,7 +391,6 @@ JumpForwardsButton::JumpForwardsButton(const ofRectangle& shape, TimeControl* ti
 , _tracksPanel(tracksPanel)
 {
 	_setButtonIcon();
-	// _tooltip = "Jump forwards";
 }
 
 
@@ -490,7 +416,6 @@ JumpBackwardsButton::JumpBackwardsButton(const ofRectangle& shape, TimeControl* 
 , _tracksPanel(tracksPanel)
 {
 	_setButtonIcon();
-	// _tooltip = "Jump backwards";
 }
 
 
@@ -516,7 +441,6 @@ SetTotalTimeButton::SetTotalTimeButton(const ofRectangle& shape, TimeControl* ti
 : BaseTimeControlButton("Set Total TimeButton", "Set total time", shape, timeControl)
 {
 	_setButtonIcon();
-	// _tooltip = "Set total time";
 }
 
 
@@ -593,53 +517,11 @@ void TimeDisplay::_makeTimeText() const
 
 
 TimeControlView::TimeControlView(const ofRectangle& shape, TracksPanel* tracksPanel,  TimeControl* timeControl, DOM::Orientation orientation)
-//: DOM::Element(tracksPanel->getId() + "TimeControlView", shape)
 : DOM::Element( "TimeControlView", shape)
 , DOM::OrientedElement(orientation)
 , _tracksPanel(tracksPanel)
 , _timeControl(timeControl)
 {
-//	auto w = getHeight()*0.35;
-//
-//
-//
-////	float y = (getHeight()/2 - w)/2;
-//
-//
-//	playPauseToggle = addChild<MUI::ToggleButton>("playPauseToggle",0,y,w,w);
-//	loopToggle = addChild<MUI::ToggleButton>("loopToggle",0,y,w,w);
-//	stopButton = addChild<MUI::Button>("stopButton",0,y,w,w);
-//	triggerButton = addChild<MUI::Button>("triggerButton",0,y,w,w);
-//	setInButton = addChild<MUI::Button>("setInButton",0,y,w,w);
-//	setOutButton = addChild<MUI::Button>("setOutButton",0,y,w,w);
-//	gotoInButton = addChild<MUI::Button>("gotoInButton",0,y,w,w);
-//	gotoOutButton = addChild<MUI::Button>("gotoOutButton",0,y,w,w);
-//	jumpForwardsButton = addChild<MUI::Button>("jumpForwardsButton",0,y,w,w);
-//	jumpBackwardsButton = addChild<MUI::Button>("jumpBackwardsButton",0,y,w,w);
-//	setTotalTimeButton = addChild<MUI::Button>("setTotalTimeButton",0,y,w,w);
-//
-//
-//
-//	_buttons = {
-//		setInButton,
-//		gotoInButton,
-//		_addSpacer(),
-//		jumpBackwardsButton,
-//		triggerButton,
-//		playPauseToggle,
-//		stopButton,
-//		jumpForwardsButton,
-//		_addSpacer(),
-//		gotoOutButton,
-//		setOutButton,
-//		_addSpacer(),
-//		loopToggle,
-//		setTotalTimeButton
-//	};
-
-	// _setEvents();
-	
-	// _setButtonsIcons();
 	
 	updateLayout();
 	

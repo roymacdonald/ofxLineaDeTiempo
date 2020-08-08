@@ -30,20 +30,7 @@ public:
 
 //	void onPointerOver(DOM::PointerUIEventArgs& e);
 protected:
-//
-//	std::string _tooltip = "";
-//
-//	uint64_t _overStartTime = 0;
-//
-//	void _updateShowTooltip(DOM::Element* tooltipOwner, bool bMoving, bool bOver, const std::map<size_t, PointerEventArgs>& pointersOver, DOM::Document* docu);
-//
-//	bool _bCanShowTooltip = false;
-//
-//	Tooltip* _tooltipModal = nullptr;
-//
-//	ofEventListener _modalRemoveListener;
-//	void _removeModalCB();
-//
+
 	
 	
 	TimeControl* _timeControl = nullptr;
