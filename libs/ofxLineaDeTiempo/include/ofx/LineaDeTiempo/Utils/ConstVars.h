@@ -19,7 +19,9 @@ struct ConstVars
 	static ofParameter<ofColor> PanelBackgroundColor;
 	static ofParameter<ofColor> TrackBackgroundColor  ;
 	static ofParameter<ofColor> TrackEdgeColor        ;
-
+	static ofParameter<ofColor> TooltipTextColor;
+	static ofParameter<ofColor> TooltipBackgroundColor;
+	static ofParameter<ofColor> TooltipBorderColor;
 
 	static ofColor SelectedColor;
 	
@@ -31,8 +33,15 @@ struct ConstVars
 	static ofParameter<float> PlayheadTriangleSize    ;
 	static ofParameter<float> PlayheadWidth           ;
 	
-	
+	///\brief How much time the pointer needs to be without moving over an element with tooltips in order to show thet tooltip
+	/// units: milliseconds
 	static uint64_t tooltipDelay;
+	///\brief Maximum amount of time a tooltip can be shown.
+	/// units: milliseconds
+	static uint64_t tooltipTimeout;
+	
+	///\ Show tooltips on elements that have this feature implemented
+	static bool showTooltips;
 	
 	
 };

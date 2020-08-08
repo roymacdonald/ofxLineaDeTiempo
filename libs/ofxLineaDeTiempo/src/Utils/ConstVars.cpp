@@ -14,8 +14,11 @@ namespace LineaDeTiempo {
 
 ofParameter<ofColor> ConstVars::TrackBackgroundColor = ofParameter<ofColor>("TrackBackgroundColor", ofColor(30), ofColor(0,0,0,0), ofColor(255,255,255,255));
 ofParameter<ofColor> ConstVars::TrackEdgeColor = ofParameter<ofColor>("TrackEdgeColor", ofColor(120), ofColor(0,0,0,0), ofColor(255,255,255,255));
-ofParameter<ofColor> ConstVars::PanelBackgroundColor = ofParameter<ofColor>("PanelBackgroundColor", ofColor(40), ofColor(0,0,0,0), ofColor(255,255,255,255));
+ofParameter<ofColor> ConstVars::PanelBackgroundColor = ofParameter<ofColor>("PanelBackgroundColor", ofColor(20), ofColor(0,0,0,0), ofColor(255,255,255,255));
 
+ofParameter<ofColor> ConstVars::TooltipTextColor = ofParameter<ofColor>("Tooltip Text", ofColor(0), ofColor(0,0,0,0), ofColor(255,255,255,255));
+ofParameter<ofColor> ConstVars::TooltipBackgroundColor = ofParameter<ofColor>("Tooltip Background", ofColor(255), ofColor(0,0,0,0), ofColor(255,255,255,255));
+ofParameter<ofColor> ConstVars::TooltipBorderColor = ofParameter<ofColor>("Tooltip Border", ofColor(0), ofColor(0,0,0,0), ofColor(255,255,255,255));
 
  ofColor ConstVars::SelectedColor = ofColor::yellow;
 
@@ -30,8 +33,8 @@ ofParameter<float> ConstVars::PlayheadWidth = ofParameter<float>("PlayheadWidth"
 
 
 uint64_t ConstVars::tooltipDelay = 800;
-
-
+uint64_t ConstVars::tooltipTimeout = 3000;
+bool ConstVars::showTooltips = true;
 
 
 }} //ofx::LineaDeTiempo
