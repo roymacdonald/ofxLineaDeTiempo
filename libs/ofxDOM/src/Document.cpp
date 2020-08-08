@@ -593,4 +593,22 @@ void Document::setWindow(ofAppBaseWindow* window)
 }
 
 
+std::shared_ptr<MUI::Styles> Document::getDocumentStyles() const
+{
+    if (_documentStyles == nullptr)
+    {
+        _documentStyles = std::make_shared<MUI::Styles>("Document Styles");
+    }
+
+    return _documentStyles;
+}
+
+
+void Document::setDocumentStyles(std::shared_ptr<MUI::Styles> documentStyles)
+{
+    _documentStyles = documentStyles;
+}
+
+
+
 } } // namespace ofx::DOM

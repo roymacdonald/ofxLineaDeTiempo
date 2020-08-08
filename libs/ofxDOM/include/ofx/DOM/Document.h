@@ -10,7 +10,7 @@
 
 #include "ofAppBaseWindow.h"
 #include "ofx/DOM/Element.h"
-
+#include "ofx/MUI/Styles.h"
 
 namespace ofx {
 namespace DOM {
@@ -135,8 +135,26 @@ public:
 	
 	void focusElement(Element* target);
 	
+
 	
+	///\brief get the document's shared styles for colors and typographies
+	///\returns a shared pointer to the styles
+	std::shared_ptr<MUI::Styles> getDocumentStyles() const;
+		
+
+	
+	///\brief set the document's shared styles for colors and typographies
+	///\param documentStyles a shared pointer to the styles. if it is a nullptr it will remove the current styles, then the next getStyles() call will create a new one with default values
+	void setDocumentStyles(std::shared_ptr<MUI::Styles> documentStyles);
+
+
+
 protected:
+	
+	
+	///\Brief shared styles for this document
+	mutable std::shared_ptr<MUI::Styles> _documentStyles = nullptr;
+	
     /// \brief Map pointer ids to Elements.
     typedef std::unordered_map<std::size_t, Element*> PointerElementMap;
 
@@ -198,7 +216,7 @@ private:
                                        Element* target,
                                        Element* relatedTarget);
 
-
+	
 
 	DocumentSettings _settings;
 	
