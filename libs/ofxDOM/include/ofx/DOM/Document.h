@@ -148,7 +148,18 @@ public:
 	void setDocumentStyles(std::shared_ptr<MUI::Styles> documentStyles);
 
 
-
+	
+	///\brief ofEvent triggered when any new element is added to the document
+	ofEvent<ElementEventArgs> elementAddedEvent;
+	
+	
+    ///\brief ofEvent triggered when any element is removed from the document
+	/// this is particularly useful for removing any stored pointers to the removed object, which can cause problems
+	/// the removed object will still exist when this event gets triggered but it will be erased immediatelly after the event callbacks are called.
+	ofEvent<ElementEventArgs> elementRemovedEvent;
+	
+	
+	
 protected:
 	
 	
@@ -192,6 +203,9 @@ protected:
 
     /// \brief The Element that currently has focus.
     Element* _focusedElement = nullptr;
+	
+	/// \brief Callback for elementRemovedEvent
+	void _elementWasRemoved(ElementEventArgs& e);
 
 private:
     /// \brief Utility method to find an Element mapped to a pointer id.
@@ -251,7 +265,8 @@ private:
     /// \brief Pointer down event listener.
     ofEventListener _pointerEventListener;
 
-    
+    ///\ elementRemovedEvent listener
+	ofEventListener _elementRemovedListener;
     
 };
 

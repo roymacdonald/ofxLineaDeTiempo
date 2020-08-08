@@ -21,6 +21,7 @@ Document::Document(const DocumentSettings& settings)
 		
 	_setupListeners();
 
+	_elementRemovedListener = elementRemovedEvent.newListener(this, &Document::_elementWasRemoved);
 }
 
 
@@ -609,6 +610,34 @@ void Document::setDocumentStyles(std::shared_ptr<MUI::Styles> documentStyles)
     _documentStyles = documentStyles;
 }
 
+/// Function that erases all elements froma a map that match a specific criteria
+/// taken https://stackoverflow.com/questions/7007802/erase-specific-elements-in-stdmap
+template <typename Map, typename F>
+void map_erase_if(Map& m, F pred)
+{
+	for (typename Map::iterator i = m.begin();
+		 (i = std::find_if(i, m.end(), pred)) != m.end();
+		 m.erase(i++));
+}
 
+
+void Document::_elementWasRemoved(ElementEventArgs& e)
+{
+	
+	for(auto& p: _capturedPointerIdToElementMap)
+	{
+		if(p.second == e.element())
+		{
+			releasePointerCaptureForElement(p.second,p.first);
+		}
+	}
+		
+
+	
+	
+	
+	map_erase_if(_activeTargets, [&](const std::pair<std::size_t, Element*> & i){return i.second == e.element();});
+	
+}
 
 } } // namespace ofx::DOM

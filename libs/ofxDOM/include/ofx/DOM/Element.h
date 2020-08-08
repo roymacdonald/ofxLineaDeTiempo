@@ -787,7 +787,9 @@ private:
     /// \brief The shared Styles.
     mutable std::shared_ptr<MUI::Styles> _styles = nullptr;
 
-
+	
+	///\brief This is just a helper function to avoid include issues
+	void _notifyToDocumentElementAdded(ElementEventArgs& e);
 	
 
 };
@@ -826,6 +828,7 @@ ElementType* Element::addChild(std::unique_ptr<ElementType> element)
         ElementEventArgs childAddedEvent(pNode);
         ofNotifyEvent(childAdded, childAddedEvent, this);
 
+		_notifyToDocumentElementAdded(childAddedEvent);
         // Attach child listeners.
 		ofAddListener(pNode->shapeChanged, this, &Element::_childShapeChange);
 

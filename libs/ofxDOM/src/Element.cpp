@@ -88,6 +88,12 @@ std::unique_ptr<Element> Element::removeChild(Element* element)
             }
         }
 
+		auto doc = document();
+		if(doc)
+		{
+			ofNotifyEvent(doc->elementRemovedEvent, childRemovedEvent, this);
+		}
+		
         // Detatch child listeners.
 		  ofRemoveListener(detachedChild.get()->shapeChanged, this, &Element::_childShapeChange);
 //        ofRemoveListener(detachedChild.get()->move, this, &Element::_onChildMoved);
@@ -1173,11 +1179,11 @@ std::shared_ptr<MUI::Styles> Element::getStyles() const
 {
     if (_styles == nullptr)
     {
-        const MUI::MUI* mui = dynamic_cast<const MUI::MUI*>(document());
+        auto doc = document();
 
-        if (mui != nullptr)
+        if (doc != nullptr)
         {
-            _styles = mui->getDocumentStyles();
+            _styles = doc->getDocumentStyles();
         }
         else
         {
@@ -1204,5 +1210,14 @@ void Element::recursiveUpdateLayout()
 	}
 }
 
+
+void Element::_notifyToDocumentElementAdded(ElementEventArgs& e){
+	
+	auto doc = document();
+	if(doc)
+	{
+		ofNotifyEvent(doc->elementAddedEvent, e, this);
+	}
+}
 
 } } // namespace ofx::DOM
