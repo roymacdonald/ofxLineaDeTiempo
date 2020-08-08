@@ -12,9 +12,10 @@ namespace ofx {
 namespace MUI {
 //---------------------------------------------------------------------------------------------------
 ConstrainedGrabHandle::ConstrainedGrabHandle(const std::string& id, DOM::Orientation orientation, const ofRectangle& rect):
-	GrabHandle(id, rect),
+	Widget(id, rect),
 	DOM::OrientedElement(orientation)
 {
+	
 	setDraggable(true);
 
 	setShapeDrawMode(ShapeDrawMode::ROUNDED_RECTANGLE);

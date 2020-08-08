@@ -5,13 +5,15 @@
 //  Created by Roy Macdonald on 2/5/20.
 //
 #pragma once
-#include "GrabHandle.h"
+
+#include "ofx/MUI/Widget.h"
+#include "ofx/MUI/Types.h"
 #include "OrientedElement.h"
 
 namespace ofx {
 namespace MUI {
 
-class ConstrainedGrabHandle: public GrabHandle, public DOM::OrientedElement{
+class ConstrainedGrabHandle: public Widget, public DOM::OrientedElement{
 public:
 	
 	ConstrainedGrabHandle(const std::string& id, DOM::Orientation orientation, const ofRectangle& rect);
