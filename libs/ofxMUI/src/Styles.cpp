@@ -262,7 +262,7 @@ const ofTrueTypeFont& Styles::getFont(FontSize size) const
 
         if (!font->load(settings.filename(),
                         settings.fontSize(),
-                        settings.antiAliased(),
+                        (size == FontSize::EXTRA_SMALL ? false: settings.antiAliased()),
                         settings.fullCharacterSet(),
                         settings.makeContours(),
                         settings.simplifyAmount(),
