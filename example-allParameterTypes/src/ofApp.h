@@ -73,6 +73,10 @@ public:
 	float helpStringHeight;
 	void setHelpString();
 	
+
+	void setTimelineShape();
+	
+	
 	
 	
 };

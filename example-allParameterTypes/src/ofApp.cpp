@@ -58,15 +58,24 @@ void ofApp::setup(){
 	
 
 	/// set the timelines shape.
-	/// In this case we set it to be  draw side by side with the GUI
-	float x = gui.getShape().getMaxX() + 5;
-	
-	ofRectangle shape( x, 0, ofGetWidth() - x - 5 , ofGetHeight() - helpStringHeight);
-	
-	timeline.setShape(shape);
-	
+	setTimelineShape();
 	
 }
+
+//--------------------------------------------------------------
+void ofApp::setTimelineShape(){
+
+	float x = 0;
+	if(bDrawGui){
+	/// In this case we set it to be  draw side by side with the GUI
+		x = gui.getShape().getMaxX() + 5;
+	}
+
+	ofRectangle shape( x, 0, ofGetWidth() - x - 5 , ofGetHeight() - helpStringHeight);
+
+	timeline.setShape(shape);
+}
+
 //--------------------------------------------------------------
 void ofApp::setHelpString()
 {
@@ -134,6 +143,7 @@ void ofApp::keyReleased(int key){
 	else if (key == 'g')
 	{
 		bDrawGui ^= true;
+		setTimelineShape();
 	}
 	else if (key == 'p') {
 		timeline.printStructure();
