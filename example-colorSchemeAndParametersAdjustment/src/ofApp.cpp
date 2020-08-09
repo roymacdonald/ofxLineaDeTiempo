@@ -196,7 +196,7 @@ ofRectangle ofApp::drawColorGroup(Styles::Role role, const glm::vec3& pos)
 //--------------------------------------------------------------
 void ofApp::draw(){
 
-	ofSetColor(color);
+	ofSetColor(ofColor::red);
 	ofDrawCircle(ofGetWidth()*0.5,ofGetHeight()*0.25,radius);
 	
 	
