@@ -35,14 +35,17 @@ struct ConstVars
 	
 	///\brief How much time the pointer needs to be without moving over an element with tooltips in order to show thet tooltip
 	/// units: milliseconds
-	static uint64_t tooltipDelay;
+	static ofParameter<uint64_t> tooltipDelay;
 	///\brief Maximum amount of time a tooltip can be shown.
 	/// units: milliseconds
-	static uint64_t tooltipTimeout;
+	static ofParameter<uint64_t> tooltipTimeout;
 	
-	///\ Show tooltips on elements that have this feature implemented
-	static bool showTooltips;
+	///\brief Show tooltips on elements that have this feature implemented
+	static ofParameter<bool> showTooltips;
 	
+	
+	///\brief get all the ConstVars parameters inside an ofParameterGroup
+	static ofParameterGroup& getParameters();
 	
 };
 

@@ -104,7 +104,7 @@ TrueTypeFontSettings TrueTypeFontSettings::defaultFontSettings(FontSize size)
     return TrueTypeFontSettings(DEFAULT_FONT, defaultFontSize(size));
 }
 #ifdef LINEA_DE_TIEMPO_USE_OF_PARAMETER
-std::string toString(Styles::Role role)
+std::string Styles::toString(Styles::Role role)
 {
     
     if(role == Styles::ROLE_FOREGROUND) return "FOREGROUND";
@@ -117,7 +117,7 @@ std::string toString(Styles::Role role)
     return "";
 
 }
- std::string toString(Styles::State state)
+ std::string Styles::toString(Styles::State state)
  {
     
     if(state == Styles::STATE_NORMAL) return "NORMAL";
@@ -136,12 +136,12 @@ Styles::Styles(const std::string& name)
     _fonts.assign(EXTRA_LARGE + 1, nullptr);
 
     // https://color.adobe.com/Neutral-Blue-color-theme-22361/
-    ofColor text (220); // text
-    ofColor accent  (200); // accent
-    ofColor border_foreground (80); // border
-	ofColor border_background  (30); // border
-    ofColor foreground (120); // foreground
-    ofColor background (60); // background
+    ofColor text (255); // text
+    ofColor accent  (225); // accent
+    ofColor border_foreground (140); // border
+	ofColor border_background  (140); // border
+    ofColor foreground (200); // foreground
+    ofColor background (55); // background
 
 #ifdef LINEA_DE_TIEMPO_USE_OF_PARAMETER
 
@@ -218,12 +218,13 @@ void Styles::setColor(const ofColor& color, Role role)
 {
 //    std::vector<ofColor> new_colors(STATE_DISABLED + 1, ofColor());
 
-	if(role == ROLE_FOREGROUND || role == ROLE_BACKGROUND){
+	if(role != ROLE_TEXT ){
 	
 		_colors[role][STATE_NORMAL] = ofColor(color.r*0.5, color.g*0.5, color.b*0.5);//, 127);
 		_colors[role][STATE_OVER] = ofColor(color.r*0.75, color.g*0.75, color.b*0.75);//, 180);
 		_colors[role][STATE_DOWN] = color;//, 255);
-	}else
+	}
+	else
 	{
 		_colors[role][STATE_NORMAL] = color;
 		_colors[role][STATE_OVER] = color;

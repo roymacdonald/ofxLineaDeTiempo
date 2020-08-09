@@ -12,9 +12,9 @@ namespace LineaDeTiempo {
 
 
 
-ofParameter<ofColor> ConstVars::TrackBackgroundColor = ofParameter<ofColor>("TrackBackgroundColor", ofColor(30), ofColor(0,0,0,0), ofColor(255,255,255,255));
-ofParameter<ofColor> ConstVars::TrackEdgeColor = ofParameter<ofColor>("TrackEdgeColor", ofColor(120), ofColor(0,0,0,0), ofColor(255,255,255,255));
-ofParameter<ofColor> ConstVars::PanelBackgroundColor = ofParameter<ofColor>("PanelBackgroundColor", ofColor(20), ofColor(0,0,0,0), ofColor(255,255,255,255));
+ofParameter<ofColor> ConstVars::TrackBackgroundColor = ofParameter<ofColor>("TrackBackgroundColor", ofColor(51), ofColor(0,0,0,0), ofColor(255,255,255,255));
+ofParameter<ofColor> ConstVars::TrackEdgeColor = ofParameter<ofColor>("TrackEdgeColor", ofColor(80), ofColor(0,0,0,0), ofColor(255,255,255,255));
+ofParameter<ofColor> ConstVars::PanelBackgroundColor = ofParameter<ofColor>("PanelBackgroundColor", ofColor(40), ofColor(0,0,0,0), ofColor(255,255,255,255));
 
 ofParameter<ofColor> ConstVars::TooltipTextColor = ofParameter<ofColor>("Tooltip Text", ofColor(0), ofColor(0,0,0,0), ofColor(255,255,255,255));
 ofParameter<ofColor> ConstVars::TooltipBackgroundColor = ofParameter<ofColor>("Tooltip Background", ofColor(255), ofColor(0,0,0,0), ofColor(255,255,255,255));
@@ -32,9 +32,51 @@ ofParameter<float> ConstVars::PlayheadTriangleSize = ofParameter<float>("Playhea
 ofParameter<float> ConstVars::PlayheadWidth = ofParameter<float>("PlayheadWidth", 3.f, 0.f, 10.f);
 
 
-uint64_t ConstVars::tooltipDelay = 800;
-uint64_t ConstVars::tooltipTimeout = 3000;
-bool ConstVars::showTooltips = true;
+ofParameter<uint64_t> ConstVars::tooltipDelay = ofParameter<uint64_t> ("Tooltip Delay",800, 0, 3000);
+ofParameter<uint64_t> ConstVars::tooltipTimeout = ofParameter<uint64_t> ("Tooltip Timeout",3000, 0, 5000);
+ofParameter<bool> ConstVars::showTooltips = ofParameter<bool> ("Show Tooltips",true);
+
+
+
+
+ofParameterGroup& ConstVars::getParameters(){
+	static std::unique_ptr<ofParameterGroup> group;
+
+	if(!group){
+		
+		group = std::make_unique<ofParameterGroup>("Const Vars");
+
+		ofParameterGroup colorsGroup ("colors");
+		colorsGroup.add(PanelBackgroundColor);
+		colorsGroup.add(TrackBackgroundColor);
+		colorsGroup.add(TrackEdgeColor);
+		colorsGroup.add(TooltipTextColor);
+		colorsGroup.add(TooltipBackgroundColor);
+		colorsGroup.add(TooltipBorderColor);
+		
+		ofParameterGroup measuresGroup("Measures");
+
+		measuresGroup.add(TrackInitialHeight);
+		measuresGroup.add(DefaultKeyframeSize);
+		measuresGroup.add(ViewTopHeaderHeight);
+		measuresGroup.add(HeaderViewIndent);
+		measuresGroup.add(TimeRulerInitialHeight);
+		measuresGroup.add(PlayheadTriangleSize);
+		measuresGroup.add(PlayheadWidth);
+
+		ofParameterGroup tooltipGroup("Tooltip");		
+		tooltipGroup.add(tooltipDelay);
+		tooltipGroup.add(tooltipTimeout);
+		tooltipGroup.add(showTooltips);
+		
+		group->add(colorsGroup);
+		group->add(measuresGroup);
+		group->add(tooltipGroup);
+
+	}
+	return *group;
+}
+
 
 
 }} //ofx::LineaDeTiempo

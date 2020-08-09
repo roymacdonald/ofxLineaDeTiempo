@@ -32,6 +32,8 @@ KeyframeView::KeyframeView(const std::string& id, float value, uint64_t time, Ke
 		std::cout << "null parentView\n";
 	}
 	
+	setStyleBorderRole(MUI::Styles::ROLE_ACCENT);
+	
 	setDraggable(true);
 	if(!_bParamTypeIsVoid){
 		setShapeDrawMode(MUI::ShapeDrawMode::ELLIPSE);

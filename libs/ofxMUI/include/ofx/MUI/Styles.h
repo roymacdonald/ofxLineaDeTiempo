@@ -218,30 +218,9 @@ protected:
 	
 	
 public:
-	static std::string toString(State s)
-	{
-		switch(s)
-		{
-			case STATE_NORMAL: return "STATE_NORMAL";
-			case STATE_OVER: return "STATE_OVER";
-			case STATE_DOWN: return "STATE_DOWN";
-			case STATE_DISABLED: return "STATE_DISABLED";
-		}
-		return "";
-	}
-	static std::string toString(Role r)
-	{
-		switch(r)
-		{
-			case ROLE_FOREGROUND: return "ROLE_FOREGROUND";
-			case ROLE_BACKGROUND: return "ROLE_BACKGROUND";
-			case ROLE_ACCENT: return "ROLE_ACCENT";
-			case ROLE_BORDER_FOREGROUND: return "ROLE_BORDER_FOREGROUND";
-			case ROLE_BORDER_BACKGROUND: return "ROLE_BORDER_BACKGROUND";
-			case ROLE_TEXT: return "ROLE_TEXT";
-		}
-		return "";
-	}
+	static std::string toString(State s);
+	
+	static std::string toString(Role r);
 	
 	
 	
