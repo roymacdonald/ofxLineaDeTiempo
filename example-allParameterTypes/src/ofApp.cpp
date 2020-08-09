@@ -32,6 +32,7 @@ void ofApp::setup(){
 	gui.add(numbersGroup);
 	
 	gui.add(_param_void);
+	gui.add(_param_bool);
 	gui.add(glmGroup);
 	
 	gui.add(colorGroup);
@@ -141,5 +142,8 @@ void ofApp::keyReleased(int key){
 	else if (key == 'h') {
 		bDrawHelp ^= true;
 	}
-	
+	else if (key == 't')
+	{
+		timeline.setTotalTime(60000	);
+	}
 }
