@@ -66,8 +66,9 @@ TooltipOwner::TooltipOwner(DOM::Element* _self, const std::string& tooltip)
 ,_tooltip(tooltip)
 {
 	
-	_pointerListeners.push(_self->pointerOver.event(false).newListener(this, &TooltipOwner::onPointerOver, std::numeric_limits<int>::lowest()));
-	_pointerListeners.push(_self->pointerEnter.event(false).newListener(this, &TooltipOwner::onPointerOver, std::numeric_limits<int>::lowest()));
+	_pointerListeners.push(_self->pointerOver.event(false).newListener(this, &TooltipOwner::onPointerEvent, std::numeric_limits<int>::lowest()));
+	_pointerListeners.push(_self->pointerEnter.event(false).newListener(this, &TooltipOwner::onPointerEvent, std::numeric_limits<int>::lowest()));
+	_pointerListeners.push(_self->pointerDown.event(false).newListener(this, &TooltipOwner::onPointerEvent, std::numeric_limits<int>::lowest()));
 	_overStartTime = ofGetElapsedTimeMillis();
 	
 }
@@ -79,10 +80,29 @@ TooltipOwner::~TooltipOwner()
 }
 
 
-void TooltipOwner::onPointerOver(DOM::PointerUIEventArgs& e)
+void TooltipOwner::onPointerEvent(DOM::PointerUIEventArgs& e)
 {
-	_bCanShowTooltip = true;
+	if(e.type() == PointerEventArgs::POINTER_OVER || e.type() == PointerEventArgs::POINTER_ENTER)
+	{
+		_bCanShowTooltip = true;
+	}
+	else
+	{
+		expireTooltip();
+		_bCanShowTooltip = false;
+	}
 }
+
+
+void TooltipOwner::expireTooltip()
+{
+	if(_tooltipModal != nullptr)
+	{
+		_tooltipModal->expire();
+	}
+}
+
+
 
 void TooltipOwner::_updateShowTooltip( bool bMoving, bool bOver, const std::map<size_t, PointerEventArgs>& pointersOver, DOM::Document* docu)
 {
@@ -106,10 +126,7 @@ void TooltipOwner::_updateShowTooltip( bool bMoving, bool bOver, const std::map<
 					if(bMoving){
 						
 						_overStartTime = ofGetElapsedTimeMillis();
-						if(_tooltipModal != nullptr)
-						{
-							_tooltipModal->expire();
-						}
+						expireTooltip();
 					}
 					else
 					{
@@ -127,9 +144,9 @@ void TooltipOwner::_updateShowTooltip( bool bMoving, bool bOver, const std::map<
 						}
 					}
 				}
-				else if(_tooltipModal != nullptr)
+				else
 				{
-					_tooltipModal->expire();
+					expireTooltip();
 				}
 			}
 		}
@@ -172,6 +189,10 @@ void Tooltip::make()
 		auto f = s->getFont(MUI::EXTRA_SMALL);
 		
 		_screenPos.y -= _margin;
+		_screenPos.x += _margin + 2;
+		
+		
+		
 		
 		auto pos = screenToParent(_screenPos);
 		
@@ -192,10 +213,10 @@ void Tooltip::make()
 		
 		if(bb.width + _screenPos.x  > ofGetWidth())
 		{
-			bb.x -=  bb.width;
+			bb.x -=  bb.width + _margin + 2;
 			setShape(bb);
-			localPos.x -=  bb.width - _margin;
 		}
+		
 		
 		
 //		std::cout << "Tooltip::make() localPos: " << localPos << "\n";

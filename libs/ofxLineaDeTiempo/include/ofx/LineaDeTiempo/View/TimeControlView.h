@@ -28,7 +28,7 @@ public:
 
 	virtual void _setButtonIcon() = 0;
 
-//	void onPointerOver(DOM::PointerUIEventArgs& e);
+
 protected:
 
 	

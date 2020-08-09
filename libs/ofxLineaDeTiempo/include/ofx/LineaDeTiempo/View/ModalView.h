@@ -54,7 +54,7 @@ public:
 	TooltipOwner(DOM::Element* _self, const std::string& tooltip);
 	virtual ~TooltipOwner();
 	
-	void onPointerOver(DOM::PointerUIEventArgs& e);
+	void onPointerEvent(DOM::PointerUIEventArgs& e);
 	
 protected:
 
@@ -73,6 +73,10 @@ protected:
 	void _removeModalCB();
 
 	DOM::Element* _tooltipOwner = nullptr;
+	
+	void expireTooltip();
+	
+	
 	
 };
 
