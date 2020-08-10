@@ -1235,7 +1235,16 @@ public:
     /// \returns an instance of PointerEventsManager.
     static PointerEventsManager& instance();
 
-private:
+	///\brief Get if there are events registered to a window
+	///\param window the window to check for registered events
+	///\returns true if there are events registered to a window, otherwise false
+	bool hasEventsForWindow(ofAppBaseWindow* window);
+	
+	///\brief Unregister events from a window
+	///\param window the window from which to unregister the events
+	void removeEventsForWindow(ofAppBaseWindow* window);
+	
+//private:
     /// \brief Create a default PointerEventsManager object.
     PointerEventsManager();
 
@@ -1313,12 +1322,15 @@ void RegisterPointerEventForWindow(ofAppBaseWindow* window, ListenerClass* liste
 template <class ListenerClass>
 void UnregisterPointerEventForWindow(ofAppBaseWindow* window, ListenerClass* listener, int prio = OF_EVENT_ORDER_AFTER_APP)
 {
-    PointerEvents* events = PointerEventsManager::instance().eventsForWindow(window);
+	if(PointerEventsManager::instance().hasEventsForWindow(window))
+	{
+		PointerEvents* events = PointerEventsManager::instance().eventsForWindow(window);
 
-    if (events)
-    {
-        ofRemoveListener(events->pointerEvent, listener, &ListenerClass::onPointerEvent, prio);
-    }
+		if (events)
+		{
+			ofRemoveListener(events->pointerEvent, listener, &ListenerClass::onPointerEvent, prio);
+		}
+	}
     else
     {
         ofLogError("UnregisterPointerEventForWindow") << "No PointerEvents available for given window.";

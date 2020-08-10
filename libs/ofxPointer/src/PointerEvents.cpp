@@ -1181,6 +1181,18 @@ PointerEventsManager& PointerEventsManager::instance()
 }
 
 
+bool PointerEventsManager::hasEventsForWindow(ofAppBaseWindow* window)
+{
+	return _windowEventMap.find(window) != _windowEventMap.end();
+}
+
+
+void PointerEventsManager::removeEventsForWindow(ofAppBaseWindow* window)
+{
+	_windowEventMap.erase(_windowEventMap.find(window));
+}
+
+
 PointerEventsManager::PointerEventsManager()
 {
 }
