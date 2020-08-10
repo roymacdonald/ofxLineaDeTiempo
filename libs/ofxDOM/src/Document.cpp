@@ -27,6 +27,7 @@ Document::Document(const DocumentSettings& settings)
 
 Document::~Document()
 {
+	_disableAllListeners();
 }
 
 
@@ -583,6 +584,10 @@ void Document::_disableAllListeners()
 	{
 		disableEventListener((DocumentEvent)i);
 	}
+	_pointerEventListener.unsubscribe();
+	
+	PointerEventsManager::instance().removeEventsForWindow(_settings.window);
+	
 }
 void Document::setWindow(ofAppBaseWindow* window)
 {
