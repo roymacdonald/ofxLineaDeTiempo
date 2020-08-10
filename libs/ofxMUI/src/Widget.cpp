@@ -7,7 +7,7 @@
 
 #include "ofx/MUI/Widget.h"
 #include "ofx/DOM/Exceptions.h"
-#include "ofx/MUI/MUI.h"
+
 #include "ofx/MUI/Styles.h"
 
 

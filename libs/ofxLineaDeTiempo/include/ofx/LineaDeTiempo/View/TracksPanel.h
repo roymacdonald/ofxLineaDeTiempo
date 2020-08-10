@@ -10,7 +10,6 @@
 
 #include "LineaDeTiempo/View/TrackGroupView.h"
 #include "LineaDeTiempo/View/TimeRuler.h"
-#include "MUI/MUI.h"
 #include "MUI/Label.h"
 #include "MUI/ZoomablePanel.h"
 #include "LineaDeTiempo/View/TracksClippedView.h"

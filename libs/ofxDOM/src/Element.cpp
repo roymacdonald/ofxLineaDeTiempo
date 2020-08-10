@@ -10,7 +10,6 @@
 #include "ofGraphics.h"
 #include <algorithm>
 
-#include "ofx/MUI/MUI.h"
 
 
 namespace ofx {
