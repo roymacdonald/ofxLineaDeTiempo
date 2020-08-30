@@ -163,17 +163,11 @@ ofRange TracksClippedView::containerWidthToZoom()
 void TracksClippedView::_updateTracksUnscaledHeight()
 {
 	_unscaledHeight = 0;
-	_numGroups = 0;
 	
 	for (auto c : container->children()){
 		auto t = dynamic_cast<BaseTrackView*>(c);
-		if (t)	_unscaledHeight += t->getUnscaledHeight(_numGroups);
+		if (t)	_unscaledHeight += t->getUnscaledHeight();
 	}
-	
-//	if(container->numChildren() == 1)
-//	{
-//		_numGroups = 0;
-//	}
 	
 	_unscaledHeight = std::max(_getZoomableHeight(), _unscaledHeight);
 	

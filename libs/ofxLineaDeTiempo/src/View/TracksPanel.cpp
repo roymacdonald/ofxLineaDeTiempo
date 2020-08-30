@@ -21,7 +21,7 @@ namespace LineaDeTiempo {
 
 TracksPanel::TracksPanel(const std::string& id, const ofRectangle& rect, DOM::Element* parentView, TracksPanelController* controller)
 
-: TrackGroupView(parentView, controller, nullptr )
+: TrackGroupView(parentView, controller, nullptr, nullptr )
 {
 	setShape(rect);
 
@@ -37,10 +37,20 @@ TracksPanel::TracksPanel(const std::string& id, const ofRectangle& rect, DOM::El
 	
 	
 	
-	_headersView = addChild<HeadersView>(id + "headersView", _makeHeadersViewRect(), nullptr, nullptr, true);
-	_header = _headersView->container;
+	_headersView = addChild<HeadersView>(id + "headersView", _makeHeadersViewRect(), nullptr, true);
+	setHeader(_headersView->container);
+	_groupHeader = _headersView->container;
+	
+	
 
-
+	int followType = MUI::FOLLOW_Y | MUI::FOLLOW_HEIGHT;
+	int followMode = MUI::FOLLOW_SCREEN;
+	_follower = make_unique<MUI::Follower>(_headersView->container);
+	_follower->mutuallyFollow(_header->getFollower(), followType, followMode);
+	
+	
+	
+	
 	_tracksViewListener = _tracksContainer->shapeChanged.newListener(this, &TracksPanel::_tracksViewShapeChanged);
 	
 	
@@ -79,13 +89,13 @@ void TracksPanel::setTracksHeaderWidth(float w)
 
 void TracksPanel::_tracksViewShapeChanged(DOM::ShapeChangeEventArgs& e)
 {
-	if(e.changedVertically())
-	{
-		auto o = _tracksView->getClippingView()->getOffset();
-		o.x =0;
-		_headersView->setOffset(o);
-		_headersView->container->setHeight(_tracksView->getContainer()->getHeight());
-	}
+//	if(e.changedVertically())
+//	{
+//		auto o = _tracksView->getClippingView()->getOffset();
+//		o.x =0;
+//		_headersView->setOffset(o);
+//		_headersView->container->setHeight(_tracksView->getContainer()->getHeight());
+//	}
 	
 }
 
@@ -196,11 +206,11 @@ const TracksPanel::TracksView* TracksPanel::getTracksView() const
 }
 
 
-ofx::MUI::ClippedView_<TrackHeader> * TracksPanel::getHeadersView()
+ofx::MUI::ClippedView_<TrackHeaderGroup> * TracksPanel::getHeadersView()
 {
 	return _headersView;
 }
-const ofx::MUI::ClippedView_<TrackHeader> * TracksPanel::getHeadersView() const
+const ofx::MUI::ClippedView_<TrackHeaderGroup> * TracksPanel::getHeadersView() const
 {
 	return _headersView;
 }

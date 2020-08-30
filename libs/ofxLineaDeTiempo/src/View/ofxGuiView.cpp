@@ -9,6 +9,11 @@
 #include "LineaDeTiempo/View/TrackHeader.h"
 #include "LineaDeTiempo/View/TrackView.h"
 #include "LineaDeTiempo/Utils/ConstVars.h"
+#include "LineaDeTiempo/Utils/ofxTypeTraits.h"
+
+#include "ofxSliderGroup.h"
+
+
 namespace ofx {
 namespace LineaDeTiempo {
 
@@ -17,33 +22,79 @@ ofxGuiView<T>::ofxGuiView(ofParameter<T>& param, float width, TrackHeader* track
 : MUI::Widget(param.getName(), 0,0, width, 18)
 , _trackHeader(trackHeader)
 {
-	_gui.setup("ofxGuiGroup", "", 0,0);
-	_gui.setWidthElements(width);
-	_gui.add(param);
-	_gui.disableHeader();
-	_gui.unregisterMouseEvents();
 	
-	_bGuiWasMinimized = _gui.isMinimized();
+	_makeGui(param, width);
+	if(_gui)
+	{
+		_gui->setPosition(0,0);
+
+		_gui->unregisterMouseEvents();
+	
+		_bOfxGuiIsMinimizable = (bool)(dynamic_cast<ofxGuiGroup*>(_gui.get()));
+		if(_bOfxGuiIsMinimizable)
+		{
+			_gui->setBackgroundColor(ofColor::red);
+		}
+	}
 	
 	
-//	for(size_t i = 0; i < _gui.getNumControls(); ++i)
-//	{
-//		auto g = dynamic_cast<ofxGuiGroup*>(_gui.getControl(i));
-//		if(g){
-//			g->disableHeader();
-//		}
-//	}
-	setShape(_gui.getShape());
-	
-	_guiShape = getShape();
+	_ofxGuiShape = _gui->getShape();
+	_ignoreOfxGuiShapeChange = true;
+	setHeight(std::max(getHeight(), _gui->getHeight()));
+	_ignoreOfxGuiShapeChange = false;
 	
 	setDraggable(true);
 }
+
+template<typename T>
+void ofxGuiView<T>::_makeGui(ofParameter<T>& param, float width)
+{
+	_gui = std::make_unique<ofxSlider<T>>(param, width);
+}
+template<>
+void ofxGuiView<ofColor>::_makeGui(ofParameter<ofColor>& param, float width){
+	_gui = std::make_unique<ofxColorSlider>(param, width);
+} 
+template<>
+void ofxGuiView<ofShortColor>::_makeGui(ofParameter<ofShortColor>& param, float width){
+	_gui = std::make_unique<ofxShortColorSlider>(param, width);
+} 
+template<>
+void ofxGuiView<ofFloatColor>::_makeGui(ofParameter<ofFloatColor>& param, float width){
+	_gui = std::make_unique<ofxFloatColorSlider>(param, width);
+} 
+template<>
+void ofxGuiView<ofDefaultVec3>::_makeGui(ofParameter<ofDefaultVec3>& param, float width){
+	_gui = std::make_unique<ofxVec3Slider>(param, width);	
+} 
+template<>
+void ofxGuiView<ofDefaultVec2>::_makeGui(ofParameter<ofDefaultVec2>& param, float width){
+	_gui = std::make_unique<ofxVec2Slider>(param, width);	
+} 
+template<>
+void ofxGuiView<ofDefaultVec4>::_makeGui(ofParameter<ofDefaultVec4>& param, float width){
+	_gui = std::make_unique<ofxVec4Slider>(param, width);	
+} 
+template<>
+void ofxGuiView<ofRectangle>::_makeGui(ofParameter<ofRectangle>& param, float width){
+	_gui = std::make_unique<ofxRectangleSlider>(param, width);
+}
+template<>
+void ofxGuiView<bool>::_makeGui(ofParameter<bool>& param, float width){
+	_gui = std::make_unique<ofxToggle>(param, width);
+}
+
+template<>
+void ofxGuiView<void>::_makeGui(ofParameter<void>& param, float width){
+	_gui = std::make_unique<ofxButton>(param, width);		
+}
+
 
 
 template<typename T>
 void ofxGuiView<T>::_onPointerEvent(DOM::PointerUIEventArgs& e)
 {
+	if(!_gui) return;
 	
 	ofMouseEventArgs args;
 	auto p = screenToLocal(e.screenPosition());
@@ -65,12 +116,12 @@ void ofxGuiView<T>::_onPointerEvent(DOM::PointerUIEventArgs& e)
     if (e.type() == PointerEventArgs::POINTER_DOWN)
     {
 		args.type = ofMouseEventArgs::Pressed;
-		_gui.mousePressed(args);
+		_gui->mousePressed(args);
     }
 	else if (e.type() == PointerEventArgs::POINTER_UP)
     {
 		args.type = ofMouseEventArgs::Released;
-		_gui.mouseReleased(args);
+		_gui->mouseReleased(args);
     }
 	
     else if (e.type() == PointerEventArgs::POINTER_MOVE)
@@ -80,7 +131,7 @@ void ofxGuiView<T>::_onPointerEvent(DOM::PointerUIEventArgs& e)
             if (!capturedPointers().empty())
             {
 				args.type = ofMouseEventArgs::Dragged;
-				_gui.mouseDragged(args);
+				_gui->mouseDragged(args);
 				
             }
             else
@@ -91,7 +142,7 @@ void ofxGuiView<T>::_onPointerEvent(DOM::PointerUIEventArgs& e)
 		else
 		{
 			args.type = ofMouseEventArgs::Moved;
-			_gui.mouseMoved(args);
+			_gui->mouseMoved(args);
 		}
 			
     }
@@ -112,70 +163,52 @@ void ofxGuiView<T>::_onPointerEvent(DOM::PointerUIEventArgs& e)
 
 
 template<typename T>
-ofxGuiGroup &  ofxGuiView<T>::getOfxGui()
+void ofxGuiView<T>::_onShapeChange(const DOM::ShapeChangeEventArgs& e)
 {
-	return _gui;
+	if(_gui && !_ignoreOfxGuiShapeChange)
+	{
+		if(e.widthChanged())
+		{
+			_gui->setSize(getWidth(), _gui->getHeight());
+		}
+	}
 }
 
 
 template<typename T>
-const ofxGuiGroup &  ofxGuiView<T>::getOfxGui() const
+void ofxGuiView<T>::_updateShapeFromOfxGui()
 {
-	return _gui;
+	auto s = _gui->getShape();
+	if( _ofxGuiShape != s)
+	{
+		_ofxGuiShape = s;
+		_ignoreOfxGuiShapeChange =true;
+		setHeight(_gui->getHeight());
+		_ignoreOfxGuiShapeChange = false;
+	}
+	
 }
+
 
 template<typename T>
 void ofxGuiView<T>::onUpdate()
 {
 	MUI::Widget::onUpdate();
-	auto s = _gui.getShape();
-
-	if(!ofIsFloatEqual(_guiShape.height, s.height) )
-	{
-		auto tempShape = getShape();
-		tempShape.height = s.height;
-		setShape(tempShape);
-
-		_guiShape = s;
-
-
-		if( _trackHeader)
-		{
-			auto t = dynamic_cast<TrackView*>(_trackHeader->getTrack());
-			if(t)
-			{
-
-//				hacer las matematicas y logica de esto correctamente.
-
-				bool bHeaderTallerThanGui =  _trackHeader->getHeight() >= getHeight() + getY();
-				if(!_gui.isMinimized() && _bGuiWasMinimized )
-				{
-					if(!bHeaderTallerThanGui)
-					{
-						 if( _bGuiWasMinimized && !_gui.isMinimized())
-							 _minimizedHeightFactor = t->getHeightFactor();
-
-						t->setMinHeight(getHeight() + getY());
-					}
-				}
-				else if( !_bGuiWasMinimized && _gui.isMinimized())
-				{
-					t->setHeightFactor(_minimizedHeightFactor);
-				}
-				
-				_bGuiWasMinimized = _gui.isMinimized();
-			}
-		}
+	if(_bOfxGuiIsMinimizable){
+		_updateShapeFromOfxGui();
 	}
 }
+
 template<typename T>
 void ofxGuiView<T>::onDraw() const
 {
 //	if(parent() && parent()->getHeight() >= getHeight() + getY()){
-		_gui.draw();
-//	}
+	if(_gui)// && getHeight() >= _gui->getHeight())
+	{
+		_gui->draw();
+	}
 }
-
+	
 
 
 template class ofxGuiView<glm::vec2>;

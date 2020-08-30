@@ -13,12 +13,19 @@
 namespace ofx {
 namespace LineaDeTiempo {
 
-TrackGroupView::TrackGroupView(DOM::Element* parentView, TrackGroupController * controller, TimeRuler * timeRuler)
+TrackGroupView::TrackGroupView(DOM::Element* parentView, TrackGroupController * controller, TrackHeaderGroup* headerGroup, TimeRuler * timeRuler)
 : BaseTrackView(controller->getId(), parentView, timeRuler)
 , _controller(controller)
 {
 
 	_tracksContainer = this;
+	
+	if(headerGroup){
+		_groupHeader = headerGroup->addGroupHeader(getId() + "_groupHeader", this, _isPanel);
+	
+		setHeader(_groupHeader);
+	}
+	
 	
 	_childrensChangeListeners.push(childAdded.newListener(this, &TrackGroupView::_onChildrensChange));
 	_childrensChangeListeners.push(childRemoved.newListener(this, &TrackGroupView::_onChildrensChange));
@@ -78,9 +85,12 @@ bool TrackGroupView::removeTrack(TrackController* controller)
 	
 
 	auto tr = _tracksContainer->removeChild(track);
-	auto h = _header->removeChild(track->getHeader());
-
-	return true;
+	if(tr){
+		return _groupHeader->removeTrackHeader(track->getHeader());
+	}
+//	auto h = _header->removeChild(track->getHeader());
+	ofLogError("TrackGroupView::removeTrack") << "could not remove track. Probably it does not belong to this group. " << getId();
+	return false;
 	
 }
 
@@ -99,14 +109,13 @@ TrackGroupView* TrackGroupView::addGroup(TrackGroupController * controller )
 	}
 	
 	
-	auto t = _tracksContainer->addChild<TrackGroupView>(this, controller, _timeRuler);
-	auto h = _header->addChild<TrackHeader>( "_header", ofRectangle(0, 0, _trackHeaderWidth, ConstVars::TrackInitialHeight), t , this, _isPanel);
-	
-	
+	auto t = _tracksContainer->addChild<TrackGroupView>(this, controller, _groupHeader, _timeRuler);
+//	_groupHeader->addGroupHeader(getId()+ "_groupHeader", t, _isPanel);
+//	auto h = _header->addChild<TrackHeader>( "_header", ofRectangle(0, 0, _trackHeaderWidth, ConstVars::TrackInitialHeight), t , this, _isPanel);
+
 	return t;
 	
 }
-
 
 
 bool TrackGroupView::removeGroup(TrackGroupController * controller)
@@ -116,24 +125,31 @@ bool TrackGroupView::removeGroup(TrackGroupController * controller)
 		ofLogError("TrackGroupView::removeGroup") << "controller is nulptr";
 		return false;
 	}
-	
-	auto track = controller->getView();
-	if(!track)
-	{
-		ofLogError("TrackGroupView::removeGroup") << "track view is invalid. " << getId();
-		return false;
-	}
 	if(_containersCheck("removeGroup") == false)
 	{
 		return false;
 	}
+	auto track = dynamic_cast<TrackGroupView*>(controller->getView());
+	if(!track)
+	{
+		ofLogError("TrackGroupView::removeGroup") << "group view is invalid. " << getId();
+		return false;
+	}
+
 		
 
 	auto tr = _tracksContainer->removeChild(track);
-	auto h = _header->removeChild(track->getHeader());
-
+//	auto h = _header->removeChild(track->getHeader());
+	if(tr){
+			return _groupHeader->removeGroupHeader(track->getGroupHeader());
+		}
+		ofLogError("TrackGroupView::removeGroup") << "could not remove group. Probably it does not belong to this group. " << getId();
+		return false;
+		
+	
+	
 //	_updateContainers();
-	return true;
+//	return true;
 	
 }
 
@@ -176,9 +192,8 @@ float TrackGroupView::_getInitialYpos()
 	return ConstVars::ViewTopHeaderHeight;
 }
 
-float TrackGroupView::getUnscaledHeight(size_t & numGroups)
+float TrackGroupView::getUnscaledHeight()
 {
-	numGroups++;
 	
 	float h = 0;
 	for(auto c: children())
@@ -186,7 +201,7 @@ float TrackGroupView::getUnscaledHeight(size_t & numGroups)
 		auto t = dynamic_cast<BaseTrackView*>(c);
 		if(t)
 		{
-			h+= t->getUnscaledHeight(numGroups);
+			h+= t->getUnscaledHeight();
 		}
 	}
 	return h;

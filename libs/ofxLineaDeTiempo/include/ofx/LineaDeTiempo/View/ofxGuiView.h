@@ -30,25 +30,34 @@ public:
 
 	virtual void onUpdate() override;
 	
-	ofxGuiGroup & getOfxGui();
-	const ofxGuiGroup & getOfxGui() const;
-		
+//	ofxGuiGroup & getOfxGui();
+//	const ofxGuiGroup & getOfxGui() const;
+//
 protected:
 	
+	
+	void _makeGui(ofParameter<ParamType>& param, float width);
+	
+	virtual void _onShapeChange(const DOM::ShapeChangeEventArgs& ) override;
 	
     virtual void _onPointerEvent(DOM::PointerUIEventArgs& e) override;
 
 
-	mutable ofxGuiGroup _gui;
+//	mutable ofxGuiGroup _gui;
 
-	ofRectangle _guiShape;
+	std::unique_ptr<ofxBaseGui> _gui = nullptr;
 	
-	float _minimizedHeightFactor = 1;
+	ofRectangle _ofxGuiShape;
+	bool _ignoreOfxGuiShapeChange = false;
+	void _updateShapeFromOfxGui();
+	
+//	float _minimizedHeightFactor = 1;
 
 	TrackHeader* _trackHeader = nullptr;
 
-
-	bool _bGuiWasMinimized = true;
+	
+	
+	bool _bOfxGuiIsMinimizable = false;
 
 	
 };

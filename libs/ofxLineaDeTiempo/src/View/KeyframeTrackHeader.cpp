@@ -19,11 +19,18 @@ KeyframeTrackHeader<ParamType>::KeyframeTrackHeader(ofParameter<ParamType> & par
 	
 	_gui = addChild<ofxGuiView<ParamType>>(param, group->getTracksHeaderWidth(), this);
 	_gui->setPosition(0, ConstVars::ViewTopHeaderHeight);
-	
+
+	_ofxGuiHeightChangeListener = _gui->shapeChanged.newListener(this, &KeyframeTrackHeader::_ofxGuiHeightChange);
 		
 }
 
+template<typename ParamType>
+float KeyframeTrackHeader<ParamType>::_getMinHeight()
+{
+	return _gui->getShape().getMaxY();
+}
 
+ 
 template<typename ParamType>
 void KeyframeTrackHeader<ParamType>::_onShapeChange(const DOM::ShapeChangeEventArgs&  e)
 {
@@ -31,8 +38,27 @@ void KeyframeTrackHeader<ParamType>::_onShapeChange(const DOM::ShapeChangeEventA
 	{
 		_gui->setWidth(getWidth());
 	}
-	
 }
+
+
+template<typename ParamType>
+void KeyframeTrackHeader<ParamType>::_ofxGuiHeightChange(DOM::ShapeChangeEventArgs& args)
+{
+	if(args.changedVertically())
+	{
+//		if(_gui->_gui)
+//
+//			hacer que el track y header se sincronicen en sus cambios. Probablemente es mas sencillo que lo que actualmente hay
+//
+//		_minimizedHeightFactor
+		if(getHeight() < args.shape.getMaxY())
+		{
+			setHeight(args.shape.getMaxY());
+		}
+//		_updateTrackHeight();
+	}
+}
+
 
 template class KeyframeTrackHeader<ofRectangle>;
 

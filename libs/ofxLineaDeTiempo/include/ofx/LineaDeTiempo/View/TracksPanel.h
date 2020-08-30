@@ -13,6 +13,7 @@
 #include "MUI/Label.h"
 #include "MUI/ZoomablePanel.h"
 #include "LineaDeTiempo/View/TracksClippedView.h"
+#include "LineaDeTiempo/View/TrackHeaderGroup.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -35,7 +36,7 @@ public:
 	
 	virtual void onUpdate() override;
 		
-	typedef ofx::MUI::ClippedView_<TrackHeader> HeadersView;
+	typedef ofx::MUI::ClippedView_<TrackHeaderGroup> HeadersView;
 	typedef ofx::MUI::ZoomablePanel<TracksClippedView, MUI::AutoReziseContainer>  TracksView;
 	
 	void setTracksHeaderWidth(float w);

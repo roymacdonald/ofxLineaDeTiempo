@@ -23,7 +23,6 @@ BaseTrackView::BaseTrackView(const std::string& id, DOM::Element* parentGroupVie
 , _timeRuler(timeRuler)
 {
 	setParent(parentGroupView);
-
 	
 	
 	_color = ConstVars::TrackBackgroundColor;
@@ -40,6 +39,7 @@ TracksPanel* BaseTrackView::getParentPanel()
 	return dynamic_cast<TracksPanel*>(this);
 	
 }
+
 
 void BaseTrackView::setColor(const ofColor& color)
 {
@@ -88,6 +88,14 @@ void BaseTrackView::updateWidth(const float& w)
 void BaseTrackView::setHeader(TrackHeader* header)
 {
 	_header = header;
+	if(_header)
+	{
+		int followType = MUI::FOLLOW_Y | MUI::FOLLOW_HEIGHT;
+		int followMode = MUI::FOLLOW_SCREEN;
+	
+		getFollower()->mutuallyFollow(_header->getFollower(), followType, followMode);
+
+	}
 }
 
 TrackHeader* BaseTrackView::getHeader()
@@ -114,6 +122,14 @@ TimeRuler * BaseTrackView::getTimeRuler()
 const TimeRuler * BaseTrackView::getTimeRuler() const
 {
 	return _timeRuler;
+}
+
+
+MUI::Follower* BaseTrackView::getFollower()
+{
+	if(!_follower)
+		_follower = make_unique<MUI::Follower>(this);
+	return _follower.get();
 }
 
 }} //ofx::LineaDeTiempo

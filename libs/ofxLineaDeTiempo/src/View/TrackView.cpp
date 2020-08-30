@@ -17,13 +17,11 @@ namespace LineaDeTiempo {
 
 TrackView::TrackView(DOM::Element* parentView, TrackController* controller,TimeRuler * timeRuler )
 : BaseTrackView(controller->getId(), parentView, timeRuler)
-//, _unscaledHeight(ConstVars::TrackInitialHeight)
 , _controller(controller)
 
 {
 	_regionsHeaderStyle = make_shared<MUI::Styles>("regionsHeaderStyle");
 	colorListener = BaseTrackView::colorChangeEvent.newListener(this, &TrackView::colorChanged);
-	_minHeight = ConstVars::ViewTopHeaderHeight;
 }
 
 shared_ptr<MUI::Styles> TrackView::getRegionsHeaderStyle()
@@ -55,46 +53,42 @@ ofRectangle TrackView::timeRangeToRect(const ofRange64u& t) const
 
 float TrackView::timeToLocalPosition(const uint64_t& t) const
 {
-//	std::cout << "TrackView::timeToLocalPosition\n";
 	auto ruler = getTimeRuler();
 	if(ruler)
 	{
 		return screenToLocal({ruler->timeToScreenPosition(t),0}).x ;
 	}
-//	return MUI::Math::lerp(t, 0, _controller->getTimeControl()->getTotalTime(), 0, getWidth());
 	return 0;
 }
 
+
 uint64_t TrackView::localPositionToTime(float x) const
 {
-//	std::cout << "TrackView::localPositionToTime\n";
-	
 	auto ruler = getTimeRuler();
 	if(ruler)
 	{
 		return ruler->screenPositionToTime(localToScreenX(x));
-//		return screenToLocal({ruler->timeToScreenPosition(t),0}).x ;
 	}
-//	return MUI::Math::lerp(x, 0, getWidth(), 0, _controller->getTimeControl()->getTotalTime());
 	return 0;
 }
+
 
 float TrackView::getHeightFactor() const
 {
 	return _heightFactor;
 }
 
+
 void TrackView::setHeightFactor(float factor)
 {
-
 	_heightFactor = factor;
-//	_unscaledHeight = ConstVars::TrackInitialHeight * _heightFactor;
 	auto p = getParentPanel();
-	if(p && p->getTracksView())
+	if(p && p->getTracksView() && p->getTracksView()->getClippingView())
 	{
-//		p->getTracksView()->updateVerticalScrollFromContainersHeight();
+		p->getTracksView()->getClippingView()->updateLayout();
 	}
 }
+
 
 bool TrackView::removeRegion(RegionController * controller)
 {
@@ -122,17 +116,10 @@ bool TrackView::removeRegion(RegionController * controller)
 	return false;
 }
 
-float TrackView::getUnscaledHeight(size_t & numGroups)
+float TrackView::getUnscaledHeight()
 {
-	return std::max(ConstVars::TrackInitialHeight * _heightFactor, _minHeight );
+	return ConstVars::TrackInitialHeight * _heightFactor;
 }
-//
-//void TrackView::setScaledHeight(float h)
-//{
-//	std::cout << "TrackView::setScaledHeight " << h << "\n";
-//	_minHeight = h;
-//	setHeightFactor( h / (ConstVars::TrackInitialHeight *  _verticalScale));
-//}
 
 
 float TrackView::updateYScaled(float y, float yScale)
@@ -152,7 +139,10 @@ void TrackView::_onShapeChange(const DOM::ShapeChangeEventArgs& e)
 	}
 	if(e.heightChanged())
 	{
-		_updateRegionsHeight();
+		if(!_bIgnoreHeightChange )
+		{
+			_updateRegionsHeight();
+		}
 	}
 }
 
@@ -198,19 +188,11 @@ TrackController * TrackView::getController()
 }
 
 
-void TrackView::setMinHeight(float minHeight)
+void TrackView::setTrackHeight(float trackHeight)
 {
-	_minHeight = minHeight;
-	setHeightFactor( minHeight / (ConstVars::TrackInitialHeight *  _verticalScale));
-	setHeight( minHeight);
+	setHeightFactor( trackHeight / (ConstVars::TrackInitialHeight *  _verticalScale));
+	setHeight( trackHeight);
 }
-
-
-float TrackView::getMinHeight()
-{
-	return _minHeight;
-}
-
 
 
 }} //ofx::LineaDeTiempo

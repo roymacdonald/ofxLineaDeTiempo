@@ -11,6 +11,7 @@
 //#include "ofx/MUI/Widget.h"
 #include "ofx/DOM/Element.h"
 #include "ofx/MUI/Handles/EdgeHandle.h"
+#include "ofx/MUI/Follower.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -21,7 +22,6 @@ class TrackGroupView;
 
 class TrackHeader
 : public DOM::Element
-
 {
 public:
 
@@ -32,27 +32,20 @@ public:
 	BaseTrackView* getTrack();
 	const BaseTrackView* getTrack() const;
 	
+	TrackGroupView* getTrackGroup();
+	const TrackGroupView* getTrackGroup() const;
+	
 	virtual void onDraw() const override;
 	
 	bool isGroupHeader() const;
+	
+	MUI::Follower* getFollower();
 protected:
 	BaseTrackView* _track = nullptr;
 	TrackGroupView* _group = nullptr;
 	
 	
-	ofEventListener _trackListener;
 	ofEventListener _edgeHandleListener;
-	
-	
-	void _updateShape();
-	
-	void _onEdgeHandleChange(DOM::ShapeChangeEventArgs& );
-	
-	void _trackShapeChanged(DOM::ShapeChangeEventArgs& e);
-//	void _trackMoved(DOM::MoveEventArgs& e);
-//	void _trackResized(DOM::ResizeEventArgs& e);
-	
-//	void _updateFromTrack();
 	
 	bool _bGroupHeader = false;
 	
@@ -60,6 +53,10 @@ protected:
 	
 	
 	MUI::EdgeHandle* _edgeHandle = nullptr;
+	
+	virtual float _getMinHeight();
+
+	std::unique_ptr<MUI::Follower> _follower = nullptr;
 	
 };
 } } // ofx::LineaDeTiempo

@@ -10,6 +10,7 @@
 
 #include "LineaDeTiempo/View/KeyframeTrackView.h"
 #include "LineaDeTiempo/Utils/ConstVars.h"
+#include "LineaDeTiempo/View/TrackHeaderGroup.h"
 
 
 namespace ofx {
@@ -26,7 +27,7 @@ class TrackGroupView
 public:
 	
 	
-	TrackGroupView(DOM::Element* parentView, TrackGroupController * controller, TimeRuler * timeRuler);
+	TrackGroupView(DOM::Element* parentView, TrackGroupController * controller, TrackHeaderGroup* headerGroup, TimeRuler * timeRuler);
 	
 	
 	virtual ~TrackGroupView() = default;
@@ -47,11 +48,14 @@ public:
 	float getTracksHeaderWidth();
 	
 	
-	virtual float getUnscaledHeight(size_t & numGroups) override;
+	virtual float getUnscaledHeight() override;
 	virtual float updateYScaled(float y, float yScale) override;
 		
 	
 	virtual void onChildrensChange();
+	
+	TrackHeaderGroup* getGroupHeader(){return _groupHeader;}
+	const TrackHeaderGroup* getGroupHeader()const {return _groupHeader;}
 	
 protected:
 	
@@ -68,6 +72,8 @@ protected:
 	bool _containersCheck(const std::string & callerName);
 	
 	bool _isPanel = false;
+	
+	TrackHeaderGroup* _groupHeader = nullptr;
 	
 	
 private:
@@ -93,7 +99,7 @@ KeyframeTrackView<DataType>* TrackGroupView::addTrack(TrackController * controll
 		return nullptr;
 	}
 	
-	auto t = _tracksContainer->addChild<KeyframeTrackView<DataType>>(this, controller, _timeRuler, _header,_isPanel);
+	auto t = _tracksContainer->addChild<KeyframeTrackView<DataType>>(this, controller, _timeRuler, _groupHeader,_isPanel);
 	
 	ofColor color;
 	color.setHsb(ofRandom(255), ofRandom(200, 255), ofRandom(150,255));

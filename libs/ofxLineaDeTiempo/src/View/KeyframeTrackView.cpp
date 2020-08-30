@@ -14,7 +14,7 @@ namespace ofx {
 namespace LineaDeTiempo {
 
 template<typename T>
-KeyframeTrackView<T>::KeyframeTrackView(TrackGroupView* parentGroup, TrackController* controller, TimeRuler * timeRuler, TrackHeader* _headerContainer, bool belongsToPanel )
+KeyframeTrackView<T>::KeyframeTrackView(TrackGroupView* parentGroup, TrackController* controller, TimeRuler * timeRuler, TrackHeaderGroup* _headerContainer, bool belongsToPanel )
 :TrackView(parentGroup, controller, timeRuler )
 {
 
@@ -27,7 +27,7 @@ KeyframeTrackView<T>::KeyframeTrackView(TrackGroupView* parentGroup, TrackContro
 		return;
 	}
 		
-	_headerContainer->addChild<KeyframeTrackHeader<T>>(getParameter(), getId() + "_header" , ofRectangle(0, 0, parentGroup->getTracksHeaderWidth(), ConstVars::TrackInitialHeight), this, parentGroup, belongsToPanel);
+	_headerContainer->addTrackHeader<KeyframeTrackHeader<T>>(getParameter(), getId() + "_header" , ofRectangle(0, 0, parentGroup->getTracksHeaderWidth(), ConstVars::TrackInitialHeight), this, parentGroup, belongsToPanel);
 }
 
 	

@@ -8,7 +8,7 @@
 #pragma once
 
 #include "LineaDeTiempo/View/TrackView.h"
-
+#include "LineaDeTiempo/View/TrackHeaderGroup.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -23,7 +23,7 @@ class KeyframeTrackView
 {
 public:
 
-	KeyframeTrackView(TrackGroupView* parentGroup, TrackController* controller, TimeRuler * timeRuler , TrackHeader* _headerContainer, bool belongsToPanel );
+	KeyframeTrackView(TrackGroupView* parentGroup, TrackController* controller, TimeRuler * timeRuler , TrackHeaderGroup* _headerContainer, bool belongsToPanel );
 	virtual ~KeyframeTrackView() = default;
 	
 

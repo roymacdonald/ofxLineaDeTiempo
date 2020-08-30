@@ -61,19 +61,16 @@ public:
 	
 	bool removeRegion(RegionController * controller);
 	
-	virtual float getUnscaledHeight(size_t & numGroups) override;
+	virtual float getUnscaledHeight() override;
 	virtual float updateYScaled(float y, float yScale) override;
 
-//	void setScaledHeight(float h);
 	
 	const TrackController * getController() const;
 	
 	TrackController * getController();
 
 	
-	void setMinHeight(float minHeight);
-	float getMinHeight();
-	
+	void setTrackHeight(float trackHeight);
 	
 	virtual void updateWidth(const float& w) override;
 	
@@ -103,7 +100,7 @@ protected:
 	
 	float _verticalScale = 1;
 	
-	float _minHeight =0;
+	bool _bIgnoreHeightChange = false;
 	
 };
 

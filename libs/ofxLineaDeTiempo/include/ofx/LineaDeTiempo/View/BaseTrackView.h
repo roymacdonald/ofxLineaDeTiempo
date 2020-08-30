@@ -15,7 +15,7 @@
 #include "LineaDeTiempo/View/TimeRuler.h"
 #include "DOM/Element.h"
 #include "MUI/Styles.h"
-
+#include "MUI/Follower.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -96,9 +96,10 @@ public:
     using DOM::Element::setShape;
     using DOM::Element::setSize;
 	
-	virtual float getUnscaledHeight(size_t & numGroups) = 0;
+	virtual float getUnscaledHeight() = 0;
 	virtual float updateYScaled(float y, float yScale) = 0;
 	
+	MUI::Follower* getFollower();
 	
 protected:
 	TimeRuler* _timeRuler = nullptr;
@@ -110,6 +111,9 @@ protected:
 	
 	ofColor _color;
 	ofColor _textColor;
+	
+	std::unique_ptr<MUI::Follower> _follower = nullptr;
+	
 protected:
 	
 };
