@@ -21,15 +21,6 @@ EdgeHandle::EdgeHandle(const std::string& id, DOM::RectEdge edge, DOM::Element* 
 , _edgeAlignment(edgeAlignment)
 {
 	
-//	for(auto&s: siblings())
-//	{
-//		if(s == _target)
-//		{
-//			_targetIsSibling = true;
-//			break;
-//		}
-//	}
-	
 	auto t = dynamic_cast<ConstrainedGrabHandle*>(_target);
 	if(t)
 	{
@@ -180,19 +171,19 @@ void EdgeHandle::_onDragging(const DOM::CapturedPointer& pointer)
 void EdgeHandle::updateLayout()
 {
 	if(_target){
-		auto s = _target->getShape();
+		auto s = _target->getScreenShape();
 		ofRectangle r = s;
 		
-		if(_target == parent())
-		{
-			s.setPosition(0, 0);
-		}
-		else
-		{
-			auto p = _target->parentToScreen(r.getPosition());
-			p = this->screenToParent(p);
-			s.setPosition(p.x, p.y);
-		}
+//		if(_target == parent())
+//		{
+//			std::cout << "EdgeHandle::updateLayout()\n";
+//			s.setPosition(0, 0);
+//		}
+//		else
+//		{
+//			auto p = _target->parentToScreen(r.getPosition());
+			
+//		}
 		
 		if (_edge == DOM::RECT_TOP || _edge == DOM::RECT_BOTTOM)
 		{
@@ -202,6 +193,9 @@ void EdgeHandle::updateLayout()
 			r.width = _handleSize;
 			r.alignToHorz(s, hTargetAnchor, hThisAnchor );
 		}
+		
+		auto p = this->screenToParent(r.getPosition());
+		r.setPosition(p.x, p.y);
 		
 		setShape(r);
 	}

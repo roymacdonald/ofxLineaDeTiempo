@@ -7,7 +7,7 @@
 
 #include "ClippedView.h"
 #include "ofGraphics.h"
-#include "LineaDeTiempo/View/TrackHeader.h"
+#include "LineaDeTiempo/View/TrackHeaderGroup.h"
 
 namespace ofx {
 namespace MUI {
@@ -36,6 +36,6 @@ glm::vec2 ClippedView_<ContainerType>::getOffset()const
 template class ClippedView_<DOM::Element>;
 template class ClippedView_<AutoReziseContainer>;
 template class ClippedView_<LineaDeTiempo::TrackHeader>;
-
+template class ClippedView_<LineaDeTiempo::TrackHeaderGroup>;
 
 } } // namespace ofx::MUI

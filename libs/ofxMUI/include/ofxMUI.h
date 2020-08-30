@@ -15,7 +15,7 @@
 //#include "ofx/MUI/GrabHandle.h"
 #include "ofx/MUI/Icon.h"
 #include "ofx/MUI/Label.h"
-#include "ofx/MUI/MUI.h"
+//#include "ofx/MUI/MUI.h"
 #include "ofx/MUI/Panel.h"
 #include "ofx/MUI/Scope.h"
 #include "ofx/MUI/Shadow.h"
@@ -24,6 +24,6 @@
 #include "ofx/MUI/Types.h"
 #include "ofx/MUI/Utils.h"
 #include "ofx/MUI/Widget.h"
-
+#include "ofx/MUI/Follower.h"
 
 namespace ofxMUI = ofx::MUI;
