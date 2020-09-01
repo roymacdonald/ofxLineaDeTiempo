@@ -30,9 +30,6 @@ public:
 
 	float getTracksWidth() const;
 	
-	ofRange containerHeightToZoom();
-	ofRange containerWidthToZoom();
-
 	
 	virtual void updateLayout() override;
 	
@@ -53,6 +50,11 @@ protected:
 	void zoomChangedH(ofRange&);
 	void zoomChangedV(ofRange&);
 	
+
+	void _containerHeightToZoom();
+	void _containerWidthToZoom();
+
+
 	
 
 	float _unscaledHeight = 0;
@@ -60,10 +62,22 @@ protected:
 	void _updateTracksUnscaledHeight();
 	
 	float _getZoomableHeight();
+//
+//	size_t _numGroups = 0;
 
-	size_t _numGroups = 0;
 
-
+	ofEventListener _containerShapeListener;
+	
+	void _onContainerShapeChange(DOM::ShapeChangeEventArgs& e);
+	
+	enum UpdateState
+	{
+		UPDATE_STATE_NONE = 0,
+		CONTAINER_SHAPE_CHANGE,
+		SCROLLBAR_CHANGED
+	}
+	updateState = UPDATE_STATE_NONE;
+	
 	
 	ofEventListeners zoomListeners;
 	
