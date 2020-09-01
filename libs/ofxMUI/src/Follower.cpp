@@ -20,9 +20,23 @@ Follower::Follower(DOM::Element* follower)
 
 void Follower::follow(DOM::Element* following, int followerType, int followMode)
 {
+	if(!_follower)
+	{
+		ofLogError("ofxMUI::Follower") << " follower is nullptr. ";
+		return;
+	}
+	
+	
+	if(!following)
+	{
+		ofLogError("ofxMUI::Follower") << " _following is nullptr. " << _follower->getId();
+		return;
+	}
+	
+	
 	if(following == _follower)
 	{
-		ofLogError("ofxMUI::Follower") << ": follower and follwing can not be the same";
+		ofLogError("ofxMUI::Follower") << ": follower and follwing can not be the same.  following: " << following->getId() << "  follower: " << _follower->getId();
 		return;
 	}
 	
@@ -120,20 +134,21 @@ void Follower::_followingShapeChanged(DOM::ShapeChangeEventArgs& e)
 	}
 	if(bUpdateShape)
 	{
-		if(_mode == FOLLOW_SCREEN)
+		if(_mode == FOLLOW_SCREEN && (isFollowingX() || isFollowingY()))
 		{
-			auto p = _follower->screenToParent(_following->parentToScreen(s.getPosition()));
+			auto followerScreen = _following->getScreenPosition();
+			auto p = _follower->screenToParent(followerScreen);
 			if(isFollowingX()) s.x = p.x;
 			if(isFollowingY()) s.y = p.y;
 		}
-		
+
 		if(_mutuallyFollowing)
 		{
 			_mutuallyFollowing->disableFollowing();
 		}
-		
+
 		_follower->setShape(s);
-		
+
 		if(_mutuallyFollowing)
 		{
 			_mutuallyFollowing->enableFollowing();
