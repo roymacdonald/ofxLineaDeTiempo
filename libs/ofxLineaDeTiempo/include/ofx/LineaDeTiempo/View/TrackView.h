@@ -28,7 +28,6 @@ public:
 	virtual ~TrackView() = default;
 	
 	float getHeightFactor() const;
-	void setHeightFactor(float factor);
 	
 	shared_ptr<MUI::Styles> getRegionsHeaderStyle();
 	
@@ -70,15 +69,12 @@ public:
 	TrackController * getController();
 
 	
-	void setTrackHeight(float trackHeight);
-	
 	virtual void updateWidth(const float& w) override;
 	
 protected:
 
 	
 	virtual void _onShapeChange(const DOM::ShapeChangeEventArgs& ) override;
-	
 	
 	
 	float _heightFactor = 1;

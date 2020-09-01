@@ -79,15 +79,15 @@ float TrackView::getHeightFactor() const
 }
 
 
-void TrackView::setHeightFactor(float factor)
-{
-	_heightFactor = factor;
-	auto p = getParentPanel();
-	if(p && p->getTracksView() && p->getTracksView()->getClippingView())
-	{
-		p->getTracksView()->getClippingView()->updateLayout();
-	}
-}
+//void TrackView::setHeightFactor(float factor)
+//{
+//	_heightFactor = factor;
+//	auto p = getParentPanel();
+//	if(p && p->getTracksView() && p->getTracksView()->getClippingView())
+//	{
+//		p->getTracksView()->getClippingView()->updateLayout();
+//	}
+//}
 
 
 bool TrackView::removeRegion(RegionController * controller)
@@ -125,8 +125,10 @@ float TrackView::getUnscaledHeight()
 float TrackView::updateYScaled(float y, float yScale)
 {
 	_verticalScale = yScale;
-	auto h = ConstVars::TrackInitialHeight * _heightFactor * yScale;
+	auto h = getUnscaledHeight() * yScale;
+	_bIgnoreHeightChange = true;
 	setShape({0, y, getWidth(), h});
+	_bIgnoreHeightChange = false;
 	return h;
 }
 
@@ -141,8 +143,10 @@ void TrackView::_onShapeChange(const DOM::ShapeChangeEventArgs& e)
 	{
 		if(!_bIgnoreHeightChange )
 		{
-			_updateRegionsHeight();
+			_heightFactor =  e.shape.height / (ConstVars::TrackInitialHeight *  _verticalScale);
+//			setHeightFactor( e.shape.height / (ConstVars::TrackInitialHeight *  _verticalScale));
 		}
+		_updateRegionsHeight();
 	}
 }
 
@@ -188,11 +192,11 @@ TrackController * TrackView::getController()
 }
 
 
-void TrackView::setTrackHeight(float trackHeight)
-{
-	setHeightFactor( trackHeight / (ConstVars::TrackInitialHeight *  _verticalScale));
-	setHeight( trackHeight);
-}
+//void TrackView::setTrackHeight(float trackHeight)
+//{
+//
+//	setHeight( trackHeight);
+//}
 
 
 }} //ofx::LineaDeTiempo
