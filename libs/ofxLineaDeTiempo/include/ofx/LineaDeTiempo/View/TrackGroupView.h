@@ -46,6 +46,10 @@ public:
 	bool removeGroup(TrackGroupController * controller);
 	
 	float getTracksHeaderWidth();
+
+	
+	void updateVerticalLayout();
+	
 	
 	
 	virtual float getUnscaledHeight() override;
@@ -56,6 +60,9 @@ public:
 	
 	TrackHeaderGroup* getGroupHeader(){return _groupHeader;}
 	const TrackHeaderGroup* getGroupHeader()const {return _groupHeader;}
+	
+	virtual void onUpdate() override;
+	
 	
 protected:
 	

@@ -60,6 +60,13 @@ bool TrackGroupView::_containersCheck(const std::string & callerName)
 		ofLogError("TrackGroupView::"+callerName) << "headers container is invalid. " << getId();
 		return false;
 	}
+	if(!_groupHeader)
+	{
+		ofLogError("TrackGroupView::"+callerName) << "headersGRoup container is invalid. " << getId();
+		return false;
+	}
+	
+	
 	return true;
 }
 
@@ -195,7 +202,7 @@ float TrackGroupView::_getInitialYpos()
 float TrackGroupView::getUnscaledHeight()
 {
 	
-	float h = 0;
+	float h = _isPanel?0:ConstVars::ViewTopHeaderHeight.get();
 	for(auto c: children())
 	{
 		auto t = dynamic_cast<BaseTrackView*>(c);
@@ -206,6 +213,8 @@ float TrackGroupView::getUnscaledHeight()
 	}
 	return h;
 }
+
+
 float TrackGroupView::updateYScaled(float y, float yScale)
 {
 	float h = _getInitialYpos();
@@ -222,6 +231,38 @@ float TrackGroupView::updateYScaled(float y, float yScale)
 	setShape({0, y, getWidth(), h});
 	return h;
 }
+
+
+void  TrackGroupView::updateVerticalLayout()
+{
+	float h = _getInitialYpos();
+	
+	for(auto c: children())
+	{
+		auto g = dynamic_cast<TrackGroupView*>(c);
+		if(g)
+		{
+			g->updateVerticalLayout();
+		}
+		auto t = dynamic_cast<BaseTrackView*>(c);
+		if(t)
+		{
+			t->setPosition(t->getX(), h);
+			
+			h += t->getHeight();
+		}
+	}
+	setHeight(h);
+}
+
+void TrackGroupView::onUpdate()
+{
+	if(isChildShapeInvalidated())
+	{
+		updateVerticalLayout();
+	}
+}
+
 
 
 
