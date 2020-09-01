@@ -33,6 +33,9 @@ public:
 //	ofxGuiGroup & getOfxGui();
 //	const ofxGuiGroup & getOfxGui() const;
 //
+	
+	ofxBaseGui* getOfxGui();
+	
 protected:
 	
 	

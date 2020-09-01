@@ -208,7 +208,14 @@ void ofxGuiView<T>::onDraw() const
 		_gui->draw();
 	}
 }
-	
+
+template<typename T>
+ofxBaseGui* ofxGuiView<T>::getOfxGui()
+{
+	return _gui.get();
+}
+
+
 
 
 template class ofxGuiView<glm::vec2>;
