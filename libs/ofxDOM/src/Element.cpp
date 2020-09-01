@@ -1066,6 +1066,11 @@ void Element::invalidateChildShape() const
     }
 }
 
+bool Element::isChildShapeInvalidated() const
+{
+	return _childShapeInvalid;
+}
+
 
 bool Element::isPointerCaptured(std::size_t pointerId) const
 {

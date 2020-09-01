@@ -707,6 +707,9 @@ protected:
 		
 	}
 	
+	bool isChildShapeInvalidated() const;
+	
+	
 
 private:
     /// \brief Not construction-copyable.
