@@ -45,7 +45,7 @@ TracksPanel::TracksPanel(const std::string& id, const ofRectangle& rect, DOM::El
 
 	int followType = MUI::FOLLOW_Y | MUI::FOLLOW_HEIGHT;
 	int followMode = MUI::FOLLOW_SCREEN;
-	_follower = make_unique<MUI::Follower>(_headersView->container);
+	_follower = make_unique<MUI::Follower>(_tracksContainer);
 	_follower->mutuallyFollow(_header->getFollower(), followType, followMode);
 	
 	
