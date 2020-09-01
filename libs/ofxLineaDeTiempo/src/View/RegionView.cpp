@@ -53,6 +53,11 @@ void RegionView::_onShapeChange(const DOM::ShapeChangeEventArgs& e)
 		
 //		bIgnoreTimeRangeChange = false;
 	}
+	if(_header && e.changedVertically())
+	{
+		_header->setHidden(e.shape.height < _header->getHeight()*2);
+		
+	}
 }
 
 

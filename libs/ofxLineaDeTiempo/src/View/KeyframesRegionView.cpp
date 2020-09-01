@@ -52,8 +52,16 @@ KeyframesRegionView::KeyframesRegionView(TrackView* parentTrack, RegionControlle
 void KeyframesRegionView::updateLayout()
 {
 
+	float y = 0;
 	
-	ofRectangle rect(0, ConstVars::ViewTopHeaderHeight, getWidth(), _getCollectionViewHeight());
+	if(_header && !_header->isHidden())
+	{
+		y = ConstVars::ViewTopHeaderHeight;
+	}
+
+	
+	
+	ofRectangle rect(0, y, getWidth(), _getCollectionViewHeight());
 	
 	for(auto v: _views)
 	{
@@ -63,7 +71,7 @@ void KeyframesRegionView::updateLayout()
 		
 	}
 	
-	_allViewsRect.set( localToScreen({0, ConstVars::ViewTopHeaderHeight}) , getWidth(), getHeight() - ConstVars::ViewTopHeaderHeight);
+	_allViewsRect.set( localToScreen({0, y}) , getWidth(), getHeight() - y);
 	
 	
 	_selector.setLimitingRect(_allViewsRect);
@@ -106,12 +114,19 @@ const Selector<KeyframeView>& KeyframesRegionView::getSelector() const
 
 float KeyframesRegionView::_getCollectionViewHeight() const
 {
+	auto h = getHeight();
+	
+	if(_header && !_header->isHidden())
+	{
+		h -= ConstVars::ViewTopHeaderHeight;
+	}
+	
 	if(_controller)
 	{
-		return(getHeight() - ConstVars::ViewTopHeaderHeight)/ float(_controller->getNumDimensions());
+		return h/ float(_controller->getNumDimensions());
 	}
 	ofLogWarning("KeyframesRegionView::_getCollectionViewHeight") << "Region view has no controller. This should never happen.";
-	return getHeight() - ConstVars::ViewTopHeaderHeight;
+	return h;
 }
 
 const std::vector<KeyframeCollectionView *>& KeyframesRegionView::getViews()
