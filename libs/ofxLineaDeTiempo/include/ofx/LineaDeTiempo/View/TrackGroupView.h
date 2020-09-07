@@ -56,7 +56,6 @@ public:
 	virtual float updateYScaled(float y, float yScale) override;
 		
 	
-	virtual void onChildrensChange();
 	
 	TrackHeaderGroup* getGroupHeader(){return _groupHeader;}
 	const TrackHeaderGroup* getGroupHeader()const {return _groupHeader;}
@@ -65,6 +64,9 @@ public:
 	
 	
 protected:
+	
+	
+	virtual void onChildrensChange();
 	
 	void _onChildrensChange(DOM::ElementEventArgs& );
 	

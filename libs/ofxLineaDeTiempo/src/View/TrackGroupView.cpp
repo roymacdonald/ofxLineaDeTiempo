@@ -43,7 +43,6 @@ void TrackGroupView::onChildrensChange()
 	{
 		_parentGroupView->onChildrensChange();
 	}
-	
 }
 
 
@@ -202,7 +201,7 @@ float TrackGroupView::_getInitialYpos()
 float TrackGroupView::getUnscaledHeight()
 {
 	
-	float h = _isPanel?0:ConstVars::ViewTopHeaderHeight.get();
+	float h = _getInitialYpos();//_isPanel?0:ConstVars::ViewTopHeaderHeight.get();
 	for(auto c: children())
 	{
 		auto t = dynamic_cast<BaseTrackView*>(c);
@@ -259,6 +258,7 @@ void TrackGroupView::onUpdate()
 {
 	if(isChildShapeInvalidated())
 	{
+//		std::cout << "TrackGroupView::onUpdate()  " << getId() << "\n";
 		updateVerticalLayout();
 	}
 }
