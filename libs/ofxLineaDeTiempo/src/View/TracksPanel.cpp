@@ -215,4 +215,16 @@ const ofx::MUI::ClippedView_<TrackHeaderGroup> * TracksPanel::getHeadersView() c
 	return _headersView;
 }
 
+
+void TracksPanel::onChildrensChange()
+{
+	if(_tracksView)
+	{
+		_tracksView->getClippingView()->updateLayout();
+	}
+}
+
+
+
+
 }} // ofx::LineaDeTiempo

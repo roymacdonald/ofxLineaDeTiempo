@@ -65,6 +65,8 @@ protected:
 	ofEventListener _viewListener;
 	void _viewShapeChanged(DOM::ShapeChangeEventArgs&);
 	
+	virtual void onChildrensChange() override;
+	
 private:
 
 	
