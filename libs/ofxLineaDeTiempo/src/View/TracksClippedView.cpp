@@ -55,7 +55,7 @@ void TracksClippedView::setScrollbars(MUI::ZoomScrollbar* zoomScrollbarH, MUI::Z
 void TracksClippedView::zoomChangedV(ofRange&)
 {
 	if(updateState == CONTAINER_SHAPE_CHANGE) return;
-	
+		
 	updateState = SCROLLBAR_CHANGED;
 	updateVerticalLayout();
 	updateState = UPDATE_STATE_NONE;
@@ -93,8 +93,8 @@ void TracksClippedView::_onContainerShapeChange(DOM::ShapeChangeEventArgs& e)
 //this might lead to some redundant updates.
 void TracksClippedView::updateLayout()
 {
-//	updateTracksWidth();
-//	updateVerticalLayout();
+	updateTracksWidth();
+	updateVerticalLayout();
 }
 
 
