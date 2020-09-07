@@ -24,7 +24,10 @@ DOM::Element(id, rect.x,rect.y,rect.width,rect.height)
 	_scrollbarV = this->addChild<ZoomScrollbar>("V_Scrollbar", DOM::Orientation::VERTICAL, _clippingPanel);
 	
 	_setClippingPanelShape();
+
 	
+	_scrollbarH->setValue({0,0});
+	_scrollbarV->setValue({0,0});
 }
 
 
