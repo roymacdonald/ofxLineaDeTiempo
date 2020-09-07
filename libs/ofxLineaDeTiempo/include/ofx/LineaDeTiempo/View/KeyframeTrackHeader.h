@@ -23,13 +23,9 @@ public:
 	virtual ~KeyframeTrackHeader(){}
 	
 	
-//	virtual void onDraw() const override
-//	{
-//		TrackHeader::onDraw();
-//		ofDrawBitmapStringHighlight(ofToString(_gui->getHeight()), 20, 18 );
-//
-//	}
-//	
+	virtual void onDraw() const override;
+	
+
 protected:
 	virtual void _onShapeChange(const DOM::ShapeChangeEventArgs& ) override;
 
@@ -41,7 +37,11 @@ protected:
 	
 	void _ofxGuiHeightChange( DOM::ShapeChangeEventArgs& );
 
-	float _minimizedHeightFactor;
+	
+	ofEventListener _colorListener;
+	
+	void _colorChanged(ofColor& color);
+	
 	
 };
 } } // ofx::LineaDeTiempo

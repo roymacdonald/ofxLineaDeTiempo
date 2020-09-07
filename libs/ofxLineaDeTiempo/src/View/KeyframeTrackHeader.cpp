@@ -18,10 +18,11 @@ KeyframeTrackHeader<ParamType>::KeyframeTrackHeader(ofParameter<ParamType> & par
 {
 	
 	_gui = addChild<ofxGuiView<ParamType>>(param, group->getTracksHeaderWidth(), this);
-	_gui->setPosition(0, ConstVars::ViewTopHeaderHeight);
+	_gui->setPosition(0, 0);//ConstVars::ViewTopHeaderHeight);
 
 	_ofxGuiHeightChangeListener = _gui->shapeChanged.newListener(this, &KeyframeTrackHeader::_ofxGuiHeightChange);
-		
+
+	_colorListener = track->colorChangeEvent.newListener(this, &KeyframeTrackHeader::_colorChanged);
 }
 
 template<typename ParamType>
@@ -46,18 +47,33 @@ void KeyframeTrackHeader<ParamType>::_ofxGuiHeightChange(DOM::ShapeChangeEventAr
 {
 	if(args.changedVertically())
 	{
-//		if(_gui->_gui)
-//
-//			hacer que el track y header se sincronicen en sus cambios. Probablemente es mas sencillo que lo que actualmente hay
-//
-//		_minimizedHeightFactor
 		if(getHeight() < args.shape.getMaxY())
 		{
 			setHeight(args.shape.getMaxY());
 		}
-//		_updateTrackHeight();
 	}
 }
+
+
+template<typename ParamType>
+void KeyframeTrackHeader<ParamType>::onDraw() const
+{
+// the intention of this override is to avoid the drawing of the TrackHeader class
+	
+}
+
+
+template<typename ParamType>
+void KeyframeTrackHeader<ParamType>::_colorChanged(ofColor& color)
+{
+	if(_gui && _gui->getOfxGui())
+	{
+		_gui->getOfxGui()->setHeaderBackgroundColor(color);
+		_gui->getOfxGui()->setBackgroundColor(color);
+	}
+}
+
+
 
 
 template class KeyframeTrackHeader<ofRectangle>;
