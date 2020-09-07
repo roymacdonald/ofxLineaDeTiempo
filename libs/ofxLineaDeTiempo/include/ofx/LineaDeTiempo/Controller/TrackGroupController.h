@@ -142,11 +142,18 @@ KeyframeTrackController_<DataType>* TrackGroupController::addTrack(const std::st
 	
 	auto uniqueName = _tracksCollection.makeUniqueName(trackName, "Track");
 	
-	return CollectionHelper::
+	auto t = CollectionHelper::
 	_add< KeyframeTrackController_<DataType>, TrackGroupController, TrackController>
 	
 	( _tracksCollection, this, uniqueName, this, getTimeControl());
 	
+	if(hasView())
+	{
+		t->generateView();
+	}
+	
+	
+	return t;
 }
 
 template<typename DataType>
@@ -168,6 +175,10 @@ KeyframeTrackController_<DataType> * TrackGroupController::addTrack( ofParameter
 	
 	t->addRegion(uniqueName);
 	
+	if(hasView())
+	{
+		t->generateView();
+	}
 	
 	return t;
 	
