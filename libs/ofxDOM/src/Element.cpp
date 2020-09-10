@@ -58,54 +58,132 @@ std::unique_ptr<Element> Element::removeChild(Element* element)
 
     if (iter != _children.end())
     {
-        // Move the child out of the children array.
-        std::unique_ptr<Element> detachedChild = std::move(*iter);
-
-        // Disown the detached child
-        _children.erase(iter);
-
-        // Set the parent to nullptr.
-        detachedChild->_parent = nullptr;
 
         // Invalidate all cached child geometry.
         invalidateChildShape();
 
-        // Alert the node that its parent was set.
-        ElementEventArgs removedFromEvent(this);
-        ofNotifyEvent(detachedChild->removedFrom, removedFromEvent, this);
-
-        ElementEventArgs childRemovedEvent(detachedChild.get());
-        ofNotifyEvent(childRemoved, childRemovedEvent, this);
-
-        /// Alert the node's siblings that it no longer has a sibling.
-        for (auto& child : _children)
-        {
-            if (detachedChild.get() != child.get())
-            {
-                ElementEventArgs e(detachedChild.get());
-                ofNotifyEvent(child->siblingRemoved, e, this);
-            }
-        }
-
-		auto doc = document();
-		if(doc)
-		{
-			ofNotifyEvent(doc->elementRemovedEvent, childRemovedEvent, this);
-		}
+//		element->releaseAllCapturedPointers();
 		
-        // Detatch child listeners.
-		  ofRemoveListener(detachedChild.get()->shapeChanged, this, &Element::_childShapeChange);
-//        ofRemoveListener(detachedChild.get()->move, this, &Element::_onChildMoved);
-//        ofRemoveListener(detachedChild.get()->resize, this, &Element::_onChildResized);
-
+		
+//		auto removedChild = (*iter).get();
+		
+		_removeChild((*iter).get());
+		
+		
+//        // Alert the node that its parent was set.
+//        ElementEventArgs removedFromEvent(this);
+//        ofNotifyEvent(removedChild->removedFrom, removedFromEvent, this);
+//
+//        ElementEventArgs childRemovedEvent(removedChild);
+//        ofNotifyEvent(childRemoved, childRemovedEvent, this);
+//
+//        /// Alert the node's siblings that it no longer has a sibling.
+//        for (auto& child : _children)
+//        {
+//            if (removedChild != child.get())
+//            {
+//                ElementEventArgs e(removedChild);
+//                ofNotifyEvent(child->siblingRemoved, e, this);
+//            }
+//        }
+//
+//		auto doc = document();
+//		if(doc)
+//		{
+//
+//			ofNotifyEvent(doc->elementRemovedEvent, childRemovedEvent, this);
+//		}
+//		else
+//		{
+//			ofLogWarning("Element::removeChild") << "no document found. This should not happen!";
+//		}
+//
+//		ofRemoveListener(removedChild->shapeChanged, this, &Element::_childShapeChange);
+//
+//
+//
         // Return the detached child.
         // If the return value is ignored, it will be deleted.
 
+		std::unique_ptr<Element> detachedChild = std::move(*iter);
+
+		detachedChild->_parent = nullptr;
+		
+		// Disown the detached child
+		_children.erase(iter);
+		
+		
         return detachedChild;
     }
 
     // Return nullptr because we couldn't find anything.
     return nullptr;
+}
+
+void Element::_removeChild(Element* child)
+{
+	
+	child->releaseAllCapturedPointers();
+	
+	
+	ElementEventArgs removedFromEvent(this);
+	ofNotifyEvent(child->removedFrom, removedFromEvent, this);
+	
+	ElementEventArgs childRemovedEvent(child);
+	ofNotifyEvent(childRemoved, childRemovedEvent, this);
+	
+	
+	auto doc = document();
+	if(doc)
+	{
+		ofNotifyEvent(doc->elementRemovedEvent, childRemovedEvent, this);
+	}
+	
+	
+	ofRemoveListener(child->shapeChanged, this, &Element::_childShapeChange);
+	// Set the parent to nullptr.
+	child->_parent = nullptr;
+	
+}
+void Element::removeAllChildren()
+{
+//	std::cout << "Element::removeAllChildren()  " << getId() << "\n";
+	invalidateChildShape();
+	for(auto& child: _children)
+	{
+		_removeChild(child.get());
+//
+//			child->releaseAllCapturedPointers();
+//
+//
+//			// Alert the node that its parent was set.
+//			ElementEventArgs removedFromEvent(this);
+//			ofNotifyEvent(child->removedFrom, removedFromEvent, this);
+//
+//			ElementEventArgs childRemovedEvent(child.get());
+//			ofNotifyEvent(childRemoved, childRemovedEvent, this);
+//
+//
+//			auto doc = document();
+//			if(doc)
+//			{
+//
+//				ofNotifyEvent(doc->elementRemovedEvent, childRemovedEvent, this);
+//			}
+//
+//			// Detatch child listeners.
+//			  ofRemoveListener(child.get()->shapeChanged, this, &Element::_childShapeChange);
+//	//        ofRemoveListener(detachedChild.get()->move, this, &Element::_onChildMoved);
+//	//        ofRemoveListener(detachedChild.get()->resize, this, &Element::_onChildResized);
+//
+//			// Return the detached child.
+//			// If the return value is ignored, it will be deleted.
+//		// Set the parent to nullptr.
+//		child->_parent = nullptr;
+//
+//			return detachedChild;
+	}
+	_children.clear();
 }
 
 
@@ -147,51 +225,66 @@ void Element::moveBackward()
 
 void Element::moveChildToIndex(Element* element, std::size_t index)
 {
-    auto iter = findChild(element);
-
-    if (iter != _children.end())
-    {
-        std::size_t oldIndex = iter - _children.begin();
-        std::size_t newIndex = std::min(index, _children.size() - 1);
-
-        auto detachedChild = std::move(*iter);
-
-        _children.erase(iter);
-
-        _children.insert(_children.begin() + newIndex, std::move(detachedChild));
-
-        ElementOrderEventArgs e(element, oldIndex, newIndex);
-        ofNotifyEvent(reordered, e, element);
-        ofNotifyEvent(childReordered, e, this);
-    }
-    else
-    {
-        throw DOMException(DOMException::INVALID_STATE_ERROR + ": " + "Element::moveChildToFront: Element does not exist.");
-    }
+//	if(element!= nullptr && index < _children.size() && _children[index].get() != element)
+//	{
+		auto iter = findChild(element);
+		
+		if (iter != _children.end())
+		{
+			std::size_t oldIndex = iter - _children.begin();
+			std::size_t newIndex = index;//std::min(index, _children.size() - 1);
+			
+			//		if(oldIndex != newIndex)
+			//		{
+			auto detachedChild = std::move(*iter);
+			
+			_children.erase(iter);
+			
+			_children.insert(_children.begin() + newIndex, std::move(detachedChild));
+			
+			_notifyChildReordered(element, oldIndex, newIndex);
+			//        ElementOrderEventArgs e(element, oldIndex, newIndex);
+			//        ofNotifyEvent(reordered, e, element);
+			//        ofNotifyEvent(childReordered, e, this);
+			//		}
+			
+		}
+		else
+		{
+			throw DOMException(DOMException::INVALID_STATE_ERROR + ": " + "Element::moveChildToIndex: Element does not exist.");
+		}
+//	}
+//	else
+//	{
+//		throw DOMException(DOMException::INVALID_STATE_ERROR + ": " + "Element::moveChildToIndex: Element is already in the passed index or the index is out of bounds");
+////		ofLogNotice("ofxDOM::Element::moveChildToIndex") << "Failed moving as the element
+//	}
 }
 
 
 void Element::moveChildToFront(Element* element)
 {
-    auto iter = findChild(element);
-
-    if (iter != _children.end())
-    {
-        std::size_t oldIndex = iter - _children.begin();
-        std::size_t newIndex = 0;
-
-        auto detachedChild = std::move(*iter);
-        _children.erase(iter);
-        _children.insert(_children.begin(), std::move(detachedChild));
-
-        ElementOrderEventArgs e(element, oldIndex, newIndex);
-        ofNotifyEvent(reordered, e, element);
-        ofNotifyEvent(childReordered, e, this);
-    }
-    else
-    {
-        throw DOMException(DOMException::INVALID_STATE_ERROR + ": " + "Element::moveChildToFront: Element does not exist.");
-    }
+	moveChildToIndex(element, 0);
+//    auto iter = findChild(element);
+//
+//    if (iter != _children.end())
+//    {
+//        std::size_t oldIndex = iter - _children.begin();
+//        std::size_t newIndex = 0;
+//
+//        auto detachedChild = std::move(*iter);
+//        _children.erase(iter);
+//        _children.insert(_children.begin(), std::move(detachedChild));
+//
+//		_notifyChildReordered(element, oldIndex, newIndex);
+////        ElementOrderEventArgs e(element, oldIndex, newIndex);
+////        ofNotifyEvent(reordered, e, element);
+////        ofNotifyEvent(childReordered, e, this);
+//    }
+//    else
+//    {
+//        throw DOMException(DOMException::INVALID_STATE_ERROR + ": " + "Element::moveChildToFront: Element does not exist.");
+//    }
 }
 
 
@@ -209,9 +302,10 @@ void Element::moveChildForward(Element* element)
 
             std::iter_swap(iter, iter - 1);
 
-            ElementOrderEventArgs e(element, oldIndex, newIndex);
-            ofNotifyEvent(reordered, e, element);
-            ofNotifyEvent(childReordered, e, this);
+			_notifyChildReordered(element, oldIndex, newIndex);
+//            ElementOrderEventArgs e(element, oldIndex, newIndex);
+//            ofNotifyEvent(reordered, e, element);
+//            ofNotifyEvent(childReordered, e, this);
         }
     }
     else
@@ -223,29 +317,31 @@ void Element::moveChildForward(Element* element)
 
 void Element::moveChildToBack(Element* element)
 {
-    auto iter = findChild(element);
-
-    if (iter != _children.end())
-    {
-        // Make sure it's not already in the back.
-        if (iter != _children.end() - 1)
-        {
-            std::size_t oldIndex = iter - _children.begin();
-            std::size_t newIndex = _children.size() - 1;
-
-            auto detachedChild = std::move(*iter);
-            _children.erase(iter);
-            _children.push_back(std::move(detachedChild));
-
-            ElementOrderEventArgs e(element, oldIndex, newIndex);
-            ofNotifyEvent(reordered, e, element);
-            ofNotifyEvent(childReordered, e, this);
-        }
-    }
-    else
-    {
-        throw DOMException(DOMException::INVALID_STATE_ERROR + ": " + "Element::moveChildToBack: Element does not exist.");
-    }
+	moveChildToIndex(element, _children.size() - 1);
+//    auto iter = findChild(element);
+//
+//    if (iter != _children.end())
+//    {
+//        // Make sure it's not already in the back.
+//        if (iter != _children.end() - 1)
+//        {
+//            std::size_t oldIndex = iter - _children.begin();
+//            std::size_t newIndex = _children.size() - 1;
+//
+//            auto detachedChild = std::move(*iter);
+//            _children.erase(iter);
+//            _children.push_back(std::move(detachedChild));
+//
+//			_notifyChildReordered(element, oldIndex, newIndex);
+////            ElementOrderEventArgs e(element, oldIndex, newIndex);
+////            ofNotifyEvent(reordered, e, element);
+////            ofNotifyEvent(childReordered, e, this);
+//        }
+//    }
+//    else
+//    {
+//        throw DOMException(DOMException::INVALID_STATE_ERROR + ": " + "Element::moveChildToBack: Element does not exist.");
+//    }
 }
 
 
@@ -255,20 +351,37 @@ void Element::moveChildBackward(Element* element)
 
     if (iter != _children.end())
     {
+		// Make sure the element is not already at the back
         if (iter != _children.end() - 1)
         {
             std::size_t oldIndex = iter - _children.begin();
-            std::size_t newIndex = _children.size() + 1;
+			std::size_t newIndex = oldIndex + 1;//_children.size() + 1;
 
             std::iter_swap(iter, iter + 1);
 
-            ElementOrderEventArgs e(element, oldIndex, newIndex);
-            ofNotifyEvent(reordered, e, element);
-            ofNotifyEvent(childReordered, e, this);
+			_notifyChildReordered(element, oldIndex, newIndex);
+//            ElementOrderEventArgs e(element, oldIndex, newIndex);
+//            ofNotifyEvent(reordered, e, element);
+//            ofNotifyEvent(childReordered, e, this);
         }
     }
 }
 
+void Element::_notifyChildReordered(Element* child,  std::size_t oldIndex, std::size_t newIndex)
+{
+	if(child){
+		ElementOrderEventArgs e(child, oldIndex, newIndex);
+		ofNotifyEvent(reordered, e, child);
+		ofNotifyEvent(childReordered, e, this);
+		for(auto& c: _children)
+		{
+			if(c && c.get() != child)
+			{
+				ofNotifyEvent(siblingReordered, e, child);
+			}
+		}
+	}
+}
 
 bool Element::isChild(Element* element) const
 {
@@ -982,6 +1095,26 @@ void Element::releasePointerCapture(std::size_t id)
     {
         throw DOMException(DOMException::INVALID_STATE_ERROR + ": Element::releasePointerCapture");
     }
+}
+
+
+void Element::releaseAllCapturedPointers()
+{
+	Document* _document = document();
+
+	if (_document)
+	{
+		for(auto& c: _capturedPointers)
+		{
+			_document->releasePointerCaptureForElement(this, c.pointerId());
+//			releasePointerCapture(c.pointerId());
+		}
+	}
+	else
+	{
+		throw DOMException(DOMException::INVALID_STATE_ERROR + ": Element::releasePointerCapture");
+	}
+	_capturedPointers.clear();
 }
 
 

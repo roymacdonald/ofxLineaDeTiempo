@@ -116,6 +116,10 @@ public:
     /// \param element The Element to release.
     /// \returns a std::unique_ptr<Element> to the child.
     std::unique_ptr<Element> removeChild(Element* element);
+	
+	/// \brief remove all children elements
+    void removeAllChildren();
+	
 
     /// \brief Move this Element in front of all of its siblings.
     void moveToFront();
@@ -549,6 +553,13 @@ public:
     /// \param id The pointer id to release.
     void releasePointerCapture(std::size_t id);
 
+	/// \brief Release all captured pointers by this element.
+    ///
+    /// This is usually only called upon destruction of the element to avoid problems
+	void releaseAllCapturedPointers();
+	
+	
+	
     /// \returns true iff the Element is enabled.
     bool isEnabled() const;
 
@@ -794,6 +805,12 @@ private:
 	///\brief This is just a helper function to avoid include issues
 	void _notifyToDocumentElementAdded(ElementEventArgs& e);
 	
+	
+	void _notifyChildReordered(Element* child,  std::size_t oldIndex, std::size_t newIndex);
+	
+	
+	///\brief Helper function for removing child. Mostly for eliminatig duplicated code.
+	void _removeChild(Element* child);
 
 };
 
