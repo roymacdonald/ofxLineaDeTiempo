@@ -179,11 +179,13 @@ void TimeRulerBar::onDraw() const
 	ofSetColor(200);
 	_rulerLines.draw();
 		
+	glm::vec2 m (ofGetMouseX(), ofGetMouseY());
+	auto sp = getScreenPosition();
+	if(m.x >= sp.x){
+		auto str = ofxTimecode::timecodeForMillis( _timeRuler->screenPositionToTime(m.x));
 	
-	auto str = ofxTimecode::timecodeForMillis( _timeRuler->screenPositionToTime(ofGetMouseX()));
-	
-	ofDrawBitmapStringHighlight(str, ofGetMouseX()-getScreenX()+6, ofGetMouseY()-getScreenY() + 14);
-	
+		ofDrawBitmapStringHighlight(str, m.x - sp.x +6, m.y - sp.y + 14);
+	}
 	
 }
 
