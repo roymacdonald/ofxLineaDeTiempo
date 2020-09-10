@@ -10,6 +10,7 @@
 #include "MUI/Widget.h"
 #include "LineaDeTiempo/View/TimeModifierView.h"
 #include "LineaDeTiempo/Controller/TimeControl.h"
+#include "MUI/Panel.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -110,8 +111,9 @@ private:
 };
 
 //---------------------------------------------------------------------------------------------------------------
+
 class ModalTimeModifier:
-public TimeModifier,
+public MUI::Panel<TimeModifier>,
 public AbstractModalElement
 {
 public:
@@ -119,7 +121,13 @@ public:
 	virtual ~ModalTimeModifier(){}
 
 	virtual void expire() override;
+	
+	TimeModifier*  getTimeModifier();
+	const TimeModifier*  getTimeModifier() const;
+	
 private:
+	
+	TimeModifier* _timeModifier = nullptr;
 
 };
 

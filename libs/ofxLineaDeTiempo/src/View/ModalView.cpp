@@ -246,19 +246,39 @@ void Tooltip::onDraw() const
 
 
 ModalTimeModifier::ModalTimeModifier(DOM::Element* owner, size_t initialMillis)
-: TimeModifier(initialMillis)
+: Panel<TimeModifier>("TimeModifierPanel", ofRectangle(), initialMillis)
 , AbstractModalElement(owner)
 {
 	_timeout = 0;
+
+	followContainerSize(true);
+	setHeaderLabel("Set Total Time");
+	setResizable(false);
+	updateLayout();
+	
 }
 
 void ModalTimeModifier::expire()
 {
 	AbstractModalElement::expire();
 	
-	disableKeys();
+	container->disableKeys();
 	
 }
+
+
+TimeModifier*  ModalTimeModifier::getTimeModifier()
+{
+	return container;
+}
+
+
+const TimeModifier*  ModalTimeModifier::getTimeModifier() const
+{
+	return container;
+}
+
+
 
 
 	
