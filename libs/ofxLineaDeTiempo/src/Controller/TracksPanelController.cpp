@@ -183,6 +183,10 @@ void TracksPanelController::_setPanelShapeListener()
 	if (_mainView && _bAutoFill){
 		_panelShapeListener = _mainView->shapeChanged.newListener(this, &TracksPanelController::_onPanelShapeChanged);
 	}
+	else if (_parentPanel && !_bAutoFill)
+	{
+		_panelShapeListener = _parentPanel->shapeChanged.newListener(this, &TracksPanelController::_onPanelShapeChanged);
+	}
 	else
 	{
 		_panelShapeListener.unsubscribe();
@@ -195,6 +199,14 @@ void TracksPanelController::_onPanelShapeChanged(DOM::ShapeChangeEventArgs & e)
 	if( _parentPanel && _bAutoFill)
 	{
 		_parentPanel->setShape(ofRectangle(0,0,_shape.width, _shape.height));
+	}
+	
+	else if(!_bIgnoreShapeChange && _mainView && !_bAutoFill)
+	{
+		_bIgnoreShapeChange = true;
+		_mainView->setShape(_parentPanel->getScreenShape());
+		_parentPanel->setPosition(0,0);
+		_bIgnoreShapeChange = false;
 	}
 	
 }

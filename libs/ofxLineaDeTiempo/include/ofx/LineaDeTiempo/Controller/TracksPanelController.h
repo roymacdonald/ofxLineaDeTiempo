@@ -170,6 +170,7 @@ private:
 	
 	void _ownedWindowExited(ofEventArgs&);
 	
+	bool _bIgnoreShapeChange = false;
 	
 };
 
