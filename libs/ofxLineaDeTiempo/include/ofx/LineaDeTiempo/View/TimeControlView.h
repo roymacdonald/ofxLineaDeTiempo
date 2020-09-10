@@ -24,7 +24,7 @@ class AbstractTimeControlButton
 {
 public:
 	AbstractTimeControlButton(TimeControl* timeControl);
-	virtual ~AbstractTimeControlButton() = default;
+	virtual ~AbstractTimeControlButton() {}
 
 	virtual void _setButtonIcon() = 0;
 
@@ -56,7 +56,7 @@ class BaseTimeControlButton
 public:
 	BaseTimeControlButton(const std::string& name, const std::string& tooltip, const ofRectangle& shape, TimeControl* timeControl);
 
-	~BaseTimeControlButton () = default;
+	virtual ~BaseTimeControlButton () {}
 
 protected:
 
@@ -74,7 +74,7 @@ class BaseTimeControlToogle
 {
 public:
 	BaseTimeControlToogle(const std::string& name, const std::string& tooltip, const ofRectangle& shape, TimeControl* timeControl);
-	~BaseTimeControlToogle () = default;
+	virtual ~BaseTimeControlToogle ()  {}
 
 protected:
 
@@ -92,7 +92,7 @@ class PlayPauseToggle
 {
 public:
 	PlayPauseToggle(const ofRectangle& shape, TimeControl* timeControl);
-	~PlayPauseToggle() = default;
+	virtual ~PlayPauseToggle()  {}
 protected:
 	bool _bIgnoreTimeControlStateChange = false;
 	void _timeControlStateChanged(TimeControlState& s);
@@ -105,7 +105,7 @@ class LoopToggle
 {
 public:
 	LoopToggle(const ofRectangle& shape, TimeControl* timeControl);
-	~LoopToggle() = default;
+	virtual ~LoopToggle()  {}
 protected:
 	virtual void _valueChanged(int& ) override;
 	virtual void _setButtonIcon() override;
@@ -115,7 +115,7 @@ class StopButton
 {
 public:
 	StopButton(const ofRectangle& shape, TimeControl* timeControl);
-	~StopButton() = default;
+	virtual ~StopButton()  {}
 protected:
 	virtual void _buttonPressed(MUI::ButtonEventArgs& ) override;
 	virtual void _setButtonIcon() override;
@@ -125,7 +125,7 @@ class TriggerButton
 {
 public:
 	TriggerButton(const ofRectangle& shape, TimeControl* timeControl);
-	~TriggerButton() = default;
+	virtual ~TriggerButton()  {}
 protected:
 	virtual void _buttonPressed(MUI::ButtonEventArgs& ) override;
 	virtual void _setButtonIcon() override;
@@ -135,7 +135,7 @@ class SetInButton
 {
 public:
 	SetInButton(const ofRectangle& shape, TimeControl* timeControl);
-	~SetInButton() = default;
+	virtual ~SetInButton()  {}
 protected:
 	virtual void _buttonPressed(MUI::ButtonEventArgs& ) override;
 	virtual void _setButtonIcon() override;
@@ -145,7 +145,7 @@ class SetOutButton
 {
 public:
 	SetOutButton(const ofRectangle& shape, TimeControl* timeControl);
-	~SetOutButton() = default;
+	virtual ~SetOutButton()  {}
 protected:
 	virtual void _buttonPressed(MUI::ButtonEventArgs& ) override;
 	virtual void _setButtonIcon() override;
@@ -155,7 +155,7 @@ class GotoInButton
 {
 public:
 	GotoInButton(const ofRectangle& shape, TimeControl* timeControl);
-	~GotoInButton() = default;
+	virtual ~GotoInButton()  {}
 protected:
 	virtual void _buttonPressed(MUI::ButtonEventArgs& ) override;
 	virtual void _setButtonIcon() override;
@@ -165,7 +165,7 @@ class GotoOutButton
 {
 public:
 	GotoOutButton(const ofRectangle& shape, TimeControl* timeControl);
-	~GotoOutButton() = default;
+	virtual ~GotoOutButton()  {}
 protected:
 	virtual void _buttonPressed(MUI::ButtonEventArgs& ) override;
 	virtual void _setButtonIcon() override;
@@ -175,7 +175,7 @@ class JumpForwardsButton
 {
 public:
 	JumpForwardsButton(const ofRectangle& shape, TimeControl* timeControl, TracksPanel* tracksPanel);
-	~JumpForwardsButton() = default;
+	virtual ~JumpForwardsButton()  {}
 protected:
 	virtual void _buttonPressed(MUI::ButtonEventArgs& ) override;
 	virtual void _setButtonIcon() override;
@@ -186,21 +186,30 @@ class JumpBackwardsButton
 {
 public:
 	JumpBackwardsButton(const ofRectangle& shape, TimeControl* timeControl, TracksPanel* tracksPanel);
-	~JumpBackwardsButton() = default;
+	virtual ~JumpBackwardsButton()  {}
 protected:
 	virtual void _buttonPressed(MUI::ButtonEventArgs& ) override;
 	virtual void _setButtonIcon() override;
 	TracksPanel* _tracksPanel = nullptr;
 };
+
+
+class ModalTimeModifier;
 class SetTotalTimeButton
 : public BaseTimeControlButton
 {
 public:
 	SetTotalTimeButton(const ofRectangle& shape, TimeControl* timeControl);
-	~SetTotalTimeButton() = default;
+	virtual ~SetTotalTimeButton()  {}
 protected:
 	virtual void _buttonPressed(MUI::ButtonEventArgs& ) override;
 	virtual void _setButtonIcon() override;
+
+	ModalTimeModifier * _modalTimeModifier = nullptr;
+	
+	ofEventListener timeSetListener;
+	void _onTimeSet();
+	
 };
 
 
@@ -209,7 +218,9 @@ class TimeDisplay
 {
 public:
 	TimeDisplay(const ofRectangle& shape, TimeControl* timeControl);
-
+	virtual ~TimeDisplay(){}
+	
+	
 	virtual void updateLayout() override;
 	
 	virtual void onDraw() const override;
@@ -253,7 +264,7 @@ class TimeControlView
 public:
 	TimeControlView(const ofRectangle& shape, TracksPanel* tracksPanel,  TimeControl* timeControl, DOM::Orientation orientation);
 	
-	~TimeControlView() = default;
+	virtual ~TimeControlView()  {}
 	
 
 	void add(TimeControlViewElement e);

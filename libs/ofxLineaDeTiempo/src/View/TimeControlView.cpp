@@ -7,6 +7,7 @@
 
 
 #include "LineaDeTiempo/View/TimeControlView.h"
+#include "LineaDeTiempo/View/TimeModifierView.h"
 
 #include "LineaDeTiempo/View/TracksPanel.h"
 #include "LineaDeTiempo/Utils/ConstVars.h"
@@ -445,10 +446,33 @@ SetTotalTimeButton::SetTotalTimeButton(const ofRectangle& shape, TimeControl* ti
 
 
 void SetTotalTimeButton::_buttonPressed(MUI::ButtonEventArgs& args)
-{
-
+{	
+	auto d = dynamic_cast<TimelineDocument*>( document());
+	if(d)
+	{
+		auto m = d->getModal();
+		_modalTimeModifier = m->add<ModalTimeModifier>(this,  _timeControl->getTotalTime());
+		auto sp = getScreenPosition();
+		sp.x -= _modalTimeModifier->getWidth();
+		
+		_modalTimeModifier->setPosition(m->screenToLocal(sp));
+		m->useBackgroundOverlay({0,80});
+		
+		timeSetListener = _modalTimeModifier->valueSetEvent.newListener(this, &SetTotalTimeButton::_onTimeSet);
+	}
 }
 
+void SetTotalTimeButton::_onTimeSet()
+{
+	if(_timeControl && _modalTimeModifier)
+	{
+//		std::cout << "SetTotalTimeButton::_onTimeSet() " << _modalTimeModifier->getTimecodeString() << "\n";
+		_timeControl->setTotalTime(ofxTimecode::millisForTimecode(_modalTimeModifier->getTimecodeString()));
+		_modalTimeModifier->expire();
+		_modalTimeModifier = nullptr;
+		timeSetListener.unsubscribe();
+	}
+}
 
 void SetTotalTimeButton::_setButtonIcon()
 {
