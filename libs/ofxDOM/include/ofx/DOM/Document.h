@@ -135,6 +135,8 @@ public:
 	
 	void focusElement(Element* target);
 	
+	
+	void unfocusElement(Element* target);
 
 	
 	///\brief get the document's shared styles for colors and typographies

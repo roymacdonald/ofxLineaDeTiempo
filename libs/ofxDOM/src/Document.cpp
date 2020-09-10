@@ -107,6 +107,23 @@ bool Document::getAutoFillScreen() const
 	return _settings.enabledListeners[WINDOW_RESIZED_EVENT];
 }
 
+void Document::unfocusElement(Element* target)
+{
+
+	if(_focusedElement != nullptr &&_focusedElement == target)
+	{
+		
+		
+		FocusEventArgs focusOut(FocusEventArgs::FOCUS_OUT,
+										this,
+										_focusedElement,
+										nullptr);
+				
+		_focusedElement = nullptr;
+	}
+
+}
+
 void Document::focusElement(Element* target)
 {
 	if(target != nullptr && target->isFocusable() ){
@@ -628,18 +645,9 @@ void map_erase_if(Map& m, F pred)
 
 void Document::_elementWasRemoved(ElementEventArgs& e)
 {
-	
-	for(auto& p: _capturedPointerIdToElementMap)
-	{
-		if(p.second == e.element())
-		{
-			releasePointerCaptureForElement(p.second,p.first);
-		}
-	}
-		
+			
+	unfocusElement(e.element());
 
-	
-	
 	
 	map_erase_if(_activeTargets, [&](const std::pair<std::size_t, Element*> & i){return i.second == e.element();});
 	
