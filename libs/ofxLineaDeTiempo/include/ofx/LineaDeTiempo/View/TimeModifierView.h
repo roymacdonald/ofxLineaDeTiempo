@@ -77,7 +77,8 @@ class TimeModifier
 : public MUI::Widget
 {
 public:
-	TimeModifier(size_t initialMillis);
+	
+	TimeModifier(const std::string& id, const ofRectangle& shape, size_t initialMillis);
 	
 	virtual ~TimeModifier();
 	

@@ -453,12 +453,12 @@ void SetTotalTimeButton::_buttonPressed(MUI::ButtonEventArgs& args)
 		auto m = d->getModal();
 		_modalTimeModifier = m->add<ModalTimeModifier>(this,  _timeControl->getTotalTime());
 		auto sp = getScreenPosition();
-		sp.x -= _modalTimeModifier->getWidth();
+		sp.x -= _modalTimeModifier->container->getWidth();
 		
 		_modalTimeModifier->setPosition(m->screenToLocal(sp));
 		m->useBackgroundOverlay({0,80});
 		
-		timeSetListener = _modalTimeModifier->valueSetEvent.newListener(this, &SetTotalTimeButton::_onTimeSet);
+		timeSetListener = _modalTimeModifier->getTimeModifier()->valueSetEvent.newListener(this, &SetTotalTimeButton::_onTimeSet);
 	}
 }
 
@@ -467,7 +467,7 @@ void SetTotalTimeButton::_onTimeSet()
 	if(_timeControl && _modalTimeModifier)
 	{
 //		std::cout << "SetTotalTimeButton::_onTimeSet() " << _modalTimeModifier->getTimecodeString() << "\n";
-		_timeControl->setTotalTime(ofxTimecode::millisForTimecode(_modalTimeModifier->getTimecodeString()));
+		_timeControl->setTotalTime(ofxTimecode::millisForTimecode(_modalTimeModifier->getTimeModifier()->getTimecodeString()));
 		_modalTimeModifier->expire();
 		_modalTimeModifier = nullptr;
 		timeSetListener.unsubscribe();

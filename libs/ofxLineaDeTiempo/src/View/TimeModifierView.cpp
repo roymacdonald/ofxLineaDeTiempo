@@ -262,8 +262,8 @@ std::string TimeSubDiv::getValueAsString() const
 
 //----------------------------------------------------------------------------
 
-TimeModifier::TimeModifier(size_t initialMillis)
-: MUI::Widget("TimeModifier",0,0,0,0)
+TimeModifier::TimeModifier(const std::string& id, const ofRectangle& shape, size_t initialMillis)
+: MUI::Widget((id.empty()?"TimeModifier":id),0,0,0,0)
 {
 	//	_subDivs.reserve(4);
 	for(int i = 0; i < 4; i++)
@@ -331,7 +331,8 @@ void TimeModifier::enableKeys()
 void TimeModifier::disableKeys()
 {
 	for(auto s: _subDivs){s->disableKeys();}
-	document()->unfocusElement(this);
+	auto d = document();
+	if(d) d->unfocusElement(this);
 	removeEventListener(keyDown,
 						&TimeModifier::onKeyboardDownEvent,
 						false,
