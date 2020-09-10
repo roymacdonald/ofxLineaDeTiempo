@@ -9,7 +9,7 @@
 #include "ofGraphics.h"
 #include "ConstVars.h"
 #include "LineaDeTiempo/View/TracksPanel.h"
-
+#include "LineaDeTiempo/View/TimeModifierView.h"
 
 namespace ofx {
 namespace MUI {
@@ -21,6 +21,7 @@ namespace MUI {
 template<typename T>
 void Panel<T>::updateLayout()
 {
+	_updateSizeFromContainer();
 	_setHeaderHandleShape();
 	_setCornerHandleViewRect();
 }
@@ -101,7 +102,14 @@ void Panel<T>::_updateContainerShape()
 	if(container)
 	{
 		float h  = ((bool)_headerHandle)?_headerHandle->getHeight():0;
-		container->setShape(ofRectangle(0, h, getWidth(), getHeight()-h));
+		if(_followingContainerShape)
+		{
+			container->setPosition(0, h);
+		}
+		else
+		{
+			container->setShape(ofRectangle(0, h, getWidth(), getHeight()-h));
+		}
 	}
 }
 
@@ -149,6 +157,7 @@ void Panel<T>::_removeHeaderHandle()
 template<typename T>
 void Panel<T>::setHeaderLabel(const std::string& label)
 {
+	_addHeaderHandle();
 	_headerLabel = label;
 	_headerHandle->setText(_headerLabel);
 }
@@ -238,7 +247,75 @@ bool Panel<T>::isResizable() const
 	return _resizeable;
 }
 
+
+
+template<typename T>
+void Panel<T>::followContainerSize(bool follow)
+{
+	if(!container)return;
+	
+	if(_followingContainerShape != follow)
+	{
+		_followingContainerShape = follow;
+		if(_followingContainerShape)
+		{
+			_containerShapeListener = container->shapeChanged.newListener(this, &Panel::onContainerShapeChange);
+			_updateSizeFromContainer();
+		}
+		else
+		{
+			_containerShapeListener.unsubscribe();
+		}
+	}
+}
+
+template<typename T>
+bool Panel<T>::isFollowingContainerSize() const
+{
+	return _followingContainerShape;
+	
+}
+
+
+template<typename T>
+void Panel<T>::onContainerShapeChange(DOM::ShapeChangeEventArgs& e)
+{
+	if(e.resized())
+	{
+		_updateSizeFromContainer();
+	}
+}
+
+template<typename T>
+void Panel<T>::_updateSizeFromContainer()
+{
+	if(_followingContainerShape && container)
+	{
+		float h  = ((bool)_headerHandle)?_headerHandle->getHeight():0;
+	
+		if(!ofIsFloatEqual(container->getWidth(), getWidth()) || !ofIsFloatEqual(h + container->getHeight(), getHeight()))
+		{
+			setSize(container->getWidth(), h + container->getHeight());
+		}
+	}
+}
+
+
+template<typename T>
+Label *  Panel<T>::getHeader()
+{
+	return _headerHandle;
+}
+
+
+template<typename T>
+const Label *  Panel<T>::getHeader() const
+{
+	return _headerHandle;
+}
+
+
+				
 template class Panel<LineaDeTiempo::TracksPanel>;
-
+template class Panel<LineaDeTiempo::TimeModifier>;
 } } // namespace ofx::MUI
-

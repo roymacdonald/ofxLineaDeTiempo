@@ -49,9 +49,19 @@ public:
 	void setHeaderLabel(const std::string& label);
 	const std::string& getHeaderLabel() const;
 	
+	void followContainerSize(bool follow);
+	bool isFollowingContainerSize() const;
+	
+	
+	Label *  getHeader();
+	const Label *  getHeader() const;
+	
 protected:
 	Widget * _cornerHandle = nullptr;
 	Label *  _headerHandle = nullptr;
+	
+	
+	void _updateSizeFromContainer();
 	
 private:
 	virtual void _onShapeChange(const DOM::ShapeChangeEventArgs& e) override;
@@ -64,7 +74,12 @@ private:
 	
 	ofEventListener _cornerHandleListener;
 	ofEventListener _headerHandleListener;
+	ofEventListener _containerShapeListener;
 	
+	void onContainerShapeChange(DOM::ShapeChangeEventArgs& e);
+	
+	
+	bool _followingContainerShape = false;
 	
     /// \brief True if the Panel can be resized.
     bool _resizeable = false;
