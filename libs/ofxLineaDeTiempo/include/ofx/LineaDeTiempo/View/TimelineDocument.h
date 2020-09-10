@@ -26,8 +26,9 @@ public:
 	
 	ModalView* getModal();
 	
+	bool hasModal() const;
 	
-	
+	virtual void onUpdate() override;
 protected:
 	
 	ModalView* _modalView = nullptr;
@@ -37,7 +38,7 @@ protected:
 	ofEventListener _childReorderListener;
 	
 	void _childOrderChanged(DOM::ElementOrderEventArgs &);
-	
+
 };
 
 

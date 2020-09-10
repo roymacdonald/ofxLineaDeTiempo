@@ -52,15 +52,29 @@ void TimelineDocument::_childOrderChanged(DOM::ElementOrderEventArgs & args)
 	}
 }
 
-
+bool TimelineDocument::hasModal() const
+{
+	return _modalView != nullptr;
+	
+}
 
 ModalView* TimelineDocument::getModal()
 {
 	if(_modalView == nullptr)
 	{
-		_modalView = addChild<ModalView>("Timeline ModalView", ofRectangle(0,0,0, 0), this);
+		_modalView = addChild<ModalView>("Timeline ModalView", ofRectangle(0,0,getWidth(), getHeight()), this);
 	}
 	return _modalView;
+}
+
+void TimelineDocument::onUpdate()
+{
+	if(_modalView && _modalView->shouldBeDestroyed())
+	{
+		_modalView->removeAllChildren();
+		removeChild(_modalView);
+		_modalView = nullptr;
+	}
 }
 
 
