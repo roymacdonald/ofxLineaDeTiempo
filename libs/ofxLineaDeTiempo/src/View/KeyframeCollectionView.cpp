@@ -20,10 +20,9 @@ namespace ofx {
 namespace LineaDeTiempo {
 
 
-//std::string KeyframeCollectionView::debugString  = "";
+
 //---------------------------------------------------------------------------------------------------------------------
 KeyframeCollectionView::KeyframeCollectionView (const std::string & name, const ofRectangle& rect, KeyframesRegionView* parentRegion, Selector<KeyframeView>* selector, RegionController *controller)
-//: DOM::Element(name, 0, RegionView::headerHeight, width, height)
 : MUI::Widget(name, rect)
 , _parentRegion(parentRegion)
 , _selector(selector)

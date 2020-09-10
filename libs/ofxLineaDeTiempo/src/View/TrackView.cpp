@@ -79,17 +79,6 @@ float TrackView::getHeightFactor() const
 }
 
 
-//void TrackView::setHeightFactor(float factor)
-//{
-//	_heightFactor = factor;
-//	auto p = getParentPanel();
-//	if(p && p->getTracksView() && p->getTracksView()->getClippingView())
-//	{
-//		p->getTracksView()->getClippingView()->updateLayout();
-//	}
-//}
-
-
 bool TrackView::removeRegion(RegionController * controller)
 {
 	if(controller == nullptr)
@@ -144,7 +133,6 @@ void TrackView::_onShapeChange(const DOM::ShapeChangeEventArgs& e)
 		if(!_bIgnoreHeightChange )
 		{
 			_heightFactor =  e.shape.height / (ConstVars::TrackInitialHeight *  _verticalScale);
-//			setHeightFactor( e.shape.height / (ConstVars::TrackInitialHeight *  _verticalScale));
 		}
 		_updateRegionsHeight();
 	}
@@ -190,13 +178,6 @@ TrackController * TrackView::getController()
 {
 	return _controller;
 }
-
-
-//void TrackView::setTrackHeight(float trackHeight)
-//{
-//
-//	setHeight( trackHeight);
-//}
 
 
 }} //ofx::LineaDeTiempo

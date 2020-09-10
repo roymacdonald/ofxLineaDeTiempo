@@ -14,12 +14,6 @@ namespace ofx {
 namespace LineaDeTiempo {
 
 
-//AbstractModalElement::AbstractModalElement()
-//{
-//	
-//}
-
-
 AbstractModalElement::AbstractModalElement(DOM::Element* owner):
 _owner(owner)
 {
@@ -116,11 +110,6 @@ void TooltipOwner::_updateShowTooltip( bool bMoving, bool bOver, const std::map<
 	}
 	if(_tooltip != "")
 	{
-		//		auto doc = dynamic_cast<TimelineDocument*>(docu);
-		//		if(doc)
-		//		{
-		//			if(doc->hasModal()){
-		
 		if(bOver)
 		{
 			if(bMoving){
@@ -152,8 +141,6 @@ void TooltipOwner::_updateShowTooltip( bool bMoving, bool bOver, const std::map<
 		{
 			expireTooltip();
 		}
-		
-		//		}
 	}
 }
 void TooltipOwner::_removeModalCB()
@@ -223,7 +210,6 @@ void Tooltip::make()
 		
 		
 		
-//		std::cout << "Tooltip::make() localPos: " << localPos << "\n";
 		_textMesh = f.getStringMesh(_label, localPos.x, localPos.y);
 		_bNeedsMake = false;
 	}
@@ -262,7 +248,6 @@ void Tooltip::onDraw() const
 ModalTimeModifier::ModalTimeModifier(DOM::Element* owner, size_t initialMillis)
 : TimeModifier(initialMillis)
 , AbstractModalElement(owner)
-//, _timeControl(timeControl)
 {
 	_timeout = 0;
 }
@@ -276,29 +261,13 @@ void ModalTimeModifier::expire()
 }
 
 
-
-//void ModalTimeModifier::_onTimeSet()
-//{
-//	if(_timeControl)
-//	{
-//		_timeControl->setTotalTime(ofxTimecode::millisForTimecode(getTimecodeString()));
-//	}
-//	expire();
-//}
-	
 	
 ModalView::ModalView(const std::string& id, const ofRectangle& shape, TimelineDocument* doc)
 : MUI::Widget(id, shape)
-//: DOM::Element(id, shape)
+
 ,_doc(doc)
 {
-//	std::cout << "Creating modal\n";
-//	setDrawChildrenOnly(true);
-//	setImplicitPointerCapture(truezzzzzzzzzzzzzzzzzzzzz);
-//	if(_doc)
-//	{
-////		_parentShapeListener = _doc->shapeChanged.newListener(this, &ModalView::_documentShapeChange);
-//	}
+
 }
 
 
@@ -347,12 +316,6 @@ void ModalView::_onPointerCaptureEvent(DOM::PointerCaptureUIEventArgs& e)
 			}
 		}
     }
-
-
-//    else if (e.type() == PointerEventArgs::LOST_POINTER_CAPTURE)
-//    {
-//        _setIsDragging(false);
-//    }
 }
 
 

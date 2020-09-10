@@ -36,15 +36,6 @@ void TimelineDocument::_childOrderChanged(DOM::ElementOrderEventArgs & args)
 		{
 			_bIgnoreChildReorder = true;
 	
-//			std::cout << "TimelineDocument::_childOrderChanged  " << args.element()->getId() << "\n";
-//			std::cout << "    oldIndex: " << args.oldIndex() << "\n";
-//			std::cout << "    newIndex: " << args.newIndex() << "\n";
-//			std::cout << "    wasMovedForward: " << std::boolalpha << args.wasMovedForward() << "\n";
-//			std::cout << "    wasMovedBackward: " << std::boolalpha << args.wasMovedBackward() << "\n";
-//			std::cout << "    isAtFront: " << std::boolalpha << args.isAtFront() << "\n";
-//			std::cout << "    isAtBack: " << std::boolalpha << args.isAtBack() << "\n";
-//			
-			
 			_modalView->moveToFront();
 		
 			_bIgnoreChildReorder = false;

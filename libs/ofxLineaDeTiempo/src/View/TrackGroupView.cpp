@@ -94,7 +94,6 @@ bool TrackGroupView::removeTrack(TrackController* controller)
 	if(tr){
 		return _groupHeader->removeTrackHeader(track->getHeader());
 	}
-//	auto h = _header->removeChild(track->getHeader());
 	ofLogError("TrackGroupView::removeTrack") << "could not remove track. Probably it does not belong to this group. " << getId();
 	return false;
 	
@@ -116,8 +115,6 @@ TrackGroupView* TrackGroupView::addGroup(TrackGroupController * controller )
 	
 	
 	auto t = _tracksContainer->addChild<TrackGroupView>(this, controller, _groupHeader, _timeRuler);
-//	_groupHeader->addGroupHeader(getId()+ "_groupHeader", t, _isPanel);
-//	auto h = _header->addChild<TrackHeader>( "_header", ofRectangle(0, 0, _trackHeaderWidth, ConstVars::TrackInitialHeight), t , this, _isPanel);
 
 	return t;
 	
@@ -145,17 +142,12 @@ bool TrackGroupView::removeGroup(TrackGroupController * controller)
 		
 
 	auto tr = _tracksContainer->removeChild(track);
-//	auto h = _header->removeChild(track->getHeader());
+
 	if(tr){
 			return _groupHeader->removeGroupHeader(track->getGroupHeader());
 		}
 		ofLogError("TrackGroupView::removeGroup") << "could not remove group. Probably it does not belong to this group. " << getId();
 		return false;
-		
-	
-	
-//	_updateContainers();
-//	return true;
 	
 }
 
@@ -258,7 +250,6 @@ void TrackGroupView::onUpdate()
 {
 	if(isChildShapeInvalidated())
 	{
-//		std::cout << "TrackGroupView::onUpdate()  " << getId() << "\n";
 		updateVerticalLayout();
 	}
 }

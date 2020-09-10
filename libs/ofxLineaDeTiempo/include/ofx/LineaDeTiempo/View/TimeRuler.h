@@ -60,19 +60,11 @@ protected:
 	
 	TimeControl * _timeControl = nullptr;
 	
-//	virtual void _onShapeChange(const ShapeChangeEventArgs& ) override;
-	
-//	ofRange _trackScreenHorizontal;
-	
 	ofRange64u _visibleTimeRange;
 	
 	
-//	ofEventListener _trackContainerListener;
-//	void _tracksContainerShapeChanged(DOM::ShapeChangeEventArgs& e);
-	
 	Playhead * _playhead = nullptr;
-	
-//	void _setTrackScreenHorizontalRange();
+
 	
 	ofEventListener _totalTimeListener;
 	void _totalTimeChanged();

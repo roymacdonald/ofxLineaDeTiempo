@@ -16,7 +16,6 @@ namespace LineaDeTiempo {
 TracksClippedView::TracksClippedView(const std::string& id, const ofRectangle& rect)
 : MUI::ClippedView(id, rect)
 {
-	//	updateTracksWidth();
 	
 	_containerShapeListener = container->shapeChanged.newListener(this, &TracksClippedView::_onContainerShapeChange);
 	
@@ -212,7 +211,6 @@ void TracksClippedView::_containerHeightToZoom()
 //---------------------------------------------------------------------
 void TracksClippedView::updateVerticalLayout()
 {
-	//	std::cout << "TracksClippedView::updateVerticalLayout()  " << _zoom[1] << "\n";
 	_updateTracksUnscaledHeight();
 	
 	if(_zoomScrollbarH)
@@ -234,10 +232,6 @@ void TracksClippedView::updateVerticalLayout()
 		if(container){
 			auto s = container->getShape();
 			s.y =  s.height * zoom.min * -1.f;
-			//			s.y =  totalHeight * zoom.min * -1.f;
-			
-			//			s.height = totalHeight;
-			//			std::cout << "TracksClippedView::updateVerticalLayout totalHeight:  " << totalHeight << "\n";
 			container->setShape(s);
 		}
 	}

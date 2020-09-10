@@ -49,8 +49,7 @@ TimeRulerBar::TimeRulerBar(  TimeRuler* timeRuler, TimeControl* timeControl)
 	
 	setDrawAsViewport(true);
 	
-//	moveToFront();
-//	_updatePlayheadSize();
+
 }
 
 void TimeRulerBar::_onDragging(const DOM::CapturedPointer& pointer)

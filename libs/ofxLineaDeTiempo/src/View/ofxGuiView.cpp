@@ -202,8 +202,8 @@ void ofxGuiView<T>::onUpdate()
 template<typename T>
 void ofxGuiView<T>::onDraw() const
 {
-//	if(parent() && parent()->getHeight() >= getHeight() + getY()){
-	if(_gui)// && getHeight() >= _gui->getHeight())
+
+	if(_gui)
 	{
 		_gui->draw();
 	}

@@ -27,10 +27,10 @@ TimeRuler::TimeRuler(TracksPanel* panel, TimeControl* timeControl, const ofRecta
 	_header->updateLayout();
 	
 	_bar = addChild<TimeRulerBar>( this, timeControl);
-
+	
 	_playhead = addChild<Playhead>(this, timeControl, _bar);
 	_playhead->updatePosition();
-
+	
 	
 	_totalTimeLoopButtons = addChild<TimeControlView>(ofRectangle (rect.getMaxX()-SCROLL_BAR_SIZE, 0, SCROLL_BAR_SIZE + CONTAINER_MARGIN, ConstVars::TimeRulerInitialHeight), panel, timeControl, DOM::VERTICAL);
 	_totalTimeLoopButtons->add(SET_TOTAL_TIME_BUTTON);
@@ -39,7 +39,7 @@ TimeRuler::TimeRuler(TracksPanel* panel, TimeControl* timeControl, const ofRecta
 	
 	
 	_totalTimeListener = _timeControl->totalTimeChangedEvent.newListener(this, &TimeRuler::_totalTimeChanged, std::numeric_limits<int>::lowest());
-
+	
 	if(_scrollbar)
 	{
 		_horizontalZoomScrollbarListener = _scrollbar->handleChangeEvent.newListener(this, &TimeRuler::_horizontalZoomChanged, std::numeric_limits<int>::lowest());
@@ -49,20 +49,11 @@ TimeRuler::TimeRuler(TracksPanel* panel, TimeControl* timeControl, const ofRecta
 		ofLogError("TimeRuler::TimeRuler") << "TracksView horizontal scrollbar is nullptr. This shouldnt happen";
 	}
 	
-
+	
 	_updateVisibleTimeRange();
 	
 	updateLayout();
 	
-//	if(panel->getTracksView() && panel->getTracksView()->getContainer())
-//	{
-//	_trackContainerListener = panel->getTracksView()->getContainer()->shapeChanged.newListener(this, &TimeRuler::_tracksContainerShapeChanged);
-//	}
-//	else
-//	{
-//		ofLogError("TimeRuler::TimeRuler") << "Panel's track view or its container are null. Cant set listeners for those";
-//	}
-//
 	setDrawChildrenOnly(true);
 	moveToFront();
 	_playhead->moveToFront();
@@ -93,54 +84,6 @@ void TimeRuler::_updateVisibleTimeRange()
 	}
 }
 
-//void TimeRuler::_setTrackScreenHorizontalRange()
-//{
-//	if(_bar && _panel->getTracksView() && _panel->getTracksView()->getContainer())
-//	{
-//		auto r = _panel->getTracksView()->getContainer()->getScreenShape();
-//		if(r.width < 0.0f) r.standardize();
-//
-////		if(! ofIsFloatEqual(_trackScreenHorizontal.min, r.x) ||
-////		   ! ofIsFloatEqual(_trackScreenHorizontal.max, r.x + r.width))
-////		{
-//			_trackScreenHorizontal.min = r.x;
-//			_trackScreenHorizontal.max = r.x + r.width;
-//
-//
-//		auto s = _bar->getScreenShape();
-//
-//		_visibleTimeRange.min = screenPositionToTime(s.getMinX());
-//		_visibleTimeRange.max = screenPositionToTime(s.getMaxX());
-//
-////		std::cout << "_visibleTimeRange: " << _visibleTimeRange << "\n";
-//
-//
-////		}
-//	}
-//}
-
-
-//void TimeRuler::_tracksContainerShapeChanged(DOM::ShapeChangeEventArgs& e)
-//{
-//	if(e.changedHorizontally()){
-//		if(_bar)
-//		{
-//
-//			_setTrackScreenHorizontalRange();
-//
-//			if(e.widthChanged())
-//			{
-//				_setBarShape(true);
-//			}
-//			else
-//			if(e.xChanged())
-//			{
-//				_bar->makeRulerLines();
-//				if(_playhead) _playhead->updatePosition();
-//			}
-//		}
-//	}
-//}
 
 void TimeRuler::_setBarShape(bool dontCheck)
 {
@@ -162,8 +105,8 @@ void TimeRuler::_setBarShape(bool dontCheck)
 
 void TimeRuler::updateLayout()
 {
-//	_setTrackScreenHorizontalRange();
-	if(_panel && _header && _bar)// && _panel->getClippingView())
+	
+	if(_panel && _header && _bar)
 	{
 		
 		auto w = _panel->getTracksHeaderWidth();
@@ -186,24 +129,23 @@ void TimeRuler::updateLayout()
 			float h = _panel->getTracksView()->getClippingView()->getScreenShape().getMaxY() - getScreenY();
 			setPlayheadHeight(h);
 		}
-
+		
 	}
 }
 
+
 float TimeRuler::timeToScreenPosition(uint64_t time) const
 {
-//	return MUI::Math::lerp(time, 0, _timeControl->getTotalTime(),  _trackScreenHorizontal.min, _trackScreenHorizontal.max);
 	
 	if(_bar)
-		{
-			auto s = _bar->getScreenShape();
-			return MUI::Math::lerp(time, _visibleTimeRange.min, _visibleTimeRange.max, s.getMinX(), s.getMaxX());
-	//		return MUI::Math::lerp(x, _trackScreenHorizontal.min, _trackScreenHorizontal.max, 0, _timeControl->getTotalTime(), true);
-		}
-		return 0;
-	
+	{
+		auto s = _bar->getScreenShape();
+		return MUI::Math::lerp(time, _visibleTimeRange.min, _visibleTimeRange.max, s.getMinX(), s.getMaxX());
+	}
+	return 0;
 	
 }
+
 
 uint64_t  TimeRuler::screenPositionToTime(float x) const
 {
@@ -211,7 +153,6 @@ uint64_t  TimeRuler::screenPositionToTime(float x) const
 	{
 		auto s = _bar->getScreenShape();
 		return MUI::Math::lerp(x, s.getMinX(), s.getMaxX(), _visibleTimeRange.min, _visibleTimeRange.max);
-//		return MUI::Math::lerp(x, _trackScreenHorizontal.min, _trackScreenHorizontal.max, 0, _timeControl->getTotalTime(), true);
 	}
 	return 0;
 }
