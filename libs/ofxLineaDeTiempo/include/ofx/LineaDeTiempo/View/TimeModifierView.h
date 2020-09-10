@@ -23,7 +23,8 @@ class TimeSubDiv
 {
 public:
 	TimeSubDiv();
-	void setup(const std::string& name, size_t numDigits, size_t maxValue, TimeSubDiv* larger, TimeSubDiv* smaller);
+	virtual ~TimeSubDiv();
+	void setup(const std::string& name, int value,  size_t numDigits, size_t maxValue, TimeSubDiv* larger, TimeSubDiv* smaller);
 
 	
 	void enableKeys();
@@ -76,9 +77,9 @@ class TimeModifier
 : public MUI::Widget
 {
 public:
-	TimeModifier();
+	TimeModifier(size_t initialMillis);
 	
-	
+	virtual ~TimeModifier();
 	
 	
 	virtual void onDraw() const override;

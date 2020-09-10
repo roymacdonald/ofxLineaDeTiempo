@@ -5,9 +5,10 @@
 //  Created by Roy Macdonald on 5/5/20.
 //
 
-#include "TimeModifierView.h"
+#include "LineaDeTiempo/View/TimeModifierView.h"
 #include "ofBitmapFont.h"
 #include "DOM/Document.h"
+#include "ofxTimecode.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -18,8 +19,17 @@ TimeSubDiv::TimeSubDiv()
 {
 	
 }
-void TimeSubDiv::setup(const std::string& name, size_t numDigits, size_t maxValue, TimeSubDiv* larger, TimeSubDiv* smaller)
+
+
+TimeSubDiv::~TimeSubDiv()
 {
+	disableKeys();
+}
+
+
+void TimeSubDiv::setup(const std::string& name, int value,  size_t numDigits, size_t maxValue, TimeSubDiv* larger, TimeSubDiv* smaller)
+{
+	this->value = value;
 	_numDigits = numDigits;
 	_maxValue = maxValue;
 	_smaller = smaller;
@@ -172,6 +182,9 @@ void TimeSubDiv::enableKeys()
 void TimeSubDiv::disableKeys()
 {
 	_bKeysEnabled = false;
+	auto d = document();
+	if(d) d->unfocusElement(this);
+	
 	removeEventListener(keyDown,
 						&TimeSubDiv::onKeyboardDownEvent,
 						false,
@@ -249,7 +262,7 @@ std::string TimeSubDiv::getValueAsString() const
 
 //----------------------------------------------------------------------------
 
-TimeModifier::TimeModifier()
+TimeModifier::TimeModifier(size_t initialMillis)
 : MUI::Widget("TimeModifier",0,0,0,0)
 {
 	//	_subDivs.reserve(4);
@@ -259,10 +272,11 @@ TimeModifier::TimeModifier()
 		
 		//		_subDivs.push_back(std::move(std::make_unique<TimeSubDiv>()));
 	}
-	_subDivs[0]->setup("HOURS", 2, 100, nullptr, _subDivs[1]);//HOURS
-	_subDivs[1]->setup("MINUTES", 2, 60, _subDivs[0], _subDivs[2]);//MINUTES
-	_subDivs[2]->setup("SECONDS", 2, 60, _subDivs[1], _subDivs[3]);//SECONDS
-	_subDivs[3]->setup("MILLISECONDS", 3, 1000, _subDivs[2], nullptr);//MILLISECONDS
+	
+	_subDivs[0]->setup("HOURS"        , int(initialMillis / (60 * 60 * 1000))   , 2 , 100  , nullptr     , _subDivs[1]);//HOURS
+	_subDivs[1]->setup("MINUTES"      , int((initialMillis / (60 * 1000)) % 60) , 2 , 60   , _subDivs[0] , _subDivs[2]);//MINUTES
+	_subDivs[2]->setup("SECONDS"      , int((initialMillis / 1000) % 60)        , 2 , 60   , _subDivs[1] , _subDivs[3]);//SECONDS
+	_subDivs[3]->setup("MILLISECONDS" , initialMillis%1000                      , 3 , 1000 , _subDivs[2] , nullptr);//MILLISECONDS
 	
 	ofBitmapFont bf;
 	auto delimWidth = bf.getBoundingBox(":", 0, 0).width;
@@ -292,6 +306,15 @@ TimeModifier::TimeModifier()
 	
 	_subDivs[0]->enableKeys();
 }
+
+
+TimeModifier::~TimeModifier()
+{
+
+	disableKeys();
+}
+
+
 void TimeModifier::enableKeys()
 {
 	if(document())
@@ -307,7 +330,8 @@ void TimeModifier::enableKeys()
 
 void TimeModifier::disableKeys()
 {
-	
+	for(auto s: _subDivs){s->disableKeys();}
+	document()->unfocusElement(this);
 	removeEventListener(keyDown,
 						&TimeModifier::onKeyboardDownEvent,
 						false,
