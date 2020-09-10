@@ -35,6 +35,32 @@ public:
 	
 	bool removeGroupHeader(TrackHeaderGroup * groupHeader);
 
+//	void printShapeAndFollower(std::string prefix = "")
+//	{
+//		std::cout << prefix << "------ " << getId() << "  " << getShape() << "   " << getScreenShape() << "\n";
+//		for(auto&c : children())
+//		{
+//			auto g  = dynamic_cast<TrackHeaderGroup*>(c);
+//			if(g)
+//			{
+//				g->printShapeAndFollower(prefix + "    ");
+//			}else{
+//				std::cout << prefix << c->getId() << "  " << c->getShape() << "   " << c->getScreenShape();
+//				auto h = dynamic_cast<TrackHeader*>(c);
+//				if(h && h->getFollower())
+//				{
+//					auto f =h->getFollower();
+//					if(f->_following){
+//						std::cout << " following: " << f->_following->getId() << "  "  << f->_following->getShape() << "   " << f->_following->getScreenShape();
+//					}
+//				}
+//
+//				std::cout << "\n";
+//
+//			}
+//		}
+//	}
+	
 	
 protected:
 	
