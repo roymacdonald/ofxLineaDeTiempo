@@ -7,9 +7,9 @@
 
 #pragma once
 #include "DOM/Element.h"
-
-
-
+#include "MUI/Widget.h"
+#include "LineaDeTiempo/View/TimeModifierView.h"
+#include "LineaDeTiempo/Controller/TimeControl.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -33,11 +33,12 @@ public:
 	bool needsToBeRemoved() const;
 	void update(uint64_t currentTime);
 	
-	void expire();
+	virtual void expire();
 protected:
 	
 	void _willBeRemoved();
 	
+	uint64_t _timeout = 10000;
 	
 private:
 	bool _needsToBeRemoved = false;
@@ -46,6 +47,7 @@ private:
 	bool _expired = false;
 };
 
+//---------------------------------------------------------------------------------------------------------------
 class Tooltip;
 
 class TooltipOwner
@@ -79,7 +81,7 @@ protected:
 	
 	
 };
-
+//---------------------------------------------------------------------------------------------------------------
 class Tooltip
 : public DOM::Element
 , public AbstractModalElement
@@ -107,39 +109,61 @@ private:
 	bool _bNeedsMake = true;
 };
 
+//---------------------------------------------------------------------------------------------------------------
+class ModalTimeModifier:
+public TimeModifier,
+public AbstractModalElement
+{
+public:
+	ModalTimeModifier(DOM::Element* owner, size_t initialMillis);
+	virtual ~ModalTimeModifier(){}
 
+	virtual void expire() override;
+private:
 
-class ModalView: public DOM::Element
+};
+
+//---------------------------------------------------------------------------------------------------------------
+class ModalView
+//: public DOM::Element
+: public MUI::Widget
 {
 public:
 	ModalView(const std::string& id, const ofRectangle& shape, TimelineDocument* _doc);
 	virtual ~ModalView();
-	
-//	bool addTooltip(DOM::Element* owner, const std::string& label, const DOM::Position& screenPosition);
-//	void removeTooltip(DOM::Element* owner);
-//	bool isShowingTooltip(DOM::Element* owner);
-	
 
 	template<typename ModalType, typename... Args>
 	ModalType* add(DOM::Element* owner, Args&&... args);
 	
 	bool remove(AbstractModalElement* modal);
 	
+	virtual void onDraw() const override;
 	virtual void onUpdate() override;
     
-	
-//
-//	const std::map<DOM::Element* ,Tooltip*>& getTooltipMap(){return _tooltipMap;}
-//
+	void useBackgroundOverlay(const ofColor& bg);
+
+	bool shouldBeDestroyed();
+
+
+
+
+protected:
+
+	virtual void _onPointerCaptureEvent(DOM::PointerCaptureUIEventArgs& e) override;
 
 	
 private:
+	
+	bool _useBackgroundOverlay = false;
+
+	ofColor _backgroundOverlay = {0,80};
+	
 	ofEventListener _parentShapeListener;
 	void _documentShapeChange(DOM::ShapeChangeEventArgs& s);
 	
 	std::vector<AbstractModalElement*> _modalElements;
 	
-
+	bool _needsToBeDestroyed = false;
 	
 	TimelineDocument* _doc = nullptr;
 	

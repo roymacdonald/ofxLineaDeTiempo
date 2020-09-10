@@ -8,7 +8,7 @@
 #include "LineaDeTiempo/View/ModalView.h"
 #include "LineaDeTiempo/View/TimelineDocument.h"
 #include "LineaDeTiempo/Utils/ConstVars.h"
-
+#include "ofxTimecode.h"
 
 namespace ofx {
 namespace LineaDeTiempo {
@@ -36,7 +36,7 @@ void AbstractModalElement::update(uint64_t currentTime)
 {
 	if(!_needsToBeRemoved)
 	{
-		if(_expired || currentTime - _creationTime > ConstVars::tooltipTimeout)
+		if(_expired || ( _timeout > 0 && currentTime - _creationTime > _timeout))
 		{
 			_willBeRemoved();
 		}
@@ -116,40 +116,44 @@ void TooltipOwner::_updateShowTooltip( bool bMoving, bool bOver, const std::map<
 	}
 	if(_tooltip != "")
 	{
-		auto doc = dynamic_cast<TimelineDocument*>(docu);
-		if(doc)
+		//		auto doc = dynamic_cast<TimelineDocument*>(docu);
+		//		if(doc)
+		//		{
+		//			if(doc->hasModal()){
+		
+		if(bOver)
 		{
-			if(doc->getModal()){
+			if(bMoving){
 				
-				if(bOver)
+				_overStartTime = ofGetElapsedTimeMillis();
+				expireTooltip();
+			}
+			else
+			{
+				if(_tooltipModal == nullptr && _bCanShowTooltip)
 				{
-					if(bMoving){
-						
-						_overStartTime = ofGetElapsedTimeMillis();
-						expireTooltip();
-					}
-					else
+					if(ofGetElapsedTimeMillis() - _overStartTime  > ConstVars::tooltipDelay)
 					{
-						if(_tooltipModal == nullptr && _bCanShowTooltip)
+						auto doc = dynamic_cast<TimelineDocument*>(docu);
+						if(doc)
 						{
-							if(ofGetElapsedTimeMillis() - _overStartTime  > ConstVars::tooltipDelay)
+							for(auto& p: pointersOver)
 							{
-								for(auto& p: pointersOver)
-								{
-									
-									_tooltipModal = doc->getModal()->add<Tooltip>(_tooltipOwner, _tooltip, p.second.position());
-									_modalRemoveListener = _tooltipModal->willBeRemovedEvent.newListener(this, &::ofx::LineaDeTiempo::TooltipOwner::_removeModalCB);
-								}
+								
+								_tooltipModal = doc->getModal()->add<Tooltip>(_tooltipOwner, _tooltip, p.second.position());
+								_modalRemoveListener = _tooltipModal->willBeRemovedEvent.newListener(this, &::ofx::LineaDeTiempo::TooltipOwner::_removeModalCB);
 							}
 						}
 					}
 				}
-				else
-				{
-					expireTooltip();
-				}
 			}
 		}
+		else
+		{
+			expireTooltip();
+		}
+		
+		//		}
 	}
 }
 void TooltipOwner::_removeModalCB()
@@ -171,7 +175,7 @@ Tooltip::Tooltip(DOM::Element* owner, const std::string& label, const DOM::Posit
 ,_screenPos(screenPos)
 , DOM::Element(label, screenPos.x, screenPos.y, 0,0)
 {
-
+	_timeout = ConstVars::tooltipTimeout;
 }
 
 
@@ -255,13 +259,42 @@ void Tooltip::onDraw() const
 }
 
 
+ModalTimeModifier::ModalTimeModifier(DOM::Element* owner, size_t initialMillis)
+: TimeModifier(initialMillis)
+, AbstractModalElement(owner)
+//, _timeControl(timeControl)
+{
+	_timeout = 0;
+}
+
+void ModalTimeModifier::expire()
+{
+	AbstractModalElement::expire();
+	
+	disableKeys();
+	
+}
 
 
+
+//void ModalTimeModifier::_onTimeSet()
+//{
+//	if(_timeControl)
+//	{
+//		_timeControl->setTotalTime(ofxTimecode::millisForTimecode(getTimecodeString()));
+//	}
+//	expire();
+//}
+	
+	
 ModalView::ModalView(const std::string& id, const ofRectangle& shape, TimelineDocument* doc)
-:DOM::Element(id, shape)
+: MUI::Widget(id, shape)
+//: DOM::Element(id, shape)
 ,_doc(doc)
 {
-	setDrawChildrenOnly(true);
+//	std::cout << "Creating modal\n";
+//	setDrawChildrenOnly(true);
+//	setImplicitPointerCapture(truezzzzzzzzzzzzzzzzzzzzz);
 //	if(_doc)
 //	{
 ////		_parentShapeListener = _doc->shapeChanged.newListener(this, &ModalView::_documentShapeChange);
@@ -274,21 +307,54 @@ ModalView::~ModalView()
 	
 }
 
+bool ModalView::shouldBeDestroyed()
+{
+	return _needsToBeDestroyed;
+}
 
-//bool ModalView::addTooltip(DOM::Element* owner, const std::string& label, const DOM::Position& screenPosition)
-//{
-//	if(_tooltipMap.count(owner) == 0)
-//	{
-//		_tooltipMap[owner] = addChild<Tooltip>(owner, label, screenPosition);
-//		moveToFront();
-//		return true;
-//	}
-//	else
-//	{
-//		std::cout << "there is already a tooltip from this owner\n";
-//	}
-//	return false;
-//}
+void ModalView::onDraw() const
+{
+	if(_useBackgroundOverlay)
+	{
+		ofPushStyle();
+		ofFill();
+		ofSetColor(_backgroundOverlay);
+		
+		ofDrawRectangle(0,0,getWidth(), getHeight());
+		ofPopStyle();
+	}
+}
+
+void ModalView::useBackgroundOverlay(const ofColor& bg)
+{
+	_useBackgroundOverlay = true;
+	_backgroundOverlay = bg;
+}
+
+void ModalView::_onPointerCaptureEvent(DOM::PointerCaptureUIEventArgs& e)
+{
+	Widget::_onPointerCaptureEvent(e);
+
+    if (e.target() == this && e.type() == PointerEventArgs::GOT_POINTER_CAPTURE)
+    {
+		// if this gets triggered it means that the pointer was clicked outside any of the modal view's children, thus it need to be destroyed.
+//		_needsToBeDestroyed = true;
+		for(auto m : _modalElements)
+		{
+			if(m)
+			{
+				m->expire();
+			}
+		}
+    }
+
+
+//    else if (e.type() == PointerEventArgs::LOST_POINTER_CAPTURE)
+//    {
+//        _setIsDragging(false);
+//    }
+}
+
 
 
 void ModalView::onUpdate()
@@ -304,6 +370,11 @@ void ModalView::onUpdate()
 		ofRemove(_modalElements, [this](AbstractModalElement* e){
 			return this->remove(e);
 		});
+		
+	}
+	else
+	{
+		_needsToBeDestroyed = true;
 	}
 }
 
@@ -322,11 +393,6 @@ bool ModalView::remove(AbstractModalElement* e)
 	}
 	return false;
 }
-
-//bool ModalView::isShowingTooltip(DOM::Element* owner)
-//{
-//	return _tooltipMap.count(owner) > 0;
-//}
 
 
 void ModalView::_documentShapeChange(DOM::ShapeChangeEventArgs& s)
