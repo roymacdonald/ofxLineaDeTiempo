@@ -5,7 +5,7 @@ A new timeline addon for openFrameworks.
 ## Introduction
 
 
-[ofxTimeline](https://github.com/YCAMInterlab/ofxTimeline) , created by [James George](https://github.com/obviousjim/),  has long been the go-to timeline tool for [openFramworks](https://openframeworks.cc/). It has been modified and tailored numerous times over the years for specific things but current versions are not as accessible as they could be to the beginner user. ofxLineaDeTiempo comes into play in order to fulfill this need, making it easy to anyone to easily utilize a functional timeline with both basic and advanced features. The key is that it requires minimal coding and is deeply connected with ofxGui.
+[ofxTimeline](https://github.com/YCAMInterlab/ofxTimeline) , created by [James George](https://github.com/obviousjim/),  has long been the go-to timeline tool for [openFramworks](https://openframeworks.cc/). It has been modified and tailored numerous times over the years for specific things but current versions are not as accessible as they could be to the beginner user. ofxLineaDeTiempo comes into play in order to fulfill this need, making it easy to anyone to easily utilize a functional timeline with both basic and advanced features. The key is that it requires minimal coding and is deeply connected with `ofParameter` and `ofEvent`.
 
 As I could not use ofxTimeline as the name of this addon, ofxTimeline2 sounded boring, and considering that I am a native Spanish speaker it made sense to use a Spanish word instead. **Línea De Tiempo** is the literal translation of **Timeline** into Spanish, hence **ofxLineaDeTiempo**
 
