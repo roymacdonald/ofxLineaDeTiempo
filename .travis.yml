@@ -38,7 +38,7 @@ matrix:
 
 # OSX, OF master
   - os: osx
-    osx_image: xcode10
+    osx_image: xcode10.1
     compiler: clang
     env: BADGE=osx TARGET="osx" OF_BRANCH="master"
 
