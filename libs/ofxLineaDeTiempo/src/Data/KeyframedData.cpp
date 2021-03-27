@@ -240,6 +240,11 @@ T* BaseKeyframedData<T>::_addToCollection( const T& data, bool sort)
 	if(sort) sortData();
 	return d;
 }
+template<typename T>
+bool BaseKeyframedData<T>::hasDataAtTime(const uint64_t& time)
+{
+	return (_timedMap.count(time) > 0);
+}
 
 
 //---------------------------------------------------------------------------------
@@ -461,6 +466,16 @@ template<typename T>
 uint64_t&  KeyframedData_<T>::_getTimeFromData(TimedData_<T>* d)
 {
 	return d->time;
+}
+
+
+template<typename T>
+TimedData_<T> *  KeyframedData_<T>::getDataAtTime(const uint64_t& time)
+{
+	if(_timedMap.count(time)) return _timedMap[time];
+		
+	return nullptr;
+	
 }
 
 //---------------------------------------------------------------------------------

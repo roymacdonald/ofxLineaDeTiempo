@@ -67,6 +67,9 @@ public:
 
 	virtual ofJson toJson() override;
 
+	bool hasDataAtTime(const uint64_t& time);
+	
+	
 	
 	
 protected:
@@ -138,7 +141,7 @@ public:
 	virtual ofJson toJson() override;
 
 	
-	
+	TimedData_<DataType> * getDataAtTime(const uint64_t& time);
 	
 protected:
 	

@@ -466,7 +466,6 @@ void SetTotalTimeButton::_onTimeSet()
 {
 	if(_timeControl && _modalTimeModifier)
 	{
-//		std::cout << "SetTotalTimeButton::_onTimeSet() " << _modalTimeModifier->getTimecodeString() << "\n";
 		_timeControl->setTotalTime(ofxTimecode::millisForTimecode(_modalTimeModifier->getTimeModifier()->getTimecodeString()));
 		_modalTimeModifier->expire();
 		_modalTimeModifier = nullptr;
