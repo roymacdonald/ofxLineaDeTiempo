@@ -172,7 +172,7 @@ ofRectangle TracksPanel::_makeTimeRulerViewRect()
 ofRectangle TracksPanel::_makeHeadersViewRect()
 {
 
-	return ofRectangle(0,  ConstVars::TimeRulerInitialHeight + CONTAINER_MARGIN, _trackHeaderWidth, getHeight() - (CONTAINER_MARGIN * 2) - SCROLL_BAR_SIZE - ConstVars::TimeRulerInitialHeight );
+	return ofRectangle(0,  ConstVars::TimeRulerInitialHeight + MUI::ConstVars::getContainerMargin(), _trackHeaderWidth, getHeight() - (MUI::ConstVars::getContainerMargin() * 2) - MUI::ConstVars::getScrollBarSize() - ConstVars::TimeRulerInitialHeight );
 }
 
 //---------------------------------------------------------------------
@@ -224,6 +224,67 @@ void TracksPanel::onChildrensChange()
 	}
 }
 
+bool TracksPanel::setVerticalScrollZoom(const ofRange& val )
+{
+    return setScrollZoom(val, DOM::HORIZONTAL);
+}
+
+bool TracksPanel::setHorizontalScrollZoom(const ofRange& val )
+{
+    return setScrollZoom(val, DOM::VERTICAL);
+}
+
+ofRange TracksPanel::getVerticalScrollZoom()
+{
+    return getScrollZoom(DOM::VERTICAL);
+}
+
+ofRange TracksPanel::getHorizontalScrollZoom()
+{
+    return getScrollZoom(DOM::HORIZONTAL);
+}
+
+bool TracksPanel::setScrollZoom(const ofRange& val, DOM::Orientation orientation )
+{
+    if(_tracksView)
+    {
+        MUI::ZoomScrollbar * scroll = nullptr;
+        if(orientation == DOM::HORIZONTAL){
+            scroll = _tracksView->getScrollbarH();
+        }else{
+            scroll = _tracksView->getScrollbarV();
+        }
+        
+        if(scroll){
+            return scroll->setValue(val);
+        }
+    }
+    
+    ofLogError("TracksPanel::setScrollZoom") << "there is no view. cant set scroll/zoom values.";
+    return false;
+}
+
+ofRange  TracksPanel::getScrollZoom(DOM::Orientation orientation)
+{
+    if(_tracksView)
+    {
+        MUI::ZoomScrollbar * scroll = nullptr;
+        if(orientation == DOM::HORIZONTAL){
+            scroll = _tracksView->getScrollbarH();
+        }else{
+            scroll = _tracksView->getScrollbarV();
+        }
+        
+        if(scroll){
+            return scroll->getValue();
+        }
+    }
+    
+    ofLogError("TracksPanel::getScrollZoom") << "there is no view. cant set scroll/zoom values.";
+    
+    return ofRange();
+
+}
 
 
 

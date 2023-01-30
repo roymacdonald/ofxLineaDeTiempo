@@ -75,7 +75,7 @@ protected:
 	
 	EdgeHandleAlignment _edgeAlignment = ALIGN_CENTER;
 
-	float _handleSize = EDGE_HANDLE_SIZE;
+    float _handleSize ;//= EDGE_HANDLE_SIZE;
 	
 	
 	ofAlignHorz hTargetAnchor;

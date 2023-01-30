@@ -18,7 +18,7 @@ namespace MUI {
 float ZoomScrollbar::scrollSpeed = 0.02;
 
 ZoomScrollbar::ZoomScrollbar(const std::string& id, DOM::Orientation orientation, DOM::Element* attachedToElement)
-: DOM::Element(id, 0, 0, SCROLL_BAR_SIZE,SCROLL_BAR_SIZE)
+: DOM::Element(id, 0, 0, ConstVars::getScrollBarSize(),ConstVars::getScrollBarSize())
 , DOM::OrientedElement(orientation)
 {
 	handleValue.set(-1,-1);
@@ -26,7 +26,7 @@ ZoomScrollbar::ZoomScrollbar(const std::string& id, DOM::Orientation orientation
 	
 	this->setFocusable(false);
 
-	mainHandle =  this->addChild<ConstrainedGrabHandle>(id+"_Z_scroll_handle_", orientation, ofRectangle (0,0, SCROLL_BAR_SIZE, SCROLL_BAR_SIZE));
+	mainHandle =  this->addChild<ConstrainedGrabHandle>(id+"_Z_scroll_handle_", orientation, ofRectangle (0,0, ConstVars::getScrollBarSize(), ConstVars::getScrollBarSize()));
 	mainHandle->setConstrainedToParent(true);
 	mainHandle->setMoveToFrontOnCapture(false);
 
@@ -71,9 +71,9 @@ void ZoomScrollbar::attachTo(DOM::Element* attachedToElement)
 
 void ZoomScrollbar::_setIOHandle(EdgeHandle* handle)
 {
-	handle->setHandleSize(SCROLL_BAR_SIZE);
+	handle->setHandleSize(ConstVars::getScrollBarSize());
 	handle->setMoveToFrontOnCapture(true);
-	handle->setTargetMinSize(HANDLE_MIN_SIZE);
+	handle->setTargetMinSize(ConstVars::getHandleMinSize());
 	
 }
 
@@ -147,11 +147,11 @@ void ZoomScrollbar::_updateShape()
 		
 		if(_orientation == DOM::HORIZONTAL)
 		{
-			shape.set(s.x, s.getMaxY()+CONTAINER_MARGIN, s.width, SCROLL_BAR_SIZE);
+			shape.set(s.x, s.getMaxY()+ConstVars::getContainerMargin(), s.width, ConstVars::getScrollBarSize());
 		}
 		else
 		{
-			shape.set(s.getMaxX()+CONTAINER_MARGIN, s.y, SCROLL_BAR_SIZE, s.height);
+			shape.set(s.getMaxX()+ConstVars::getContainerMargin(), s.y, ConstVars::getScrollBarSize(), s.height);
 		}
 		
 		setShape(shape);
@@ -171,8 +171,8 @@ ofRange ZoomScrollbar::_shapeToNormalizedValue(const DOM::Shape& shape)
 	
 	ofRange r;
 	
-	r.min = ofMap(shape.getPosition()[dimIndex()], 0, getSize()[dimIndex()] - HANDLE_MIN_SIZE , 0,1, true);
-	r.max = ofMap(shape.getMax()[dimIndex()], HANDLE_MIN_SIZE, getSize()[dimIndex()] , 0,1, true);
+	r.min = ofMap(shape.getPosition()[dimIndex()], 0, getSize()[dimIndex()] - ConstVars::getHandleMinSize() , 0,1, true);
+	r.max = ofMap(shape.getMax()[dimIndex()], ConstVars::getHandleMinSize(), getSize()[dimIndex()] , 0,1, true);
 	
 	return r;
 	
@@ -183,12 +183,12 @@ DOM::Shape ZoomScrollbar::_normalizedValueToShape(const ofRange& val)
 {
 	
 	glm::vec2 mn (0,0);
-	glm::vec2 mx ( SCROLL_BAR_SIZE, SCROLL_BAR_SIZE);
+	glm::vec2 mx ( ConstVars::getScrollBarSize(), ConstVars::getScrollBarSize());
 	
 	auto size = getSize()[dimIndex()];
 	
-	mn[dimIndex()] = ofMap(val.min ,  0,1, 0, size - HANDLE_MIN_SIZE , true);
-	mx[dimIndex()] = ofMap(val.max, 0, 1, HANDLE_MIN_SIZE, size , true);
+	mn[dimIndex()] = ofMap(val.min ,  0,1, 0, size - ConstVars::getHandleMinSize() , true);
+	mx[dimIndex()] = ofMap(val.max, 0, 1, ConstVars::getHandleMinSize(), size , true);
 	
 	return DOM::Shape(mn, mx);
 	

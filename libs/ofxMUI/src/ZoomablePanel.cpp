@@ -43,10 +43,10 @@ void ZoomablePanel<C, CT>::_setClippingPanelShape()
 {
 	if(_clippingPanel){
 		_clippingPanel->setShape({
-			CONTAINER_MARGIN,
-			CONTAINER_MARGIN,
-			getWidth() - (CONTAINER_MARGIN*2) - _getScrollbarSize(DOM::Orientation::VERTICAL),
-			getHeight() - (CONTAINER_MARGIN*2) -  _getScrollbarSize(DOM::Orientation::HORIZONTAL)}
+			(float)ConstVars::getContainerMargin(),
+			(float)ConstVars::getContainerMargin(),
+			getWidth() - (ConstVars::getContainerMargin()*2) - _getScrollbarSize(DOM::Orientation::VERTICAL),
+			getHeight() - (ConstVars::getContainerMargin()*2) -  _getScrollbarSize(DOM::Orientation::HORIZONTAL)}
 								 );
 	}
 }
@@ -94,7 +94,7 @@ template<typename  C, typename CT>
 float ZoomablePanel<C, CT>::_getScrollbarSize(DOM::Orientation scrollbarOrientation)
 {
 	if(_isScrollbarActive(scrollbarOrientation)){
-		return SCROLL_BAR_SIZE;
+		return ConstVars::getScrollBarSize();
 	}else{
 		return 0;
 	}

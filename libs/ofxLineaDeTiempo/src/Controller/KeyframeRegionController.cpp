@@ -209,11 +209,17 @@ void KeyframeRegionController_<T>::fromJson(const ofJson& j)
 
 	if(!j["_collections"].is_array())
 	{
-		ofLogError("KeyframeRegionController_<T>::fromJson") << "failed. _collections object is not an array";
+		ofLogError("KeyframeRegionController_<T>::fromJson") << "failed. _collections in json is not an array";
 		return;
 	}
 	
 	auto& c = j["_collections"];
+	
+	if(c.size() != _collections.size())
+	{
+		ofLogError("KeyframeRegionController_<T>::fromJson") << "failed.  different size between _collections from json and _collections from region";
+		return;
+	}
 	
 	for(size_t i = 0; i < c.size(); ++i )
 	{
@@ -240,6 +246,8 @@ ofJson KeyframeRegionController_<T>::toJson()
 
 	return j;
 }
+
+
 
 
 

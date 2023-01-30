@@ -21,6 +21,8 @@ namespace LineaDeTiempo {
 
 class TrackController;
 
+template<typename >
+class KeyframeController;
 
 class RegionController
 : public BaseController<RegionView>
@@ -52,6 +54,9 @@ public:
 	
 	virtual size_t getNumDimensions() const = 0;
 	
+    template<typename DataType>
+    KeyframeController<DataType> addKeyFrame(const DataType& data, const uint64_t& time) ;
+    
 protected:
 	
 	ofRange64u _timeRange;

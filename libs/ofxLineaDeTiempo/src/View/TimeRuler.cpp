@@ -32,7 +32,7 @@ TimeRuler::TimeRuler(TracksPanel* panel, TimeControl* timeControl, const ofRecta
 	_playhead->updatePosition();
 	
 	
-	_totalTimeLoopButtons = addChild<TimeControlView>(ofRectangle (rect.getMaxX()-SCROLL_BAR_SIZE, 0, SCROLL_BAR_SIZE + CONTAINER_MARGIN, ConstVars::TimeRulerInitialHeight), panel, timeControl, DOM::VERTICAL);
+	_totalTimeLoopButtons = addChild<TimeControlView>(ofRectangle (rect.getMaxX()-MUI::ConstVars::getScrollBarSize(), 0, MUI::ConstVars::getScrollBarSize() + MUI::ConstVars::getContainerMargin(), ConstVars::TimeRulerInitialHeight), panel, timeControl, DOM::VERTICAL);
 	_totalTimeLoopButtons->add(SET_TOTAL_TIME_BUTTON);
 	_totalTimeLoopButtons->add(SPACER);
 	_totalTimeLoopButtons->add(LOOP_TOGGLE);
@@ -121,7 +121,7 @@ void TimeRuler::updateLayout()
 		
 		if(_totalTimeLoopButtons)
 		{
-			_totalTimeLoopButtons->setShape(ofRectangle (_bar->getShape().getMaxX() , 0, SCROLL_BAR_SIZE + CONTAINER_MARGIN, ConstVars::TimeRulerInitialHeight));
+			_totalTimeLoopButtons->setShape(ofRectangle (_bar->getShape().getMaxX() , 0, MUI::ConstVars::getScrollBarSize() + MUI::ConstVars::getContainerMargin(), ConstVars::TimeRulerInitialHeight));
 		}
 		
 		if(_panel->getTracksView() && _panel->getTracksView()->getClippingView())

@@ -130,6 +130,22 @@ public:
 		}
 		return nullptr;
 	}
+    
+    ///\brief sets the vertical or horizontal scroll and zoom values. Think of it as setting the scroll handles.
+    ///Their position is a normalized value between 0 and 1.
+    ///when calling setVerticalScrollZoom({0,1}) it will zoom all the way out showing everything.
+    /// when both values are equal zoom will be at its maximum.
+    /// If the view is not active it will do nothing
+    ///\param val. it is made by two float values between 0 and 1. Tip: You can call like setVerticalScrollZoom({0,1});
+    void setVerticalScrollZoom(const ofRange& val );
+    void setHorizontalScrollZoom(const ofRange& val );
+    
+    
+    ///\brief gets the vertical or horizontal scroll and zoom values. Think of this values as the position of the scroll handles, in normalized values between 0 and 1.
+    ///If there is no view it will return an empty ofRange.
+    ///\returns an ofRange with the zoom/scroll values. an ofRange with values min == 0 and max == 1 means that it is zoomed all the way out.
+    ofRange  getVerticalScrollZoom();
+    ofRange  getHorizontalScrollZoom();
 	
 protected:
 	

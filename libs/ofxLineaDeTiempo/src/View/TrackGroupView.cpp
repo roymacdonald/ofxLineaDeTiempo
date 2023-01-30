@@ -19,7 +19,9 @@ TrackGroupView::TrackGroupView(DOM::Element* parentView, TrackGroupController * 
 {
 
 	_tracksContainer = this;
-	
+    if(MUI::ConstVars::isHiDpiEnabled()){
+        _trackHeaderWidth *= 2;
+    }
 	if(headerGroup){
 		_groupHeader = headerGroup->addGroupHeader(getId() + "_groupHeader", this, _isPanel);
 	

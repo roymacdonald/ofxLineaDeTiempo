@@ -12,8 +12,9 @@
 namespace ofx {
 namespace LineaDeTiempo {
 
-struct ConstVars
+class ConstVars
 {
+public:
 	
 	/** @name Colors
 	 *	Most of the colors are defined through the document styles, yet there are a few things that looked better if their color was set individually.
@@ -96,6 +97,14 @@ struct ConstVars
 	///\brief get an ofParameterGroup containing all the ConstVars parameters
 	static ofParameterGroup& getParameters();
 	
+    
+    ///\brief enable support for HiDpi displays
+    static void enableHiDpi();
+    ///\brief disable support for HiDpi displays
+    static void disableHiDpi();
+    
+private:
+    static bool isHiDpiEnabled;
 };
 
 

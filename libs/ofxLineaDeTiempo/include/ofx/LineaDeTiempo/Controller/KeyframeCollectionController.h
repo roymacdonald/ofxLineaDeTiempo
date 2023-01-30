@@ -104,6 +104,10 @@ public:
 	
 	void moveAllKeyframesByTime(const uint64_t & _timeOffset);
 	
+	KeyframeController<RegionDataType>* getKeyframeAtTime(const uint64_t & time);
+	KeyframeController<RegionDataType>* getKeyframeByIndex(const size_t & index);
+	
+	
 protected:
 	
 	
@@ -227,6 +231,10 @@ public:
 	void setTimeRange(const ofRange64u& timeRange);
 	
 	void moveAllKeyframesByTime(const uint64_t & _timeOffset);
+	
+	KeyframeController<void>* getKeyframeAtTime(const uint64_t & time);
+	KeyframeController<void>* getKeyframeByIndex(const size_t & index);
+	
 	
 protected:
 	

@@ -66,7 +66,7 @@ protected:
 	ofEventListener _paramListener;
 	
 	//	// this is set to true when the param is being modified by the manager, so it does not generate an infinite loop because of the cyclic callbacks.
-	bool _bModifyingParam = false;
+//	bool _bModifyingParam = false;
 
 private:
 	

@@ -15,10 +15,11 @@ const uint64_t EdgeHandle::onOverDrawDelay = 100;
 
 //---------------------------------------------------------------------------------------
 EdgeHandle::EdgeHandle(const std::string& id, DOM::RectEdge edge, DOM::Element* target, EdgeHandleAlignment edgeAlignment, bool bAutoHide)
-: ConstrainedGrabHandle(id, DOM::ofRectangleHelper::getOrientationFromEdge(edge), ofRectangle(0,0, EDGE_HANDLE_SIZE, EDGE_HANDLE_SIZE))
+: ConstrainedGrabHandle(id, DOM::ofRectangleHelper::getOrientationFromEdge(edge), ofRectangle(0,0, ConstVars::getEdgeHandleSize(), ConstVars::getEdgeHandleSize()))
 , _target(target)
 , _edge(edge)
 , _edgeAlignment(edgeAlignment)
+, _handleSize(ConstVars::getEdgeHandleSize())
 {
 	
 	auto t = dynamic_cast<ConstrainedGrabHandle*>(_target);

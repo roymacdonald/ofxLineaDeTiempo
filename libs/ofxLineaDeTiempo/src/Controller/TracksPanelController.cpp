@@ -82,7 +82,7 @@ void TracksPanelController::generateView()
 			
 			_parentPanel->setEnableHeaderHandle(!_bAutoFill);
 			_parentPanel->setResizable(!_bAutoFill);
-			_parentPanel->setCornerHandleSize(SCROLL_BAR_SIZE);
+			_parentPanel->setCornerHandleSize(MUI::ConstVars::getScrollBarSize());
 			_parentPanel->moveToBack();
 						
 		}
@@ -388,11 +388,46 @@ void TracksPanelController::closeWindow()
 		}
 	}
 }
+
 bool TracksPanelController::hasWindow() const
 {
 	return _ownedWindow != nullptr;
 }
 
-} } // ofx::LineaDeTiempo
+
+void TracksPanelController::setVerticalScrollZoom(const ofRange& val )
+{
+    if(_panel){
+        _panel->setVerticalScrollZoom(val);
+    }    
+}
+
+void TracksPanelController::setHorizontalScrollZoom(const ofRange& val )
+{
+    if(_panel){
+        _panel->setHorizontalScrollZoom(val);
+    }
+}
+
+ofRange  TracksPanelController::getVerticalScrollZoom()
+{
+    if(_panel){
+        return _panel->getVerticalScrollZoom();
+    }
+    return ofRange();
+}
+
+ofRange  TracksPanelController::getHorizontalScrollZoom()
+{
+    if(_panel){
+        return _panel->getHorizontalScrollZoom();
+    }
+    return ofRange();
+}
+
 
 //template class ofx::MUI::Panel<ofx::LineaDeTiempo::TracksPanel>;
+
+
+} } // ofx::LineaDeTiempo
+

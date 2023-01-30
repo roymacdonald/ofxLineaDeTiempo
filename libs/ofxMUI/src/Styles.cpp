@@ -6,7 +6,7 @@
 
 
 #include "ofx/MUI/Styles.h"
-
+#include "ofx/MUI/Constants.h"
 
 namespace ofx {
 namespace MUI {
@@ -80,17 +80,17 @@ int TrueTypeFontSettings::defaultFontSize(FontSize size)
     switch (size)
     {
         case FontSize::EXTRA_SMALL:
-            return 8;
+            return 8 * ConstVars::getDisplayScaleFactor();
         case FontSize::SMALL:
-            return 10;
+            return 10 * ConstVars::getDisplayScaleFactor();
         case FontSize::MEDIUM:
-            return 12;
+            return 12 * ConstVars::getDisplayScaleFactor();
         case FontSize::LARGE:
-            return 20;
+            return 20 * ConstVars::getDisplayScaleFactor();
         case FontSize::EXTRA_LARGE:
-            return 32;
+            return 32 * ConstVars::getDisplayScaleFactor();
         default:
-            return 12;
+            return 12 * ConstVars::getDisplayScaleFactor();
     }
 }
 

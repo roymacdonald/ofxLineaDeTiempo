@@ -10,7 +10,7 @@
 namespace ofx {
 namespace LineaDeTiempo {
 
-
+bool ConstVars::isHiDpiEnabled = false;
 
 ofParameter<ofColor> ConstVars::TrackBackgroundColor = ofParameter<ofColor>("TrackBackgroundColor", ofColor(51), ofColor(0,0,0,0), ofColor(255,255,255,255));
 ofParameter<ofColor> ConstVars::TrackEdgeColor = ofParameter<ofColor>("TrackEdgeColor", ofColor(80), ofColor(0,0,0,0), ofColor(255,255,255,255));
@@ -76,7 +76,32 @@ ofParameterGroup& ConstVars::getParameters(){
 	}
 	return *group;
 }
+void ConstVars::enableHiDpi(){
+	if(isHiDpiEnabled == false){
+    	TrackInitialHeight *= 2;
+		DefaultKeyframeSize *= 2;
+		ViewTopHeaderHeight *= 2;
+		HeaderViewIndent *= 2;
+		TimeRulerInitialHeight *= 2;
+		PlayheadTriangleSize *= 2;
+		PlayheadWidth *= 2;
+        isHiDpiEnabled == true;
+	}
 
+}
+
+void ConstVars::disableHiDpi(){
+    if(isHiDpiEnabled == true){
+        TrackInitialHeight /= 2.0f;
+        DefaultKeyframeSize /= 2.0f;
+        ViewTopHeaderHeight /= 2.0f;
+        HeaderViewIndent /= 2.0f;
+        TimeRulerInitialHeight /= 2.0f;
+        PlayheadTriangleSize /= 2.0f;
+        PlayheadWidth /= 2.0f;
+        isHiDpiEnabled == false;
+    }
+}
 
 
 }} //ofx::LineaDeTiempo

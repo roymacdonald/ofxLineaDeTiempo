@@ -238,6 +238,34 @@ const typename  KeyframeCollectionController<D>::innerDataType& KeyframeCollecti
 }
 
 
+template<typename D>
+KeyframeController<D>* KeyframeCollectionController<D>::getKeyframeAtTime(const uint64_t & time)
+{
+	for(auto k : _keyframes)
+	{
+		
+		// TODO : the data has a table with the times of each keyframe, so there is no need to iterate over all these. Make use of it.
+		if(k && k -> getData() && (k -> getData()->time ) == time  )
+		{
+			return k;
+		}
+	}
+	return nullptr;
+}
+template<typename D>
+KeyframeController<D>* KeyframeCollectionController<D>::getKeyframeByIndex(const size_t & index)
+{
+	if(index >= _keyframes.size()) return nullptr;
+	return _keyframes[index];
+}
+
+
+
+
+
+
+
+
 //
 
 
@@ -526,6 +554,24 @@ void KeyframeCollectionController<void>::moveAllKeyframesByTime(const uint64_t &
 {
 	_keyframedData.moveAllByTime(_timeOffset);
 	if(getView()) getView()->updateLayout();
+}
+
+KeyframeController<void>* KeyframeCollectionController<void>::getKeyframeAtTime(const uint64_t & time)
+{
+	for(auto k : _keyframes)
+	{
+		if(k && k -> getData() && *(k -> getData()) == time  )
+		{
+			return k;
+		}
+	}
+	return nullptr;
+}
+
+KeyframeController<void>* KeyframeCollectionController<void>::getKeyframeByIndex(const size_t & index)
+{
+	if(index >= _keyframes.size()) return nullptr;
+	return _keyframes[index];
 }
 
 

@@ -20,7 +20,7 @@ ResizableHandle::ResizableHandle(const std::string& id, DOM::Orientation orienta
 	Widget(id, rect),
 	DOM::OrientedElement(orientation)
 {
-	ofRectangle r (0,0,SCROLL_BAR_SIZE, SCROLL_BAR_SIZE);
+	ofRectangle r (0,0,ConstVars::getScrollBarSize(), ConstVars::getScrollBarSize());
 	
 	
 	this->setFocusable(false);
@@ -79,10 +79,10 @@ void ResizableHandle::updateLayout(){
 
 
 void ResizableHandle::_setInHandleConstraint(){
-	glm::vec2 size (SCROLL_BAR_SIZE, SCROLL_BAR_SIZE);
+	glm::vec2 size (ConstVars::getScrollBarSize(), ConstVars::getScrollBarSize());
 	glm::vec2 pos = getScreenPosition();//(0,0);
 	
-	size [dimIndex()]  = mainHandle->getScreenShape().getMax()[dimIndex()] - HANDLE_MIN_SIZE + SCROLL_BAR_SIZE;
+	size [dimIndex()]  = mainHandle->getScreenShape().getMax()[dimIndex()] - ConstVars::getHandleMinSize() + ConstVars::getScrollBarSize();
 	
 	_inHandleConstraint->setShape(ofRectangle(pos.x, pos.y, size.x, size.y));
 	
@@ -93,10 +93,10 @@ void ResizableHandle::_setInHandleConstraint(){
 
 void ResizableHandle::_setOutHandleConstraint(){
 	glm::vec2 pos = getScreenPosition();//(0,0);
-	glm::vec2 size (SCROLL_BAR_SIZE, SCROLL_BAR_SIZE);
+	glm::vec2 size (ConstVars::getScrollBarSize(), ConstVars::getScrollBarSize());
 	size[dimIndex()] = getSize()[dimIndex()] + pos[dimIndex()];
 	
-	pos[dimIndex()] = mainHandle->getScreenPosition()[dimIndex()] + HANDLE_MIN_SIZE - SCROLL_BAR_SIZE;
+	pos[dimIndex()] = mainHandle->getScreenPosition()[dimIndex()] + ConstVars::getHandleMinSize() - ConstVars::getScrollBarSize();
 	
 	size[dimIndex()] -= pos[dimIndex()];
 	
@@ -118,7 +118,7 @@ bool ResizableHandle::_updateOutHandle()
 {
 	if(outHandle->isDragging())return false;
 	auto mx =mainHandle->getShape().getMax();
-	mx[dimIndex()] -= SCROLL_BAR_SIZE;
+	mx[dimIndex()] -= ConstVars::getScrollBarSize();
 	mx[1 - dimIndex()] = 0;
 
 	return setPosIfNonEqual(outHandle, mx);
@@ -172,18 +172,18 @@ void ResizableHandle::_onOutHandleShapeChanged(DOM::ShapeChangeEventArgs&)
 
 
 float ResizableHandle::minPosToNormalizedValue(){
-	return ofMap(mainHandle->getPosition()[dimIndex()], 0, getSize()[dimIndex()] - HANDLE_MIN_SIZE , 0,1, true);
+	return ofMap(mainHandle->getPosition()[dimIndex()], 0, getSize()[dimIndex()] - ConstVars::getHandleMinSize() , 0,1, true);
 }
 
 
 float ResizableHandle::maxPosToNormalizedValue(){
-	return ofMap(mainHandle->getShape().getMax()[dimIndex()], HANDLE_MIN_SIZE, getSize()[dimIndex()] , 0,1, true);
+	return ofMap(mainHandle->getShape().getMax()[dimIndex()], ConstVars::getHandleMinSize(), getSize()[dimIndex()] , 0,1, true);
 }
 
 
 bool ResizableHandle::normalizedValueToMinPos(float val){
 	auto p = mainHandle->getPosition();
-	p[dimIndex()] = ofMap(val, 0, 1, 0, getSize()[dimIndex()] - HANDLE_MIN_SIZE ,  true);
+	p[dimIndex()] = ofMap(val, 0, 1, 0, getSize()[dimIndex()] - ConstVars::getHandleMinSize() ,  true);
 	if(setPosIfNonEqual(mainHandle, p)){
 		_updateInHandle();
 		return true;
@@ -196,7 +196,7 @@ bool ResizableHandle::normalizedValueToMaxPos(float val){
 	
 	auto p = mainHandle->getShape().getMax();
 
-	p[dimIndex()] = ofMap(val, 0, 1, HANDLE_MIN_SIZE, getSize()[dimIndex()],  true);
+	p[dimIndex()] = ofMap(val, 0, 1, ConstVars::getHandleMinSize(), getSize()[dimIndex()],  true);
 	if(setShapeIfNonEqual(mainHandle, {mainHandle->getPosition(), p})){
 		_updateOutHandle();
 		return true;
