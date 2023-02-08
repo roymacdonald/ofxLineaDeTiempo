@@ -32,7 +32,7 @@ public:
 	
 
 
-
+    ofEventListeners listeners;
 
 	ofParameterGroup numbersGroup = {"numbersGroup"};
 	ofParameterGroup glmGroup     = {"glmGroup"};

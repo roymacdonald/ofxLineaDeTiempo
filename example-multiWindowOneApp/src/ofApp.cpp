@@ -76,6 +76,36 @@ void ofApp::keyReleased(int key){
 	{
 		timeline.load(  ofToDataPath("timelineData.json"));
 	}
+	else if (key == ' ')
+	{
+		timeline.getTimeControl()->tooglePlay();
+	}
+	else if (key == 'p')
+	{
+		cout << "Window PointerEvent map: "<<endl;
+		for(auto& m : ofx::PointerEventsManager::instance()._windowEventMap)
+		{
+			if(m.first){
+				cout << m.first->getWindowPosition() << ", " << m.first->getWindowSize();
+			}
+			else
+			{
+				cout << "Invalid window pointer";
+			}
+			
+			if(m.second)
+			{
+				cout << "  _  " << m.second.get();
+			}
+			else
+			{
+				cout << "  - invalid events pointer";
+			}
+			
+			 cout << endl;
+			
+		}
+	}
 	else if (key == 'w')
 	{
 		if(timeline.hasWindow())

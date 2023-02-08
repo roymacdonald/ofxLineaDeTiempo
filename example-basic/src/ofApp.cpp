@@ -34,7 +34,7 @@ void ofApp::setup(){
 	///\ Lets load some data into the timeline
 	///\ You can save this data pressing the 's' key.
 	timeline.load( ofToDataPath("timelineData.json"));
-	
+    timeline.getPanel()->getTracksView()->getScrollbarH()->setValue({0,1});
 	
 	
 	setHelpString();

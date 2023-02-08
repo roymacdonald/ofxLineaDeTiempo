@@ -5,6 +5,8 @@
 
 void ofApp::setup(){
 
+    ofxGuiEnableHiResDisplay();
+    ofx::LineaDeTiempo::enableHiDpi();
 
 
 	numbersGroup.add(_param_int32_t);
@@ -37,7 +39,9 @@ void ofApp::setup(){
 	
 	gui.add(colorGroup);
 	
-	
+    listeners.push(_param_void.newListener([](){
+        cout << "Param void!" << endl;
+    }));
 	
 	/// then simply add your ofxPanel to the timeline.
 	timeline.add(gui);
