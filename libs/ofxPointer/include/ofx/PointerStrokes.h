@@ -11,6 +11,7 @@
 #include "ofx/PointerEvents.h"
 #include "ofColor.h"
 #include "ofMesh.h"
+#include "ofRectangle.h"
 
 
 namespace ofx {
