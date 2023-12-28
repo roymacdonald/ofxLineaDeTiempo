@@ -159,7 +159,7 @@ protected:
 	
 	
 	template<typename D>
-	inline typename std::enable_if<not is_multi_dim_param<D>::value  and not std::is_floating_point<D>::value, bool>::type
+	inline typename std::enable_if<! is_multi_dim_param<D>::value  && ! std::is_floating_point<D>::value, bool>::type
 	_paramNeedsUpdate(D& param){
 		if(param !=  _keyframedData.getCurrentValue())
 		{
@@ -170,7 +170,7 @@ protected:
 	}
 	
 	template<typename D>
-	inline typename std::enable_if<not is_multi_dim_param<D>::value  and std::is_floating_point<D>::value, bool>::type
+	inline typename std::enable_if<! is_multi_dim_param<D>::value  && std::is_floating_point<D>::value, bool>::type
 	_paramNeedsUpdate(D& param){
 		if(! ofIsFloatEqual(param,  _keyframedData.getCurrentValue()))
 		{
