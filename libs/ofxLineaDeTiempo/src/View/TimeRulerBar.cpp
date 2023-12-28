@@ -97,8 +97,8 @@ void TimeRulerBar::makeRulerLines()
 			
 			if(distances[i] > _minLineDist && distances[i] < getWidth())
 			{
-				startIndex = min(i, startIndex);
-				endIndex = max(i, endIndex);
+				startIndex = std::min(i, startIndex);
+				endIndex = std::max(i, endIndex);
 			}
 		}
 		_rulerLines.addVertex({0, _timecodeTextRect.height, 0});
@@ -159,11 +159,11 @@ void TimeRulerBar::makeRulerLines()
 
 void TimeRulerBar::onDraw() const
 {
-	ofSetColor(ConstVars::TrackBackgroundColor);
+	ofSetColor(ConstVars::TrackBackgroundColor.get());
 	ofFill();
 	ofDrawRectangle(0, 0, getWidth(), getHeight());
 
-	ofSetColor(ConstVars::TrackEdgeColor);
+	ofSetColor(ConstVars::TrackEdgeColor.get());
 	ofNoFill();
 	ofDrawRectangle(0, 0, getWidth(), getHeight());
 

@@ -64,11 +64,11 @@ const ofColor& BaseTrackView::getTextColor() const
 void BaseTrackView::onDraw() const
 {
 	ofFill();
-	ofSetColor(ConstVars::TrackBackgroundColor);
+	ofSetColor(ConstVars::TrackBackgroundColor.get());
 	ofDrawRectangle(0, 0, getWidth(), getHeight());
 	
 	ofNoFill();
-	ofSetColor(ConstVars::TrackEdgeColor);
+	ofSetColor(ConstVars::TrackEdgeColor.get());
 	ofDrawRectangle(0, 0, getWidth(), getHeight());
 }
 
@@ -128,7 +128,7 @@ const TimeRuler * BaseTrackView::getTimeRuler() const
 MUI::Follower* BaseTrackView::getFollower()
 {
 	if(!_follower)
-		_follower = make_unique<MUI::Follower>(this);
+		_follower = std::make_unique<MUI::Follower>(this);
 	return _follower.get();
 }
 
