@@ -17,7 +17,7 @@ namespace LineaDeTiempo {
 TracksPanelController::TracksPanelController(const std::string& name)
 : TrackGroupController(name, nullptr, nullptr)
 {
-	_uniqueTimeControl = make_unique<TimeControl>();
+	_uniqueTimeControl = std::make_unique<TimeControl>();
 	_setTimeControl(  _uniqueTimeControl.get());
 	
 }

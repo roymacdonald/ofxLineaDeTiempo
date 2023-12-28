@@ -21,7 +21,7 @@ TrackHeader::TrackHeader(const std::string& id, const ofRectangle& rect, BaseTra
 , _group(group)
 , _belongsToPanel(belongsToPanel)
 {
-	_follower = make_unique<MUI::Follower>(this);
+	_follower = std::make_unique<MUI::Follower>(this);
 	if(_track)
 	{
 		
@@ -84,14 +84,14 @@ void TrackHeader::onDraw() const
 			
 			ofFill();
 
-			ofSetColor(ConstVars::TrackBackgroundColor);
+			ofSetColor(ConstVars::TrackBackgroundColor.get());
 			ofDrawRectangle(0, 0, getWidth(), getHeight());
 			
 			ofSetColor(_track->getColor());
 			ofDrawRectangle(0, 0, getWidth(), ConstVars::ViewTopHeaderHeight);
 			
 			ofNoFill();
-			ofSetColor(ConstVars::TrackEdgeColor);
+			ofSetColor(ConstVars::TrackEdgeColor.get());
 			ofDrawRectangle(0, 0, getWidth(), getHeight());
 			
 			

@@ -244,8 +244,8 @@ std::string TimeControl::getDebugString()
 	stringstream ss;
 	ss << "_totalTime: " << _totalTime << "\n";
 	ss << "_currentTime: " << _currentTime << "\n";
-	ss << "_inTime: " << _inTime.time << " enabled: " << boolalpha << _inTime.enabled << "\n";
-	ss << "_outTime: " << _outTime.time << " enabled: " << boolalpha << _outTime.enabled << "\n";
+	ss << "_inTime: " << _inTime.time << " enabled: " << std::boolalpha << _inTime.enabled << "\n";
+	ss << "_outTime: " << _outTime.time << " enabled: " << std::boolalpha << _outTime.enabled << "\n";
 	ss << "_bLoop: " << _bLoop << "\n";
 	ss << "_playStartTime: " << _playStartTime << "\n";
 	ss << "_state: " << _state << "\n";

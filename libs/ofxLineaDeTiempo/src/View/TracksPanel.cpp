@@ -45,7 +45,7 @@ TracksPanel::TracksPanel(const std::string& id, const ofRectangle& rect, DOM::El
 
 	int followType = MUI::FOLLOW_Y | MUI::FOLLOW_HEIGHT;
 	int followMode = MUI::FOLLOW_SCREEN;
-	_follower = make_unique<MUI::Follower>(_tracksContainer);
+	_follower = std::make_unique<MUI::Follower>(_tracksContainer);
 	_follower->mutuallyFollow(_header->getFollower(), followType, followMode);
 	
 	
@@ -134,11 +134,11 @@ void TracksPanel::onDraw() const
 	ofSetDrawBitmapMode(OF_BITMAPMODE_SIMPLE);
 	
 	ofFill();
-	ofSetColor(ConstVars::PanelBackgroundColor);
+	ofSetColor(ConstVars::PanelBackgroundColor.get());
 	ofDrawRectangle(0,0, getWidth(), getHeight());
 	
 	ofNoFill();
-	ofSetColor(ConstVars::TrackEdgeColor);
+	ofSetColor(ConstVars::TrackEdgeColor.get());
 	ofDrawRectangle(0,0, getWidth(), getHeight());
 	
 }
