@@ -216,7 +216,12 @@ void TracksClippedView::updateVerticalLayout()
 	if(_zoomScrollbarH)
 	{
 		auto zoom = _zoomScrollbarV->getValue();
-		float yScale = _getZoomableHeight()/ (_unscaledHeight * zoom.span());
+        auto zh = _unscaledHeight * zoom.span();
+        if(ofIsFloatEqual(zh, 0.0f)){
+            zh = std::numeric_limits<float>::epsilon();
+        }
+        
+		float yScale = _getZoomableHeight()/ zh;
 		
 		
 		float totalHeight = yScale*_unscaledHeight;
