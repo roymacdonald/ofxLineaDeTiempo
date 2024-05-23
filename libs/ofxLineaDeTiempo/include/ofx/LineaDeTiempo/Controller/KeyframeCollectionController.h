@@ -131,7 +131,7 @@ protected:
 	KeyframeRegionController_<RegionDataType> * _parentRegion = nullptr;
 	
 	template<typename D>
-	inline typename std::enable_if<is_multi_dim_param<D>::value  and std::is_floating_point<D>::value, bool>::type
+	inline typename std::enable_if<is_multi_dim_param<D>::value  && std::is_floating_point<D>::value, bool>::type
 	_paramNeedsUpdate(D& param){
 		auto& d = _keyframedData.getCurrentValue();
 		if(! ofIsFloatEqual(param[_dimensionIndex],  d))
@@ -143,7 +143,7 @@ protected:
 	}
 	
 	template<typename D>
-	inline typename std::enable_if<is_multi_dim_param<D>::value and not std::is_floating_point<D>::value, bool>::type
+	inline typename std::enable_if<is_multi_dim_param<D>::value && ! std::is_floating_point<D>::value, bool>::type
 	_paramNeedsUpdate(D& param){
 		auto& d = _keyframedData.getCurrentValue();
 		if(param[_dimensionIndex] !=  d)

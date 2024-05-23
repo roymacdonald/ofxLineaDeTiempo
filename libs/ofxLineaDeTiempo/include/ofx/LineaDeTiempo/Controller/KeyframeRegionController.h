@@ -61,7 +61,7 @@ public:
 	const std::vector<KeyframeCollectionController<DataType>* >& getKeyframesCollection() const;
 	
 	template<typename T = DataType>
-	typename std::enable_if< (not std::is_void<T>::value and (type_dimensions<T>::value > 1)),  KeyframeController<T>* >::type
+	typename std::enable_if< (! std::is_void<T>::value && (type_dimensions<T>::value > 1)),  KeyframeController<T>* >::type
 	addKeyframe(const T& data,  uint64_t time )
 	{
 		/// the following static assert is simply to make sure that the functions template is the same a the class' DataType
@@ -79,7 +79,7 @@ public:
 	}
 	
 	template<typename T = DataType>
-	typename std::enable_if< not std::is_void<T>::value and type_dimensions<T>::value == 1,  KeyframeController<T>* >::type
+	typename std::enable_if< ! std::is_void<T>::value && type_dimensions<T>::value == 1,  KeyframeController<T>* >::type
 	addKeyframe(const T& data,  uint64_t time )
 	{
 		static_assert(std::is_same<T, DataType>(), "Cannot add keyframe with a different data type");
