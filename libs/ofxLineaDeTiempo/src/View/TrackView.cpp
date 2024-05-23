@@ -113,12 +113,15 @@ float TrackView::getUnscaledHeight()
 
 float TrackView::updateYScaled(float y, float yScale)
 {
-	_verticalScale = yScale;
-	auto h = getUnscaledHeight() * yScale;
-	_bIgnoreHeightChange = true;
-	setShape({0, y, getWidth(), h});
-	_bIgnoreHeightChange = false;
-	return h;
+    auto h = getUnscaledHeight() * yScale;
+    if(h >=  (MUI::ConstVars::isHiDpiEnabled() ? 36: 18)){
+        _verticalScale = yScale;
+        _bIgnoreHeightChange = true;
+        setShape({0, y, getWidth(), h});
+        _bIgnoreHeightChange = false;
+        return h;
+    }
+    return 0;
 }
 
 
