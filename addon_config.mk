@@ -71,7 +71,6 @@ linux64:
 	# ADDON_LIBS += libs/opencv/lib/linuxarmv6l/libopencv_calib3d.a
 	# ...
 linux:
-win_cb:
 linuxarmv6l:
 linuxarmv7l:
 android/armeabi:	

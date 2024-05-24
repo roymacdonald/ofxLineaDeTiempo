@@ -11,7 +11,6 @@
 // comment the following line to use a different value for each state
 #define USE_SINGLE_VALUE_FOR_ROLE
 
-using namespace ofx::LineaDeTiempo;
 
 ///This example is based on the basic example. Look at it for a thorough explanation of what each thing does.
 ///This example is intended to be use to set the color scheme only using grays.

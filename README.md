@@ -1,5 +1,14 @@
 # ofxLineaDeTiempo
 
+## Update for Windows, 
+The following fork includes fixes for Windows 10, Visual Studio 2022.
+
+### How to include the addon into openframeworks (oF) v0.12 project on Windows 10?
+- Clone the repo into your oF addons directory.
+- Open project generator (PG).
+- Drag & drop an example project into the PG. Hit Generate.
+- Goto the folder and open *.sln file with Visual Stuido 2022.
+
 A new timeline addon for openFrameworks.
 
 ## Introduction
