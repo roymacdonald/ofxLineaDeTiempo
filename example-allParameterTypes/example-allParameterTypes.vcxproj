@@ -1,0 +1,322 @@
+<?xml version="1.0"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<ItemGroup Label="ProjectConfigurations">
+		<ProjectConfiguration Include="Debug|x64">
+			<Configuration>Debug</Configuration>
+			<Platform>x64</Platform>
+		</ProjectConfiguration>
+		<ProjectConfiguration Include="Release|x64">
+			<Configuration>Release</Configuration>
+			<Platform>x64</Platform>
+		</ProjectConfiguration>
+	</ItemGroup>
+	<PropertyGroup Condition="'$(WindowsTargetPlatformVersion)'==''">
+		<LatestTargetPlatformVersion>$([Microsoft.Build.Utilities.ToolLocationHelper]::GetLatestSDKTargetPlatformVersion('Windows', '10.0'))</LatestTargetPlatformVersion>
+		<WindowsTargetPlatformVersion Condition="'$(WindowsTargetPlatformVersion)' == ''">$(LatestTargetPlatformVersion)</WindowsTargetPlatformVersion>
+		<TargetPlatformVersion>$(WindowsTargetPlatformVersion)</TargetPlatformVersion>
+	</PropertyGroup>
+	<PropertyGroup Label="Globals">
+		<ProjectGuid>{7FD42DF7-442E-479A-BA76-D0022F99702A}</ProjectGuid>
+		<Keyword>Win32Proj</Keyword>
+		<RootNamespace>example-allParameterTypes</RootNamespace>
+	</PropertyGroup>
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+		<ConfigurationType>Application</ConfigurationType>
+		<CharacterSet>Unicode</CharacterSet>
+		<PlatformToolset>v142</PlatformToolset>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+		<ConfigurationType>Application</ConfigurationType>
+		<CharacterSet>Unicode</CharacterSet>
+		<WholeProgramOptimization>true</WholeProgramOptimization>
+		<PlatformToolset>v142</PlatformToolset>
+	</PropertyGroup>
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+	<ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+		<Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
+	</ImportGroup>
+	<ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+		<Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
+	</ImportGroup>
+	<PropertyGroup Label="UserMacros" />
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+		<OutDir>bin\</OutDir>
+		<IntDir>obj\$(Platform)\$(Configuration)\</IntDir>
+		<TargetName>$(ProjectName)_debug</TargetName>
+		<LinkIncremental>true</LinkIncremental>
+		<GenerateManifest>true</GenerateManifest>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+		<OutDir>bin\</OutDir>
+		<IntDir>obj\$(Platform)\$(Configuration)\</IntDir>
+		<LinkIncremental>false</LinkIncremental>
+	</PropertyGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+		<ClCompile>
+			<Optimization>Disabled</Optimization>
+			<BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+			<PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+			<WarningLevel>Level3</WarningLevel>
+			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxGui\src;..\..\..\addons\ofxLineaDeTiempo\libs;..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM;..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\include;..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx;..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx\DOM;..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\src;..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo;..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include;..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx;..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo;..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\BaseTypes;..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller;..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Data;..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Utils;..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View;..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src;..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller;..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Data;..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Utils;..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View;..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI;..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include;..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx;..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI;..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Handles;..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src;..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\Handles;..\..\..\addons\ofxLineaDeTiempo\libs\ofxPointer;..\..\..\addons\ofxLineaDeTiempo\libs\ofxPointer\include;..\..\..\addons\ofxLineaDeTiempo\libs\ofxPointer\include\ofx;..\..\..\addons\ofxLineaDeTiempo\libs\ofxPointer\src;..\..\..\addons\ofxLineaDeTiempo\libs\ofxRange;..\..\..\addons\ofxLineaDeTiempo\libs\ofxRange\include;..\..\..\addons\ofxLineaDeTiempo\libs\ofxTimecode;..\..\..\addons\ofxLineaDeTiempo\libs\ofxTimecode\include;..\..\..\addons\ofxLineaDeTiempo\libs\ofxTimecode\src;..\..\..\addons\ofxLineaDeTiempo\src</AdditionalIncludeDirectories>
+			<CompileAs>CompileAsCpp</CompileAs>
+			<MultiProcessorCompilation>true</MultiProcessorCompilation>
+			<ObjectFileName>$(IntDir)\Build\%(RelativeDir)\$(Configuration)\</ObjectFileName>
+			<LanguageStandard>stdcpp17</LanguageStandard>
+			<AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+		</ClCompile>
+		<Link>
+			<GenerateDebugInformation>true</GenerateDebugInformation>
+			<SubSystem>Console</SubSystem>
+			<RandomizedBaseAddress>false</RandomizedBaseAddress>
+			<AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+			<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+			<ForceFileOutput>MultiplyDefinedSymbolOnly</ForceFileOutput>
+		</Link>
+		<PostBuildEvent />
+	</ItemDefinitionGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+		<ClCompile>
+			<WholeProgramOptimization>false</WholeProgramOptimization>
+			<PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+			<WarningLevel>Level3</WarningLevel>
+			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxGui\src;..\..\..\addons\ofxLineaDeTiempo\libs;..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM;..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\include;..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx;..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx\DOM;..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\src;..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo;..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include;..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx;..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo;..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\BaseTypes;..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller;..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Data;..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Utils;..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View;..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src;..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller;..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Data;..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Utils;..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View;..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI;..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include;..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx;..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI;..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Handles;..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src;..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\Handles;..\..\..\addons\ofxLineaDeTiempo\libs\ofxPointer;..\..\..\addons\ofxLineaDeTiempo\libs\ofxPointer\include;..\..\..\addons\ofxLineaDeTiempo\libs\ofxPointer\include\ofx;..\..\..\addons\ofxLineaDeTiempo\libs\ofxPointer\src;..\..\..\addons\ofxLineaDeTiempo\libs\ofxRange;..\..\..\addons\ofxLineaDeTiempo\libs\ofxRange\include;..\..\..\addons\ofxLineaDeTiempo\libs\ofxTimecode;..\..\..\addons\ofxLineaDeTiempo\libs\ofxTimecode\include;..\..\..\addons\ofxLineaDeTiempo\libs\ofxTimecode\src;..\..\..\addons\ofxLineaDeTiempo\src</AdditionalIncludeDirectories>
+			<CompileAs>CompileAsCpp</CompileAs>
+			<ObjectFileName>$(IntDir)\Build\%(RelativeDir)\$(Configuration)\</ObjectFileName>
+			<LanguageStandard>stdcpp17</LanguageStandard>
+			<AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+		</ClCompile>
+		<Link>
+			<IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+			<GenerateDebugInformation>false</GenerateDebugInformation>
+			<SubSystem>Console</SubSystem>
+			<OptimizeReferences>true</OptimizeReferences>
+			<EnableCOMDATFolding>true</EnableCOMDATFolding>
+			<RandomizedBaseAddress>false</RandomizedBaseAddress>
+			<AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+			<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+			<ForceFileOutput>MultiplyDefinedSymbolOnly</ForceFileOutput>
+		</Link>
+		<PostBuildEvent />
+	</ItemDefinitionGroup>
+	<ItemGroup>
+		<ClCompile Include="src\main.cpp" />
+		<ClCompile Include="src\ofApp.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxBaseGui.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxButton.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxColorPicker.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxGuiGroup.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxInputField.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxLabel.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxPanel.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxSlider.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxSliderGroup.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxToggle.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\src\CapturedPointer.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\src\Document.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\src\Element.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\src\Events.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\src\Exceptions.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\src\Layout.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\src\Node.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\src\NodeEvents.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\src\Types.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller\BaseController.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller\Interpolator.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller\KeyframeCollectionController.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller\KeyframeController.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller\KeyframeRegionController.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller\KeyframeTrackController.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller\RegionController.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller\TimeControl.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller\TrackController.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller\TrackGroupController.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller\TracksPanelController.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Data\KeyframedData.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Data\TimedData.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Utils\ConstVars.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\BaseTrackView.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\KeyframeCollectionView.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\KeyframesRegionView.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\KeyframeTrackHeader.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\KeyframeTrackView.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\KeyframeView.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\MainRenderer.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\ModalView.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\ofxGuiView.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\Playhead.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\RegionHeaderView.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\RegionView.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\Selector.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\TimeControlView.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\TimelineDocument.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\TimeModifierView.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\TimeRuler.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\TimeRulerBar.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\TimeRulerHeader.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\TrackGroupView.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\TrackHeader.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\TrackHeaderGroup.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\TracksClippedView.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\TracksPanel.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\TrackView.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\AutoReziseContainer.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\Axis.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\Button.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\ButtonGroup.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\ClippedView.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\Constants.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\Follower.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\Handles\BaseScrollHandle.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\Handles\ConstrainedGrabHandle.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\Handles\EdgeHandle.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\Handles\ResizableHandle.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\Icon.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\Label.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\Panel.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\Shadow.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\SliderGroup.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\Styles.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\Utils.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\Widget.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\ZoomablePanel.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\ZoomScrollbar.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxPointer\src\PointerEvents.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxPointer\src\PointerEventsiOS.mm" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxPointer\src\PointerEventsMacOS.mm" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxPointer\src\PointerStrokes.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxTimecode\src\ofxTimecode.cpp" />
+	</ItemGroup>
+	<ItemGroup>
+		<ClInclude Include="src\ofApp.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxBaseGui.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxButton.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxColorPicker.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxGui.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxGuiGroup.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxGuiUtils.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxInputField.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxLabel.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxPanel.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxSlider.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxSliderGroup.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxToggle.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\src\ofxLineaDeTiempo.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx\DOM\CapturedPointer.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx\DOM\Document.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx\DOM\Element.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx\DOM\Events.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx\DOM\EventTarget.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx\DOM\Exceptions.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx\DOM\Layout.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx\DOM\Node.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx\DOM\NodeEvents.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx\DOM\Types.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofxDOM.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\BaseTypes\AbstractSerializable.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\BaseTypes\BaseHasCollection.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\BaseTypes\BaseSelectable.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\BaseTypes\NamedConstPointerCollection.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller\BaseController.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller\Interpolator.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller\KeyframeCollectionController.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller\KeyframeController.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller\KeyframeRegionController.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller\KeyframeTrackController.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller\RegionController.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller\TimeControl.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller\TrackController.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller\TrackGroupController.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller\TracksPanelController.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Data\jsonSerializer.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Data\KeyframedData.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Data\TimedData.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Utils\CollectionHelper.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Utils\ConstVars.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Utils\FontUtils.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Utils\ofxTypeTraits.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Utils\ParamHelper.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\BaseTrackView.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\KeyframeCollectionView.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\KeyframesRegionView.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\KeyframeTrackHeader.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\KeyframeTrackView.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\KeyframeView.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\MainRenderer.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\ModalView.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\ofxGuiView.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\Playhead.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\RegionHeaderView.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\RegionView.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\Selector.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\TimeControlView.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\TimelineDocument.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\TimeModifierView.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\TimeRuler.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\TimeRulerBar.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\TimeRulerHeader.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\TrackGroupView.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\TrackHeader.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\TrackHeaderGroup.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\TracksClippedView.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\TracksPanel.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\TrackView.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\AutoReziseContainer.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Axis.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Button.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\ButtonGroup.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\ClippedView.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Constants.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Follower.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Handles\BaseScrollHandle.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Handles\ConstrainedGrabHandle.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Handles\EdgeHandle.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Handles\ResizableHandle.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Icon.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Label.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Margins.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\ofRectangleHelper.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\OrientedElement.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Panel.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\ScaledView.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Scope.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Shadow.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Slider.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\SliderGroup.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Styles.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Types.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Utils.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Widget.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\ZoomablePanel.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\ZoomScrollbar.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofxMUI.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxPointer\include\ofx\PointerEvents.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxPointer\include\ofx\PointerEventsiOS.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxPointer\include\ofx\PointerEventsMacOS.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxPointer\include\ofx\PointerStrokes.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxPointer\ofxPointer.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxRange\include\ofRange.h" />
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxTimecode\include\ofxTimecode.h" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">
+			<Project>{5837595d-aca9-485c-8e76-729040ce4b0b}</Project>
+		</ProjectReference>
+	</ItemGroup>
+	<ItemGroup>
+		<ResourceCompile Include="icon.rc">
+			<AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/D_DEBUG %(AdditionalOptions)</AdditionalOptions>
+			<AdditionalIncludeDirectories>$(OF_ROOT)\libs\openFrameworksCompiled\project\vs</AdditionalIncludeDirectories>
+		</ResourceCompile>
+	</ItemGroup>
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+	<ProjectExtensions>
+		<VisualStudio>
+			<UserProperties RESOURCE_FILE="icon.rc" />
+		</VisualStudio>
+	</ProjectExtensions>
+</Project>

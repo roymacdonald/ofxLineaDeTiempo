@@ -63,7 +63,7 @@ protected:
 	
 	
 	template<typename DataType>
-	static typename std::enable_if<std::is_integral<DataType>::value and not std::is_same<DataType, bool>::value, DataType>::type
+	static typename std::enable_if<std::is_integral<DataType>::value && ! std::is_same<DataType, bool>::value, DataType>::type
 	_interpolateTimedData(const TimedData_<DataType>* from, const TimedData_<DataType>* to, const uint64_t& _time)
 	{
 		return ofMap(_time, from->time, to->time, from->value, to->value);
