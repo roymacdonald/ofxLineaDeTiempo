@@ -26,7 +26,7 @@ void ofApp::setup(){
 	timeline.setShape(ofRectangle(0,ofGetHeight()/2,ofGetWidth(), ofGetHeight()/2));
 	
 	
-	gui.setup(ConstVars::getParameters());
+	gui.setup(ofx::LineaDeTiempo::ConstVars::getParameters());
 	
 	
 	colorsGui.setup("colorsGui");
