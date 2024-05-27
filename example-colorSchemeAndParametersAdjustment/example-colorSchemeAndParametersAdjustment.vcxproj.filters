@@ -1,0 +1,732 @@
+<?xml version="1.0"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<ItemGroup>
+		<ClCompile Include="src\ofApp.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
+		<ClCompile Include="src\main.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
+		<ClCompile Include="src\main.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
+		<ClCompile Include="src\ofApp.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxBaseGui.cpp">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxButton.cpp">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxColorPicker.cpp">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxGuiGroup.cpp">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxInputField.cpp">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxLabel.cpp">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxPanel.cpp">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxSlider.cpp">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxSliderGroup.cpp">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxToggle.cpp">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\src\CapturedPointer.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxDOM\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\src\Document.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxDOM\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\src\Element.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxDOM\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\src\Events.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxDOM\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\src\Exceptions.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxDOM\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\src\Layout.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxDOM\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\src\Node.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxDOM\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\src\NodeEvents.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxDOM\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\src\Types.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxDOM\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller\BaseController.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller\Interpolator.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller\KeyframeCollectionController.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller\KeyframeController.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller\KeyframeRegionController.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller\KeyframeTrackController.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller\RegionController.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller\TimeControl.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller\TrackController.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller\TrackGroupController.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller\TracksPanelController.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Data\KeyframedData.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Data</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Data\TimedData.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Data</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Utils\ConstVars.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Utils</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\BaseTrackView.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\KeyframeCollectionView.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\KeyframesRegionView.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\KeyframeTrackHeader.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\KeyframeTrackView.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\KeyframeView.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\MainRenderer.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\ModalView.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\ofxGuiView.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\Playhead.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\RegionHeaderView.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\RegionView.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\Selector.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\TimeControlView.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\TimelineDocument.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\TimeModifierView.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\TimeRuler.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\TimeRulerBar.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\TimeRulerHeader.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\TrackGroupView.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\TrackHeader.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\TrackHeaderGroup.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\TracksClippedView.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\TracksPanel.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View\TrackView.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\AutoReziseContainer.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\Axis.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\Button.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\ButtonGroup.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\ClippedView.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\Constants.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\Follower.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\Handles\BaseScrollHandle.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\src\Handles</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\Handles\ConstrainedGrabHandle.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\src\Handles</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\Handles\EdgeHandle.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\src\Handles</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\Handles\ResizableHandle.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\src\Handles</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\Icon.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\Label.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\Panel.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\Shadow.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\SliderGroup.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\Styles.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\Utils.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\Widget.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\ZoomablePanel.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\src\ZoomScrollbar.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxPointer\src\PointerEvents.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxPointer\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxPointer\src\PointerEventsiOS.mm">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxPointer\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxPointer\src\PointerEventsMacOS.mm">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxPointer\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxPointer\src\PointerStrokes.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxPointer\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxTimecode\src\ofxTimecode.cpp">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxTimecode\src</Filter>
+		</ClCompile>
+	</ItemGroup>
+	<ItemGroup>
+		<Filter Include="src">
+			<UniqueIdentifier>{d8376475-7454-4a24-b08a-aac121d3ad6f}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons">
+			<UniqueIdentifier>{D366464F--CF3-1-4F-D7-9-626-1146289C1309}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxGui">
+			<UniqueIdentifier>{BE6AA862--708-9-44-CA-B-5C5-01C416E75B29}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxGui\src">
+			<UniqueIdentifier>{0609C657--800-2-4D-4C-9-08C-1FF4382A3863}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo">
+			<UniqueIdentifier>{BFAFD2BB--0F7-7-45-A5-9-3CA-15BDCF06E970}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\src">
+			<UniqueIdentifier>{73D95A77--A9E-C-46-35-B-240-B423DED51015}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs">
+			<UniqueIdentifier>{09100B6C--72E-E-4D-1D-B-BD7-042C0BF7D9D3}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxDOM">
+			<UniqueIdentifier>{1D431921--3EA-B-4A-92-B-DB0-676C07582482}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxDOM\include">
+			<UniqueIdentifier>{E91EFAC9--9E6-7-40-9A-9-15F-E531C1D45804}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx">
+			<UniqueIdentifier>{E2963E01--65C-D-45-7B-9-0CE-DF41AD192887}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx\DOM">
+			<UniqueIdentifier>{C2D7F045--9CA-1-43-0C-8-57D-BB4D72181DAC}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxDOM\src">
+			<UniqueIdentifier>{648766FC--7A0-5-41-F7-9-818-C569FA14DCF6}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo">
+			<UniqueIdentifier>{D08E223E--E06-C-48-6C-B-809-3E0FB298AE3C}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include">
+			<UniqueIdentifier>{B208BCDA--2F4-6-4F-CA-9-89B-9B5030D6D7E3}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx">
+			<UniqueIdentifier>{085AFB01--FB0-6-41-86-B-1FE-218A214193E1}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo">
+			<UniqueIdentifier>{20CBD54A--7C1-B-46-6B-8-57C-D15E223FA499}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\BaseTypes">
+			<UniqueIdentifier>{A1BAC1D2--66F-4-4F-CF-B-127-8E0444D039C3}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller">
+			<UniqueIdentifier>{350D06A5--0D4-E-48-63-8-F1C-4F68BB9A5E5D}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Data">
+			<UniqueIdentifier>{F1AEC785--601-A-46-2C-A-3CB-4D009203F989}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Utils">
+			<UniqueIdentifier>{ED968379--491-8-45-9A-B-D2E-66F3A6F904EE}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View">
+			<UniqueIdentifier>{49A25649--932-E-47-DA-8-14B-46AD18068593}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src">
+			<UniqueIdentifier>{67039C4A--187-1-48-C0-A-D9F-A4BE4F358C64}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Controller">
+			<UniqueIdentifier>{DA3B7B41--A37-1-42-FF-8-F86-9DCEB4DA7D35}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Data">
+			<UniqueIdentifier>{BA77E5B8--85E-3-43-F8-8-6A1-0AF89B501AF6}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\Utils">
+			<UniqueIdentifier>{36DCFA7C--3DF-4-40-78-A-268-4A7368FC2D80}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\src\View">
+			<UniqueIdentifier>{F2C9D67F--406-D-4D-8E-8-BCB-4F20F3598679}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxMUI">
+			<UniqueIdentifier>{3278217A--1D0-1-4F-38-8-311-3ED671F7A8BE}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxMUI\include">
+			<UniqueIdentifier>{02D7072C--10F-8-45-97-9-9D5-0C094B385420}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx">
+			<UniqueIdentifier>{FA6522AC--F1D-4-43-28-8-02E-BAA2C7F748F9}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI">
+			<UniqueIdentifier>{396B476F--78E-8-49-62-B-D42-B09AD72EAD6B}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Handles">
+			<UniqueIdentifier>{FBEAF554--E35-2-49-89-8-503-3DB33DE1A920}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxMUI\src">
+			<UniqueIdentifier>{883B0770--7DD-5-46-1C-9-5D3-6FF5585F5271}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxMUI\src\Handles">
+			<UniqueIdentifier>{3AC8EA87--E72-0-48-D0-A-AAE-80559C8C5F47}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxPointer">
+			<UniqueIdentifier>{EC9F9F04--245-5-47-32-9-A2A-1E7BCC924D21}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxPointer\include">
+			<UniqueIdentifier>{585EA80D--07A-3-49-9D-9-477-32DB9BD3F9AA}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxPointer\include\ofx">
+			<UniqueIdentifier>{83F16680--29F-2-4E-8F-8-437-1389A825E626}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxPointer\src">
+			<UniqueIdentifier>{52863310--B79-B-4A-7C-B-0A0-C14D848A70D9}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxRange">
+			<UniqueIdentifier>{154FCAF9--AED-4-43-BE-B-226-0989C5148509}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxRange\include">
+			<UniqueIdentifier>{80740085--917-7-4A-9B-B-F2A-5C4A1D1A4A6A}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxTimecode">
+			<UniqueIdentifier>{3F5085B0--7ED-B-4C-C0-8-159-6B62CD6871DF}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxTimecode\include">
+			<UniqueIdentifier>{CBBE5F44--C82-D-42-D8-A-3F9-468F57A78B0F}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxLineaDeTiempo\libs\ofxTimecode\src">
+			<UniqueIdentifier>{29CBAA0C--A45-4-48-54-B-595-A0F9D3F4875C}</UniqueIdentifier>
+		</Filter>
+	</ItemGroup>
+	<ItemGroup>
+		<ClInclude Include="src\ofApp.h">
+			<Filter>src</Filter>
+		</ClInclude>
+		<ClInclude Include="src\ofApp.h">
+			<Filter>src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxBaseGui.h">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxButton.h">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxColorPicker.h">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxGui.h">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxGuiGroup.h">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxGuiUtils.h">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxInputField.h">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxLabel.h">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxPanel.h">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxSlider.h">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxSliderGroup.h">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxToggle.h">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\src\ofxLineaDeTiempo.h">
+			<Filter>addons\ofxLineaDeTiempo\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx\DOM\CapturedPointer.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx\DOM</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx\DOM\Document.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx\DOM</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx\DOM\Element.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx\DOM</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx\DOM\Events.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx\DOM</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx\DOM\EventTarget.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx\DOM</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx\DOM\Exceptions.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx\DOM</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx\DOM\Layout.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx\DOM</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx\DOM\Node.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx\DOM</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx\DOM\NodeEvents.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx\DOM</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx\DOM\Types.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofx\DOM</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxDOM\include\ofxDOM.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxDOM\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\BaseTypes\AbstractSerializable.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\BaseTypes</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\BaseTypes\BaseHasCollection.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\BaseTypes</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\BaseTypes\BaseSelectable.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\BaseTypes</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\BaseTypes\NamedConstPointerCollection.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\BaseTypes</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller\BaseController.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller\Interpolator.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller\KeyframeCollectionController.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller\KeyframeController.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller\KeyframeRegionController.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller\KeyframeTrackController.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller\RegionController.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller\TimeControl.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller\TrackController.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller\TrackGroupController.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller\TracksPanelController.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Controller</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Data\jsonSerializer.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Data</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Data\KeyframedData.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Data</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Data\TimedData.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Data</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Utils\CollectionHelper.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Utils</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Utils\ConstVars.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Utils</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Utils\FontUtils.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Utils</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Utils\ofxTypeTraits.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Utils</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Utils\ParamHelper.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\Utils</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\BaseTrackView.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\KeyframeCollectionView.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\KeyframesRegionView.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\KeyframeTrackHeader.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\KeyframeTrackView.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\KeyframeView.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\MainRenderer.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\ModalView.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\ofxGuiView.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\Playhead.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\RegionHeaderView.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\RegionView.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\Selector.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\TimeControlView.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\TimelineDocument.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\TimeModifierView.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\TimeRuler.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\TimeRulerBar.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\TimeRulerHeader.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\TrackGroupView.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\TrackHeader.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\TrackHeaderGroup.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\TracksClippedView.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\TracksPanel.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View\TrackView.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxLineaDeTiempo\include\ofx\LineaDeTiempo\View</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\AutoReziseContainer.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Axis.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Button.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\ButtonGroup.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\ClippedView.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Constants.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Follower.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Handles\BaseScrollHandle.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Handles</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Handles\ConstrainedGrabHandle.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Handles</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Handles\EdgeHandle.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Handles</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Handles\ResizableHandle.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Handles</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Icon.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Label.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Margins.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\ofRectangleHelper.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\OrientedElement.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Panel.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\ScaledView.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Scope.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Shadow.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Slider.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\SliderGroup.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Styles.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Types.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Utils.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\Widget.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\ZoomablePanel.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI\ZoomScrollbar.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofx\MUI</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxMUI\include\ofxMUI.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxMUI\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxPointer\include\ofx\PointerEvents.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxPointer\include\ofx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxPointer\include\ofx\PointerEventsiOS.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxPointer\include\ofx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxPointer\include\ofx\PointerEventsMacOS.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxPointer\include\ofx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxPointer\include\ofx\PointerStrokes.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxPointer\include\ofx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxPointer\ofxPointer.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxPointer</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxRange\include\ofRange.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxRange\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxLineaDeTiempo\libs\ofxTimecode\include\ofxTimecode.h">
+			<Filter>addons\ofxLineaDeTiempo\libs\ofxTimecode\include</Filter>
+		</ClInclude>
+	</ItemGroup>
+	<ItemGroup>
+		<ResourceCompile Include="icon.rc" />
+	</ItemGroup>
+</Project>

@@ -25,7 +25,7 @@ typename NewControllerType
 NewControllerType * _add( NamedConstPointerCollection<CollectionType>& collection, ParentElementType * parentElement, Args&&... args)
 {
 	
-	static_assert(std::is_base_of<DOM::Node, ParentElementType>::value or
+	static_assert(std::is_base_of<DOM::Node, ParentElementType>::value ||
 				  std::is_base_of<DOM::Element, ParentElementType>::value,
 	
 				" CollectionHelper _add(...) failed. ElementType must be equal to or derived from ofxDOM::Node or ofxDom::Element");
@@ -34,7 +34,7 @@ NewControllerType * _add( NamedConstPointerCollection<CollectionType>& collectio
 				  
 				  "CollectionHelper _add(...) failed. TemplateType must be equal to or derived from another Templated Type");
 	
-	static_assert(std::is_base_of<DOM::Node, NewControllerType>::value or
+	static_assert(std::is_base_of<DOM::Node, NewControllerType>::value ||
 				  std::is_base_of<DOM::Element, NewControllerType>::value,
 				  
 				  "CollectionHelper _add(...) failed. TemplateType must be equal to or derived from another Templated Type");
@@ -51,12 +51,12 @@ template<typename ElementType, typename ParentType>
 
 bool _remove( ElementType* toRemove, ParentType* parentElement, NamedConstPointerCollection<ElementType>& collection )
 {
-	static_assert(std::is_base_of<DOM::Node, ElementType>::value or
+	static_assert(std::is_base_of<DOM::Node, ElementType>::value ||
 				  std::is_base_of<DOM::Element, ElementType>::value,
 	
 				" CollectionHelper _remove(...) failed. ElementType must be equal to or derived from ofxDOM::Node or ofxDom::Element");
 
-	static_assert(std::is_base_of<DOM::Node, ParentType>::value or
+	static_assert(std::is_base_of<DOM::Node, ParentType>::value ||
 				  std::is_base_of<DOM::Element, ParentType>::value,
 	
 				" CollectionHelper _remove(...) failed. ParentType must be equal to or derived from ofxDOM::Node or ofxDom::Element");
